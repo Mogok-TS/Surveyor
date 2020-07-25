@@ -2,6 +2,8 @@ import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
+import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -16,27 +18,23 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   io.File _image;
 
   var geolocator = Geolocator();
+  Future<bool> gpsCheck;
 
   String latitude;
   String longitude;
 
-void initState() {
+  @override
+  void initState() {
 // TODO: implement initState
-super.initState();
-latitude = "";
-longitude = "";
-getCurrentLocation().then((k) {
-  latitude = k.latitude.toString();
-  longitude = k.longitude.toString();
-  setState(() {});
-  });
-}
-
-Future<Position> getCurrentLocation() async
-{
-var answer = await Geolocator().getCurrentPosition();
-return answer;
-}
+    super.initState();
+    latitude = "";
+    longitude = "";
+    getCurrentLocation().then((k) {
+      latitude = k.latitude.toString();
+      longitude = k.longitude.toString();
+      setState(() {});
+    });
+  }
 
   Future getImageFromCamera() async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -202,6 +200,7 @@ return answer;
   String _villageOrWard = 'Village/Ward?';
   List<String> _wardList = ["Ward", "Ward1", "Ward2", "Ward3", "ward4"];
   String _ward = "Ward";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -608,7 +607,7 @@ return answer;
                 ),
               ),
               // Container(
-                
+
               //   margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
               //   child: Column(
               //     children: <Widget>[
@@ -641,7 +640,14 @@ return answer;
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    getGPSstatus().then((status) => {
+                          if (status == true)
+                            {}
+                          else
+                            {ShowToast("Please open GPS")}
+                        });
+                  },
                   child: Text(
                     "Save",
                     style: TextStyle(color: Colors.white, fontSize: 18),

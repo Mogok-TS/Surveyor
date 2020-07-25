@@ -8,8 +8,11 @@ import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:Surveyor/URL/url.dart';
 import 'package:Surveyor/assets/custom_icons_icons.dart';
 import 'package:Surveyor/stores.dart';
+import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
+import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -27,6 +30,21 @@ class _LoginState extends State<Login> {
   TextEditingController userID = new TextEditingController();
   TextEditingController password = new TextEditingController();
   OnlineSerives onlineSerives = new OnlineSerives();
+
+  String latitude;
+  String longitude;
+
+  @override
+  void initState() {
+    super.initState();
+    latitude = "";
+    longitude = "";
+    getCurrentLocation().then((k) {
+      latitude = k.latitude.toString();
+      longitude = k.longitude.toString();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +193,7 @@ class _LoginState extends State<Login> {
                     "Forgot Password?",
                     style: TextStyle(color: CustomIcons.buttonColor),
                   ),
+
                 ),
               ),
               Container(
