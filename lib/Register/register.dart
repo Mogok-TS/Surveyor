@@ -1,3 +1,4 @@
+import 'package:Surveyor/Services/GeneralUse/PhoneNumber.dart';
 import 'package:flutter/material.dart';
 import 'package:Surveyor/Register/login.dart';
 import 'package:Surveyor/Services/Loading/LoadingServices.dart';
@@ -168,20 +169,7 @@ class _RegisterState extends State<Register> {
                     if (this.password.text != this.confirmPassword.text) {
                       ShowToast("Password doesn't match.");
                     } else {
-                      var phone = this.phoneNumber.text.substring(0, 4);
-                      print("data->" + phone);
-                      if (phone.contains("+959")) {
-                      } else if (phone.contains("959")) {
-                        this.phoneNumber.text = "+" + this.phoneNumber.text;
-                      } else if (phone.contains("09")) {
-                        this.phoneNumber.text = "+959" +
-                            this
-                                .phoneNumber
-                                .text
-                                .substring(2, this.phoneNumber.text.length);
-                      } else {
-                        this.phoneNumber.text = "+959" + this.phoneNumber.text;
-                      }
+                     this.phoneNumber.text = getPhoneNumber(this.phoneNumber.text);
                       var data = {
                         "userId": this.phoneNumber.text.toString(),
                         "userName": this.userName.text.toString(),

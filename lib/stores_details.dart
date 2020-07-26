@@ -2,11 +2,13 @@ import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import 'Services/GeneralUse/PhoneNumber.dart';
 import 'assets/custom_icons_icons.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
@@ -16,24 +18,31 @@ class StoresDetailsScreen extends StatefulWidget {
 
 class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   io.File _image;
+  OnlineSerives onlineSerives = new OnlineSerives();
+  TextEditingController shopCode = new TextEditingController();
+  TextEditingController shopName = new TextEditingController();
+  TextEditingController shopNamemm = new TextEditingController();
+  TextEditingController shopPhoneNo = new TextEditingController();
+  TextEditingController ownerName = new TextEditingController();
+  TextEditingController ownerPhoneNo = new TextEditingController();
+  TextEditingController state = new TextEditingController();
+  TextEditingController district = new TextEditingController();
+  TextEditingController townShip = new TextEditingController();
+  TextEditingController townorVillagetract = new TextEditingController();
+  TextEditingController town = new TextEditingController();
+  TextEditingController villageorWard = new TextEditingController();
+  TextEditingController ward = new TextEditingController();
+  TextEditingController street = new TextEditingController();
 
   var geolocator = Geolocator();
   Future<bool> gpsCheck;
 
-  String latitude;
-  String longitude;
+  var latitude,longitude;
 
   @override
   void initState() {
 // TODO: implement initState
     super.initState();
-    latitude = "";
-    longitude = "";
-    getCurrentLocation().then((k) {
-      latitude = k.latitude.toString();
-      longitude = k.longitude.toString();
-      setState(() {});
-    });
   }
 
   Future getImageFromCamera() async {
@@ -205,6 +214,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: CustomIcons.appbarColor,
         title: Text("AuderBox"),
       ),
       body: SingleChildScrollView(
@@ -215,6 +225,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: TextField(
+                  controller: shopCode,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
                     prefixIcon: Icon(
@@ -232,6 +243,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: TextField(
+                  controller: shopName,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
                     prefixIcon: Icon(
@@ -249,6 +261,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: TextField(
+                  controller: shopNamemm,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
                     prefixIcon: Icon(
@@ -266,6 +279,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: TextField(
+                  controller: shopPhoneNo,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
                     prefixIcon: Icon(
@@ -283,6 +297,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: TextField(
+                  controller: ownerName,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
                     prefixIcon: Icon(
@@ -300,6 +315,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: TextField(
+                  controller: ownerPhoneNo,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
                     prefixIcon: Icon(
@@ -592,6 +608,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
                 // margin: EdgeInsets.fromLTRB(23, 20, 20, 20),
                 child: TextField(
+                  controller: street,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
                     prefixIcon: Icon(
@@ -641,9 +658,109 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: RaisedButton(
                   onPressed: () {
+                    var param,googlePlusparam;
                     getGPSstatus().then((status) => {
-                          if (status == true)
-                            {}
+                          if (status == true){
+                            getCurrentLocation().then((k) {
+                              latitude = k.latitude;
+                              longitude = k.longitude;
+                            }),
+                            param = {
+                              "active": true,
+                              "name": this.shopName.text.toString(),
+                              "mmName": this.shopNamemm.text.toString(),
+                              "personName":
+                              this.ownerName.text.toString(),
+                              "phoneNumber":
+                              this.shopPhoneNo.text.toString(),
+                              "stateId": "0",
+                              "districtId": "0",
+                              "townshipId": "0",
+                              "townId": "0",
+                              "wardId": "0",
+                              "address":
+                              "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
+                              "street": this.street.text.toString(),
+                              "locationData": [
+                                {
+                                  "recordStatus": 1,
+                                  "latitude": latitude,
+                                  "longitude": longitude
+                                }
+                              ]
+                            },
+                            googlePlusparam= {
+                              "lat": latitude,
+                              "lng": longitude
+                            },
+                            this.onlineSerives.getGooglePlusCode(googlePlusparam).then((value) => {print("${value}")}),
+                          }
+//                            {
+//                              if (this.shopCode.text == "" ||
+//                                  this.shopCode.text == null ||
+//                                  this.shopCode.text.isEmpty ||
+//                                  this.shopName.text == "" ||
+//                                  this.shopName.text == null ||
+//                                  this.shopName.text.isEmpty ||
+//                                  this.shopNamemm.text == "" ||
+//                                  this.shopNamemm.text == null ||
+//                                  this.shopNamemm.text.isEmpty ||
+//                                  this.shopPhoneNo.text == "" ||
+//                                  this.shopPhoneNo.text == null ||
+//                                  this.shopPhoneNo.text.isEmpty ||
+//                                  this.ownerName.text == "" ||
+//                                  this.ownerName.text == null ||
+//                                  this.ownerName.text.isEmpty ||
+//                                  this.ownerPhoneNo.text == "" ||
+//                                  this.ownerPhoneNo.text == null ||
+//                                  this.ownerPhoneNo.text.isEmpty ||
+//                                  this.street.text == "" ||
+//                                  this.street.text == null ||
+//                                  this.street.text.isEmpty)
+//                                {
+//                                  ShowToast("Please fill all fields"),
+//                                }
+//                              else
+//                                {
+//                                  this.shopPhoneNo.text =
+//                                      getPhoneNumber(this.shopPhoneNo.text),
+//                                  this.ownerPhoneNo.text =
+//                                      getPhoneNumber(this.ownerPhoneNo.text),
+//                                  getCurrentLocation().then((k) {
+//                                    latitude = k.latitude;
+//                                    longitude = k.longitude;
+//                                  }),
+//                                  param = {
+//                                    "active": true,
+//                                    "name": this.shopName.text.toString(),
+//                                    "mmName": this.shopNamemm.text.toString(),
+//                                    "personName":
+//                                        this.ownerName.text.toString(),
+//                                    "phoneNumber":
+//                                        this.shopPhoneNo.text.toString(),
+//                                    "stateId": "0",
+//                                    "districtId": "0",
+//                                    "townshipId": "0",
+//                                    "townId": "0",
+//                                    "wardId": "0",
+//                                    "address":
+//                                        "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
+//                                    "street": this.street.text.toString(),
+//                                    "locationData": [
+//                                      {
+//                                        "recordStatus": 1,
+//                                        "latitude": latitude,
+//                                        "longitude": longitude
+//                                      }
+//                                    ]
+//                                  },
+//                                  googlePlusparam= {
+//                                    "lat": latitude,
+//                                    "lng": longitude
+//                                  },
+//                                  this.onlineSerives.getGooglePlusCode(googlePlusparam),
+//                                }
+//                            }
                           else
                             {ShowToast("Please open GPS")}
                         });

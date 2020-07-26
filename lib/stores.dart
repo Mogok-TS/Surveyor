@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
+import 'Map/map.dart';
 import 'assets/custom_icons_icons.dart';
 import 'stores_details.dart';
 import 'widgets/mainmenuwidgets.dart';
@@ -185,10 +186,17 @@ class _StoreScreenState extends State<StoreScreen> {
     return Scaffold(
         drawer: MainMenuWidget(),
         appBar: AppBar(
+          backgroundColor: CustomIcons.appbarColor,
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.map),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => Gmap(),
+                  ),
+                );
+              },
             )
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:Surveyor/Services/GeneralUse/PhoneNumber.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Surveyor/Register/register.dart';
@@ -214,20 +215,7 @@ class _LoginState extends State<Login> {
                         password.text.isEmpty) {
                       ShowToast("Please, fill all fields");
                     } else {
-                      var phone = this.userID.text.substring(0, 4);
-                      print("data->" + phone);
-                      if (phone.contains("+959")) {
-                      } else if (phone.contains("959")) {
-                        this.userID.text = "+" + this.userID.text;
-                      } else if (phone.contains("09")) {
-                        this.userID.text = "+959" +
-                            this
-                                .userID
-                                .text
-                                .substring(2, this.userID.text.length);
-                      } else {
-                        this.userID.text = "+959" + this.userID.text;
-                      }
+                      this.userID.text = getPhoneNumber(this.userID.text);
                       var param = {
                         "userId": userID.text.toString(),
                         "password": password.text.toString()
