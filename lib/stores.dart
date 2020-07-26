@@ -88,7 +88,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            OutsideInsideNeighborhood(storeName, phone, address),
+                                            OutsideInsideNeighborhood(storeName, phone, address,"none"),
                                       ),
                                     );
                                   },

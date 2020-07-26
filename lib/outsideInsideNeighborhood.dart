@@ -9,14 +9,15 @@ class OutsideInsideNeighborhood extends StatefulWidget {
   final String storeName;
   final String storeNumber;
   final String address;
-  OutsideInsideNeighborhood(this.storeName, this.storeNumber, this.address);
+  final String surveyType;
+  OutsideInsideNeighborhood(this.storeName, this.storeNumber, this.address,this.surveyType);
   @override
   _OutsideInsideNeighborhoodState createState() =>
       _OutsideInsideNeighborhoodState();
 }
 
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
-  
+  String serveytype;
   RoundedRectangleBorder buttonShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(0.0),
@@ -76,7 +77,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            NeighborhoodSurveyScreen("Satisfied","This is text for the instruciotns"),
+                                            NeighborhoodSurveyScreen(this.widget.storeName, this.widget.storeNumber, this.widget.address,"This is text for the instruciotns","Neighborhood Survey"),
                                       ),
                                     );
                           },
@@ -140,6 +141,14 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     child: Column(
                       children: <Widget>[
                         ListTile(
+                            onTap: (){
+                            Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NeighborhoodSurveyScreen(this.widget.storeName, this.widget.storeNumber, this.widget.address,"This is text for the instruciotns","Outside of store"),
+                                      ),
+                                    );
+                          },
                             title: Container(
                               margin: EdgeInsets.only(top: 10,bottom: 10),
                                 child: Text(
@@ -200,6 +209,14 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     child: Column(
                       children: <Widget>[
                         ListTile(
+                          onTap: (){
+                            Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NeighborhoodSurveyScreen(this.widget.storeName, this.widget.storeNumber, this.widget.address,"This is text for the instruciotns","Inside of store"),
+                                      ),
+                                    );
+                          },
                             title: Container(
                               margin: EdgeInsets.only(top: 10,bottom: 10),
                                 child: Text(
@@ -260,6 +277,14 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     child: Column(
                       children: <Widget>[
                         ListTile(
+                          onTap: (){
+                            Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NeighborhoodSurveyScreen(this.widget.storeName, this.widget.storeNumber, this.widget.address,"This is text for the instruciotns","Store Operator"),
+                                      ),
+                                    );
+                          },
                             title: Container(
                               margin: EdgeInsets.only(top: 10,bottom: 10),
                                 child: Text(
@@ -327,10 +352,11 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
             icon: new Container(),
             title: InkWell(
               onTap: (){
+                
                 Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            StoreScreen(),
+                                            StoreScreen()
                                       ),
                                     );
               },
