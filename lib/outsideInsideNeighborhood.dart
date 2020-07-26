@@ -28,17 +28,20 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MainMenuWidget(),
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: CustomIcons.appbarColor,
+      ),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
             children: <Widget>[
               Container(
-            height: 100,
             color: Colors.grey[200],
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-              child: ListView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     this.widget.storeName,

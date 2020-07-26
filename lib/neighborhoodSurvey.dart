@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:Surveyor/outsideInsideNeighborhood.dart';
+import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -118,7 +120,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     return Scaffold(
         drawer: MainMenuWidget(),
         appBar: AppBar(
-          
+          backgroundColor: CustomIcons.appbarColor,
         ),
         body: SingleChildScrollView(
             child: Container(
@@ -394,6 +396,44 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               ),
             ],
           ),
-        )));
+        )),
+        bottomNavigationBar: new BottomNavigationBar(
+        backgroundColor: CustomIcons.appbarColor,
+        items: [
+          
+          new BottomNavigationBarItem(
+            
+            icon: new Container(),
+            title: InkWell(
+              onTap: (){
+                Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            StoreScreen(),
+                                      ),
+                                    );
+              },
+                          child: new Text(
+                "Back",
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
+          ),
+          new BottomNavigationBarItem(
+            icon: new Container(),
+            title: new Container(),
+          ),
+          new BottomNavigationBarItem(
+            icon: new Container(),
+            title: new Text(
+              "Done",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+        );
   }
 }
