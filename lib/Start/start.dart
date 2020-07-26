@@ -1,3 +1,4 @@
+import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import '../assets/custom_icons_icons.dart';
 
@@ -79,6 +80,8 @@ class _StartState extends State<Start> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainMenuWidget(),
+      appBar: AppBar(),
       body: ListView(
         children: <Widget>[
           Container(

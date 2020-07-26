@@ -1,3 +1,4 @@
+import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
@@ -6,7 +7,7 @@ import 'Map/map.dart';
 import 'assets/custom_icons_icons.dart';
 import 'stores_details.dart';
 import 'widgets/mainmenuwidgets.dart';
-import './Start/start.dart';
+
 
 class StoreScreen extends StatefulWidget {
   @override
@@ -87,7 +88,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            Start(storeName, phone, address),
+                                            OutsideInsideNeighborhood(storeName, phone, address),
                                       ),
                                     );
                                   },
