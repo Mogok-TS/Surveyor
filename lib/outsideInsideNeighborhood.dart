@@ -2,6 +2,7 @@ import 'package:Surveyor/neighborhoodSurvey.dart';
 import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:Surveyor/Services/Online/OnlineServices.dart';
 
 import 'assets/custom_icons_icons.dart';
 
@@ -10,7 +11,10 @@ class OutsideInsideNeighborhood extends StatefulWidget {
   final String storeNumber;
   final String address;
   final String surveyType;
-  OutsideInsideNeighborhood(this.storeName, this.storeNumber, this.address,this.surveyType);
+
+  OutsideInsideNeighborhood(
+      this.storeName, this.storeNumber, this.address, this.surveyType);
+
   @override
   _OutsideInsideNeighborhoodState createState() =>
       _OutsideInsideNeighborhoodState();
@@ -18,6 +22,8 @@ class OutsideInsideNeighborhood extends StatefulWidget {
 
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   String serveytype;
+  OnlineSerives onlineSerives = new OnlineSerives();
+
   RoundedRectangleBorder buttonShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(0.0),
@@ -37,57 +43,68 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
           child: Column(
             children: <Widget>[
               Container(
-            color: Colors.grey[200],
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    this.widget.storeName,
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                color: Colors.grey[200],
+                child: Container(
+                  margin:
+                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        this.widget.storeName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        this.widget.storeNumber,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            height: 1.0,
+                          ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        this.widget.address,
+                        style: TextStyle(height: 1.3),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Text(
-                    this.widget.storeNumber,
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Text(
-                    this.widget.address,
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
               Container(
-               
                 child: Card(
                   child: Container(
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                          onTap: (){
-                            Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            NeighborhoodSurveyScreen(this.widget.storeName, this.widget.storeNumber, this.widget.address,"This is text for the instruciotns","Neighborhood Survey"),
-                                      ),
-                                    );
-                          },
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      NeighborhoodSurveyScreen(
+                                          this.widget.storeName,
+                                          this.widget.storeNumber,
+                                          this.widget.address,
+                                          "This is text for the instruciotns",
+                                          "Neighborhood Survey"),
+                                ),
+                              );
+                            },
                             title: Container(
-                              margin: EdgeInsets.only(top: 10,bottom: 10),
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
                                 child: Text(
-                              "Neighborhood",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            )),
+                                  "Neighborhood",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -117,7 +134,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             child: Center(
                                               child: Text(
                                                 "13 Items remaining",
-                                                style: TextStyle(color: CustomIcons.appbarColor),
+                                                style: TextStyle(
+                                                    color: CustomIcons
+                                                        .appbarColor),
                                               ),
                                             ),
                                           ),
@@ -128,34 +147,38 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 )
                               ],
                             )),
-                            
                       ],
                     ),
                   ),
                 ),
               ),
               Container(
-                
                 child: Card(
                   child: Container(
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                            onTap: (){
-                            Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            NeighborhoodSurveyScreen(this.widget.storeName, this.widget.storeNumber, this.widget.address,"This is text for the instruciotns","Outside of store"),
-                                      ),
-                                    );
-                          },
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      NeighborhoodSurveyScreen(
+                                          this.widget.storeName,
+                                          this.widget.storeNumber,
+                                          this.widget.address,
+                                          "This is text for the instruciotns",
+                                          "Outside of Store"),
+                                ),
+                              );
+                            },
                             title: Container(
-                              margin: EdgeInsets.only(top: 10,bottom: 10),
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
                                 child: Text(
-                              "Outside of store",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            )),
+                                  "Outside of store",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -185,7 +208,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             child: Center(
                                               child: Text(
                                                 "3 Items remaining",
-                                                style: TextStyle(color: CustomIcons.appbarColor),
+                                                style: TextStyle(
+                                                    color: CustomIcons
+                                                        .appbarColor),
                                               ),
                                             ),
                                           ),
@@ -196,34 +221,38 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 )
                               ],
                             )),
-                            
                       ],
                     ),
                   ),
                 ),
               ),
               Container(
-                
                 child: Card(
                   child: Container(
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                          onTap: (){
-                            Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            NeighborhoodSurveyScreen(this.widget.storeName, this.widget.storeNumber, this.widget.address,"This is text for the instruciotns","Inside of store"),
-                                      ),
-                                    );
-                          },
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      NeighborhoodSurveyScreen(
+                                          this.widget.storeName,
+                                          this.widget.storeNumber,
+                                          this.widget.address,
+                                          "This is text for the instruciotns",
+                                          "Inside of Store"),
+                                ),
+                              );
+                            },
                             title: Container(
-                              margin: EdgeInsets.only(top: 10,bottom: 10),
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
                                 child: Text(
-                              "Inside of store",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            )),
+                                  "Inside of Store",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -253,7 +282,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             child: Center(
                                               child: Text(
                                                 "4 Items remaining",
-                                                style: TextStyle(color: CustomIcons.appbarColor),
+                                                style: TextStyle(
+                                                    color: CustomIcons
+                                                        .appbarColor),
                                               ),
                                             ),
                                           ),
@@ -264,34 +295,38 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 )
                               ],
                             )),
-                            
                       ],
                     ),
                   ),
                 ),
               ),
               Container(
-                
                 child: Card(
                   child: Container(
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                          onTap: (){
-                            Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            NeighborhoodSurveyScreen(this.widget.storeName, this.widget.storeNumber, this.widget.address,"This is text for the instruciotns","Store Operator"),
-                                      ),
-                                    );
-                          },
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      NeighborhoodSurveyScreen(
+                                          this.widget.storeName,
+                                          this.widget.storeNumber,
+                                          this.widget.address,
+                                          "This is text for the instruciotns",
+                                          "Store Operator"),
+                                ),
+                              );
+                            },
                             title: Container(
-                              margin: EdgeInsets.only(top: 10,bottom: 10),
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
                                 child: Text(
-                              "Store Operator",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            )),
+                                  "Store Operator",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -321,7 +356,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             child: Center(
                                               child: Text(
                                                 "1 Items remaining",
-                                                style: TextStyle(color: CustomIcons.appbarColor),
+                                                style: TextStyle(
+                                                    color: CustomIcons
+                                                        .appbarColor),
                                               ),
                                             ),
                                           ),
@@ -332,13 +369,11 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 )
                               ],
                             )),
-                            
                       ],
                     ),
                   ),
                 ),
               )
-
             ],
           ),
         ),
@@ -346,21 +381,15 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
       bottomNavigationBar: new BottomNavigationBar(
         backgroundColor: CustomIcons.appbarColor,
         items: [
-          
           new BottomNavigationBarItem(
-            
             icon: new Container(),
             title: InkWell(
-              onTap: (){
-                
+              onTap: () {
                 Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            StoreScreen()
-                                      ),
-                                    );
+                  MaterialPageRoute(builder: (context) => StoreScreen()),
+                );
               },
-                          child: new Text(
+              child: new Text(
                 "Back",
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.white),

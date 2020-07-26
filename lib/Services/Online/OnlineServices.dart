@@ -208,6 +208,41 @@ class OnlineSerives {
   }
 
 
+  Future getQuestions(params) async {
+    this.mainData();
+    this.url = this.url + "/surveyor/searchQuestionList";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+//    print("${response.body}");
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+        }else{
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    var returndata = {
+      "status":this.status,
+      "data": data["list"]
+    };
+    return returndata;
+  }
+  
+
+
   Servererror(code) {
     this.serverErr = "Server error. [" + code + "]";
     return this.serverErr;

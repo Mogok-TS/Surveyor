@@ -5,6 +5,7 @@ import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'assets/custom_icons_icons.dart';
+import 'package:Surveyor/Services/Online/OnlineServices.dart';
 
 class NeighborhoodSurveyScreen extends StatefulWidget {
   final String storeName;
@@ -38,6 +39,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   bool check2 = false;
   bool check3 = false;
   bool check4 = false;
+  OnlineSerives onlineSerives = new OnlineSerives();
+  var questions,questionNature;
+
   List<Object> _images = List<Object>();
   Future getImageFromCamera() async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -120,6 +124,29 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+//    if(){} for questionNature
+    var param = {
+      "t1": "",
+      "t2": "",
+      "date": "",
+      "questionNature": this.questionNature,
+      "questionType": "",
+      "maxRows": "",
+      "current": ""
+    };
+    this.onlineSerives.getQuestions(param).then((result) => {
+      if(result["status"] == true){
+          this.questions = result["data"],
+      }else{
+
+      }
+    }).catchError((err)=>{});
+  }
+
 
   @override
   Widget build(BuildContext context) {
