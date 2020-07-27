@@ -1,5 +1,6 @@
 import 'dart:io' as io;
 import 'package:Surveyor/assets/plus_circle_icons.dart';
+import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -672,127 +673,176 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               //   ),
               // ),
               // storeImage(),
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: RaisedButton(
-                  onPressed: () {
-                    var param, googlePlusparam;
-                    getGPSstatus().then((status) => {
-                          if (status == true)
-                            {
-                              if (this.shopName.text == "" ||
-                                  this.shopName.text == null ||
-                                  this.shopName.text.isEmpty ||
-                                  this.shopNamemm.text == "" ||
-                                  this.shopNamemm.text == null ||
-                                  this.shopNamemm.text.isEmpty ||
-                                  this.shopPhoneNo.text == "" ||
-                                  this.shopPhoneNo.text == null ||
-                                  this.shopPhoneNo.text.isEmpty ||
-                                  this.ownerName.text == "" ||
-                                  this.ownerName.text == null ||
-                                  this.ownerName.text.isEmpty ||
-                                  this.ownerPhoneNo.text == "" ||
-                                  this.ownerPhoneNo.text == null ||
-                                  this.ownerPhoneNo.text.isEmpty ||
-                                  this.street.text == "" ||
-                                  this.street.text == null ||
-                                  this.street.text.isEmpty)
-                                {
-                                  ShowToast("Please fill all fields"),
-                                }
-                              else
-                                {
-                                  this.shopPhoneNo.text =
-                                      getPhoneNumber(this.shopPhoneNo.text),
-                                  this.ownerPhoneNo.text =
-                                      getPhoneNumber(this.ownerPhoneNo.text),
-                                  getCurrentLocation().then((k) {
-                                    latitude = k.latitude;
-                                    longitude = k.longitude;
-                                  }),
-                                  param = {
-                                    "active": true,
-                                    "name": this.shopName.text.toString(),
-                                    "mmName": this.shopNamemm.text.toString(),
-                                    "personName":
-                                        this.ownerName.text.toString(),
-                                    "phoneNumber":
-                                        this.shopPhoneNo.text.toString(),
-                                    "stateId": "0",
-                                    "districtId": "0",
-                                    "townshipId": "0",
-                                    "townId": "0",
-                                    "wardId": "0",
-                                    "address":
-                                        "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
-                                    "street": this.street.text.toString(),
-                                    "t12": "",
-                                    "locationData": {
-                                      "recordStatus": 1,
-                                      "latitude": latitude,
-                                      "longitude": longitude
-                                    }
-                                  },
-                                  this
-                                      .onlineSerives
-                                      .createStore(param)
-                                      .then((value) => {
-                                            if (value == true)
-                                              {
-                                                googlePlusparam = {
-                                                  "lat": latitude,
-                                                  "lng": longitude
-                                                },
-                                                this
-                                                    .onlineSerives
-                                                    .getGooglePlusCode(
-                                                        googlePlusparam)
-                                                    .then(
-                                                      (value1) => {
-                                                        setState(
-                                                          () {
-                                                            this.plusCode =
-                                                                "${value1["data"]["plusCode"]}";
-                                                          },
-                                                        ),
-                                                      },
-                                                    ),
-                                              }
-                                          }),
-                                }
-                              // if (this.status == "true")
-                              //     {
-                              //       googlePlusparam = {
-                              //         "lat": latitude,
-                              //         "lng": longitude
-                              //       },
-                              //       this
-                              //           .onlineSerives
-                              //           .getGooglePlusCode(googlePlusparam)
-                              //           .then((value) => {print("${value}")}),
-                              //     }
-                            }
-                          else
-                            {ShowToast("Please open GPS")}
-                        });
-                  },
-                  color: CustomIcons.buttonColor,
-                  textColor: CustomIcons.buttonText,
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: new BottomNavigationBar(
+        backgroundColor: CustomIcons.appbarColor,
+        items: [
+          new BottomNavigationBarItem(
+            icon: new Container(),
+            title: InkWell(
+              onTap: () {
+                if (plusCode == null) {
+                  var param, googlePlusparam, passData;
+                  getGPSstatus().then((status) => {
+                        if (status == true)
+                          {
+                            if (this.shopName.text == "" ||
+                                this.shopName.text == null ||
+                                this.shopName.text.isEmpty ||
+                                this.shopNamemm.text == "" ||
+                                this.shopNamemm.text == null ||
+                                this.shopNamemm.text.isEmpty ||
+                                this.shopPhoneNo.text == "" ||
+                                this.shopPhoneNo.text == null ||
+                                this.shopPhoneNo.text.isEmpty ||
+                                this.ownerName.text == "" ||
+                                this.ownerName.text == null ||
+                                this.ownerName.text.isEmpty ||
+                                this.ownerPhoneNo.text == "" ||
+                                this.ownerPhoneNo.text == null ||
+                                this.ownerPhoneNo.text.isEmpty ||
+                                this.street.text == "" ||
+                                this.street.text == null ||
+                                this.street.text.isEmpty)
+                              {
+                                ShowToast("Please fill all fields"),
+                              }
+                            else
+                              {
+                                this.shopPhoneNo.text =
+                                    getPhoneNumber(this.shopPhoneNo.text),
+                                this.ownerPhoneNo.text =
+                                    getPhoneNumber(this.ownerPhoneNo.text),
+                                getCurrentLocation().then((k) {
+                                  latitude = k.latitude;
+                                  longitude = k.longitude;
+                                }),
+                                param = {
+                                  "active": true,
+                                  "name": this.shopName.text.toString(),
+                                  "mmName": this.shopNamemm.text.toString(),
+                                  "personName": this.ownerName.text.toString(),
+                                  "phoneNumber":
+                                      this.shopPhoneNo.text.toString(),
+                                  "stateId": "0",
+                                  "districtId": "0",
+                                  "townshipId": "0",
+                                  "townId": "0",
+                                  "wardId": "0",
+                                  "address":
+                                      "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
+                                  "street": this.street.text.toString(),
+                                  "t12": "",
+                                  "locationData": {
+                                    "recordStatus": 1,
+                                    "latitude": latitude,
+                                    "longitude": longitude
+                                  }
+                                },
+                                passData = {},
+                                this
+                                    .onlineSerives
+                                    .createStore(param)
+                                    .then((value) => {
+                                          if (value == true)
+                                            {
+                                              googlePlusparam = {
+                                                "lat": latitude,
+                                                "lng": longitude
+                                              },
+                                              this
+                                                  .onlineSerives
+                                                  .getGooglePlusCode(
+                                                      googlePlusparam)
+                                                  .then(
+                                                    (value1) => {
+                                                      setState(
+                                                        () {
+                                                          this.plusCode =
+                                                              "${value1["data"]["plusCode"]}";
+                                                        },
+                                                      ),
+                                                    },
+                                                  ),
+                                            }
+                                        }),
+                              }
+                            // if (this.status == "true")
+                            //     {
+                            //       googlePlusparam = {
+                            //         "lat": latitude,
+                            //         "lng": longitude
+                            //       },
+                            //       this
+                            //           .onlineSerives
+                            //           .getGooglePlusCode(googlePlusparam)
+                            //           .then((value) => {print("${value}")}),
+                            //     }
+                          }
+                        else
+                          {ShowToast("Please open GPS")}
+                      });
+                }
+              },
+              child: Container(
+                height: 40,
+                width: 300,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Center(
                   child: plusCode == null
                       ? Text(
                           "Save",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style: TextStyle(color: Colors.white),
                         )
                       : Text(
                           "Update",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                ),
+              ),
+            ),
+          ),
+          new BottomNavigationBarItem(
+            icon: new Container(),
+            title: InkWell(
+              onTap: () {
+                if (plusCode != null) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => StoreData(
+                          this.shopName.text,
+                          this.shopNamemm.text,
+                          this.shopPhoneNo.text,
+                          this.ownerName.text,
+                          this.ownerPhoneNo.text,
+                          this.street.text,
+                          this.plusCode),
+                    ),
+                  );
+                }
+              },
+              child: Container(
+                height: 40,
+                width: 300,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Center(
+                  child: plusCode == null
+                      ? Text(
+                          "Next",
+                          style: TextStyle(color: Colors.white38, fontSize: 18),
+                        )
+                      : Text(
+                          "Next",
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

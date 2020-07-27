@@ -13,7 +13,9 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final String address;
   final String surveyStage;
   final String surveyType;
-  NeighborhoodSurveyScreen(this.storeName, this.storeNumber, this.address,this.surveyStage,this.surveyType);
+
+  NeighborhoodSurveyScreen(this.storeName, this.storeNumber, this.address,
+      this.surveyStage, this.surveyType);
   @override
   _NeighborhoodSurveyScreenState createState() =>
       _NeighborhoodSurveyScreenState();
@@ -40,7 +42,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   bool check3 = false;
   bool check4 = false;
   OnlineSerives onlineSerives = new OnlineSerives();
-  var questions,questionNature;
+  var questions, questionNature;
 
   List<Object> _images = List<Object>();
   Future getImageFromCamera() async {
@@ -138,15 +140,19 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       "maxRows": "",
       "current": ""
     };
-    this.onlineSerives.getQuestions(param).then((result) => {
-      if(result["status"] == true){
-          this.questions = result["data"],
-      }else{
-
-      }
-    }).catchError((err)=>{});
+    this
+        .onlineSerives
+        .getQuestions(param)
+        .then((result) => {
+              if (result["status"] == true)
+                {
+                  this.questions = result["data"],
+                }
+              else
+                {}
+            })
+        .catchError((err) => {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -175,10 +181,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        
                       ],
                     ),
-                    
                   ],
                 ),
               ),
@@ -459,85 +463,85 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 15),
+                      margin: EdgeInsets.only(left: 15),
                       child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Checkbox(
-                              value: check1,
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  check1 = newValue;
-                                });
-                              }),
-                          SizedBox(
-                            width: 5,
+                          Row(
+                            children: <Widget>[
+                              Checkbox(
+                                  value: check1,
+                                  onChanged: (bool newValue) {
+                                    setState(() {
+                                      check1 = newValue;
+                                    });
+                                  }),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'First',
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
                           ),
-                          Text(
-                            'First',
-                            style: TextStyle(fontSize: 16),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Checkbox(
-                              value: check2,
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  check2 = newValue;
-                                });
-                              }),
-                          SizedBox(
-                            width: 5,
+                          Row(
+                            children: <Widget>[
+                              Checkbox(
+                                  value: check2,
+                                  onChanged: (bool newValue) {
+                                    setState(() {
+                                      check2 = newValue;
+                                    });
+                                  }),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Second',
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
                           ),
-                          Text(
-                            'Second',
-                            style: TextStyle(fontSize: 16),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Checkbox(
-                              value: check3,
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  check3 = newValue;
-                                });
-                              }),
-                          SizedBox(
-                            width: 5,
+                          Row(
+                            children: <Widget>[
+                              Checkbox(
+                                  value: check3,
+                                  onChanged: (bool newValue) {
+                                    setState(() {
+                                      check3 = newValue;
+                                    });
+                                  }),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Third',
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
                           ),
-                          Text(
-                            'Third',
-                            style: TextStyle(fontSize: 16),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Checkbox(
-                              value: check4,
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  check4 = newValue;
-                                });
-                              }),
-                          SizedBox(
-                            width: 5,
+                          Row(
+                            children: <Widget>[
+                              Checkbox(
+                                  value: check4,
+                                  onChanged: (bool newValue) {
+                                    setState(() {
+                                      check4 = newValue;
+                                    });
+                                  }),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Last',
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
                           ),
-                          Text(
-                            'Last',
-                            style: TextStyle(fontSize: 16),
-                          )
                         ],
-                      ),
-                    ],
-                  ))
+                      ))
                 ],
               ),
             ),

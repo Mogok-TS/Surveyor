@@ -18,7 +18,7 @@ class _StoreScreenState extends State<StoreScreen> {
   var storeData, storeRegistration, assignStores;
   bool showAssignStore = false;
   bool showRegisterStore = false;
-  var performType,performTypearray;
+  var performType, performTypearray;
 
   RoundedRectangleBorder buttonShape() {
     return RoundedRectangleBorder(
@@ -30,12 +30,12 @@ class _StoreScreenState extends State<StoreScreen> {
   Widget buildStatusText(array) {
     var status;
     Color textColor;
-    for(var q = 0 ; q < array.length; q++){
-      if(array[q].toString() == "CHECKIN"){
+    for (var q = 0; q < array.length; q++) {
+      if (array[q].toString() == "CHECKIN") {
         status = "In Progress";
         textColor = Color(0xFFe0ac08);
         break;
-      }else{
+      } else {
         status = "Not Started";
         textColor = Colors.blue;
       }
@@ -294,58 +294,58 @@ class _StoreScreenState extends State<StoreScreen> {
                     Container(
                         child: showAssignStore == true
                             ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            this.assignStores.length == 0
-                                ? Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    color: Colors.grey[200],
-                                    child: Center(
-                                      child: Text(
-                                        "No Data",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  this.assignStores.length == 0
+                                      ? Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Container(
+                                                height: 50,
+                                                color: Colors.grey[200],
+                                                child: Center(
+                                                  child: Text(
+                                                    "No Data",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : Column(
+                                          children: <Widget>[
+                                            for (var i = 0;
+                                                i < this.assignStores.length;
+                                                i++)
+                                              buildAssignItem(
+                                                  this
+                                                          .assignStores[i]
+                                                              ["shopname"]
+                                                          .toString() +
+                                                      "( " +
+                                                      this
+                                                          .assignStores[i]
+                                                              ["shopnamemm"]
+                                                          .toString() +
+                                                      " )",
+                                                  this
+                                                      .assignStores[i]
+                                                          ["phoneno"]
+                                                      .toString(),
+                                                  this
+                                                      .assignStores[i]
+                                                          ["address"]
+                                                      .toString(),
+                                                  this.assignStores[i])
+                                          ],
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Column(
-                              children: <Widget>[
-                                for (var i = 0;
-                                i < this.assignStores.length;
-                                i++)
-                                  buildAssignItem(
-                                      this
-                                          .assignStores[i]
-                                      ["shopname"]
-                                          .toString() +
-                                          "( " +
-                                          this
-                                              .assignStores[i]
-                                          ["shopnamemm"]
-                                              .toString() +
-                                          " )",
-                                      this
-                                          .assignStores[i]
-                                      ["phoneno"]
-                                          .toString(),
-                                      this
-                                          .assignStores[i]
-                                      ["address"]
-                                          .toString(),
-                                      this.assignStores[i])
-                              ],
-                            ),
-                          ],
-                        )
+                                ],
+                              )
                             : new Container())
                   ],
                 ),
@@ -401,19 +401,19 @@ class _StoreScreenState extends State<StoreScreen> {
                     Container(
                         child: showRegisterStore == true
                             ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            buildRegisterItem(
-                                "Malar Myaing",
-                                "09771399559",
-                                "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
-                            buildRegisterItem(
-                                "Malar Myaing",
-                                "09771399559",
-                                "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
-                          ],
-                        )
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  buildRegisterItem(
+                                      "Malar Myaing",
+                                      "09771399559",
+                                      "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
+                                  buildRegisterItem(
+                                      "Malar Myaing",
+                                      "09771399559",
+                                      "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
+                                ],
+                              )
                             : new Container())
                   ],
                 ),
