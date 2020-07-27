@@ -20,7 +20,7 @@ class StoresDetailsScreen extends StatefulWidget {
 class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   io.File _image;
   OnlineSerives onlineSerives = new OnlineSerives();
-  TextEditingController shopCode = new TextEditingController();
+//  TextEditingController shopCode = new TextEditingController();
   TextEditingController shopName = new TextEditingController();
   TextEditingController shopNamemm = new TextEditingController();
   TextEditingController shopPhoneNo = new TextEditingController();
@@ -217,7 +217,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       backgroundColor: Color(0xFFF8F8FF),
       appBar: AppBar(
         backgroundColor: CustomIcons.appbarColor,
-        title: Text("AuderBox"),
+        title: Text("Store Detail"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -225,25 +225,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: TextField(
-                  controller: shopCode,
-                  decoration: InputDecoration(
-                    focusColor: Colors.black,
-                    prefixIcon: Icon(
-                      Icons.chrome_reader_mode,
-                      color: CustomIcons.iconColor,
-                    ),
-                    hintText: 'Sp Shop Code',
-                    hintStyle: TextStyle(fontSize: 18, height: 1.5),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                margin: EdgeInsets.fromLTRB(20, 15, 20, 20),
                 child: TextField(
                   controller: shopName,
                   decoration: InputDecoration(
@@ -281,6 +263,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: shopPhoneNo,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
@@ -317,6 +300,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: ownerPhoneNo,
                   decoration: InputDecoration(
                     focusColor: Colors.black,
@@ -696,10 +680,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     getGPSstatus().then((status) => {
                           if (status == true)
                             {
-                              if (this.shopCode.text == "" ||
-                                  this.shopCode.text == null ||
-                                  this.shopCode.text.isEmpty ||
-                                  this.shopName.text == "" ||
+                              if (this.shopName.text == "" ||
                                   this.shopName.text == null ||
                                   this.shopName.text.isEmpty ||
                                   this.shopNamemm.text == "" ||
@@ -746,7 +727,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     "address":
                                         "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
                                     "street": this.street.text.toString(),
-                                    "t12": "66",
+                                    "t12": "",
                                     "locationData": {
                                       "recordStatus": 1,
                                       "latitude": latitude,
