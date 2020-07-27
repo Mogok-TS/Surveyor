@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'package:Surveyor/assets/plus_circle_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -37,7 +38,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   var geolocator = Geolocator();
   Future<bool> gpsCheck;
 
-  var latitude,longitude;
+  var latitude, longitude, plusCode;
 
   @override
   void initState() {
@@ -624,6 +625,38 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                   ),
                 ),
               ),
+              Container(
+                margin: EdgeInsetsDirectional.only(bottom: 10.0),
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Plus_circle.gplus_circled,
+                        color: CustomIcons.iconColor,
+                        size: 20,
+                      ),
+                      onPressed: null,
+                    ),
+                    Text(
+                      "Plus Code",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(
+                      width: 100.0,
+                    ),
+                    if (plusCode == null)
+                      Text('')
+                    else
+                      Text(
+                        this.plusCode,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                  ],
+                ),
+              ),
               // Container(
 
               //   margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
@@ -659,7 +692,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: RaisedButton(
                   onPressed: () {
-                    var param,googlePlusparam;
+                    var param, googlePlusparam;
                     getGPSstatus().then((status) => {
                           if (status == true)
                             {
@@ -713,31 +746,67 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     "address":
                                         "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
                                     "street": this.street.text.toString(),
-                                    "t12":"11",
+                                    "t12": "66",
                                     "locationData": {
-                                        "recordStatus": 1,
-                                        "latitude": latitude,
-                                        "longitude": longitude
-                                      }
+                                      "recordStatus": 1,
+                                      "latitude": latitude,
+                                      "longitude": longitude
+                                    }
                                   },
-
-//                                  googlePlusparam= {
-//                                    "lat": latitude,
-//                                    "lng": longitude
-//                                  },
-//                                  this.onlineSerives.getGooglePlusCode(googlePlusparam).then((value) => {print("${value}")}),
+                                  this
+                                      .onlineSerives
+                                      .createStore(param)
+                                      .then((value) => {
+                                            if (value == true)
+                                              {
+                                                googlePlusparam = {
+                                                  "lat": latitude,
+                                                  "lng": longitude
+                                                },
+                                                this
+                                                    .onlineSerives
+                                                    .getGooglePlusCode(
+                                                        googlePlusparam)
+                                                    .then(
+                                                      (value1) => {
+                                                        setState(
+                                                          () {
+                                                            this.plusCode =
+                                                                "${value1["data"]["plusCode"]}";
+                                                          },
+                                                        ),
+                                                      },
+                                                    ),
+                                              }
+                                          }),
                                 }
+                              // if (this.status == "true")
+                              //     {
+                              //       googlePlusparam = {
+                              //         "lat": latitude,
+                              //         "lng": longitude
+                              //       },
+                              //       this
+                              //           .onlineSerives
+                              //           .getGooglePlusCode(googlePlusparam)
+                              //           .then((value) => {print("${value}")}),
+                              //     }
                             }
                           else
                             {ShowToast("Please open GPS")}
                         });
                   },
-                  child: Text(
-                    "Save",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
                   color: CustomIcons.buttonColor,
                   textColor: CustomIcons.buttonText,
+                  child: plusCode == null
+                      ? Text(
+                          "Save",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        )
+                      : Text(
+                          "Update",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
                 ),
               ),
             ],
