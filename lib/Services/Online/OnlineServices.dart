@@ -98,10 +98,10 @@ class OnlineSerives {
         } else if (data["message"] == "IDEXIST") {
           ShowToast("User already exists.");
           this.status = false;
-        }else if (data["message"] == "PCEXIST"){
+        } else if (data["message"] == "PCEXIST") {
           ShowToast("Passcode already exists.");
           this.status = false;
-        }else{
+        } else {
           ShowToast("Saving fail.");
           this.status = false;
         }
@@ -130,7 +130,7 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS!") {
           this.status = true;
           this.storage.setItem("storeData", data["data"]);
-        }else{
+        } else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -159,7 +159,7 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS!") {
           this.status = true;
           this.storage.setItem("storeData", data["data"]);
-        }else{
+        } else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -188,7 +188,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-        }else{
+        } else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -200,13 +200,9 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var returndata = {
-      "status":this.status,
-      "data": data["data"]
-    };
+    var returndata = {"status": this.status, "data": data["data"]};
     return returndata;
   }
-
 
   Future getQuestions(params) async {
     this.mainData();
@@ -222,7 +218,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-        }else{
+        } else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -234,14 +230,9 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var returndata = {
-      "status":this.status,
-      "data": data["list"]
-    };
+    var returndata = {"status": this.status, "data": data["list"]};
     return returndata;
   }
-  
-
 
   Servererror(code) {
     this.serverErr = "Server error. [" + code + "]";

@@ -15,18 +15,14 @@ import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../URL/url.dart';
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  var items = [
-    {'name': 'Settings', 'value': 0},
-    {'name': 'URL', 'value': 1},
-    {'name': 'Version 1.0.0', 'value': 2}
-  ];
-
   final LocalStorage storage = new LocalStorage('Surveyor');
   TextEditingController userID = new TextEditingController();
   TextEditingController password = new TextEditingController();
@@ -59,50 +55,40 @@ class _LoginState extends State<Login> {
             children: <Widget>[
               Container(
                 alignment: Alignment.topRight,
+                margin: EdgeInsets.all(10.0),
                 child: PopupMenuButton(
-                  itemBuilder: (context) {
-                    var list = List<PopupMenuEntry<Object>>();
-                    list.add(
-                      PopupMenuItem(
-                        enabled: false,  
-                        child: Center(
-                          child: Text(
-                            "Settings",
-                            style: TextStyle(color: Colors.black),
-                          ),
+                  onSelected: (String value) {
+                    if (value == "URL") {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => URL(),
                         ),
-                      ),
-                    );
-                    list.add(
-                      PopupMenuDivider(
-                        height: 10,
-                      ),
-                    );
-                    list.add(
-                      PopupMenuItem(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => URL(),
-                              ),
-                            );
-                          },
-                          child: Text("URL"),
-                        ),
-                      ),
-                    );
-                    list.add(
-                      PopupMenuItem(
-                        child: Text("Version 1.0.0"),
-                      ),
-                    );
-                    return list;
+                      );
+                    }
                   },
-                  icon: Icon(
+                  child: Icon(
                     Icons.more_vert,
                     color: Colors.black,
                   ),
+                  itemBuilder: (context) => <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      enabled: false,
+                      child: Center(
+                        child: Text(
+                          "Settings",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: 'URL',
+                      child: Text('URL'),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: 'version',
+                      child: Text('Version 1.0.0'),
+                    ),
+                  ],
                 ),
               ),
               Container(
@@ -194,7 +180,6 @@ class _LoginState extends State<Login> {
                     "Forgot Password?",
                     style: TextStyle(color: CustomIcons.buttonColor),
                   ),
-
                 ),
               ),
               Container(
@@ -229,31 +214,46 @@ class _LoginState extends State<Login> {
                       var loginData;
                       print('data-> $param');
                       showLoading();
-                      this.onlineSerives.loginData(param).then((data) => {
-                        if (data == true)
-                          {
-                            loginData = this.storage.getItem("loginData"),
-                            shopParam["spsyskey"] = loginData["syskey"],
-                            shopParam["teamsyskey"] = loginData["teamSyskey"],
-                            shopParam["usertype"] = loginData["userType"],
-                            shopParam["date"] = getTodayDate(),
-                            print("${shopParam}"),
-                            this.onlineSerives.getStores(shopParam).then((result) => {
-                              hideLoadingDialog(),
-                              if(result == true){
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => StoreScreen(),
-                                  ),
-                                )
-                              }
-                            }).catchError((onError)=> hideLoadingDialog()),
-                          }else{
-                          hideLoadingDialog(),
-                        }
-                      }).catchError((err)=>{
-                        hideLoadingDialog()
-                      });
+                      this
+                          .onlineSerives
+                          .loginData(param)
+                          .then((data) => {
+                                if (data == true)
+                                  {
+                                    loginData =
+                                        this.storage.getItem("loginData"),
+                                    shopParam["spsyskey"] = loginData["syskey"],
+                                    shopParam["teamsyskey"] =
+                                        loginData["teamSyskey"],
+                                    shopParam["usertype"] =
+                                        loginData["userType"],
+                                    shopParam["date"] = getTodayDate(),
+                                    print("${shopParam}"),
+                                    this
+                                        .onlineSerives
+                                        .getStores(shopParam)
+                                        .then((result) => {
+                                              hideLoadingDialog(),
+                                              if (result == true)
+                                                {
+                                                  Navigator.of(context)
+                                                      .pushReplacement(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          StoreScreen(),
+                                                    ),
+                                                  )
+                                                }
+                                            })
+                                        .catchError(
+                                            (onError) => hideLoadingDialog()),
+                                  }
+                                else
+                                  {
+                                    hideLoadingDialog(),
+                                  }
+                              })
+                          .catchError((err) => {hideLoadingDialog()});
                     }
                   },
                   textColor: CustomIcons.buttonText,
