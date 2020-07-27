@@ -380,7 +380,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
         ),
       ),
         bottomNavigationBar: new BottomNavigationBar(
-          backgroundColor: Colors.red,
+          backgroundColor:  CustomIcons.appbarColor,
           items: [
             new BottomNavigationBarItem(
               icon: new Container(),

@@ -545,7 +545,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         ),
       )),
       bottomNavigationBar: new BottomNavigationBar(
-        backgroundColor: Colors.red,
+        backgroundColor: CustomIcons.appbarColor,
         items: [
           new BottomNavigationBarItem(
             icon: new Container(),
