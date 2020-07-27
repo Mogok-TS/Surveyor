@@ -156,10 +156,13 @@ class OnlineSerives {
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
-        if (data["status"] == "SUCCESS!") {
+        if (data["status"] == "Success!") {
           this.status = true;
           this.storage.setItem("storeData", data["data"]);
-        } else {
+        } else if(data["status"] == "Code Already Existed") {
+          ShowToast("Code Already Existed");
+          this.status = false;
+        }else{
           ShowToast("Server fail.");
           this.status = false;
         }

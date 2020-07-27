@@ -29,6 +29,7 @@ class _myURL extends State<URL> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8F8FF),
       appBar: AppBar(
         backgroundColor: CustomIcons.appbarColor,
         title: Text("URL"),

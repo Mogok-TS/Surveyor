@@ -213,6 +213,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8F8FF),
       appBar: AppBar(
         backgroundColor: CustomIcons.appbarColor,
         title: Text("AuderBox"),
@@ -660,107 +661,73 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                   onPressed: () {
                     var param,googlePlusparam;
                     getGPSstatus().then((status) => {
-                          if (status == true){
-                            getCurrentLocation().then((k) {
-                              latitude = k.latitude;
-                              longitude = k.longitude;
-                            }),
-                            param = {
-                              "active": true,
-                              "name": this.shopName.text.toString(),
-                              "mmName": this.shopNamemm.text.toString(),
-                              "personName":
-                              this.ownerName.text.toString(),
-                              "phoneNumber":
-                              this.shopPhoneNo.text.toString(),
-                              "stateId": "0",
-                              "districtId": "0",
-                              "townshipId": "0",
-                              "townId": "0",
-                              "wardId": "0",
-                              "address":
-                              "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
-                              "street": this.street.text.toString(),
-                              "locationData": [
+                          if (status == true)
+                            {
+                              if (this.shopCode.text == "" ||
+                                  this.shopCode.text == null ||
+                                  this.shopCode.text.isEmpty ||
+                                  this.shopName.text == "" ||
+                                  this.shopName.text == null ||
+                                  this.shopName.text.isEmpty ||
+                                  this.shopNamemm.text == "" ||
+                                  this.shopNamemm.text == null ||
+                                  this.shopNamemm.text.isEmpty ||
+                                  this.shopPhoneNo.text == "" ||
+                                  this.shopPhoneNo.text == null ||
+                                  this.shopPhoneNo.text.isEmpty ||
+                                  this.ownerName.text == "" ||
+                                  this.ownerName.text == null ||
+                                  this.ownerName.text.isEmpty ||
+                                  this.ownerPhoneNo.text == "" ||
+                                  this.ownerPhoneNo.text == null ||
+                                  this.ownerPhoneNo.text.isEmpty ||
+                                  this.street.text == "" ||
+                                  this.street.text == null ||
+                                  this.street.text.isEmpty)
                                 {
-                                  "recordStatus": 1,
-                                  "latitude": latitude,
-                                  "longitude": longitude
+                                  ShowToast("Please fill all fields"),
                                 }
-                              ]
-                            },
-                            googlePlusparam= {
-                              "lat": latitude,
-                              "lng": longitude
-                            },
-                            this.onlineSerives.getGooglePlusCode(googlePlusparam).then((value) => {print("${value}")}),
-                          }
-//                            {
-//                              if (this.shopCode.text == "" ||
-//                                  this.shopCode.text == null ||
-//                                  this.shopCode.text.isEmpty ||
-//                                  this.shopName.text == "" ||
-//                                  this.shopName.text == null ||
-//                                  this.shopName.text.isEmpty ||
-//                                  this.shopNamemm.text == "" ||
-//                                  this.shopNamemm.text == null ||
-//                                  this.shopNamemm.text.isEmpty ||
-//                                  this.shopPhoneNo.text == "" ||
-//                                  this.shopPhoneNo.text == null ||
-//                                  this.shopPhoneNo.text.isEmpty ||
-//                                  this.ownerName.text == "" ||
-//                                  this.ownerName.text == null ||
-//                                  this.ownerName.text.isEmpty ||
-//                                  this.ownerPhoneNo.text == "" ||
-//                                  this.ownerPhoneNo.text == null ||
-//                                  this.ownerPhoneNo.text.isEmpty ||
-//                                  this.street.text == "" ||
-//                                  this.street.text == null ||
-//                                  this.street.text.isEmpty)
-//                                {
-//                                  ShowToast("Please fill all fields"),
-//                                }
-//                              else
-//                                {
-//                                  this.shopPhoneNo.text =
-//                                      getPhoneNumber(this.shopPhoneNo.text),
-//                                  this.ownerPhoneNo.text =
-//                                      getPhoneNumber(this.ownerPhoneNo.text),
-//                                  getCurrentLocation().then((k) {
-//                                    latitude = k.latitude;
-//                                    longitude = k.longitude;
-//                                  }),
-//                                  param = {
-//                                    "active": true,
-//                                    "name": this.shopName.text.toString(),
-//                                    "mmName": this.shopNamemm.text.toString(),
-//                                    "personName":
-//                                        this.ownerName.text.toString(),
-//                                    "phoneNumber":
-//                                        this.shopPhoneNo.text.toString(),
-//                                    "stateId": "0",
-//                                    "districtId": "0",
-//                                    "townshipId": "0",
-//                                    "townId": "0",
-//                                    "wardId": "0",
-//                                    "address":
-//                                        "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
-//                                    "street": this.street.text.toString(),
-//                                    "locationData": [
-//                                      {
-//                                        "recordStatus": 1,
-//                                        "latitude": latitude,
-//                                        "longitude": longitude
-//                                      }
-//                                    ]
-//                                  },
+                              else
+                                {
+                                  this.shopPhoneNo.text =
+                                      getPhoneNumber(this.shopPhoneNo.text),
+                                  this.ownerPhoneNo.text =
+                                      getPhoneNumber(this.ownerPhoneNo.text),
+                                  getCurrentLocation().then((k) {
+                                    latitude = k.latitude;
+                                    longitude = k.longitude;
+                                  }),
+                                  param = {
+                                    "active": true,
+                                    "name": this.shopName.text.toString(),
+                                    "mmName": this.shopNamemm.text.toString(),
+                                    "personName":
+                                        this.ownerName.text.toString(),
+                                    "phoneNumber":
+                                        this.shopPhoneNo.text.toString(),
+                                    "stateId": "0",
+                                    "districtId": "0",
+                                    "townshipId": "0",
+                                    "townId": "0",
+                                    "wardId": "0",
+                                    "address":
+                                        "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
+                                    "street": this.street.text.toString(),
+                                    "t12":"11",
+                                    "locationData": {
+                                        "recordStatus": 1,
+                                        "latitude": latitude,
+                                        "longitude": longitude
+                                      }
+                                  },
+
 //                                  googlePlusparam= {
 //                                    "lat": latitude,
 //                                    "lng": longitude
 //                                  },
-//                                  this.onlineSerives.getGooglePlusCode(googlePlusparam),
-//                                }
-//                            }
+//                                  this.onlineSerives.getGooglePlusCode(googlePlusparam).then((value) => {print("${value}")}),
+                                }
+                            }
                           else
                             {ShowToast("Please open GPS")}
                         });

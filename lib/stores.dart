@@ -8,7 +8,6 @@ import 'assets/custom_icons_icons.dart';
 import 'stores_details.dart';
 import 'widgets/mainmenuwidgets.dart';
 
-
 class StoreScreen extends StatefulWidget {
   @override
   _StoreScreenState createState() => _StoreScreenState();
@@ -19,6 +18,7 @@ class _StoreScreenState extends State<StoreScreen> {
   var storeData, storeRegistration, assignStores;
   bool showAssignStore = false;
   bool showRegisterStore = false;
+  var performType,performTypearray;
 
   RoundedRectangleBorder buttonShape() {
     return RoundedRectangleBorder(
@@ -27,8 +27,32 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
+  Widget buildStatusText(array) {
+    var status;
+    Color textColor;
+    for(var q = 0 ; q < array.length; q++){
+      if(array[q].toString() == "CHECKIN"){
+        status = "In Progress";
+        textColor = Color(0xFFe0ac08);
+        break;
+      }else{
+        status = "Not Started";
+        textColor = Colors.blue;
+      }
+    }
+    return Text(
+      status,
+      style: TextStyle(
+        color: textColor,
+      ),
+    );
+  }
+
   Widget buildAssignItem(
       String storeName, String phone, String address, dynamic data) {
+    this.performType = data["status"];
+    this.performTypearray = this.performType["performType"];
+//    print("${performTypearray}");
     return Container(
       color: Colors.grey[200],
       child: Card(
@@ -72,8 +96,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                   shape: buttonShape(),
                                   onPressed: () {},
                                   child: Center(
-                                    child: Text(
-                                      "Status",
+                                    child: Column(
+                                      children: <Widget>[
+                                        buildStatusText(this.performTypearray)
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -88,7 +114,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            OutsideInsideNeighborhood(storeName, phone, address,"none"),
+                                            OutsideInsideNeighborhood(storeName,
+                                                phone, address, "none"),
                                       ),
                                     );
                                   },
@@ -185,6 +212,7 @@ class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color(0xFFF8F8FF),
         drawer: MainMenuWidget(),
         appBar: AppBar(
           backgroundColor: CustomIcons.appbarColor,
@@ -227,7 +255,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 width: 10,
                               ),
                               Text(
-                                "5/" + this.assignStores.length.toString(),
+                                "0/" + this.assignStores.length.toString(),
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -266,58 +294,58 @@ class _StoreScreenState extends State<StoreScreen> {
                     Container(
                         child: showAssignStore == true
                             ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  this.assignStores.length == 0
-                                      ? Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              child:Container(
-                                                height: 50,
-                                                color: Colors.grey[200],
-                                                child: Center(
-                                                  child: Text(
-                                                    "No Data",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      : Column(
-                                          children: <Widget>[
-                                            for (var i = 0;
-                                                i < this.assignStores.length;
-                                                i++)
-                                              buildAssignItem(
-                                                  this
-                                                          .assignStores[i]
-                                                              ["shopname"]
-                                                          .toString() +
-                                                      "( " +
-                                                      this
-                                                          .assignStores[i]
-                                                              ["shopnamemm"]
-                                                          .toString() +
-                                                      " )",
-                                                  this
-                                                      .assignStores[i]
-                                                          ["phoneno"]
-                                                      .toString(),
-                                                  this
-                                                      .assignStores[i]
-                                                          ["address"]
-                                                      .toString(),
-                                                  this.assignStores[i])
-                                          ],
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            this.assignStores.length == 0
+                                ? Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    height: 50,
+                                    color: Colors.grey[200],
+                                    child: Center(
+                                      child: Text(
+                                        "No Data",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black,
                                         ),
-                                ],
-                              )
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                                : Column(
+                              children: <Widget>[
+                                for (var i = 0;
+                                i < this.assignStores.length;
+                                i++)
+                                  buildAssignItem(
+                                      this
+                                          .assignStores[i]
+                                      ["shopname"]
+                                          .toString() +
+                                          "( " +
+                                          this
+                                              .assignStores[i]
+                                          ["shopnamemm"]
+                                              .toString() +
+                                          " )",
+                                      this
+                                          .assignStores[i]
+                                      ["phoneno"]
+                                          .toString(),
+                                      this
+                                          .assignStores[i]
+                                      ["address"]
+                                          .toString(),
+                                      this.assignStores[i])
+                              ],
+                            ),
+                          ],
+                        )
                             : new Container())
                   ],
                 ),
@@ -373,19 +401,19 @@ class _StoreScreenState extends State<StoreScreen> {
                     Container(
                         child: showRegisterStore == true
                             ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  buildRegisterItem(
-                                      "Malar Myaing",
-                                      "09771399559",
-                                      "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
-                                  buildRegisterItem(
-                                      "Malar Myaing",
-                                      "09771399559",
-                                      "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
-                                ],
-                              )
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            buildRegisterItem(
+                                "Malar Myaing",
+                                "09771399559",
+                                "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
+                            buildRegisterItem(
+                                "Malar Myaing",
+                                "09771399559",
+                                "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
+                          ],
+                        )
                             : new Container())
                   ],
                 ),

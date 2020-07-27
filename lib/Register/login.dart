@@ -47,6 +47,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return LoadingProvider(
       child: Scaffold(
+        backgroundColor: Color(0xFFF8F8FF),
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());

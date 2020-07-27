@@ -151,6 +151,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8F8FF),
       drawer: MainMenuWidget(),
       appBar: AppBar(
         backgroundColor: CustomIcons.appbarColor,
@@ -544,22 +545,34 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         ),
       )),
       bottomNavigationBar: new BottomNavigationBar(
-        backgroundColor: CustomIcons.appbarColor,
+        backgroundColor: Colors.red,
         items: [
           new BottomNavigationBarItem(
             icon: new Container(),
             title: InkWell(
               onTap: () {
+                print("asdfasdfasdf");
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => OutsideInsideNeighborhood(this.widget.storeName, this.widget.storeNumber, this.widget.address,this.widget.surveyType)
-                  ),
+                      builder: (context) => OutsideInsideNeighborhood(
+                          this.widget.storeName,
+                          this.widget.storeNumber,
+                          this.widget.address,
+                          this.widget.surveyType)),
                 );
               },
-              child: new Text(
-                "Back",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              child: Container(
+                height: 40,
+                width: 300,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Center(
+                  child: new Text(
+                    "Back",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ),
               ),
             ),
           ),
@@ -569,10 +582,30 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           ),
           new BottomNavigationBarItem(
             icon: new Container(),
-            title: new Text(
-              "Done",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            title: InkWell(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (context) => OutsideInsideNeighborhood(
+                          this.widget.storeName,
+                          this.widget.storeNumber,
+                          this.widget.address,
+                          this.widget.surveyType)),
+                );
+              },
+              child: Container(
+                height: 40,
+                width: 300,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Center(
+                  child: new Text(
+                    "Done",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ),
+              ),
             ),
           ),
         ],
