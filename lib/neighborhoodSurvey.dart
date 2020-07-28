@@ -51,21 +51,22 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   List<Object> _images = List<Object>();
 
-  Future getImageFromCamera() async {
+  Future getImageFromCamera(var images) async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
-      _images.add(image);
+      images.add(image);
     });
   }
 
-  Future getImageFromGallery() async {
+  Future getImageFromGallery(var images) async {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _images.add(image);
+      images.add(image);
     });
   }
 
-  Widget attachPhotograph(String t1, String t2) {
+  Widget attachPhotograph(String t1, String t2,var data) {
+    print("param>>>"+data.toString());
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -143,7 +144,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 RaisedButton(
                   child: Text("Camera"),
                   onPressed: () {
-                    getImageFromCamera();
+                    getImageFromCamera(data[0]["image"]);
                   },
                 ),
                 SizedBox(
@@ -152,7 +153,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 RaisedButton(
                   child: Text("Library"),
                   onPressed: () {
-                    getImageFromGallery();
+                    getImageFromGallery(data[0]["image"]);
                   },
                 ),
                 Spacer(),
@@ -166,8 +167,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               controller: ScrollController(keepScrollOffset: false),
               scrollDirection: Axis.vertical,
               crossAxisCount: 3,
-              children: List.generate(_images.length, (index) {
-                return storeImage(_images[index], index);
+              children: List.generate(data[0]["image"].length, (index) {
+                return storeImage(data[0]["image"][index], index,data[0]["image"]);
               }),
             ),
           ),
@@ -388,7 +389,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget storeImage(File image, int index) {
+  Widget storeImage(File image, int index,var data) {
     return Container(
       margin: EdgeInsets.all(5),
       child: Center(
@@ -408,7 +409,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               child: GestureDetector(
                 onTap: () {
                   setState(() {
-                    _images.removeAt(index);
+                    _images.removeAt(data[index]);
                   });
                 },
                 child: Image(
@@ -499,23 +500,20 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget _allWidget(var data) {
-    print(data);
-    if (_status == true) {
+    Widget _widget;
       if (data["questionType"] == "Fill in the Blank") {
-        return fillintheBlank(data['t1'], data['t2']);
+        _widget= fillintheBlank(data['t1'], data['t2']);
       }
       if (data["questionType"] == "Checkbox") {
-        return checkBox(data['t1'], data['t2'], data['answerList']);
+        _widget = checkBox(data['t1'], data['t2'], data['answerList']);
       }
       if (data["questionType"] == "Attach Photograph") {
-        return attachPhotograph(data['t1'], data['t2']);
+        _widget = attachPhotograph(data['t1'], data['t2'],data["answerList"]);
       }
       if (data["questionType"] == "Multiple Choice") {
-        return multipleChoice(data['t1'], data['t2'], data["answerList"]);
+        _widget = multipleChoice(data['t1'], data['t2'], data["answerList"]);
       }
-    } else {
-      return Container(child: Text("NO data"));
-    }
+    return _widget;      
   }
 
   @override
@@ -602,367 +600,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   ),
                 ),
               )
-            // _status ? for(var i=0;i<questions.length; i++)
-
-            //  : Container(),
-            // Container(
-            //   padding: EdgeInsets.all(10),
-            //   child: Column(
-            //     children: <Widget>[
-            //       Container(
-            //         color: CustomIcons.dropDownHeader,
-            //         child: ListTile(
-            //           title: InkWell(
-            //             onTap: () {},
-            //             child: Row(
-            //               children: <Widget>[
-            //                 Text(
-            //                   "Question 1 :",
-            //                   style: TextStyle(color: Colors.black),
-            //                 ),
-            //                 SizedBox(
-            //                   width: 10,
-            //                 ),
-            //                 Text(
-            //                   "Test",
-            //                   style: TextStyle(
-            //                     color: Colors.black,
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //           onTap: () {},
-            //         ),
-            //       ),
-            //       Container(
-            //           child: Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         children: <Widget>[
-            //           Container(
-            //             margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-            //             // margin: EdgeInsets.fromLTRB(23, 20, 20, 20),
-            //             child: TextField(
-            //               decoration: InputDecoration(
-            //                 focusColor: Colors.black,
-            //                 prefixIcon: Icon(
-            //                   Icons.question_answer,
-            //                   color: CustomIcons.iconColor,
-            //                 ),
-            //                 hintText: 'Answer',
-            //                 hintStyle: TextStyle(fontSize: 18, height: 1.5),
-            //                 focusedBorder: UnderlineInputBorder(
-            //                   borderSide: BorderSide(color: Colors.black),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ],
-            //       ))
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   padding: EdgeInsets.all(10),
-            //   child: Column(
-            //     children: <Widget>[
-            //       Container(
-            //         color: CustomIcons.dropDownHeader,
-            //         child: ListTile(
-            //           title: InkWell(
-            //             onTap: () {},
-            //             child: Row(
-            //               children: <Widget>[
-            //                 Text(
-            //                   "Question 2 :",
-            //                   style: TextStyle(color: Colors.black),
-            //                 ),
-            //                 SizedBox(
-            //                   width: 10,
-            //                 ),
-            //                 Text(
-            //                   "Test",
-            //                   style: TextStyle(
-            //                     color: Colors.black,
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //           onTap: () {},
-            //         ),
-            //       ),
-            //       Container(
-            //           child: Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         children: <Widget>[
-            //           Container(
-            //             margin: EdgeInsets.fromLTRB(5, 1, 5, 5),
-            //             decoration: BoxDecoration(
-            //               border: Border.all(color: CustomIcons.iconColor),
-            //               borderRadius: BorderRadius.circular(2),
-            //             ),
-            //             padding: EdgeInsets.all(5),
-            //             // margin: EdgeInsets.fromLTRB(23, 20, 20, 20),
-            //             child: Row(
-            //               children: <Widget>[
-            //                 Text(
-            //                   "Instructions :",
-            //                   style: TextStyle(),
-            //                 ),
-            //                 SizedBox(width: 5),
-            //                 Expanded(
-            //                   child: Text(
-            //                     "Demo Pic or text",
-            //                     style:
-            //                         TextStyle(color: CustomIcons.appbarColor),
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //         ],
-            //       )),
-            //       Container(
-            //         child: Row(
-            //           children: <Widget>[
-            //             Spacer(),
-            //             RaisedButton(
-            //               child: Text("Camera"),
-            //               onPressed: () {
-            //                 getImageFromCamera();
-            //               },
-            //             ),
-            //             SizedBox(
-            //               width: 10,
-            //             ),
-            //             RaisedButton(
-            //               child: Text("Library"),
-            //               onPressed: () {
-            //                 getImageFromGallery();
-            //               },
-            //             ),
-            //             Spacer(),
-            //           ],
-            //         ),
-            //       ),
-            //       Container(
-            //         child: GridView.count(
-            //           shrinkWrap: true,
-            //           controller: ScrollController(keepScrollOffset: false),
-            //           scrollDirection: Axis.vertical,
-            //           crossAxisCount: 3,
-            //           children: List.generate(_images.length, (index) {
-            //             return storeImage(_images[index], index);
-            //           }),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   padding: EdgeInsets.all(10),
-            //   child: Column(
-            //     children: <Widget>[
-            //       Container(
-            //         color: CustomIcons.dropDownHeader,
-            //         child: ListTile(
-            //           title: InkWell(
-            //             onTap: () {},
-            //             child: Row(
-            //               children: <Widget>[
-            //                 Text(
-            //                   "Question 3 :",
-            //                   style: TextStyle(color: Colors.black),
-            //                 ),
-            //                 SizedBox(
-            //                   width: 10,
-            //                 ),
-            //                 Text(
-            //                   "Do you satisfied?",
-            //                   style: TextStyle(
-            //                     color: Colors.black,
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //           onTap: () {},
-            //         ),
-            //       ),
-            //       Container(
-            //           child: Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         children: <Widget>[
-            //           ListTile(
-            //             title: const Text('Very Satisfied'),
-            //             leading: Radio(
-            //               value: "one",
-            //               groupValue: _radiovalue,
-            //               onChanged: (String newValue) {
-            //                 setState(() {
-            //                   _radiovalue = newValue;
-            //                 });
-            //               },
-            //             ),
-            //           ),
-            //           ListTile(
-            //             title: const Text('Satisfied'),
-            //             leading: Radio(
-            //               value: "two",
-            //               groupValue: _radiovalue,
-            //               onChanged: (String newValue) {
-            //                 setState(() {
-            //                   _radiovalue = newValue;
-            //                 });
-            //               },
-            //             ),
-            //           ),
-            //           ListTile(
-            //             title: const Text('Not Satisfied'),
-            //             leading: Radio(
-            //               value: "three",
-            //               groupValue: _radiovalue,
-            //               onChanged: (String newValue) {
-            //                 setState(() {
-            //                   _radiovalue = newValue;
-            //                 });
-            //               },
-            //             ),
-            //           ),
-            //           ListTile(
-            //             title: const Text('Bad'),
-            //             leading: Radio(
-            //               value: "four",
-            //               groupValue: _radiovalue,
-            //               onChanged: (String newValue) {
-            //                 setState(() {
-            //                   _radiovalue = newValue;
-            //                 });
-            //               },
-            //             ),
-            //           ),
-            //         ],
-            //       ))
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   padding: EdgeInsets.all(10),
-            //   child: Column(
-            //     children: <Widget>[
-            //       Container(
-            //         color: CustomIcons.dropDownHeader,
-            //         child: ListTile(
-            //           title: InkWell(
-            //             onTap: () {},
-            //             child: Row(
-            //               children: <Widget>[
-            //                 Text(
-            //                   "Question 4 :",
-            //                   style: TextStyle(color: Colors.black),
-            //                 ),
-            //                 SizedBox(
-            //                   width: 10,
-            //                 ),
-            //                 Text(
-            //                   "Feedback ?",
-            //                   style: TextStyle(
-            //                     color: Colors.black,
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //           onTap: () {},
-            //         ),
-            //       ),
-            //       Container(
-            //           margin: EdgeInsets.only(left: 15),
-            //           child: Column(
-            //             crossAxisAlignment: CrossAxisAlignment.start,
-            //             mainAxisAlignment: MainAxisAlignment.start,
-            //             children: <Widget>[
-            //               Row(
-            //                 children: <Widget>[
-            //                   Checkbox(
-            //                       value: check1,
-            //                       onChanged: (bool newValue) {
-            //                         setState(() {
-            //                           check1 = newValue;
-            //                         });
-            //                       }),
-            //                   SizedBox(
-            //                     width: 5,
-            //                   ),
-            //                   Text(
-            //                     'First',
-            //                     style: TextStyle(fontSize: 16),
-            //                   )
-            //                 ],
-            //               ),
-            //               Row(
-            //                 children: <Widget>[
-            //                   Checkbox(
-            //                       value: check2,
-            //                       onChanged: (bool newValue) {
-            //                         setState(() {
-            //                           check2 = newValue;
-            //                         });
-            //                       }),
-            //                   SizedBox(
-            //                     width: 5,
-            //                   ),
-            //                   Text(
-            //                     'Second',
-            //                     style: TextStyle(fontSize: 16),
-            //                   )
-            //                 ],
-            //               ),
-            //               Row(
-            //                 children: <Widget>[
-            //                   Checkbox(
-            //                       value: check3,
-            //                       onChanged: (bool newValue) {
-            //                         setState(() {
-            //                           check3 = newValue;
-            //                         });
-            //                       }),
-            //                   SizedBox(
-            //                     width: 5,
-            //                   ),
-            //                   Text(
-            //                     'Third',
-            //                     style: TextStyle(fontSize: 16),
-            //                   )
-            //                 ],
-            //               ),
-            //               Row(
-            //                 children: <Widget>[
-            //                   Checkbox(
-            //                       value: check4,
-            //                       onChanged: (bool newValue) {
-            //                         setState(() {
-            //                           check4 = newValue;
-            //                         });
-            //                       }),
-            //                   SizedBox(
-            //                     width: 5,
-            //                   ),
-            //                   Text(
-            //                     'Last',
-            //                     style: TextStyle(fontSize: 16),
-            //                   )
-            //                 ],
-            //               ),
-            //             ],
-            //           ))
-            //     ],
-            //   ),
-            // ),
+           
           ],
         ),
       ),
