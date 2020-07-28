@@ -14,9 +14,11 @@ class StoreData extends StatefulWidget {
   final String ownerPhone;
   final String street;
   final String plusCode;
+  var passData;
 
   StoreData(this.name, this.shopName, this.phNumber, this.ownerName,
-      this.ownerPhone, this.street, this.plusCode);
+      this.ownerPhone, this.street, this.plusCode, this.passData);
+
   @override
   _StoreDataState createState() => _StoreDataState();
 }
@@ -45,6 +47,7 @@ class _StoreDataState extends State<StoreData> {
           child: Column(
             children: <Widget>[
               Container(
+                width: 700,
                 color: Colors.grey[200],
                 child: Container(
                   margin:
@@ -135,7 +138,7 @@ class _StoreDataState extends State<StoreData> {
                                             onPressed: () {},
                                             child: Center(
                                               child: Text(
-                                                "13 Items remaining",
+                                                "x Items remaining",
                                                 style: TextStyle(
                                                     color: CustomIcons
                                                         .appbarColor),
@@ -209,7 +212,7 @@ class _StoreDataState extends State<StoreData> {
                                             onPressed: () {},
                                             child: Center(
                                               child: Text(
-                                                "3 Items remaining",
+                                                "x Items remaining",
                                                 style: TextStyle(
                                                     color: CustomIcons
                                                         .appbarColor),
@@ -283,7 +286,7 @@ class _StoreDataState extends State<StoreData> {
                                             onPressed: () {},
                                             child: Center(
                                               child: Text(
-                                                "4 Items remaining",
+                                                "x Items remaining",
                                                 style: TextStyle(
                                                     color: CustomIcons
                                                         .appbarColor),
@@ -357,7 +360,7 @@ class _StoreDataState extends State<StoreData> {
                                             onPressed: () {},
                                             child: Center(
                                               child: Text(
-                                                "1 Items remaining",
+                                                "x Items remaining",
                                                 style: TextStyle(
                                                     color: CustomIcons
                                                         .appbarColor),
@@ -567,7 +570,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             onPressed: () {},
                                             child: Center(
                                               child: Text(
-                                                "13 Items remaining",
+                                                "x Items remaining",
                                                 style: TextStyle(
                                                     color: CustomIcons
                                                         .appbarColor),
@@ -641,7 +644,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             onPressed: () {},
                                             child: Center(
                                               child: Text(
-                                                "3 Items remaining",
+                                                "x Items remaining",
                                                 style: TextStyle(
                                                     color: CustomIcons
                                                         .appbarColor),
@@ -715,7 +718,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             onPressed: () {},
                                             child: Center(
                                               child: Text(
-                                                "4 Items remaining",
+                                                "x Items remaining",
                                                 style: TextStyle(
                                                     color: CustomIcons
                                                         .appbarColor),
@@ -789,7 +792,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             onPressed: () {},
                                             child: Center(
                                               child: Text(
-                                                "1 Items remaining",
+                                                "x Items remaining",
                                                 style: TextStyle(
                                                     color: CustomIcons
                                                         .appbarColor),

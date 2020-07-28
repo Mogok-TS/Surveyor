@@ -179,7 +179,14 @@ class _StoreScreenState extends State<StoreScreen> {
                                 child: RaisedButton(
                                   color: Colors.white,
                                   shape: buttonShape(),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            StoresDetailsScreen([]),
+                                      ),
+                                    );
+                                  },
                                   child: Center(
                                     child: Text(
                                       "Continue",
@@ -205,6 +212,8 @@ class _StoreScreenState extends State<StoreScreen> {
   void initState() {
     super.initState();
     this.storeData = this.storage.getItem("storeData");
+    this.storeRegistration = this.storage.getItem("storeReg");
+    print("${storeRegistration}");
     this.assignStores = this.storeData["shopsByUser"];
 //    this.assignStores = [];
   }
@@ -255,7 +264,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 width: 10,
                               ),
                               Text(
-                                "0/" + this.assignStores.length.toString(),
+                                "x/" + this.assignStores.length.toString(),
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -404,14 +413,36 @@ class _StoreScreenState extends State<StoreScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  buildRegisterItem(
-                                      "Malar Myaing",
-                                      "09771399559",
-                                      "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
-                                  buildRegisterItem(
-                                      "Malar Myaing",
-                                      "09771399559",
-                                      "Beside Mandalay Highway Pa/2-270, Panma Qtr, Kyatpyin, Mogok 05092"),
+                                  this.storeRegistration.length == 0
+                                      ? Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Container(
+                                                height: 50,
+                                                color: Colors.grey[200],
+                                                child: Center(
+                                                  child: Text(
+                                                    "No Data",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : Column(
+                                          children: <Widget>[
+                                            for (var i = 0;
+                                                i < this.storeRegistration.length;
+                                                i++)
+                                              buildRegisterItem(
+                                                "Malar Myaing","09987654321","၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး"
+                                                  )
+                                          ],
+                                        ),
                                 ],
                               )
                             : new Container())
@@ -430,7 +461,7 @@ class _StoreScreenState extends State<StoreScreen> {
                         shape: buttonShape(),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => StoresDetailsScreen()));
+                              builder: (context) => StoresDetailsScreen([])));
                         },
                         child: Row(
                           children: <Widget>[

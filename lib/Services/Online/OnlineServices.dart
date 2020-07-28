@@ -145,7 +145,7 @@ class OnlineSerives {
     return this.status;
   }
 
-  Future<bool> createStore(params) async {
+  Future createStore(params) async {
     this.mainData();
     this.url = this.url + "shop/saveshop";
     var body = json.encode(params);
@@ -176,7 +176,11 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    return this.status;
+    var returnData = {
+      "status" : this.status,
+      "data": data["list"]
+    };
+    return returnData;
   }
 
   Future getGooglePlusCode(params) async {
@@ -237,6 +241,37 @@ class OnlineSerives {
     }
     var returndata = {"status": this.status, "data": data["list"]};
     return returndata;
+  }
+
+  Future getsvrShoplist(params) async {
+    this.mainData();
+    this.url = this.url + "/shop/get-svr-shoplist";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+//    print("${response.body}");
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.storage.setItem("storeReg", data["list"]);
+          this.status = true;
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+//    var returndata = {"status": this.status, "data": data["list"]};
+    return this.status;
   }
 
   Servererror(code) {

@@ -14,12 +14,16 @@ import 'Services/GeneralUse/PhoneNumber.dart';
 import 'assets/custom_icons_icons.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
+  var passData;
+  StoresDetailsScreen(this.passData);
   @override
   _StoresDetailsScreenState createState() => _StoresDetailsScreenState();
 }
 
 class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   io.File _image;
+  var updateStatus;
+  var shopSyskey;
   OnlineSerives onlineSerives = new OnlineSerives();
 //  TextEditingController shopCode = new TextEditingController();
   TextEditingController shopName = new TextEditingController();
@@ -45,6 +49,16 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   void initState() {
 // TODO: implement initState
     super.initState();
+    if(this.widget.passData.length == 0){
+      this.updateStatus = false;
+    }else{
+      this.updateStatus = true;
+      if(this.widget.passData[0]["shopSyskey"] == null || this.widget.passData[0]["shopSyskey"] == ""){
+        this.shopSyskey = this.widget.passData[0]["id"].toString();
+      }else{
+        this.shopSyskey = this.widget.passData[0]["shopSyskey"].toString();
+      }
+    }
   }
 
   Future getImageFromCamera() async {
@@ -720,34 +734,58 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   latitude = k.latitude;
                                   longitude = k.longitude;
                                 }),
-                                param = {
-                                  "active": true,
-                                  "name": this.shopName.text.toString(),
-                                  "mmName": this.shopNamemm.text.toString(),
-                                  "personName": this.ownerName.text.toString(),
-                                  "phoneNumber":
-                                      this.shopPhoneNo.text.toString(),
-                                  "stateId": "0",
-                                  "districtId": "0",
-                                  "townshipId": "0",
-                                  "townId": "0",
-                                  "wardId": "0",
-                                  "address":
-                                      "၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး  ",
-                                  "street": this.street.text.toString(),
-                                  "t12": "",
-                                  "locationData": {
-                                    "recordStatus": 1,
-                                    "latitude": latitude,
-                                    "longitude": longitude
-                                  }
+                                if(this.updateStatus == true){
+                                  param = {
+                                    "shopSysKey": this.shopSyskey,
+                                    "active": true,
+                                    "name": this.shopName.text.toString(),
+                                    "mmName": this.shopNamemm.text.toString(),
+                                    "personName": this.ownerName.text.toString(),
+                                    "phoneNumber":
+                                    this.shopPhoneNo.text.toString(),
+                                    "stateId": "0",
+                                    "districtId": "0",
+                                    "townshipId": "0",
+                                    "townId": "0",
+                                    "wardId": "0",
+                                    "address":this.street.text.toString(),
+                                    "street": this.street.text.toString(),
+                                    "t12": "",
+                                    "locationData": {
+                                      "recordStatus": 1,
+                                      "latitude": latitude,
+                                      "longitude": longitude
+                                    }
+                                  },
+                                }else{
+                                  param = {
+                                    "active": true,
+                                    "name": this.shopName.text.toString(),
+                                    "mmName": this.shopNamemm.text.toString(),
+                                    "personName": this.ownerName.text.toString(),
+                                    "phoneNumber":
+                                    this.shopPhoneNo.text.toString(),
+                                    "stateId": "0",
+                                    "districtId": "0",
+                                    "townshipId": "0",
+                                    "townId": "0",
+                                    "wardId": "0",
+                                    "address":this.street.text.toString(),
+                                    "street": this.street.text.toString(),
+                                    "t12": "",
+                                    "locationData": {
+                                      "recordStatus": 1,
+                                      "latitude": latitude,
+                                      "longitude": longitude
+                                    }
+                                  },
                                 },
-                                passData = {},
+
                                 this
                                     .onlineSerives
                                     .createStore(param)
                                     .then((value) => {
-                                          if (value == true)
+                                          if (value["status"] == true)
                                             {
                                               googlePlusparam = {
                                                 "lat": latitude,
@@ -763,6 +801,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                                         () {
                                                           this.plusCode =
                                                               "${value1["data"]["plusCode"]}";
+                                                          this.widget.passData = value["data"];
                                                         },
                                                       ),
                                                     },
@@ -819,7 +858,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           this.ownerName.text,
                           this.ownerPhoneNo.text,
                           this.street.text,
-                          this.plusCode),
+                          this.plusCode,this.widget.passData),
                     ),
                   );
                 }

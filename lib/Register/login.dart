@@ -212,7 +212,7 @@ class _LoginState extends State<Login> {
                         "usertype": "",
                         "date": ""
                       };
-                      var loginData;
+                      var loginData, newParam;
                       print('data-> $param');
                       showLoading();
                       this
@@ -223,6 +223,10 @@ class _LoginState extends State<Login> {
                                   {
                                     loginData =
                                         this.storage.getItem("loginData"),
+                                    newParam = {
+                                      "usersyskey":
+                                          loginData["syskey"].toString()
+                                    },
                                     shopParam["spsyskey"] = loginData["syskey"],
                                     shopParam["teamsyskey"] =
                                         loginData["teamSyskey"],
@@ -235,6 +239,10 @@ class _LoginState extends State<Login> {
                                         .getStores(shopParam)
                                         .then((result) => {
                                               hideLoadingDialog(),
+                                              this
+                                                  .onlineSerives
+                                                  .getsvrShoplist(newParam)
+                                                  .then((res) => {}),
                                               if (result == true)
                                                 {
                                                   Navigator.of(context)
