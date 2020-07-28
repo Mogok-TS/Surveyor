@@ -146,17 +146,38 @@ class _StoreScreenState extends State<StoreScreen> {
       padding: EdgeInsets.all(1),
       child: Card(
         child: Container(
-          padding: EdgeInsets.all(2),
+          padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
           child: Column(
             children: <Widget>[
               ListTile(
-                  title: Text(storeName),
+                  title: Text(
+                    storeName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(phone),
-                      Text(address),
                       Container(
+                        margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      ),
+                      Text(
+                        phone,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          height: 1.0,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      ),
+                      Text(
+                        address,
+                        style: TextStyle(height: 1.3),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Row(
                           children: <Widget>[
                             Expanded(
@@ -213,9 +234,9 @@ class _StoreScreenState extends State<StoreScreen> {
     super.initState();
     this.storeData = this.storage.getItem("storeData");
     this.storeRegistration = this.storage.getItem("storeReg");
-    print("${storeRegistration}");
+    var ss = storeRegistration.length;
+    print("123-> $ss");
     this.assignStores = this.storeData["shopsByUser"];
-//    this.assignStores = [];
   }
 
   @override
@@ -436,11 +457,30 @@ class _StoreScreenState extends State<StoreScreen> {
                                       : Column(
                                           children: <Widget>[
                                             for (var i = 0;
-                                                i < this.storeRegistration.length;
+                                                i <
+                                                    this
+                                                        .storeRegistration
+                                                        .length;
                                                 i++)
                                               buildRegisterItem(
-                                                "Malar Myaing","09987654321","၁, 23လမ်​း63.64ကြား, မဟာဇေယျာဘုံရပ်ကွက်, အောင်မြေသာဇံ, အောင်မြေသာစံ, မန္တလေးခရိုင်, မန္တလေးတိုင်းဒေသကြီး"
-                                                  )
+                                                  this
+                                                          .storeRegistration[i]
+                                                              ["name"]
+                                                          .toString() +
+                                                      "( " +
+                                                      this
+                                                          .storeRegistration[i]
+                                                              ["mmName"]
+                                                          .toString() +
+                                                      " )",
+                                                  this
+                                                      .storeRegistration[i]
+                                                          ["phoneNumber"]
+                                                      .toString(),
+                                                  this
+                                                      .storeRegistration[i]
+                                                          ["address"]
+                                                      .toString())
                                           ],
                                         ),
                                 ],

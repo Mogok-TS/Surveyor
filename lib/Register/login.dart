@@ -224,8 +224,8 @@ class _LoginState extends State<Login> {
                                     loginData =
                                         this.storage.getItem("loginData"),
                                     newParam = {
-                                      "usersyskey":
-                                          loginData["syskey"].toString()
+                                      "usersyskey":"0"
+//                                          loginData["syskey"].toString()
                                     },
                                     shopParam["spsyskey"] = loginData["syskey"],
                                     shopParam["teamsyskey"] =
