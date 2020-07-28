@@ -1,11 +1,14 @@
 import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
+import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
 
 import 'Map/map.dart';
+import 'Services/GeneralUse/TodayDate.dart';
 import 'assets/custom_icons_icons.dart';
 import 'stores_details.dart';
 import 'widgets/mainmenuwidgets.dart';
@@ -21,6 +24,7 @@ class _StoreScreenState extends State<StoreScreen> {
   bool showAssignStore = false;
   bool showRegisterStore = false;
   var performType, performTypearray;
+  OnlineSerives onlineSerives = new OnlineSerives();
 
   RoundedRectangleBorder buttonShape() {
     return RoundedRectangleBorder(
@@ -142,7 +146,8 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget buildRegisterItem(String storeName, String phone, String address) {
+  Widget buildRegisterItem(
+      String storeName, String phone, String address, data) {
     return Container(
       color: Colors.grey[200],
       padding: EdgeInsets.all(1),
@@ -206,7 +211,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            StoresDetailsScreen([], false),
+                                            StoresDetailsScreen([data], false),
                                       ),
                                     );
                                   },
@@ -234,6 +239,29 @@ class _StoreScreenState extends State<StoreScreen> {
   @override
   void initState() {
     super.initState();
+    var shopParam = {
+      "spsyskey": "",
+      "teamsyskey": "",
+      "usertype": "",
+      "date": ""
+    };
+    var loginData, newParam;
+    loginData = this.storage.getItem("loginData");
+    newParam = {"usersyskey": loginData["syskey"].toString()};
+    shopParam["spsyskey"] = loginData["syskey"];
+    shopParam["teamsyskey"] = loginData["teamSyskey"];
+    shopParam["usertype"] = loginData["userType"];
+    shopParam["date"] = getTodayDate();
+    print("${shopParam}");
+    showLoadingDialog();
+    this
+        .onlineSerives
+        .getStores(shopParam)
+        .then((result) => {
+              hideLoadingDialog(),
+              this.onlineSerives.getsvrShoplist(newParam).then((res) => {}),
+            })
+        .catchError((onError) => hideLoadingDialog());
     this.storeData = this.storage.getItem("storeData");
     this.storeRegistration = this.storage.getItem("storeReg");
     print("${storeRegistration}");
@@ -242,299 +270,302 @@ class _StoreScreenState extends State<StoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Color(0xFFF8F8FF),
-        drawer: MainMenuWidget(),
-        appBar: AppBar(
-          backgroundColor: CustomIcons.appbarColor,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.map),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => Gmap(),
-                  ),
-                );
-              },
-            )
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            child: Column(children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      color: CustomIcons.dropDownHeader,
-                      child: ListTile(
-                        title: InkWell(
+    return LoadingProvider(
+      child: Scaffold(
+          backgroundColor: Color(0xFFF8F8FF),
+          drawer: MainMenuWidget(),
+          appBar: AppBar(
+            backgroundColor: CustomIcons.appbarColor,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.map),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => Gmap(),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(children: <Widget>[
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        color: CustomIcons.dropDownHeader,
+                        child: ListTile(
+                          title: InkWell(
+                            onTap: () {
+                              setState(() {
+                                showAssignStore = !showAssignStore;
+                              });
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  "Assign Stores",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "x/" + this.assignStores.length.toString(),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           onTap: () {
                             setState(() {
                               showAssignStore = !showAssignStore;
                             });
                           },
-                          child: Row(
+                          trailing: Wrap(
+                            spacing: 12, // space between two icons
                             children: <Widget>[
-                              Text(
-                                "Assign Stores",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "x/" + this.assignStores.length.toString(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
+                              IconButton(
+                                color: Colors.black,
+                                icon: Icon(Icons.sort),
+                                onPressed: () {},
+                              ), // icon-1
+                              IconButton(
+                                color: Colors.black,
+                                icon: showAssignStore == true
+                                    ? Icon(Icons.keyboard_arrow_down)
+                                    : Icon(Icons.chevron_right),
+                                onPressed: () {
+                                  setState(() {
+                                    showAssignStore = !showAssignStore;
+                                  });
+                                },
+                              ) // icon-2
                             ],
                           ),
                         ),
-                        onTap: () {
-                          setState(() {
-                            showAssignStore = !showAssignStore;
-                          });
-                        },
-                        trailing: Wrap(
-                          spacing: 12, // space between two icons
-                          children: <Widget>[
-                            IconButton(
-                              color: Colors.black,
-                              icon: Icon(Icons.sort),
-                              onPressed: () {},
-                            ), // icon-1
-                            IconButton(
-                              color: Colors.black,
-                              icon: showAssignStore == true
-                                  ? Icon(Icons.keyboard_arrow_down)
-                                  : Icon(Icons.chevron_right),
-                              onPressed: () {
-                                setState(() {
-                                  showAssignStore = !showAssignStore;
-                                });
-                              },
-                            ) // icon-2
-                          ],
-                        ),
                       ),
-                    ),
-                    Container(
-                        child: showAssignStore == true
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  this.assignStores.length == 0
-                                      ? Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Container(
-                                                height: 50,
-                                                color: Colors.grey[200],
-                                                child: Center(
-                                                  child: Text(
-                                                    "No Data",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
+                      Container(
+                          child: showAssignStore == true
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    this.assignStores.length == 0
+                                        ? Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Container(
+                                                  height: 50,
+                                                  color: Colors.grey[200],
+                                                  child: Center(
+                                                    child: Text(
+                                                      "No Data",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      : Column(
-                                          children: <Widget>[
-                                            for (var i = 0;
-                                                i < this.assignStores.length;
-                                                i++)
-                                              buildAssignItem(
-                                                  this
-                                                          .assignStores[i]
-                                                              ["shopname"]
-                                                          .toString() +
-                                                      "( " +
-                                                      this
-                                                          .assignStores[i]
-                                                              ["shopnamemm"]
-                                                          .toString() +
-                                                      " )",
-                                                  this
-                                                      .assignStores[i]
-                                                          ["phoneno"]
-                                                      .toString(),
-                                                  this
-                                                      .assignStores[i]
-                                                          ["address"]
-                                                      .toString(),
-                                                  this.assignStores[i])
-                                          ],
-                                        ),
-                                ],
-                              )
-                            : new Container())
-                  ],
+                                              )
+                                            ],
+                                          )
+                                        : Column(
+                                            children: <Widget>[
+                                              for (var i = 0;
+                                                  i < this.assignStores.length;
+                                                  i++)
+                                                buildAssignItem(
+                                                    this
+                                                            .assignStores[i]
+                                                                ["shopname"]
+                                                            .toString() +
+                                                        "( " +
+                                                        this
+                                                            .assignStores[i]
+                                                                ["shopnamemm"]
+                                                            .toString() +
+                                                        " )",
+                                                    this
+                                                        .assignStores[i]
+                                                            ["phoneno"]
+                                                        .toString(),
+                                                    this
+                                                        .assignStores[i]
+                                                            ["address"]
+                                                        .toString(),
+                                                    this.assignStores[i])
+                                            ],
+                                          ),
+                                  ],
+                                )
+                              : new Container())
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      color: CustomIcons.dropDownHeader,
-                      child: ListTile(
-                        title: InkWell(
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        color: CustomIcons.dropDownHeader,
+                        child: ListTile(
+                          title: InkWell(
+                            onTap: () {
+                              setState(() {
+                                showRegisterStore = !showRegisterStore;
+                              });
+                            },
+                            child: Text(
+                              "Store Registration",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
                           onTap: () {
                             setState(() {
                               showRegisterStore = !showRegisterStore;
                             });
                           },
-                          child: Text(
-                            "Store Registration",
-                            style: TextStyle(color: Colors.black),
+                          trailing: Wrap(
+                            spacing: 12, // space between two icons
+                            children: <Widget>[
+                              IconButton(
+                                color: Colors.black,
+                                icon: Icon(Icons.sort),
+                                onPressed: () {},
+                              ), // icon-1
+                              IconButton(
+                                color: Colors.black,
+                                icon: showRegisterStore == true
+                                    ? Icon(Icons.keyboard_arrow_down)
+                                    : Icon(Icons.chevron_right),
+                                onPressed: () {
+                                  setState(() {
+                                    showRegisterStore = !showRegisterStore;
+                                  });
+                                },
+                              ) // icon-2
+                            ],
                           ),
                         ),
-                        onTap: () {
-                          setState(() {
-                            showRegisterStore = !showRegisterStore;
-                          });
-                        },
-                        trailing: Wrap(
-                          spacing: 12, // space between two icons
-                          children: <Widget>[
-                            IconButton(
-                              color: Colors.black,
-                              icon: Icon(Icons.sort),
-                              onPressed: () {},
-                            ), // icon-1
-                            IconButton(
-                              color: Colors.black,
-                              icon: showRegisterStore == true
-                                  ? Icon(Icons.keyboard_arrow_down)
-                                  : Icon(Icons.chevron_right),
-                              onPressed: () {
-                                setState(() {
-                                  showRegisterStore = !showRegisterStore;
-                                });
-                              },
-                            ) // icon-2
-                          ],
-                        ),
                       ),
-                    ),
-                    Container(
-                        child: showRegisterStore == true
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  this.storeRegistration.length == 0
-                                      ? Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Container(
-                                                height: 50,
-                                                color: Colors.grey[200],
-                                                child: Center(
-                                                  child: Text(
-                                                    "No Data",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
+                      Container(
+                          child: showRegisterStore == true
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    this.storeRegistration.length == 0
+                                        ? Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Container(
+                                                  height: 50,
+                                                  color: Colors.grey[200],
+                                                  child: Center(
+                                                    child: Text(
+                                                      "No Data",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      : Column(
-                                          children: <Widget>[
-                                            for (var i = 0;
-                                                i <
-                                                    this
-                                                        .storeRegistration
-                                                        .length;
-                                                i++)
-                                              buildRegisterItem(
-                                                  this
-                                                          .storeRegistration[i]
-                                                              ["name"]
-                                                          .toString() +
-                                                      "( " +
+                                              )
+                                            ],
+                                          )
+                                        : Column(
+                                            children: <Widget>[
+                                              for (var i = 0;
+                                                  i <
                                                       this
-                                                          .storeRegistration[i]
-                                                              ["mmName"]
-                                                          .toString() +
-                                                      " )",
-                                                  this
-                                                      .storeRegistration[i]
-                                                          ["phoneNumber"]
-                                                      .toString(),
-                                                  this
-                                                      .storeRegistration[i]
-                                                          ["address"]
-                                                      .toString())
-                                          ],
-                                        ),
-                                ],
-                              )
-                            : new Container())
-                  ],
+                                                          .storeRegistration
+                                                          .length;
+                                                  i++)
+                                                buildRegisterItem(
+                                                    this
+                                                            .storeRegistration[i]
+                                                                ["name"]
+                                                            .toString() +
+                                                        "( " +
+                                                        this
+                                                            .storeRegistration[i]
+                                                                ["mmName"]
+                                                            .toString() +
+                                                        " )",
+                                                    this
+                                                        .storeRegistration[i]
+                                                            ["phoneNumber"]
+                                                        .toString(),
+                                                    this
+                                                        .storeRegistration[i]
+                                                            ["address"]
+                                                        .toString(),
+                                                    this.storeRegistration[i])
+                                            ],
+                                          ),
+                                  ],
+                                )
+                              : new Container())
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Expanded(
-                      child: RaisedButton(
-                        color: Colors.white,
-                        shape: buttonShape(),
-                        onPressed: () {
-                          getGPSstatus().then((status) => {
-                                print("$status"),
-                                if (status == true)
-                                  {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            StoresDetailsScreen([], false),
-                                      ),
-                                    ),
-                                  }
-                                else
-                                  {ShowToast("Please open GPS")}
-                              });
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.add_box,
-                              color: Colors.black,
-                            ),
-                            Text(" Add New Store",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ))
-                          ],
-                        ),
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(),
                       ),
-                    )
-                  ],
-                ),
-              )
-            ]),
-          ),
-        ));
+                      Expanded(
+                        child: RaisedButton(
+                          color: Colors.white,
+                          shape: buttonShape(),
+                          onPressed: () {
+                            getGPSstatus().then((status) => {
+                                  print("$status"),
+                                  if (status == true)
+                                    {
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              StoresDetailsScreen([], false),
+                                        ),
+                                      ),
+                                    }
+                                  else
+                                    {ShowToast("Please open GPS")}
+                                });
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.add_box,
+                                color: Colors.black,
+                              ),
+                              Text(" Add New Store",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ]),
+            ),
+          )),
+    );
   }
 }

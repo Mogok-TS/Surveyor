@@ -836,7 +836,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     "Back",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                        fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
                   ),
                 ),
               ),
@@ -862,7 +862,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     "Done",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                        fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
                   ),
                 ),
               ),

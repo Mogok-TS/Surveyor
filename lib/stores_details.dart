@@ -2,6 +2,8 @@ import 'dart:io' as io;
 import 'package:Surveyor/assets/circle_icons.dart';
 import 'package:Surveyor/assets/location_icons.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
+import 'package:Surveyor/stores.dart';
+import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,6 +20,7 @@ import 'assets/custom_icons_icons.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
   var passData, updateStatuspass;
+
   StoresDetailsScreen(this.passData, this.updateStatuspass);
 
   @override
@@ -29,6 +32,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   var updateStatus;
   var shopSyskey;
   OnlineSerives onlineSerives = new OnlineSerives();
+
 //  TextEditingController shopCode = new TextEditingController();
   TextEditingController shopName = new TextEditingController();
   TextEditingController shopNamemm = new TextEditingController();
@@ -49,14 +53,17 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   var googlePlusparam;
   var updateDataarray = [];
 
-  var latitude, longitude, plusCode, storeRegistration;
+  var plusCode, storeRegistration;
+  double longitude = 0;
+  double latitude = 0;
   var createRegistration;
 
   @override
   void initState() {
     super.initState();
+//    showLoading();
+    showLoadingDialog();
     setState(() {
-      print("${this.widget.passData}");
       this.storeRegistration = this.widget.passData;
       if (this.storeRegistration.length == 0) {
         this.updateStatus = this.widget.updateStatuspass;
@@ -66,36 +73,41 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       } else {
         this.updateDataarray = this.storeRegistration;
       }
-
+      print("${updateDataarray}");
       if (this.updateDataarray.length == 0) {
         this.updateStatus = false;
+        getCurrentLocation().then((k) {
+          print({"$k"});
+          latitude = k.latitude;
+          longitude = k.longitude;
+          googlePlusparam = {"lat": latitude, "lng": longitude};
+          this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
+                (value1) => {
+                  setState(() {
+                    this.plusCode = "${value1["data"]["plusCode"]}";
+                    hideLoadingDialog();
+                    print("${value1}");
+                  }),
+                },
+              );
+        });
       } else {
         this.updateStatus = true;
-        if (this.updateDataarray[0]["shopSyskey"] == null ||
-            this.updateDataarray[0]["shopSyskey"] == "") {
-          this.shopSyskey = this.updateDataarray[0]["id"].toString();
-        } else {
-          this.shopSyskey = this.updateDataarray[0]["shopSyskey"].toString();
-        }
+        this.shopSyskey = this.updateDataarray[0]["id"].toString();
+        this.shopName.text = this.updateDataarray[0]["name"].toString();
+        this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
+        this.shopPhoneNo.text =
+            this.updateDataarray[0]["phoneNumber"].toString();
+        this.ownerName.text = this.updateDataarray[0]["personName"].toString();
+        this.ownerPhoneNo.text =
+            this.updateDataarray[0]["personPhoneNumber"].toString();
+        this.street.text = this.updateDataarray[0]["street"].toString();
+        this.latitude = this.updateDataarray[0]["locationData"]["latitude"];
+        this.longitude = this.updateDataarray[0]["locationData"]["longitude"];
+        this.plusCode = this.updateDataarray[0]["locationData"]["plusCode"];
         print("shopSyskey--> $shopSyskey");
       }
     });
-    showLoading();
-    getCurrentLocation().then((k) {
-      print({"$k"});
-      latitude = k.latitude;
-      longitude = k.longitude;
-    });
-    googlePlusparam = {"lat": latitude, "lng": longitude};
-    this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
-          (value1) => {
-            setState(() {
-              this.plusCode = "${value1["data"]["plusCode"]}";
-              hideLoadingDialog();
-              print("${value1}");
-            }),
-          },
-        );
   }
 
   Future getImageFromCamera() async {
@@ -203,40 +215,14 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     }
   }
 
-  List<String> _stateList = [
-    'State',
-    'ဧရာဝတီတိုင်းဒေသကြီး',
-    'ပဲခူးတိုင်းဒေသကြီး',
-    'ချင်းပြည်နယ်',
-    'ကချင်ပြည်နယ်',
-    'ကယားပြည်နယ်',
-    'ကရင်ပြည်နယ်',
-    'မကွေးတိုင်းဒေသကြီး',
-    'မန္တလေးတိုင်းဒေသကြီး',
-    'မွန်ပြည်နယ်',
-    '	ရခိုင်ပြည်နယ်',
-    'ရှမ်းပြည်နယ်',
-    'စစ်ကိုင်းတိုင်းဒေသကြီး',
-    'တနင်္သာရီတိုင်းဒေသကြီး',
-    '	ရန်ကုန်တိုင်းဒေသကြီး',
-    'နေပြည်တော် ပြည်ထောင်စုနယ်မြေ'
-  ];
+  List<String> _stateList = ['State'];
   String _state = 'State';
   List<String> _districtList = [
     'District',
-    "ပုသိမ်ခရိုင်",
-    "ဟင်္သာတခရိုင်",
-    "မအူပင်ခရိုင်",
-    "မြောင်းမြခရိုင်",
-    "ဖျာပုံခရိုင်",
-    "လပွတ္တာခရိုင်"
   ];
   String _district = "District";
   List<String> _townShipList = [
     'TownShip',
-    'ပုသိမ်မြို့',
-    'ရွှေသောင်ယံမြို့',
-    'ငွေဆောင်မြို့',
   ];
   String _townShip = 'TownShip';
   List<String> _townOrVillagetractList = [
@@ -249,13 +235,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
 
   List<String> _townList = [
     'Town',
-    'ကနောင်မြို့',
-    'ကန်ကြီးထောင့်မြို့',
-    'ကျိုက်လတ်မြို့',
-    'ကျုံပျော်မြို့',
-    'ကျုံမငေးမြို့',
-    'ကျောင်းကုန်းမြို့',
-    'ကြံခင်းမြို့',
   ];
   String _town = "Town";
   List<String> _villageOrWardList = ['Village/Ward?', 'Village', 'Ward'];
@@ -267,6 +246,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   Widget build(BuildContext context) {
     return LoadingProvider(
       child: Scaffold(
+        drawer: MainMenuWidget(),
         backgroundColor: Color(0xFFF8F8FF),
         appBar: AppBar(
           backgroundColor: CustomIcons.appbarColor,
@@ -286,7 +266,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       ),
                       IconButton(
                         icon: Icon(
-                          Circle.gplus_circled,
+                          Location.my_location,
                           color: CustomIcons.iconColor,
                           size: 25,
                         ),
@@ -294,8 +274,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       ),
                       // Text(this.latitude),
                       Text(
-                        "${latitude}" + "/" + "${longitude}",
-                        style: TextStyle(fontSize: 16),
+                        "${latitude}" + " / " + "${longitude}",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -309,7 +290,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       ),
                       IconButton(
                         icon: Icon(
-                          Location.my_location,
+                          Circle.gplus_circled,
                           color: CustomIcons.iconColor,
                           size: 25,
                         ),
@@ -321,7 +302,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         style: TextStyle(fontSize: 16),
                       ),
                       SizedBox(
-                        width: 50.0,
+                        width: 10.0,
                       ),
                       if (plusCode == null)
                         Text('')
@@ -766,6 +747,29 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               icon: new Container(),
               title: InkWell(
                 onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => StoreScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 40,
+                  width: 300,
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Center(
+                    child: Text(
+                        "Back",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15)
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Container(),
+              title: InkWell(
+                onTap: () {
                   var param;
                   if (this.shopName.text == "" ||
                       this.shopName.text == null ||
@@ -794,11 +798,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         getPhoneNumber(this.ownerPhoneNo.text);
                     if (this.updateStatus == true) {
                       param = {
-                        "shopSysKey": this.shopSyskey,
+                        "id": this.shopSyskey,
                         "active": true,
                         "name": this.shopName.text.toString(),
                         "mmName": this.shopNamemm.text.toString(),
                         "personName": this.ownerName.text.toString(),
+                        "personPhoneNumber":this.ownerPhoneNo.text.toString(),
                         "phoneNumber": this.shopPhoneNo.text.toString(),
                         "stateId": "0",
                         "districtId": "0",
@@ -809,9 +814,10 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         "street": this.street.text.toString(),
                         "t12": "",
                         "locationData": {
-                          "recordStatus": 1,
                           "latitude": latitude,
-                          "longitude": longitude
+                          "longitude": longitude,
+                          "plusCode":this.plusCode.toString(),
+                          "minuCode":""
                         }
                       };
                     } else {
@@ -820,6 +826,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         "name": this.shopName.text.toString(),
                         "mmName": this.shopNamemm.text.toString(),
                         "personName": this.ownerName.text.toString(),
+                        "personPhoneNumber":this.ownerPhoneNo.text.toString(),
                         "phoneNumber": this.shopPhoneNo.text.toString(),
                         "stateId": "0",
                         "districtId": "0",
@@ -830,9 +837,10 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         "street": this.street.text.toString(),
                         "t12": "",
                         "locationData": {
-                          "recordStatus": 1,
                           "latitude": latitude,
-                          "longitude": longitude
+                          "longitude": longitude,
+                          "plusCode":this.plusCode.toString(),
+                          "minuCode":""
                         }
                       };
                     }
@@ -856,7 +864,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                 print("hello" + "${value["data"]}");
                                 this.updateDataarray = this.createRegistration;
                                 this.shopSyskey = this
-                                    .updateDataarray[0]["shopSysKey"]
+                                    .updateDataarray[0]["id"]
                                     .toString();
                                 print("$shopSyskey");
                                 this.updateStatus = true;
@@ -879,11 +887,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     child: this.updateStatus == false
                         ? Text(
                             "Save",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
                           )
                         : Text(
                             "Update",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
                           ),
                   ),
                 ),
@@ -893,8 +901,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               icon: new Container(),
               title: InkWell(
                 onTap: () {
-                  if (plusCode != null) {
-                    Navigator.of(context).push(
+                  if (this.updateStatus == true) {
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => StoreData(
                             this.shopName.text,
@@ -914,15 +922,15 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                   width: 300,
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Center(
-                    child: plusCode == null
+                    child: this.updateStatus == false
                         ? Text(
                             "Next",
                             style:
-                                TextStyle(color: Colors.white38, fontSize: 18),
+                                TextStyle(color: Colors.white38,fontWeight: FontWeight.bold,fontSize: 15),
                           )
                         : Text(
                             "Next",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
                           ),
                   ),
                 ),

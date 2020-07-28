@@ -156,7 +156,7 @@ class OnlineSerives {
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
-        if (data["status"] == "Success") {
+        if (data["status"] == "SUCCESS") {
           this.status = true;
           this.storage.setItem("storeData", data["data"]);
         } else if (data["status"] == "Code Already Existed") {

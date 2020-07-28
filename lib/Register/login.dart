@@ -206,14 +206,6 @@ class _LoginState extends State<Login> {
                         "userId": userID.text.toString(),
                         "password": password.text.toString()
                       };
-                      var shopParam = {
-                        "spsyskey": "",
-                        "teamsyskey": "",
-                        "usertype": "",
-                        "date": ""
-                      };
-                      var loginData, newParam;
-                      print('data-> $param');
                       showLoading();
                       this
                           .onlineSerives
@@ -221,41 +213,15 @@ class _LoginState extends State<Login> {
                           .then((data) => {
                                 if (data == true)
                                   {
-                                    loginData =
-                                        this.storage.getItem("loginData"),
-                                    newParam = {
-                                      "usersyskey":"0"
-//                                          loginData["syskey"].toString()
+                                    {
+                                      Navigator.of(context)
+                                          .pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              StoreScreen(),
+                                        ),
+                                      )
                                     },
-                                    shopParam["spsyskey"] = loginData["syskey"],
-                                    shopParam["teamsyskey"] =
-                                        loginData["teamSyskey"],
-                                    shopParam["usertype"] =
-                                        loginData["userType"],
-                                    shopParam["date"] = getTodayDate(),
-                                    print("${shopParam}"),
-                                    this
-                                        .onlineSerives
-                                        .getStores(shopParam)
-                                        .then((result) => {
-                                              hideLoadingDialog(),
-                                              this
-                                                  .onlineSerives
-                                                  .getsvrShoplist(newParam)
-                                                  .then((res) => {}),
-                                              if (result == true)
-                                                {
-                                                  Navigator.of(context)
-                                                      .pushReplacement(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          StoreScreen(),
-                                                    ),
-                                                  )
-                                                }
-                                            })
-                                        .catchError(
-                                            (onError) => hideLoadingDialog()),
                                   }
                                 else
                                   {
