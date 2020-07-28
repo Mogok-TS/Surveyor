@@ -1,3 +1,5 @@
+import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
+import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -204,7 +206,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            StoresDetailsScreen([]),
+                                            StoresDetailsScreen([], false),
                                       ),
                                     );
                                   },
@@ -234,8 +236,7 @@ class _StoreScreenState extends State<StoreScreen> {
     super.initState();
     this.storeData = this.storage.getItem("storeData");
     this.storeRegistration = this.storage.getItem("storeReg");
-    var ss = storeRegistration.length;
-    print("123-> $ss");
+    print("${storeRegistration}");
     this.assignStores = this.storeData["shopsByUser"];
   }
 
@@ -500,8 +501,20 @@ class _StoreScreenState extends State<StoreScreen> {
                         color: Colors.white,
                         shape: buttonShape(),
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => StoresDetailsScreen([])));
+                          getGPSstatus().then((status) => {
+                                print("$status"),
+                                if (status == true)
+                                  {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            StoresDetailsScreen([], false),
+                                      ),
+                                    ),
+                                  }
+                                else
+                                  {ShowToast("Please open GPS")}
+                              });
                         },
                         child: Row(
                           children: <Widget>[
