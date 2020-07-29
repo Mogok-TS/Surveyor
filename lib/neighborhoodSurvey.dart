@@ -504,159 +504,162 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: MainMenuWidget(),
-      appBar: AppBar(
-        backgroundColor: CustomIcons.appbarColor,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              color: Colors.grey[200],
-              child: Container(
-                width: 700,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      child: Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            
-                            Text(
-                              this.widget.surveyType,
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            if (this.widget.surveyType == "Store Operator")
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        drawer: MainMenuWidget(),
+        appBar: AppBar(
+          backgroundColor: CustomIcons.appbarColor,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: Colors.grey[200],
+                child: Container(
+                  width: 700,
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        child: Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+
                               Text(
-                                this.widget.storeName,
-                                textAlign: TextAlign.left,
+                                this.widget.surveyType,
+                                textAlign: TextAlign.end,
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            if (this.widget.surveyType == "Store Operator")
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                            if (this.widget.surveyType == "Store Operator")
-                              Text(
-                                this.widget.storeNumber,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.0,
+                              if (this.widget.surveyType == "Store Operator")
+                                Text(
+                                  this.widget.storeName,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
-                            if (this.widget.surveyType == "Store Operator")
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                            if (this.widget.surveyType == "Store Operator")
-                              Text(
-                                this.widget.address,
-                                style: TextStyle(height: 1.3),
-                              ),
-                          ],
+                              if (this.widget.surveyType == "Store Operator")
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                              if (this.widget.surveyType == "Store Operator")
+                                Text(
+                                  this.widget.storeNumber,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.0,
+                                  ),
+                                ),
+                              if (this.widget.surveyType == "Store Operator")
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                              if (this.widget.surveyType == "Store Operator")
+                                Text(
+                                  this.widget.address,
+                                  style: TextStyle(height: 1.3),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            if (_status)
-              if (questions.length > 0)
-                for (var i = 0; i < questions.length; i++)
-                  _allWidget(questions[i]),
-            if (!_status)
-              Container(
-                height: 50,
-                color: Colors.grey[300],
-                child: Center(
-                  child: Text(
-                    "No Data",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
+              if (_status)
+                if (questions.length > 0)
+                  for (var i = 0; i < questions.length; i++)
+                    _allWidget(questions[i]),
+              if (!_status)
+                Container(
+                  height: 50,
+                  color: Colors.grey[300],
+                  child: Center(
+                    child: Text(
+                      "No Data",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                )
+
+            ],
+          ),
+        ),
+        bottomNavigationBar: new BottomNavigationBar(
+          backgroundColor: CustomIcons.appbarColor,
+          items: [
+            new BottomNavigationBarItem(
+              icon: new Container(),
+              title: InkWell(
+                onTap: () {
+                  print("asdfasdfasdf");
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => OutsideInsideNeighborhood(
+                            this.widget.storeName,
+                            this.widget.storeNumber,
+                            this.widget.address,
+                            this.widget.surveyType,[])),
+                  );
+                },
+                child: Container(
+                  height: 40,
+                  width: 300,
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Center(
+                    child: new Text(
+                      "Back",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
                     ),
                   ),
                 ),
-              )
-           
+              ),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Container(),
+              title: new Container(),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Container(),
+              title: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => OutsideInsideNeighborhood(
+                            this.widget.storeName,
+                            this.widget.storeNumber,
+                            this.widget.address,
+                            this.widget.surveyType,[])),
+                  );
+                },
+                child: Container(
+                  height: 40,
+                  width: 300,
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Center(
+                    child: new Text(
+                      "Done",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
-      ),
-      bottomNavigationBar: new BottomNavigationBar(
-        backgroundColor: CustomIcons.appbarColor,
-        items: [
-          new BottomNavigationBarItem(
-            icon: new Container(),
-            title: InkWell(
-              onTap: () {
-                print("asdfasdfasdf");
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) => OutsideInsideNeighborhood(
-                          this.widget.storeName,
-                          this.widget.storeNumber,
-                          this.widget.address,
-                          this.widget.surveyType)),
-                );
-              },
-              child: Container(
-                height: 40,
-                width: 300,
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Center(
-                  child: new Text(
-                    "Back",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          new BottomNavigationBarItem(
-            icon: new Container(),
-            title: new Container(),
-          ),
-          new BottomNavigationBarItem(
-            icon: new Container(),
-            title: InkWell(
-              onTap: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) => OutsideInsideNeighborhood(
-                          this.widget.storeName,
-                          this.widget.storeNumber,
-                          this.widget.address,
-                          this.widget.surveyType)),
-                );
-              },
-              child: Container(
-                height: 40,
-                width: 300,
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Center(
-                  child: new Text(
-                    "Done",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

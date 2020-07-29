@@ -145,78 +145,81 @@ class MapSampleState extends State<GmapS> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: MainMenuWidget(),
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.location_searching),
-            onPressed: () async {
-              toUserLocation();
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => StoreScreen(),
-                ),
-              );
-            },
-          )
-        ],
-      ),
-      body: Stack(
-        children: <Widget>[
-          GoogleMap(
-            zoomControlsEnabled: false,
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            markers: Set<Marker>.of(markers.values),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10),
-            child: Container(
-              width: 180,
-              height: 100,
-              child: Card(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.location_on, color: Colors.blue),
-                          Text("  Current Location"),
-                        ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        drawer: MainMenuWidget(),
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.location_searching),
+              onPressed: () async {
+                toUserLocation();
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => StoreScreen(),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+        body: Stack(
+          children: <Widget>[
+            GoogleMap(
+              zoomControlsEnabled: false,
+              mapType: MapType.normal,
+              initialCameraPosition: _kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              markers: Set<Marker>.of(markers.values),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10),
+              child: Container(
+                width: 180,
+                height: 100,
+                child: Card(
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.location_on, color: Colors.blue),
+                            Text("  Current Location"),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.location_on, color: Colors.red),
-                          Text("  Assigned Store"),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.location_on, color: Colors.red),
+                            Text("  Assigned Store"),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
+          ],
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(20),
+          child: GestureDetector(
+            onTap: () {},
+            child: Image.asset("location.png", width: 50),
           ),
-        ],
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(20),
-        child: GestureDetector(
-          onTap: () {},
-          child: Image.asset("location.png", width: 50),
         ),
       ),
     );

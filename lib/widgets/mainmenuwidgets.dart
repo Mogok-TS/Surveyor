@@ -48,6 +48,8 @@ class MainMenuWidget extends StatelessWidget {
             // buildListTile('Report An Issue', Icons.bug_report, () {}),
             buildListTile('Log Out', Icons.input, () {
               this.storage.deleteItem("Surveyor");
+              this.storage.deleteItem("storeData");
+              this.storage.deleteItem("storeReg");
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => Login(),

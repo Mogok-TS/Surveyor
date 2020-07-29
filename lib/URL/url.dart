@@ -1,3 +1,4 @@
+import 'package:Surveyor/Register/login.dart';
 import 'package:flutter/material.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
@@ -28,51 +29,64 @@ class _myURL extends State<URL> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF8F8FF),
-      appBar: AppBar(
-        backgroundColor: CustomIcons.appbarColor,
-        title: Text("URL"),
-      ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(20),
-            child: TextField(
-              controller: url,
-              cursorColor: CustomIcons.textField,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                focusColor: CustomIcons.textField,
-                hintText: 'URL',
-                hintStyle: TextStyle(fontSize: 15, height: 1.4),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: CustomIcons.textField),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Color(0xFFF8F8FF),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Login(),
+                ),
+              );
+            },
+          ),
+          backgroundColor: CustomIcons.appbarColor,
+          title: Text("URL"),
+        ),
+        body: ListView(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(20),
+              child: TextField(
+                controller: url,
+                cursorColor: CustomIcons.textField,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  focusColor: CustomIcons.textField,
+                  hintText: 'URL',
+                  hintStyle: TextStyle(fontSize: 15, height: 1.4),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: CustomIcons.textField),
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(20, 15, 20, 20),
-            child: FlatButton(
-              color: CustomIcons.buttonColor,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "Update",
-                style: TextStyle(fontSize: 18),
+            Container(
+              margin: EdgeInsets.fromLTRB(20, 15, 20, 20),
+              child: FlatButton(
+                color: CustomIcons.buttonColor,
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "Update",
+                  style: TextStyle(fontSize: 18),
+                ),
+                onPressed: () {
+                  if(this.url.text == "" || this.url.text == null || this.url.text.isEmpty){
+                    ShowToast("Please fill URL field");
+                  }else{
+                    this.storage.setItem("URL", this.url.text);
+                    Navigator.pop(context);
+                  }
+                },
+                textColor: CustomIcons.buttonText,
               ),
-              onPressed: () {
-                if(this.url.text == "" || this.url.text == null || this.url.text.isEmpty){
-                  ShowToast("Please fill URL field");
-                }else{
-                  this.storage.setItem("URL", this.url.text);
-                  Navigator.pop(context);
-                }
-              },
-              textColor: CustomIcons.buttonText,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

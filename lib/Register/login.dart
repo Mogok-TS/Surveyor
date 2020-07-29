@@ -22,18 +22,20 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with WidgetsBindingObserver{
   final LocalStorage storage = new LocalStorage('Surveyor');
   TextEditingController userID = new TextEditingController();
   TextEditingController password = new TextEditingController();
   OnlineSerives onlineSerives = new OnlineSerives();
-
+  bool isBackButtonActivated = false;
   String latitude;
   String longitude;
 
   @override
   void initState() {
     super.initState();
+    isBackButtonActivated = false;
+    WidgetsBinding.instance.addObserver(this);
     latitude = "";
     longitude = "";
     getCurrentLocation().then((k) {
@@ -43,230 +45,232 @@ class _LoginState extends State<Login> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return LoadingProvider(
-      child: Scaffold(
-        backgroundColor: Color(0xFFF8F8FF),
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
-          child: ListView(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topRight,
-                margin: EdgeInsets.all(10.0),
-                child: PopupMenuButton(
-                  onSelected: (String value) {
-                    if (value == "URL") {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => URL(),
-                        ),
-                      );
-                    }
-                  },
-                  child: Icon(
-                    Icons.more_vert,
-                    color: Colors.black,
-                  ),
-                  itemBuilder: (context) => <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      enabled: false,
-                      child: Center(
-                        child: Text(
-                          "Settings",
-                          style: TextStyle(color: Colors.black),
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          backgroundColor: Color(0xFFF8F8FF),
+          body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(new FocusNode());
+            },
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.topRight,
+                  margin: EdgeInsets.all(10.0),
+                  child: PopupMenuButton(
+                    onSelected: (String value) {
+                      if (value == "URL") {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => URL(),
+                          ),
+                        );
+                      }
+                    },
+                    child: Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
+                    ),
+                    itemBuilder: (context) => <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        enabled: false,
+                        child: Center(
+                          child: Text(
+                            "Settings",
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ),
                       ),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'URL',
-                      child: Text('URL'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'version',
-                      child: Text('Version 1.0.0'),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Image(
-                  image: AssetImage(
-                    'assets/logo.png',
-                  ),
-                  height: 250,
-                  width: 400,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 0, 0, 10),
-                child: Text(
-                  "Login Now",
-                  style: TextStyle(
-                    height: 1.2,
-                    letterSpacing: 2.0,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w600,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(1.0, 0.0),
-                        blurRadius: 0.0,
-                        color: Colors.black,
+                      const PopupMenuItem<String>(
+                        value: 'URL',
+                        child: Text('URL'),
                       ),
-                      Shadow(
-                        offset: Offset(1.0, 2.0),
-                        blurRadius: 2.0,
-                        color: Colors.black45,
+                      const PopupMenuItem<String>(
+                        value: 'version',
+                        child: Text('Version 1.0.0'),
                       ),
                     ],
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
-                child: Text(
-                  "Please sign in to continue",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Color(0xFFCCCCCC),
+                Container(
+                  child: Image(
+                    image: AssetImage(
+                      'assets/logo.png',
+                    ),
+                    height: 250,
+                    width: 400,
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                child: TextField(
-                  controller: userID,
-                  cursorColor: CustomIcons.textField,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    focusColor: CustomIcons.textField,
-                    prefixIcon: Icon(
-                      CustomIcons.person,
-                      color: CustomIcons.iconColor,
-                    ),
-                    hintText: 'User ID',
-                    hintStyle: TextStyle(fontSize: 15, height: 1.4),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: CustomIcons.textField),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: TextField(
-                  controller: password,
-                  cursorColor: CustomIcons.textField,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    focusColor: CustomIcons.textField,
-                    prefixIcon: Icon(
-                      CustomIcons.lock,
-                      color: CustomIcons.iconColor,
-                    ),
-                    hintText: 'Password',
-                    hintStyle: TextStyle(fontSize: 15, height: 1.5),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: CustomIcons.textField),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                child: Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 0, 0, 10),
                   child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(color: CustomIcons.buttonColor),
+                    "Login Now",
+                    style: TextStyle(
+                      height: 1.2,
+                      letterSpacing: 2.0,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                      shadows: <Shadow>[
+                        Shadow(
+                          offset: Offset(1.0, 0.0),
+                          blurRadius: 0.0,
+                          color: Colors.black,
+                        ),
+                        Shadow(
+                          offset: Offset(1.0, 2.0),
+                          blurRadius: 2.0,
+                          color: Colors.black45,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 15, 20, 20),
-                child: FlatButton(
-                  color: CustomIcons.buttonColor,
-                  padding: EdgeInsets.all(10),
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
                   child: Text(
-                    "LOGIN",
-                    style: TextStyle(fontSize: 15),
+                    "Please sign in to continue",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xFFCCCCCC),
+                    ),
                   ),
-                  onPressed: () {
-                    if (userID.text == "" ||
-                        userID.text == null ||
-                        userID.text.isEmpty ||
-                        password.text == "" ||
-                        password.text == null ||
-                        password.text.isEmpty) {
-                      ShowToast("Please, fill all fields");
-                    } else {
-                      this.userID.text = getPhoneNumber(this.userID.text);
-                      var param = {
-                        "userId": userID.text.toString(),
-                        "password": password.text.toString()
-                      };
-                      showLoading();
-                      this
-                          .onlineSerives
-                          .loginData(param)
-                          .then((data) => {
-                                if (data == true)
-                                  {
-                                    {
-                                      Navigator.of(context)
-                                          .pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              StoreScreen(),
-                                        ),
-                                      )
-                                    },
-                                  }
-                                else
-                                  {
-                                    hideLoadingDialog(),
-                                  }
-                              })
-                          .catchError((err) => {hideLoadingDialog()});
-                    }
-                  },
-                  textColor: CustomIcons.buttonText,
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Don't have an account?",
-                      style:
-                          TextStyle(color: CustomIcons.iconColor, fontSize: 15),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => Register(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            color: CustomIcons.buttonColor,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: TextField(
+                    controller: userID,
+                    cursorColor: CustomIcons.textField,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      focusColor: CustomIcons.textField,
+                      prefixIcon: Icon(
+                        CustomIcons.person,
+                        color: CustomIcons.iconColor,
+                      ),
+                      hintText: 'User ID',
+                      hintStyle: TextStyle(fontSize: 15, height: 1.4),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: CustomIcons.textField),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: TextField(
+                    controller: password,
+                    cursorColor: CustomIcons.textField,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      focusColor: CustomIcons.textField,
+                      prefixIcon: Icon(
+                        CustomIcons.lock,
+                        color: CustomIcons.iconColor,
+                      ),
+                      hintText: 'Password',
+                      hintStyle: TextStyle(fontSize: 15, height: 1.5),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: CustomIcons.textField),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Center(
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(color: CustomIcons.buttonColor),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 15, 20, 20),
+                  child: FlatButton(
+                    color: CustomIcons.buttonColor,
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      "LOGIN",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () {
+                      if (userID.text == "" ||
+                          userID.text == null ||
+                          userID.text.isEmpty ||
+                          password.text == "" ||
+                          password.text == null ||
+                          password.text.isEmpty) {
+                        ShowToast("Please, fill all fields");
+                      } else {
+                        this.userID.text = getPhoneNumber(this.userID.text);
+                        var param = {
+                          "userId": userID.text.toString(),
+                          "password": password.text.toString()
+                        };
+                        showLoading();
+                        this
+                            .onlineSerives
+                            .loginData(param)
+                            .then((data) => {
+                                  if (data == true)
+                                    {
+                                      hideLoadingDialog(),
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) => StoreScreen(),
+                                        ),
+                                      )
+                                    }
+                                  else
+                                    {
+                                      hideLoadingDialog(),
+                                    }
+                                })
+                            .catchError((err) => {hideLoadingDialog()});
+                      }
+                    },
+                    textColor: CustomIcons.buttonText,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Don't have an account?",
+                        style:
+                            TextStyle(color: CustomIcons.iconColor, fontSize: 15),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => Register(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                              color: CustomIcons.buttonColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
