@@ -258,9 +258,7 @@ class _StoreScreenState extends State<StoreScreen>  {
     shopParam["date"] = getTodayDate();
     print("${shopParam}");
     Future.delayed(const Duration(milliseconds: 500), () {
-          setState(() {
-            showLoading();
-          });
+      showLoading();
           this
               .onlineSerives
               .getStores(shopParam)
