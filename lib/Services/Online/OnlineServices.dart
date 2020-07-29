@@ -176,10 +176,7 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var returnData = {
-      "status" : this.status,
-      "data": data["list"]
-    };
+    var returnData = {"status": this.status, "data": data["list"]};
     return returnData;
   }
 
@@ -225,7 +222,7 @@ class OnlineSerives {
 //    print("${response.body}");
     if (response != null) {
       data = json.decode(response.body);
-    
+
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
@@ -242,11 +239,11 @@ class OnlineSerives {
       this.status = false;
     }
     returnData["status"] = this.status;
-     var array1 =[];
+    var array1 = [];
 
-    for(var i =0;i<data["list"].length;i++){
+    for (var i = 0; i < data["list"].length; i++) {
       var listdata = data["list"][i];
-      var dataarray ={};
+      var dataarray = {};
       dataarray["syskey"] = listdata["syskey"];
       dataarray["date"] = listdata["date"];
       dataarray["t1"] = listdata["t1"];
@@ -265,11 +262,11 @@ class OnlineSerives {
       var answerList = [];
       var allArray = data["list"][i]["answerList"];
       var radioList = [];
-      var radioListIndex =[];
-      for(var ii=0;ii<allArray.length;ii++){
+      var radioListIndex = [];
+      for (var ii = 0; ii < allArray.length; ii++) {
         var answerListData = allArray[ii];
-        print("answewr>>"+answerListData.toString() );
-        var objectarray ={};
+        print("answewr>>" + answerListData.toString());
+        var objectarray = {};
         var listIndex = {};
         objectarray["syskey"] = answerListData["syskey"];
         objectarray["date"] = answerListData["date"];
@@ -279,7 +276,8 @@ class OnlineSerives {
         objectarray["n1"] = answerListData["n1"];
         objectarray["n2"] = answerListData["n2"];
         objectarray["n3"] = answerListData["n3"];
-        objectarray["imagePathForMobile"] = answerListData["imagePathForMobile"];
+        objectarray["imagePathForMobile"] =
+            answerListData["imagePathForMobile"];
         objectarray["check"] = false;
         objectarray["radio"] = answerListData["syskey"];
         objectarray["image"] = [];
@@ -290,20 +288,18 @@ class OnlineSerives {
         radioList.add(answerListData["syskey"]);
         radioListIndex.add(listIndex);
       }
-        dataarray["answerList"] = answerList;
-        dataarray["radioValue"] = radioList;
-        dataarray["radioData"] = radioListIndex;
-        if(radioList.length>0){
+      dataarray["answerList"] = answerList;
+      dataarray["radioValue"] = radioList;
+      dataarray["radioData"] = radioListIndex;
+      if (radioList.length > 0) {
         dataarray["radio"] = radioList[0];
-
-        }else{
+      } else {
         dataarray["radio"] = [];
-        }
-        array1.add(dataarray);
-
+      }
+      array1.add(dataarray);
     }
     returnData["data"] = array1;
-    
+
     return returnData;
   }
 

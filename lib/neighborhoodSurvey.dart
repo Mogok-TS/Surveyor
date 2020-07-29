@@ -177,7 +177,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget multipleChoice(String t1, String t2, var data) {
+  Widget multipleChoice(String t1, String t2, var data,var radioValues,var value) {
+
+    //  print("radioValues>>"+radioValues[0]["value"]);
+    // print("radioValues>>"+radioValues.toString());
+    List fList = radioValues;
+    String id = value;
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -221,28 +226,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  for (var i = 0; i < data.length; i++)
-                    RadioListTile(
-                      title: Text(data[i]["t1"]),
-                      value: data[i]["syskey"],
-                      groupValue: _radiovalue,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _radiovalue = newValue;
-                          print("12234 -> $_radiovalue");
-                        });
-                      },
-//                  leading: Radio(
-//                    value: data[i]["2007261736172300021"].toString(),
-//                    groupValue: _radiovalue,
-//                    onChanged: (String newValue) {
-//                      setState(() {
-//                        _radiovalue = newValue;
-//                      });
-//                    },
-//                  ),
-                    ),
-                ],
+         
+          
+        ],
               ))
         ],
       ),
@@ -298,10 +284,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     Row(
                       children: <Widget>[
                         Checkbox(
-                            value: false,
+                            value: data[i]["check"],
                             onChanged: (bool newValue) {
                               setState(() {
-                                _isSelected = newValue;
+                                data[i]["check"] = !data[i]["check"];
                               });
                             }),
                         SizedBox(
@@ -511,7 +497,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _widget = attachPhotograph(data['t1'], data['t2'],data["answerList"]);
       }
       if (data["questionType"] == "Multiple Choice") {
-        _widget = multipleChoice(data['t1'], data['t2'], data["answerList"]);
+        _widget = multipleChoice(data['t1'], data['t2'], data["answerList"],data["radioData"],data["radio"]);
       }
     return _widget;      
   }
@@ -536,7 +522,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     Container(
                       child: Expanded(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            
                             Text(
                               this.widget.surveyType,
                               textAlign: TextAlign.end,
