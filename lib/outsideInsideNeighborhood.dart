@@ -14,10 +14,11 @@ class StoreData extends StatefulWidget {
   final String ownerPhone;
   final String street;
   final String plusCode;
+  final String regOrAss;
   var passData;
 
   StoreData(this.name, this.shopName, this.phNumber, this.ownerName,
-      this.ownerPhone, this.street, this.plusCode, this.passData);
+      this.ownerPhone, this.street, this.plusCode,this.regOrAss, this.passData);
 
   @override
   _StoreDataState createState() => _StoreDataState();
@@ -100,7 +101,10 @@ class _StoreDataState extends State<StoreData> {
                                             this.widget.phNumber,
                                             this.widget.street,
                                             "This is text for the instruciotns",
-                                            "Neighborhood Survey"),
+                                            "Neighborhood Survey",
+                                            this.widget.regOrAss,
+                                            this.widget.passData
+                                            ),
                                   ),
                                 );
                               },
@@ -174,7 +178,10 @@ class _StoreDataState extends State<StoreData> {
                                             this.widget.phNumber,
                                             this.widget.street,
                                             "This is text for the instruciotns",
-                                            "Outside of Store"),
+                                            "Outside of Store",
+                                            this.widget.regOrAss,
+                                            this.widget.passData
+                                            ),
                                   ),
                                 );
                               },
@@ -248,7 +255,9 @@ class _StoreDataState extends State<StoreData> {
                                             this.widget.phNumber,
                                             this.widget.street,
                                             "This is text for the instruciotns",
-                                            "Inside of Store"),
+                                            "Inside of Store",
+                                            this.widget.regOrAss,
+                                            this.widget.passData),
                                   ),
                                 );
                               },
@@ -322,7 +331,9 @@ class _StoreDataState extends State<StoreData> {
                                             this.widget.phNumber,
                                             this.widget.street,
                                             "This is text for the instruciotns",
-                                            "Store Operator"),
+                                            "Store Operator",
+                                            this.widget.regOrAss,
+                                            this.widget.passData),
                                   ),
                                 );
                               },
@@ -455,6 +466,8 @@ class OutsideInsideNeighborhood extends StatefulWidget {
   OutsideInsideNeighborhood(
       this.storeName, this.storeNumber, this.address, this.surveyType,this.passData);
 
+  String get regOrAss => null;
+
   @override
   _OutsideInsideNeighborhoodState createState() =>
       _OutsideInsideNeighborhoodState();
@@ -536,7 +549,10 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             this.widget.storeNumber,
                                             this.widget.address,
                                             "This is text for the instruciotns",
-                                            "Neighborhood Survey"),
+                                            "Neighborhood Survey",
+                                            this.widget.regOrAss,
+                                            this.widget.passData
+                                            ),
                                   ),
                                 );
                               },
@@ -610,7 +626,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             this.widget.storeNumber,
                                             this.widget.address,
                                             "This is text for the instruciotns",
-                                            "Outside of Store"),
+                                            "Outside of Store",
+                                            this.widget.regOrAss,
+                                            this.widget.passData),
                                   ),
                                 );
                               },
@@ -684,7 +702,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             this.widget.storeNumber,
                                             this.widget.address,
                                             "This is text for the instruciotns",
-                                            "Inside of Store"),
+                                            "Inside of Store",
+                                            this.widget.regOrAss,
+                                            this.widget.passData),
                                   ),
                                 );
                               },
@@ -758,7 +778,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             this.widget.storeNumber,
                                             this.widget.address,
                                             "This is text for the instruciotns",
-                                            "Store Operator"),
+                                            "Store Operator",
+                                            this.widget.regOrAss,
+                                            this.widget.passData),
                                   ),
                                 );
                               },

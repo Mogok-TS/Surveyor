@@ -19,9 +19,10 @@ import 'Services/GeneralUse/PhoneNumber.dart';
 import 'assets/custom_icons_icons.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
+  final String regOrAss;
   var passData, updateStatuspass;
 
-  StoresDetailsScreen(this.passData, this.updateStatuspass);
+  StoresDetailsScreen(this.passData, this.updateStatuspass,this.regOrAss);
 
   @override
   _StoresDetailsScreenState createState() => _StoresDetailsScreenState();
@@ -925,7 +926,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               this.ownerPhoneNo.text,
                               this.street.text,
                               this.plusCode,
-                              this.widget.passData),
+                              this.widget.passData,
+                              this.widget.regOrAss
+                              ),
                         ),
                       );
                     }

@@ -13,9 +13,10 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final String address;
   final String surveyStage;
   final String surveyType;
-
+  final String regOrAss;
+  final String data;
   NeighborhoodSurveyScreen(this.storeName, this.storeNumber, this.address,
-      this.surveyStage, this.surveyType);
+      this.surveyStage, this.surveyType,this.regOrAss,this.data);
 
   @override
   _NeighborhoodSurveyScreenState createState() =>

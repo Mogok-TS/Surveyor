@@ -215,7 +215,7 @@ class _StoreScreenState extends State<StoreScreen>  {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            StoresDetailsScreen([data], false),
+                                            StoresDetailsScreen([data], false,"register"),
                                       ),
                                     );
                                   },
@@ -570,7 +570,7 @@ class _StoreScreenState extends State<StoreScreen>  {
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                StoresDetailsScreen([], false),
+                                                StoresDetailsScreen([], false,"register"),
                                           ),
                                         ),
                                       }
