@@ -11,7 +11,7 @@ class OutsideInsideNeighborhood extends StatefulWidget {
   final String shopPhone;
   final String address;
   final String regOrAss;
-  var passData;
+  final passData;
 
   OutsideInsideNeighborhood(
     this.shopName,
@@ -29,6 +29,74 @@ class OutsideInsideNeighborhood extends StatefulWidget {
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   String serveytype;
   OnlineSerives onlineSerives = new OnlineSerives();
+  TextStyle cardHeader(){
+    return TextStyle(
+                    height: 1.2,
+                    letterSpacing: 2.0,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(1.0, 0.0),
+                        blurRadius: 0.0,
+                        color: Colors.black,
+                      ),
+                      Shadow(
+                        offset: Offset(1.0, 2.0),
+                        blurRadius: 2.0,
+                        color: Colors.black45,
+                      ),
+                    ],
+                  );
+  }
+  Widget _statusButton(String text) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        padding: EdgeInsets.all(9),
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Color(0XFFE0E0E0)),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _remainButton(text) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        padding: EdgeInsets.all(9),
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(
+              color: Color(0XFFE0E0E0),
+              width: 1.0,
+            ),
+            top: BorderSide(
+              color: Color(0XFFE0E0E0),
+              width: 1.0,
+            ),
+            bottom: BorderSide(
+              color: Color(0XFFE0E0E0),
+              width: 1.0,
+            ),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(color: CustomIcons.appbarColor,fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+  }
 
   RoundedRectangleBorder buttonShape() {
     return RoundedRectangleBorder(
@@ -52,7 +120,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                
                 Container(
                   width: 700,
                   color: Colors.grey[200],
@@ -90,6 +157,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                   ),
                 ),
                 Container(
+                  
                   child: Card(
                     child: Container(
                       child: Column(
@@ -111,53 +179,29 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 );
                               },
                               title: Container(
-                                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                                  margin: EdgeInsets.only(top: 20, bottom: 10),
                                   child: Text(
                                     "Neighborhood",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                    style: cardHeader(),
                                   )),
                               subtitle: Column(
+
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
+                                
                                   Container(
+                                    margin: EdgeInsets.symmetric(vertical: 20),
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
-                                          child: Container(
-                                            child: RaisedButton(
-                                              color: Colors.white,
-                                              shape: buttonShape(),
-                                              onPressed: () {},
-                                              child: Center(
-                                                child: Text(
-                                                  "Status",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          child: _statusButton("Status"),
                                         ),
                                         Expanded(
-                                          child: Container(
-                                            child: RaisedButton(
-                                              color: Colors.white,
-                                              shape: buttonShape(),
-                                              onPressed: () {},
-                                              child: Center(
-                                                child: Text(
-                                                  "x Items remaining",
-                                                  style: TextStyle(
-                                                      color: CustomIcons
-                                                          .appbarColor),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                            child: _remainButton(
+                                                "x Items remaining")),
                                       ],
                                     ),
-                                  )
+                                  ),
                                 ],
                               )),
                         ],
@@ -187,50 +231,24 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 );
                               },
                               title: Container(
-                                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                                  margin: EdgeInsets.only(top: 20, bottom: 10),
                                   child: Text(
                                     "Outside of store",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                    style: cardHeader(),
                                   )),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Container(
+                                    margin: EdgeInsets.symmetric(vertical: 20),
                                     child: Row(
                                       children: <Widget>[
-                                        Expanded(
-                                          child: Container(
-                                            child: RaisedButton(
-                                              color: Colors.white,
-                                              shape: buttonShape(),
-                                              onPressed: () {},
-                                              child: Center(
-                                                child: Text(
-                                                  "Status",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                       Expanded(
+                                          child: _statusButton("Status"),
                                         ),
                                         Expanded(
-                                          child: Container(
-                                            child: RaisedButton(
-                                              color: Colors.white,
-                                              shape: buttonShape(),
-                                              onPressed: () {},
-                                              child: Center(
-                                                child: Text(
-                                                  "x Items remaining",
-                                                  style: TextStyle(
-                                                      color: CustomIcons
-                                                          .appbarColor),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                            child: _remainButton(
+                                                "x Items remaining")),
                                       ],
                                     ),
                                   )
@@ -263,50 +281,25 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 );
                               },
                               title: Container(
-                                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                                  margin: EdgeInsets.only(top: 20, bottom: 10),
                                   child: Text(
                                     "Inside of Store",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                    style: cardHeader(),
                                   )),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                
                                 children: <Widget>[
                                   Container(
+                                    margin: EdgeInsets.symmetric(vertical: 20),
                                     child: Row(
                                       children: <Widget>[
-                                        Expanded(
-                                          child: Container(
-                                            child: RaisedButton(
-                                              color: Colors.white,
-                                              shape: buttonShape(),
-                                              onPressed: () {},
-                                              child: Center(
-                                                child: Text(
-                                                  "Status",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                      Expanded(
+                                          child: _statusButton("Status"),
                                         ),
                                         Expanded(
-                                          child: Container(
-                                            child: RaisedButton(
-                                              color: Colors.white,
-                                              shape: buttonShape(),
-                                              onPressed: () {},
-                                              child: Center(
-                                                child: Text(
-                                                  "x Items remaining",
-                                                  style: TextStyle(
-                                                      color: CustomIcons
-                                                          .appbarColor),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                            child: _remainButton(
+                                                "x Items remaining")),
                                       ],
                                     ),
                                   )
@@ -339,50 +332,24 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 );
                               },
                               title: Container(
-                                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                                  margin: EdgeInsets.only(top: 20, bottom: 10),
                                   child: Text(
                                     "Store Operator",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                    style: cardHeader(),
                                   )),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Container(
+                                    margin: EdgeInsets.symmetric(vertical: 20),
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
-                                          child: Container(
-                                            child: RaisedButton(
-                                              color: Colors.white,
-                                              shape: buttonShape(),
-                                              onPressed: () {},
-                                              child: Center(
-                                                child: Text(
-                                                  "Status",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          child: _statusButton("Status"),
                                         ),
                                         Expanded(
-                                          child: Container(
-                                            child: RaisedButton(
-                                              color: Colors.white,
-                                              shape: buttonShape(),
-                                              onPressed: () {},
-                                              child: Center(
-                                                child: Text(
-                                                  "x Items remaining",
-                                                  style: TextStyle(
-                                                      color: CustomIcons
-                                                          .appbarColor),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                            child: _remainButton(
+                                                "x Items remaining")),
                                       ],
                                     ),
                                   )

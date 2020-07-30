@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'assets/custom_icons_icons.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
 
+// ignore: must_be_immutable
 class NeighborhoodSurveyScreen extends StatefulWidget {
   final String storeName;
   final String storeNumber;
@@ -14,7 +15,7 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final String surveyStage;
   final String surveyType;
   final String regOrAss;
-  var passData;
+  final passData;
   NeighborhoodSurveyScreen(this.storeName, this.storeNumber, this.address,
       this.surveyStage, this.surveyType,this.regOrAss,this.passData);
 
@@ -683,7 +684,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             this.widget.storeName,
                             this.widget.storeNumber,
                             this.widget.address,
-                            this.widget.surveyType, [])),
+                            this.widget.surveyType,
+                            this.widget.passData
+                             )),
                   );
                 },
                 child: Container(
