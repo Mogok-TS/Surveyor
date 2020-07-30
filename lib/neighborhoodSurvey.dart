@@ -14,9 +14,9 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final String surveyStage;
   final String surveyType;
   final String regOrAss;
-  final String data;
+  var passData;
   NeighborhoodSurveyScreen(this.storeName, this.storeNumber, this.address,
-      this.surveyStage, this.surveyType,this.regOrAss,this.data);
+      this.surveyStage, this.surveyType,this.regOrAss,this.passData);
 
   @override
   _NeighborhoodSurveyScreenState createState() =>
@@ -38,8 +38,6 @@ class ImageUploadModel {
 }
 
 class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
-  var _radiovalue;
-  bool _isSelected;
 
   bool check1 = false;
   bool check2 = false;
@@ -51,7 +49,47 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   bool _status = true;
   var groupId2 = "";
   var newQuestionarray = [];
-
+  var _allData = {};
+  _clickDone(){
+    var pssOject = this.widget.passData[0];
+    _allData["status"] = true;
+    _allData["name"] = pssOject["shopname"];
+    _allData["mmName"] = pssOject["shopnamemm"];
+    _allData["personName"] = pssOject["username"];
+    _allData["personPhoneNumber"] = pssOject["phoneno"];
+    _allData["phoneNumber"] = pssOject["phoneno"];
+    // _allData["stateId"] = pssOject["status"]["stateId"];
+    // _allData["districtId"] = pssOject["status"]["districtId"];
+    // _allData["townshipId"] = pssOject["status"]["townshipId"];
+    // _allData["townId"] = pssOject["status"]["townId"];
+    // _allData["wardId"] = pssOject["status"]["wardId"];
+    // _allData["address"] = pssOject["status"]["address"];
+    // _allData["street"] = pssOject["status"]["street"];
+    // _allData["t12"] = pssOject["status"]["t12"];
+    // _allData["locationData"] = {
+    //   "locationData":pssOject["status"]["locationData"]["locationData"],						
+		// 	"longitude": pssOject["status"]["locationData"]["longitude"],						
+		// 	"plusCode" : pssOject["status"]["locationData"]["plusCode"],						
+		// 	"minuCode" : pssOject["status"]["locationData"]["minuCode"]	
+    // };
+    for(var i=0;i<this.questions.length;i++){
+      
+      // print("questions>>"+this.questions[i].toString());
+      var loopData = this.questions[i];
+      if(loopData["questionType"]== "Fill in the Blank"){
+        // print("textbox>>"+loopData.toString());
+      }else if(loopData["questionType"]== "Checkbox"){
+         print("checkbox>>"+loopData.toString());
+      }else if(loopData["questionType"]== "Attach Photograph"){
+        // print("photo>>"+loopData.toString());
+      }else if(loopData["questionType"]== "Multiple Choice"){
+        // print("radio>>"+loopData.toString());
+      }
+     
+      
+      
+    }
+  }
   List<Object> _images = List<Object>();
 
   Future getImageFromCamera(var images) async {
@@ -673,14 +711,15 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               icon: new Container(),
               title: InkWell(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (context) => OutsideInsideNeighborhood(
-                            this.widget.storeName,
-                            this.widget.storeNumber,
-                            this.widget.address,
-                            this.widget.surveyType, [])),
-                  );
+                  _clickDone();
+                  // Navigator.of(context).pushReplacement(
+                  //   MaterialPageRoute(
+                  //       builder: (context) => OutsideInsideNeighborhood(
+                  //           this.widget.storeName,
+                  //           this.widget.storeNumber,
+                  //           this.widget.address,
+                  //           this.widget.surveyType, [])),
+                  // );
                 },
                 child: Container(
                   height: 40,

@@ -926,8 +926,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               this.ownerPhoneNo.text,
                               this.street.text,
                               this.plusCode,
+                              this.widget.regOrAss,
                               this.widget.passData,
-                              this.widget.regOrAss
                               ),
                         ),
                       );
