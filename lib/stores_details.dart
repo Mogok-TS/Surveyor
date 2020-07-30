@@ -17,6 +17,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'Services/GeneralUse/PhoneNumber.dart';
 import 'assets/custom_icons_icons.dart';
+import 'neighborhoodSurvey.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
   final String regOrAss;
@@ -262,7 +263,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           body: SingleChildScrollView(
             child: Container(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 10.0),
@@ -922,17 +923,26 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     if (this.updateStatus == true) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => StoreData(
-                            this.shopName.text,
-                            this.shopNamemm.text,
-                            this.shopPhoneNo.text,
-                            this.ownerName.text,
-                            this.ownerPhoneNo.text,
-                            this.street.text,
-                            this.plusCode,
-                            this.widget.regOrAss,
-                            this.widget.passData,
-                          ),
+                           builder: (context) => 
+                           NeighborhoodSurveyScreen(
+                                            this.shopName.text,
+                                            this.shopPhoneNo.text,
+                                            this.street.text,
+                                            "This is text for the instruciotns",
+                                            "Neighborhood Survey",
+                                            this.widget.regOrAss,
+                                            this.widget.passData)
+                          //  OutsideInsideNeighborhood(
+                          //   this.shopName.text,
+                          //   this.shopNamemm.text,
+                          //   this.shopPhoneNo.text,
+                          //   this.ownerName.text,
+                          //   this.ownerPhoneNo.text,
+                          //   this.street.text,
+                          //   this.plusCode,
+                          //   this.widget.regOrAss,
+                          //   this.widget.passData,
+                          // ),
                         ),
                       );
                     }
