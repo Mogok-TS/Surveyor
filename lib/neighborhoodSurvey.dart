@@ -48,6 +48,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var questions = [];
   var questionNature;
   bool _status = true;
+  var groupId2 = "";
+  var newQuestionarray = [];
 
   List<Object> _images = List<Object>();
 
@@ -65,8 +67,33 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     });
   }
 
-  Widget attachPhotograph(String t1, String t2,var data) {
-    print("param>>>"+data.toString());
+  Widget buildRadio(var answerList, var questionIndex) {
+//    print("${answerList}");
+    print("${this.newQuestionarray}");
+    var index = questionIndex - 1;
+    print("${this.newQuestionarray[index]}");
+//    print("${answerList[0]["syskey"].toString()}");
+    return Column(
+      children: <Widget>[
+//        Text("$index")
+        for (var q = 0; q < answerList.length; q++)
+          RadioListTile(
+            groupValue: this.newQuestionarray[index].toString() == "syskey" ? this.newQuestionarray[index] = answerList[q]["syskey"].toString() : this.newQuestionarray[index] = this.newQuestionarray[index],
+            title: Text(answerList[q]["t1"].toString()),
+            value: answerList[q]["syskey"].toString(),
+            onChanged: (aaa) {
+              setState(() {
+                this.newQuestionarray[index] = aaa.toString();
+                print("aa2->$index");
+              });
+            },
+          ),
+      ],
+    );
+  }
+
+  Widget attachPhotograph(String t1, String t2, var data) {
+    print("param>>>" + data.toString());
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -168,7 +195,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               scrollDirection: Axis.vertical,
               crossAxisCount: 3,
               children: List.generate(data[0]["image"].length, (index) {
-                return storeImage(data[0]["image"][index], index,data[0]["image"]);
+                return storeImage(
+                    data[0]["image"][index], index, data[0]["image"]);
               }),
             ),
           ),
@@ -177,12 +205,15 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget multipleChoice(String t1, String t2, var data,var radioValues,var value) {
-
+  Widget multipleChoice(String t1, String t2, var answerdata, var radioValues,
+      var value, var questionIndex) {
+//    this.newQuestionarray.add("syskey");
+    print("${this.newQuestionarray}");
     //  print("radioValues>>"+radioValues[0]["value"]);
     // print("radioValues>>"+radioValues.toString());
     List fList = radioValues;
     String id = value;
+    var groupID, groupID2;
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -225,10 +256,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-         
-          
-        ],
+                children: <Widget>[buildRadio(answerdata, questionIndex)],
               ))
         ],
       ),
@@ -375,7 +403,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget storeImage(File image, int index,var data) {
+  Widget storeImage(File image, int index, var data) {
     return Container(
       margin: EdgeInsets.all(5),
       child: Center(
@@ -476,6 +504,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 if (result["status"] == true) {
                   print(result);
                   this.questions = result["data"];
+                  for (var ss = 0; ss < this.questions.length; ss++) {
+                    if (this.questions[ss]["questionType"] == "Multiple Choice")
+                      this.newQuestionarray.add("syskey");
+                  }
                   _status = true;
                 } else {
                   _status = false;
@@ -485,21 +517,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         .catchError((err) => {});
   }
 
-  Widget _allWidget(var data) {
+  Widget _allWidget(var data, var questionIndex) {
     Widget _widget;
-      if (data["questionType"] == "Fill in the Blank") {
-        _widget= fillintheBlank(data['t1'], data['t2']);
-      }
-      if (data["questionType"] == "Checkbox") {
-        _widget = checkBox(data['t1'], data['t2'], data['answerList']);
-      }
-      if (data["questionType"] == "Attach Photograph") {
-        _widget = attachPhotograph(data['t1'], data['t2'],data["answerList"]);
-      }
-      if (data["questionType"] == "Multiple Choice") {
-        _widget = multipleChoice(data['t1'], data['t2'], data["answerList"],data["radioData"],data["radio"]);
-      }
-    return _widget;      
+    var answerArray;
+    answerArray = data["answerList"];
+
+    if (data["questionType"] == "Fill in the Blank") {
+      _widget = fillintheBlank(data['t1'], data['t2']);
+    }
+    if (data["questionType"] == "Checkbox") {
+      _widget = checkBox(data['t1'], data['t2'], data['answerList']);
+    }
+    if (data["questionType"] == "Attach Photograph") {
+      _widget = attachPhotograph(data['t1'], data['t2'], data["answerList"]);
+    }
+    if (data["questionType"] == "Multiple Choice") {
+      print("${data["answerList"]}");
+      _widget = multipleChoice(data['t1'], data['t2'], data["answerList"],
+          data["radioData"], data["radio"], questionIndex);
+    }
+    return _widget;
   }
 
   @override
@@ -518,7 +555,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 color: Colors.grey[200],
                 child: Container(
                   width: 700,
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  margin:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                   child: Row(
                     children: <Widget>[
                       Container(
@@ -526,7 +564,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-
                               Text(
                                 this.widget.surveyType,
                                 textAlign: TextAlign.end,
@@ -575,7 +612,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               if (_status)
                 if (questions.length > 0)
                   for (var i = 0; i < questions.length; i++)
-                    _allWidget(questions[i]),
+                    _allWidget(questions[i], i),
               if (!_status)
                 Container(
                   height: 50,
@@ -590,7 +627,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     ),
                   ),
                 )
-
             ],
           ),
         ),
@@ -608,7 +644,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             this.widget.storeName,
                             this.widget.storeNumber,
                             this.widget.address,
-                            this.widget.surveyType,[])),
+                            this.widget.surveyType, [])),
                   );
                 },
                 child: Container(
@@ -620,7 +656,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       "Back",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 15),
                     ),
                   ),
                 ),
@@ -640,7 +678,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             this.widget.storeName,
                             this.widget.storeNumber,
                             this.widget.address,
-                            this.widget.surveyType,[])),
+                            this.widget.surveyType, [])),
                   );
                 },
                 child: Container(
@@ -652,7 +690,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       "Done",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white,fontSize: 15),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 15),
                     ),
                   ),
                 ),

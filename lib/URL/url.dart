@@ -20,10 +20,11 @@ class _myURL extends State<URL> {
   void initState() {
     super.initState();
     this.url.text = this.storage.getItem("URL");
-    if (this.url.text == null || this.url.text.isEmpty) {
+    if (this.url.text == "" || this.url.text == null || this.url.text.isEmpty) {
+//      this.url.text = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
       this.url.text =
-          "http://52.255.142.115:8084/madbrepositorydev/";
-      this.storage.setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
+          "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+      this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
 
@@ -54,7 +55,7 @@ class _myURL extends State<URL> {
               child: TextField(
                 controller: url,
                 cursorColor: CustomIcons.textField,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   focusColor: CustomIcons.textField,
                   hintText: 'URL',
@@ -75,11 +76,17 @@ class _myURL extends State<URL> {
                   style: TextStyle(fontSize: 18),
                 ),
                 onPressed: () {
-                  if(this.url.text == "" || this.url.text == null || this.url.text.isEmpty){
+                  if (this.url.text == "" ||
+                      this.url.text == null ||
+                      this.url.text.isEmpty) {
                     ShowToast("Please fill URL field");
-                  }else{
+                  } else {
                     this.storage.setItem("URL", this.url.text);
-                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => Login(),
+                      ),
+                    );
                   }
                 },
                 textColor: CustomIcons.buttonText,

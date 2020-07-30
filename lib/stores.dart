@@ -289,6 +289,7 @@ class _StoreScreenState extends State<StoreScreen>  {
               {
                 this.storeRegistration = [],
                 this.assignStores = [],
+                hideLoadingDialog()
               }
           })
               .catchError((onError) => {hideLoadingDialog()});
