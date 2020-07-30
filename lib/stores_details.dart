@@ -22,7 +22,7 @@ class StoresDetailsScreen extends StatefulWidget {
   final String regOrAss;
   var passData, updateStatuspass;
 
-  StoresDetailsScreen(this.passData, this.updateStatuspass,this.regOrAss);
+  StoresDetailsScreen(this.passData, this.updateStatuspass, this.regOrAss);
 
   @override
   _StoresDetailsScreenState createState() => _StoresDetailsScreenState();
@@ -812,7 +812,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           "name": this.shopName.text.toString(),
                           "mmName": this.shopNamemm.text.toString(),
                           "personName": this.ownerName.text.toString(),
-                          "personPhoneNumber": this.ownerPhoneNo.text.toString(),
+                          "personPhoneNumber":
+                              this.ownerPhoneNo.text.toString(),
                           "phoneNumber": this.shopPhoneNo.text.toString(),
                           "stateId": "0",
                           "districtId": "0",
@@ -835,7 +836,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           "name": this.shopName.text.toString(),
                           "mmName": this.shopNamemm.text.toString(),
                           "personName": this.ownerName.text.toString(),
-                          "personPhoneNumber": this.ownerPhoneNo.text.toString(),
+                          "personPhoneNumber":
+                              this.ownerPhoneNo.text.toString(),
                           "phoneNumber": this.shopPhoneNo.text.toString(),
                           "stateId": "0",
                           "districtId": "0",
@@ -855,9 +857,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       }
                       ;
                       print("${param}");
-                      this.onlineSerives.createStore(param).then((value) => {
-                            print("${value["status"]}"),
-                            if (value["status"] == true)
+                      this.onlineSerives.createStore(param).then((reslut) => {
+                            print("${reslut}"),
+                            if (reslut["status"] == true)
                               {
                                 hideLoadingDialog(),
                                 if (this.updateStatus == false)
@@ -869,9 +871,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     ShowToast("Updated successfully."),
                                   },
                                 setState(() {
-                                  this.createRegistration = value["data"];
-                                  print("hello" + "${value["data"]}");
-                                  this.updateDataarray = this.createRegistration;
+                                  this.createRegistration = reslut["data"];
+                                  print("hello" + "${reslut["data"]}");
+                                  this.updateDataarray = [
+                                    this.createRegistration
+                                  ];
                                   this.shopSyskey =
                                       this.updateDataarray[0]["id"].toString();
                                   print("$shopSyskey");
@@ -919,16 +923,16 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => StoreData(
-                              this.shopName.text,
-                              this.shopNamemm.text,
-                              this.shopPhoneNo.text,
-                              this.ownerName.text,
-                              this.ownerPhoneNo.text,
-                              this.street.text,
-                              this.plusCode,
-                              this.widget.regOrAss,
-                              this.widget.passData,
-                              ),
+                            this.shopName.text,
+                            this.shopNamemm.text,
+                            this.shopPhoneNo.text,
+                            this.ownerName.text,
+                            this.ownerPhoneNo.text,
+                            this.street.text,
+                            this.plusCode,
+                            this.widget.regOrAss,
+                            this.widget.passData,
+                          ),
                         ),
                       );
                     }
