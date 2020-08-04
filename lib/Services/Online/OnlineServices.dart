@@ -342,7 +342,7 @@ class OnlineSerives {
     return this.status;
   }
 
-  Future<bool> getState(params) async {
+  Future getState(params) async {
     this.mainData();
     this.url = this.url + "shop/get-state";
     var body = json.encode(params);
@@ -355,7 +355,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-          this.storage.setItem("State", data["list"]);
+//          this.storage.setItem("State", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;
@@ -368,9 +368,13 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    return this.status;
+    var param = {
+      "status":this.status,
+      "data":data["list"]
+    };
+    return param;
   }
-  Future<bool> getDistrict(params) async {
+  Future getDistrict(params) async {
     this.mainData();
     this.url = this.url + "shop/get-district";
     var body = json.encode(params);
@@ -383,7 +387,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-          this.storage.setItem("District", data["list"]);
+//          this.storage.setItem("District", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;
@@ -396,7 +400,11 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    return this.status;
+    var param = {
+      "status":this.status,
+      "data":data["list"]
+    };
+    return param;
   }
 
   Future getTownship(params) async {
