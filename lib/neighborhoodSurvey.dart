@@ -9,6 +9,10 @@ import 'package:Surveyor/Services/Online/OnlineServices.dart';
 
 // ignore: must_be_immutable
 class NeighborhoodSurveyScreen extends StatefulWidget {
+  final bool isNeighborhood;
+  final bool isOutside;
+  final bool isInside;
+  final bool isStoreOperater;
   final String storeName;
   final String storeNumber;
   final String address;
@@ -16,8 +20,18 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final String surveyType;
   final String regOrAss;
   final passData;
-  NeighborhoodSurveyScreen(this.storeName, this.storeNumber, this.address,
-      this.surveyStage, this.surveyType,this.regOrAss,this.passData);
+  NeighborhoodSurveyScreen(
+      this.isNeighborhood,
+      this.isOutside,
+      this.isInside,
+      this.isStoreOperater,
+      this.storeName,
+      this.storeNumber,
+      this.address,
+      this.surveyStage,
+      this.surveyType,
+      this.regOrAss,
+      this.passData);
 
   @override
   _NeighborhoodSurveyScreenState createState() =>
@@ -39,7 +53,6 @@ class ImageUploadModel {
 }
 
 class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
-
   bool check1 = false;
   bool check2 = false;
   bool check3 = false;
@@ -51,7 +64,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var groupId2 = "";
   var newQuestionarray = [];
   var _allData = {};
-  _clickDone(){
+  _clickDone() {
     var pssOject = this.widget.passData[0];
     _allData["status"] = true;
     _allData["name"] = pssOject["shopname"];
@@ -68,29 +81,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     // _allData["street"] = pssOject["status"]["street"];
     // _allData["t12"] = pssOject["status"]["t12"];
     // _allData["locationData"] = {
-    //   "locationData":pssOject["status"]["locationData"]["locationData"],						
-		// 	"longitude": pssOject["status"]["locationData"]["longitude"],						
-		// 	"plusCode" : pssOject["status"]["locationData"]["plusCode"],						
-		// 	"minuCode" : pssOject["status"]["locationData"]["minuCode"]	
+    //   "locationData":pssOject["status"]["locationData"]["locationData"],
+    // 	"longitude": pssOject["status"]["locationData"]["longitude"],
+    // 	"plusCode" : pssOject["status"]["locationData"]["plusCode"],
+    // 	"minuCode" : pssOject["status"]["locationData"]["minuCode"]
     // };
-    for(var i=0;i<this.questions.length;i++){
-      
+    for (var i = 0; i < this.questions.length; i++) {
       // print("questions>>"+this.questions[i].toString());
       var loopData = this.questions[i];
-      if(loopData["questionType"]== "Fill in the Blank"){
+      if (loopData["questionType"] == "Fill in the Blank") {
         // print("textbox>>"+loopData.toString());
-      }else if(loopData["questionType"]== "Checkbox"){
-         print("checkbox>>"+loopData.toString());
-      }else if(loopData["questionType"]== "Attach Photograph"){
+      } else if (loopData["questionType"] == "Checkbox") {
+        print("checkbox>>" + loopData.toString());
+      } else if (loopData["questionType"] == "Attach Photograph") {
         // print("photo>>"+loopData.toString());
-      }else if(loopData["questionType"]== "Multiple Choice"){
+      } else if (loopData["questionType"] == "Multiple Choice") {
         // print("radio>>"+loopData.toString());
       }
-     
-      
-      
     }
   }
+
   List<Object> _images = List<Object>();
 
   Future getImageFromCamera(var images) async {
@@ -118,7 +128,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 //        Text("$index")
         for (var q = 0; q < answerList.length; q++)
           RadioListTile(
-            groupValue: this.newQuestionarray[index].toString() == "syskey" ? this.newQuestionarray[index] = answerList[q]["syskey"].toString() : this.newQuestionarray[index] = this.newQuestionarray[index],
+            groupValue: this.newQuestionarray[index].toString() == "syskey"
+                ? this.newQuestionarray[index] =
+                    answerList[q]["syskey"].toString()
+                : this.newQuestionarray[index] = this.newQuestionarray[index],
             title: Text(answerList[q]["t1"].toString()),
             value: answerList[q]["syskey"].toString(),
             onChanged: (aaa) {
@@ -681,12 +694,15 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                         builder: (context) => OutsideInsideNeighborhood(
+                            this.widget.isNeighborhood,
+                            this.widget.isOutside,
+                            this.widget.isInside,
+                            this.widget.isStoreOperater,
                             this.widget.storeName,
                             this.widget.storeNumber,
                             this.widget.address,
-                            this.widget.surveyType,
-                            this.widget.passData
-                             )),
+                            this.widget.regOrAss,
+                            this.widget.passData)),
                   );
                 },
                 child: Container(

@@ -1,3 +1,4 @@
+import 'package:Surveyor/checkNeighborhood.dart';
 import 'package:Surveyor/neighborhoodSurvey.dart';
 import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
@@ -7,6 +8,10 @@ import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'assets/custom_icons_icons.dart';
 
 class OutsideInsideNeighborhood extends StatefulWidget {
+  final bool isNeighborhood;
+  final bool isOutside;
+  final bool isInside;
+  final bool isStoreOperater;
   final String shopName;
   final String shopPhone;
   final String address;
@@ -14,6 +19,10 @@ class OutsideInsideNeighborhood extends StatefulWidget {
   final passData;
 
   OutsideInsideNeighborhood(
+    this.isNeighborhood,
+    this.isOutside,
+    this.isInside,
+    this.isStoreOperater,
     this.shopName,
     this.shopPhone,
     this.address,
@@ -29,26 +38,27 @@ class OutsideInsideNeighborhood extends StatefulWidget {
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   String serveytype;
   OnlineSerives onlineSerives = new OnlineSerives();
-  TextStyle cardHeader(){
+  TextStyle cardHeader() {
     return TextStyle(
-                    height: 1.2,
-                    letterSpacing: 2.0,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w600,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(1.0, 0.0),
-                        blurRadius: 0.0,
-                        color: Colors.black,
-                      ),
-                      Shadow(
-                        offset: Offset(1.0, 2.0),
-                        blurRadius: 2.0,
-                        color: Colors.black45,
-                      ),
-                    ],
-                  );
+      height: 1.2,
+      letterSpacing: 2.0,
+      fontSize: 30,
+      fontWeight: FontWeight.w600,
+      shadows: <Shadow>[
+        Shadow(
+          offset: Offset(1.0, 0.0),
+          blurRadius: 0.0,
+          color: Colors.black,
+        ),
+        Shadow(
+          offset: Offset(1.0, 2.0),
+          blurRadius: 2.0,
+          color: Colors.black45,
+        ),
+      ],
+    );
   }
+
   Widget _statusButton(String text) {
     return GestureDetector(
       onTap: () {},
@@ -60,7 +70,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -91,7 +101,8 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(color: CustomIcons.appbarColor,fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: CustomIcons.appbarColor, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -156,8 +167,8 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
+                if(this.widget.isNeighborhood == true)
                 Container(
-                  
                   child: Card(
                     child: Container(
                       child: Column(
@@ -168,6 +179,10 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         NeighborhoodSurveyScreen(
+                                            this.widget.isNeighborhood,
+                                            this.widget.isOutside,
+                                            this.widget.isInside,
+                                            this.widget.isStoreOperater,
                                             this.widget.shopName,
                                             this.widget.shopPhone,
                                             this.widget.address,
@@ -185,10 +200,8 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                     style: cardHeader(),
                                   )),
                               subtitle: Column(
-
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                
                                   Container(
                                     margin: EdgeInsets.symmetric(vertical: 20),
                                     child: Row(
@@ -209,6 +222,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
+                if(this.widget.isOutside == true)
                 Container(
                   child: Card(
                     child: Container(
@@ -220,11 +234,15 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         NeighborhoodSurveyScreen(
+                                            this.widget.isNeighborhood,
+                                            this.widget.isOutside,
+                                            this.widget.isInside,
+                                            this.widget.isStoreOperater,
                                             this.widget.shopName,
                                             this.widget.shopPhone,
                                             this.widget.address,
                                             "This is text for the instruciotns",
-                                            "Neighborhood Survey",
+                                            "Outside of store",
                                             this.widget.regOrAss,
                                             this.widget.passData),
                                   ),
@@ -243,7 +261,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                     margin: EdgeInsets.symmetric(vertical: 20),
                                     child: Row(
                                       children: <Widget>[
-                                       Expanded(
+                                        Expanded(
                                           child: _statusButton("Status"),
                                         ),
                                         Expanded(
@@ -259,6 +277,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
+                if(this.widget.isInside == true)
                 Container(
                   child: Card(
                     child: Container(
@@ -270,11 +289,15 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         NeighborhoodSurveyScreen(
+                                            this.widget.isNeighborhood,
+                                            this.widget.isOutside,
+                                            this.widget.isInside,
+                                            this.widget.isStoreOperater,
                                             this.widget.shopName,
                                             this.widget.shopPhone,
                                             this.widget.address,
                                             "This is text for the instruciotns",
-                                            "Neighborhood Survey",
+                                            "Inside of Store",
                                             this.widget.regOrAss,
                                             this.widget.passData),
                                   ),
@@ -288,13 +311,12 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                   )),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                
                                 children: <Widget>[
                                   Container(
                                     margin: EdgeInsets.symmetric(vertical: 20),
                                     child: Row(
                                       children: <Widget>[
-                                      Expanded(
+                                        Expanded(
                                           child: _statusButton("Status"),
                                         ),
                                         Expanded(
@@ -310,6 +332,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
+                if(this.widget.isStoreOperater == true)
                 Container(
                   child: Card(
                     child: Container(
@@ -321,11 +344,15 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         NeighborhoodSurveyScreen(
+                                            this.widget.isNeighborhood,
+                                            this.widget.isOutside,
+                                            this.widget.isInside,
+                                            this.widget.isStoreOperater,
                                             this.widget.shopName,
                                             this.widget.shopPhone,
                                             this.widget.address,
                                             "This is text for the instruciotns",
-                                            "Neighborhood Survey",
+                                            "Store Operator",
                                             this.widget.regOrAss,
                                             this.widget.passData),
                                   ),
@@ -373,7 +400,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                 onTap: () {
                   print("asdfasdfasdf");
                   Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => StoreScreen()),
+                    MaterialPageRoute(builder: (context) => CheckNeighborhoodScreen(this.widget.shopName,this.widget.shopPhone,this.widget.address,this.widget.regOrAss,this.widget.passData)),
                   );
                 },
                 child: Container(

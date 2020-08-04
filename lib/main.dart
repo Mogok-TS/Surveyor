@@ -1,10 +1,9 @@
-import 'package:Surveyor/stores.dart';
-import 'package:Surveyor/stores_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'Register/login.dart';
 import 'assets/custom_icons_icons.dart';
+import 'checkNeighborhood.dart';
 
 void main() {
   runApp(MyApp());

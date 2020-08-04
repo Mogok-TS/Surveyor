@@ -17,6 +17,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'Services/GeneralUse/PhoneNumber.dart';
 import 'assets/custom_icons_icons.dart';
+import 'checkNeighborhood.dart';
 import 'neighborhoodSurvey.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
@@ -923,27 +924,22 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     if (this.updateStatus == true) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                           builder: (context) => 
-                           NeighborhoodSurveyScreen(
-                                            this.shopName.text,
-                                            this.shopPhoneNo.text,
-                                            this.street.text,
-                                            "This is text for the instruciotns",
-                                            "Neighborhood Survey",
-                                            this.widget.regOrAss,
-                                            this.widget.passData)
-                          //  OutsideInsideNeighborhood(
-                          //   this.shopName.text,
-                          //   this.shopNamemm.text,
-                          //   this.shopPhoneNo.text,
-                          //   this.ownerName.text,
-                          //   this.ownerPhoneNo.text,
-                          //   this.street.text,
-                          //   this.plusCode,
-                          //   this.widget.regOrAss,
-                          //   this.widget.passData,
-                          // ),
-                        ),
+                            builder: (context) => 
+                            
+                            CheckNeighborhoodScreen(this.shopName.text,
+                                                this.shopPhoneNo.text, this.street.text , "register",this.widget.passData)
+                            //  OutsideInsideNeighborhood(
+                            //   this.shopName.text,
+                            //   this.shopNamemm.text,
+                            //   this.shopPhoneNo.text,
+                            //   this.ownerName.text,
+                            //   this.ownerPhoneNo.text,
+                            //   this.street.text,
+                            //   this.plusCode,
+                            //   this.widget.regOrAss,
+                            //   this.widget.passData,
+                            // ),
+                            ),
                       );
                     }
                   },

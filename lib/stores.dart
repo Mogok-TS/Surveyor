@@ -2,6 +2,7 @@ import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Loading/LoadingServices.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
+import 'package:Surveyor/checkNeighborhood.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -124,8 +125,10 @@ class _StoreScreenState extends State<StoreScreen>  {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            OutsideInsideNeighborhood(storeName,
-                                                phone, address, "none",[data]),
+                                            CheckNeighborhoodScreen(storeName,
+                                                phone, address, "assign",[data]),
+                                            // OutsideInsideNeighborhood(storeName,
+                                            //     phone, address, "none",[data]),
                                       ),
                                     );
                                   },
