@@ -45,6 +45,11 @@ class OnlineSerives {
     }
   }
 
+  Servererror(code) {
+    this.serverErr = "Server error. [" + code + "]";
+    return this.serverErr;
+  }
+
   Future<bool> loginData(param) async {
     this.mainData();
     this.url = this.url + "main/logindebug/mit";
@@ -337,8 +342,159 @@ class OnlineSerives {
     return this.status;
   }
 
-  Servererror(code) {
-    this.serverErr = "Server error. [" + code + "]";
-    return this.serverErr;
+  Future<bool> getState(params) async {
+    this.mainData();
+    this.url = this.url + "shop/get-state";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+          this.storage.setItem("State", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    return this.status;
+  }
+  Future<bool> getDistrict(params) async {
+    this.mainData();
+    this.url = this.url + "shop/get-district";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+          this.storage.setItem("District", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    return this.status;
+  }
+
+  Future getTownship(params) async {
+    this.mainData();
+    this.url = this.url + "shop/get-township";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+//          this.storage.setItem("State", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    var param = {
+      "status":this.status,
+      "data":data["list"]
+    };
+    return param;
+  }
+
+  Future getTown(params) async {
+    this.mainData();
+    this.url = this.url + "shop/get-town";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+//          this.storage.setItem("State", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    var param = {
+      "status":this.status,
+      "data":data["list"]
+    };
+    return param;
+  }
+
+  Future getWard(params) async {
+    this.mainData();
+    this.url = this.url + "shop/get-ward";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+//          this.storage.setItem("State", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    var param = {
+      "status":this.status,
+      "data":data["list"]
+    };
+    return param;
   }
 }
