@@ -29,7 +29,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
     Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => StoreScreen()),
                   );
-    return true; // return true if the route to be popped
+    return false; // return true if the route to be popped
 }
   TextStyle cardHeader(){
     return TextStyle(
@@ -53,15 +53,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    // onWillPop: () {
-
     
-
-    //   Navigator.of(context).pushReplacement(
-    //                 MaterialPageRoute(builder: (context) => CheckNeighborhoodScreen(this.widget.shopName,this.widget.shopPhone,this.widget.address,this.widget.regOrAss,this.widget.passData)),
-    //               );
-    //               return true;
-    // },
     return WillPopScope(
           child: Scaffold(
         
@@ -296,7 +288,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
           ],
         ),
       ),
-        onWillPop: _willPopCallback,
+        onWillPop: () async => false,
 
     );
   }
