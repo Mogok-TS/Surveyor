@@ -256,6 +256,45 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
           ),
 
         ),
+         bottomNavigationBar: new BottomNavigationBar(
+          backgroundColor: CustomIcons.appbarColor,
+          items: [
+            new BottomNavigationBarItem(
+              icon: new Container(),
+              title: InkWell(
+                onTap: () {
+                  print("asdfasdfasdf");
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => StoreScreen()),
+                  );
+                },
+                child: Container(
+                  height: 40,
+                  width: 300,
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Center(
+                    child: new Text(
+                      "Back",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 15),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Container(),
+              title: new Container(),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Container(),
+              title: new Container(),
+            ),
+          ],
+        ),
       ),
         onWillPop: _willPopCallback,
 
