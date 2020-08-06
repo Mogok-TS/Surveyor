@@ -1,7 +1,6 @@
 import 'dart:io' as io;
 import 'package:Surveyor/assets/circle_icons.dart';
 import 'package:Surveyor/assets/location_icons.dart';
-import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'Services/GeneralUse/PhoneNumber.dart';
 import 'assets/custom_icons_icons.dart';
 import 'checkNeighborhood.dart';
-import 'neighborhoodSurvey.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
   final String regOrAss;
@@ -75,7 +73,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       } else {
         this.updateDataarray = this.storeRegistration;
       }
-      print("${updateDataarray}");
+
       if (this.updateDataarray.length == 0) {
         this.updateStatus = false;
         Future.delayed(const Duration(milliseconds: 500), () {
@@ -91,7 +89,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                   setState(() {
                     this.plusCode = "${value1["data"]["plusCode"]}";
                     hideLoadingDialog();
-                    print("${value1}");
                   }),
                 },
               );
@@ -113,8 +110,70 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
 
         print("shopSyskey--> $shopSyskey");
       }
+      _getState();
     });
 //    });
+  }
+
+  _getState() {
+    var params = {"id": "0", "code": "", "description": "", "parentid": "0"};
+    onlineSerives.getState(params).then((value) => {
+          stateObject = value["data"],
+          for (var i = 0; i < stateObject.length; i++)
+            {
+              _stateList.add(stateObject[i]["description"]),
+            }
+        });
+  }
+
+  _getDistrict(params) {
+    _districtList = [
+      "District",
+    ];
+    _district = "District";
+    if (params != null) {
+      onlineSerives.getDistrict(params).then((val) => {
+        print(val.toString()),
+            districtObject = val["data"],
+            for (var i = 0; i < districtObject.length; i++)
+              {
+                setState(() {
+                  _districtList.add(districtObject[i]["description"]);
+                }),
+              },
+          });
+    } else {
+      setState(() {
+        _districtList = [
+        "District",
+      ];
+      });
+      
+    }
+  }
+  _getTownShip(params){
+     _townShipList = [
+      "TownShip",
+    ];
+    if (params != null) {
+      onlineSerives.getTownship(params).then((val) => {
+        print(val.toString()),
+            townShipObject = val["data"],
+            for (var i = 0; i < townShipObject.length; i++)
+              {
+                setState(() {
+                  _townShipList.add(townShipObject[i]["description"]);
+                }),
+              },
+          });
+    } else {
+      setState(() {
+        _townShipList = [
+        "District",
+      ];
+      });
+      
+    }
   }
 
   Future getImageFromCamera() async {
@@ -222,34 +281,27 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     }
   }
 
-  Widget buildState() {
-    var data;
-    return DropdownMenuItem(
-      child: Text(data["name"].toString()),
-      value: data["name"].toString(),
-    );
-  }
-
-  List _stateList = [
-    {"name": "State",
-      "name1":"asdfasdf"
-    },
-    {"name": "123",
-      "name1":"asdfasdf"
-    },
-    {"name": "sdfsdff",
-      "name1":"asdfasdf"
-    }
-  ];
+  List<String> _stateList = ['State'];
   String _state = 'State';
+  var stateObject;
+  var _stateCode;
+  var _stateId;
+
   List<String> _districtList = [
     'District',
   ];
   String _district = "District";
+  var districtObject;
+  var _districtCode;
+  var _districtId;
+
   List<String> _townShipList = [
     'TownShip',
   ];
   String _townShip = 'TownShip';
+   var townShipObject;
+  var _townShipCode;
+  var _townShipId;
   List<String> _townOrVillagetractList = [
     'Town/Village Tract?',
     'Town',
@@ -447,20 +499,42 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
                             isExpanded: true,
-                            value: _state,
                             items: _stateList.map(
-                                  (val) {
-                                    var aa = [val];
-                                    print("${aa}");
+                              (val) {
                                 return DropdownMenuItem(
-                                  value: aa[0]["name"].toString(),
-                                  child: Text(aa[0]["name"].toString()),
+                                  value: val,
+                                  child: Text(val),
                                 );
                               },
                             ).toList(),
+                            value: _state,
                             onChanged: (value) {
                               setState(() {
                                 _state = value;
+                                for (var i = 0; i < stateObject.length; i++) {
+                                  if (_state == stateObject[i]["description"]) {
+                                    var data = {
+                                      "id": "0",
+                                      "code": "",
+                                      "description": "",
+                                      "parentid": stateObject[i]["id"]
+                                    };
+                                    print(data.toString());
+                                    _stateId = stateObject[i]["id"];
+                                    _stateCode = stateObject[i]["code"];
+                                    _getDistrict(data);
+                                    break;
+                                  } else if (_state == "State") {
+                                    _district = "District";
+                                    _districtList = ["District"];
+                                    _townShip = "TownShip";
+                                    _townShipList = ["TownShip"];
+                                    _stateId = "";
+                                    _stateCode = "";
+                                    _getDistrict(null);
+                                    break;
+                                  }
+                                }
                               });
                             },
                           ),
@@ -501,6 +575,26 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             onChanged: (value) {
                               setState(() {
                                 _district = value;
+                                 for (var i = 0; i < districtObject.length; i++) {
+                                  if (_district == districtObject[i]["description"]) {
+                                    var data = {
+                                      "id": "0",
+                                      "code": "",
+                                      "description": "",
+                                      "parentid": districtObject[i]["id"]
+                                    };
+                                    print(data.toString());
+                                    _districtId = districtObject[i]["id"];
+                                    _districtCode = districtObject[i]["code"];
+                                     _getTownShip(data);
+                                    break;
+                                  } else if (_district == "District") {
+                                    _districtId = "";
+                                    _districtCode = "";
+                                    _getTownShip(null);
+                                    break;
+                                  }
+                                }
                               });
                             },
                           ),
