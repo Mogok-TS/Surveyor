@@ -133,7 +133,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     _district = "District";
     if (params != null) {
       onlineSerives.getDistrict(params).then((val) => {
-        print(val.toString()),
+            print(val.toString()),
             districtObject = val["data"],
             for (var i = 0; i < districtObject.length; i++)
               {
@@ -145,34 +145,74 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     } else {
       setState(() {
         _districtList = [
-        "District",
-      ];
+          "District",
+        ];
       });
-      
     }
   }
-  _getTownShip(params){
-     _townShipList = [
+
+  _getTownShip(params) {
+    _townShipList = [
       "TownShip",
     ];
     if (params != null) {
       onlineSerives.getTownship(params).then((val) => {
-        print(val.toString()),
+            print(val.toString()),
             townShipObject = val["data"],
             for (var i = 0; i < townShipObject.length; i++)
               {
                 setState(() {
                   _townShipList.add(townShipObject[i]["description"]);
+                  print("Hello" + townShipObject[i]["id"]);
                 }),
               },
           });
     } else {
       setState(() {
         _townShipList = [
-        "District",
-      ];
+          "District",
+        ];
       });
-      
+    }
+  }
+
+  getTownWard() {
+    if (_townOrVillagetract == 'Town') {
+      var params = {
+        "id": "0",
+        "code": "",
+        "description": "Town",
+        "parentid": "0"
+      };
+      onlineSerives.getTown(params).then(
+            (value) => {
+              townData = value['data'],
+              for (var i = 0; i < townData.length; i++)
+                {
+                  setState(() {
+                    _townList.add(townData[i]["description"]);
+                  })
+                }
+            },
+          );
+    } else if (_townOrVillagetract == 'Village Tract') {
+      var wardList = {
+        "id": "0",
+        "code": "",
+        "description": "Ward",
+        "parentid": "0"
+      };
+      onlineSerives.getWard(wardList).then(
+            (value) => {
+              wardData = value['data'],
+              for (var i = 0; i < wardData.length; i++)
+                {
+                  setState(() {
+                    _wardList.add(wardData[i]["description"]);
+                  })
+                }
+            },
+          );
     }
   }
 
@@ -299,24 +339,25 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     'TownShip',
   ];
   String _townShip = 'TownShip';
-   var townShipObject;
+  var townShipObject;
   var _townShipCode;
   var _townShipId;
+
   List<String> _townOrVillagetractList = [
     'Town/Village Tract?',
     'Town',
-    'Village',
     'Village Tract',
   ];
   String _townOrVillagetract = 'Town/Village Tract?';
 
-  List<String> _townList = [
-    'Town',
-  ];
+  var townBool = false;
+  var townData;
+  List<String> _townList = ['Town'];
   String _town = "Town";
-  List<String> _villageOrWardList = ['Village/Ward?', 'Village', 'Ward'];
-  String _villageOrWard = 'Village/Ward?';
-  List<String> _wardList = ["Ward", "Ward1", "Ward2", "Ward3", "ward4"];
+
+  var wardBool = false;
+  var wardData;
+  List<String> _wardList = ["Ward"];
   String _ward = "Ward";
 
   @override
@@ -575,8 +616,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             onChanged: (value) {
                               setState(() {
                                 _district = value;
-                                 for (var i = 0; i < districtObject.length; i++) {
-                                  if (_district == districtObject[i]["description"]) {
+                                for (var i = 0;
+                                    i < districtObject.length;
+                                    i++) {
+                                  if (_district ==
+                                      districtObject[i]["description"]) {
                                     var data = {
                                       "id": "0",
                                       "code": "",
@@ -586,7 +630,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     print(data.toString());
                                     _districtId = districtObject[i]["id"];
                                     _districtCode = districtObject[i]["code"];
-                                     _getTownShip(data);
+                                    _getTownShip(data);
                                     break;
                                   } else if (_district == "District") {
                                     _districtId = "";
@@ -675,6 +719,18 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             onChanged: (value) {
                               setState(() {
                                 _townOrVillagetract = value;
+                                getTownWard();
+                                if (_townOrVillagetract == "Town") {
+                                  this.townBool = true;
+                                  this.wardBool = false;
+                                } else if (_townOrVillagetract ==
+                                    "Village Tract") {
+                                  this.wardBool = true;
+                                  this.townBool = false;
+                                } else if (_townOrVillagetract == "Town/Village Tract?"){
+                                  this.wardBool = false;
+                                  this.townBool = false;
+                                }
                               });
                             },
                           ),
@@ -689,126 +745,88 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       ),
                     ],
                   ),
-                  Stack(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
+                  if (townBool == true)
+                    Stack(
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(color: Colors.grey, width: 1),
+                            ),
                           ),
-                        ),
-                        padding: EdgeInsets.only(left: 44.0),
-                        margin:
-                            EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            isExpanded: true,
-                            items: _townList.map(
-                              (val) {
-                                return DropdownMenuItem(
-                                  value: val,
-                                  child: Text(val),
-                                );
+                          padding: EdgeInsets.only(left: 44.0),
+                          margin: EdgeInsets.only(
+                              top: 20.0, left: 16.0, right: 16.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              isExpanded: true,
+                              items: _townList.map(
+                                (val) {
+                                  return DropdownMenuItem(
+                                    value: val,
+                                    child: Text(val),
+                                  );
+                                },
+                              ).toList(),
+                              value: _town,
+                              onChanged: (value) {
+                                setState(() {
+                                  _town = value;
+                                });
                               },
-                            ).toList(),
-                            value: _town,
-                            onChanged: (value) {
-                              setState(() {
-                                _town = value;
-                              });
-                            },
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                        child: Icon(
-                          Icons.location_on,
-                          color: CustomIcons.iconColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
+                        Container(
+                          margin: EdgeInsets.only(top: 35.0, left: 28.0),
+                          child: Icon(
+                            Icons.location_on,
+                            color: CustomIcons.iconColor,
                           ),
                         ),
-                        padding: EdgeInsets.only(left: 44.0),
-                        margin:
-                            EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            isExpanded: true,
-                            items: _villageOrWardList.map(
-                              (val) {
-                                return DropdownMenuItem(
-                                  value: val,
-                                  child: Text(val),
-                                );
+                      ],
+                    ),
+                  if (wardBool == true)
+                    Stack(
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(color: Colors.grey, width: 1),
+                            ),
+                          ),
+                          padding: EdgeInsets.only(left: 44.0),
+                          margin: EdgeInsets.only(
+                              top: 20.0, left: 16.0, right: 16.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              isExpanded: true,
+                              items: _wardList.map(
+                                (val) {
+                                  return DropdownMenuItem(
+                                    value: val,
+                                    child: Text(val),
+                                  );
+                                },
+                              ).toList(),
+                              value: _ward,
+                              onChanged: (value) {
+                                setState(() {
+                                  _ward = value;
+                                });
                               },
-                            ).toList(),
-                            value: _villageOrWard,
-                            onChanged: (value) {
-                              setState(() {
-                                _villageOrWard = value;
-                              });
-                            },
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                        child: Icon(
-                          Icons.not_listed_location,
-                          color: CustomIcons.iconColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
+                        Container(
+                          margin: EdgeInsets.only(top: 35.0, left: 28.0),
+                          child: Icon(
+                            Icons.location_on,
+                            color: CustomIcons.iconColor,
                           ),
                         ),
-                        padding: EdgeInsets.only(left: 44.0),
-                        margin:
-                            EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            isExpanded: true,
-                            items: _wardList.map(
-                              (val) {
-                                return DropdownMenuItem(
-                                  value: val,
-                                  child: Text(val),
-                                );
-                              },
-                            ).toList(),
-                            value: _ward,
-                            onChanged: (value) {
-                              setState(() {
-                                _ward = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                        child: Icon(
-                          Icons.location_on,
-                          color: CustomIcons.iconColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   Container(
                     margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
                     // margin: EdgeInsets.fromLTRB(23, 20, 20, 20),
