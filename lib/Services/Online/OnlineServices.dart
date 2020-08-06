@@ -37,11 +37,11 @@ class OnlineSerives {
   void URL() {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
-//      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+//      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
       this
           .storage
-          .setItem('URL', "http://52.253.88.71:8084/madbrepository/");
+          .setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
     }
   }
 
@@ -123,6 +123,7 @@ class OnlineSerives {
   }
 
   Future<bool> getStores(params) async {
+    print("${params}");
     this.mainData();
     this.url = this.url + "shop/getshopall";
     var body = json.encode(params);
@@ -310,6 +311,7 @@ class OnlineSerives {
   }
 
   Future getsvrShoplist(params) async {
+    print(("${params}"));
     this.mainData();
     this.url = this.url + "/shop/get-svr-shoplist";
     var body = json.encode(params);
@@ -487,6 +489,39 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
 //          this.storage.setItem("State", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    var param = {
+      "status":this.status,
+      "data":data["list"]
+    };
+    return param;
+  }
+
+  Future getHeaderList(params) async {
+    this.mainData();
+    this.url = this.url + "surveyor/allSurveyorHeaderList";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+//          this.storage.setItem("HeaderList", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;

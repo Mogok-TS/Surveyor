@@ -222,7 +222,25 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     }
   }
 
-  List<String> _stateList = ['State'];
+  Widget buildState() {
+    var data;
+    return DropdownMenuItem(
+      child: Text(data["name"].toString()),
+      value: data["name"].toString(),
+    );
+  }
+
+  List _stateList = [
+    {"name": "State",
+      "name1":"asdfasdf"
+    },
+    {"name": "123",
+      "name1":"asdfasdf"
+    },
+    {"name": "sdfsdff",
+      "name1":"asdfasdf"
+    }
+  ];
   String _state = 'State';
   List<String> _districtList = [
     'District',
@@ -429,15 +447,17 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
                             isExpanded: true,
+                            value: _state,
                             items: _stateList.map(
-                              (val) {
+                                  (val) {
+                                    var aa = [val];
+                                    print("${aa}");
                                 return DropdownMenuItem(
-                                  value: val,
-                                  child: Text(val),
+                                  value: aa[0]["name"].toString(),
+                                  child: Text(aa[0]["name"].toString()),
                                 );
                               },
                             ).toList(),
-                            value: _state,
                             onChanged: (value) {
                               setState(() {
                                 _state = value;
@@ -924,10 +944,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     if (this.updateStatus == true) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                            builder: (context) => 
-                            
-                            CheckNeighborhoodScreen(this.shopName.text,
-                                                this.shopPhoneNo.text, this.street.text , "register",this.widget.passData)
+                            builder: (context) => CheckNeighborhoodScreen(
+                                this.shopName.text,
+                                this.shopPhoneNo.text,
+                                this.street.text,
+                                "register",
+                                this.widget.passData)
                             //  OutsideInsideNeighborhood(
                             //   this.shopName.text,
                             //   this.shopNamemm.text,

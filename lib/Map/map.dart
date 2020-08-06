@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,19 +6,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../stores.dart';
 
-
-class Gmap extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Google Maps Demo',
-      home: GmapS(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 class GmapS extends StatefulWidget {
+  double lati;
+  double long;
+  GmapS({Key key, @required this.lati, @required this.long}) : super(key: key);
   @override
   State<GmapS> createState() => MapSampleState();
 }
@@ -30,10 +19,7 @@ class MapSampleState extends State<GmapS> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Geolocator geolocator = Geolocator();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(21.954510, 96.093292),
-    zoom: 10.0,
-  );
+  static CameraPosition _kGooglePlex;
 
   void toUserLocation() {
     _getLocation().then((value) {
@@ -75,6 +61,27 @@ class MapSampleState extends State<GmapS> {
     });
   }
 
+  Future<void> createNewMarker(double lati, double long) async {
+      final GoogleMapController controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          bearing: 0.0,
+          target: LatLng(lati, long),
+          tilt: 0.0,
+          zoom: 18.5)));
+
+      final MarkerId markerId = MarkerId("1");
+
+      final Marker marker = Marker(
+          markerId: markerId,
+          position: LatLng(lati, long),
+          infoWindow: InfoWindow(title: "current position"),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure));
+      setState(() {
+        markers[markerId] = marker;
+      });
+  }
+
   Future<Position> _getLocation() async {
     var currentLocation;
     try {
@@ -105,17 +112,29 @@ class MapSampleState extends State<GmapS> {
           _getAddress(value).then((val) async {
             if (value.latitude != null && value.longitude != null) {
               List addressList = [
-                {"Name": "i Mart", "lati": (value.latitude + 0.0001000), "long": (value.longitude + 0.0001000)},
-                {"Name": "Queen Mart", "lati": (value.latitude + 0.0002000), "long": (value.longitude + 0.0003000)},
-                {"Name": "Pyae Wa", "lati": (value.latitude + 0.0004000), "long": (value.longitude + 0.0006000)}
+                {
+                  "Name": "i Mart",
+                  "lati": (value.latitude + 0.0001000),
+                  "long": (value.longitude + 0.0001000)
+                },
+                {
+                  "Name": "Queen Mart",
+                  "lati": (value.latitude + 0.0002000),
+                  "long": (value.longitude + 0.0003000)
+                },
+                {
+                  "Name": "Pyae Wa",
+                  "lati": (value.latitude + 0.0004000),
+                  "long": (value.longitude + 0.0006000)
+                }
               ];
               for (var i = 0; i < addressList.length; i++) {
                 final MarkerId markerId = MarkerId("id is $i");
 
                 final Marker marker = Marker(
                     markerId: markerId,
-                    position: LatLng(addressList[i]["lati"],
-                        addressList[i]["long"]),
+                    position:
+                        LatLng(addressList[i]["lati"], addressList[i]["long"]),
                     infoWindow: InfoWindow(title: addressList[i]["Name"]),
                     icon: BitmapDescriptor.defaultMarkerWithHue(
                         BitmapDescriptor.hueRed));
@@ -141,6 +160,10 @@ class MapSampleState extends State<GmapS> {
     super.initState();
     locationFromServer();
     toUserLocation();
+    _kGooglePlex = CameraPosition(
+      target: LatLng(widget.lati, widget.long),
+      zoom: 10.0,
+    );
   }
 
   @override
@@ -180,6 +203,10 @@ class MapSampleState extends State<GmapS> {
                 _controller.complete(controller);
               },
               markers: Set<Marker>.of(markers.values),
+              onTap: (latLong) {
+                print(latLong);
+                createNewMarker(latLong.latitude, latLong.longitude);
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 10),

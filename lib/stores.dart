@@ -6,6 +6,7 @@ import 'package:Surveyor/checkNeighborhood.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -30,6 +31,7 @@ class _StoreScreenState extends State<StoreScreen>  {
   bool showRegisterStore = false;
   var performType, performTypearray;
   OnlineSerives onlineSerives = new OnlineSerives();
+  Geolocator geolocator = Geolocator();
 
   RoundedRectangleBorder buttonShape() {
     return RoundedRectangleBorder(
@@ -313,11 +315,35 @@ class _StoreScreenState extends State<StoreScreen>  {
                 IconButton(
                   icon: Icon(Icons.map),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => Gmap(),
-                      ),
-                    );
+                    showLoading();
+                    _getLocation().then((value) {
+                      setState(() {
+                        if (value == null) {
+                          print(value);
+                        } else {
+                          _getAddress(value).then((val) async {
+                            if (value.latitude != null &&
+                                value.longitude != null) {
+                              print(value);
+                              hideLoadingDialog();
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => GmapS(
+                                      lati: value.latitude,
+                                      long: value.longitude),
+                                ),
+                              );
+                            } else {
+                              print(val);
+                            }
+                          }).catchError((error) {
+                            print(error);
+                          });
+                        }
+                      });
+                    }).catchError((error) {
+                      print(error);
+                    });
                   },
                 )
               ],
@@ -603,5 +629,26 @@ class _StoreScreenState extends State<StoreScreen>  {
             )),
       ),
     );
+  }
+
+  Future<Position> _getLocation() async {
+    var currentLocation;
+    try {
+      currentLocation = await geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+    } catch (e) {
+      currentLocation = null;
+    }
+    return currentLocation;
+  }
+
+  Future<String> _getAddress(Position pos) async {
+    List<Placemark> placemarks = await Geolocator()
+        .placemarkFromCoordinates(pos.latitude, pos.longitude);
+    if (placemarks != null && placemarks.isNotEmpty) {
+      final Placemark pos = placemarks[0];
+      return pos.thoroughfare + ', ' + pos.locality;
+    }
+    return "";
   }
 }
