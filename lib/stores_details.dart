@@ -94,7 +94,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
         this.updateStatus = false;
       } else {
         this.updateStatus = true;
-        this.shopSyskey = this.updateDataarray[0]["2006260508497800827"].toString();
+        if(this.widget.regOrAss == "assign"){
+           this.shopSyskey = this.updateDataarray[0]["2006260508497800827"].toString();
         this.shopName.text = this.updateDataarray[0]["shopname"].toString();
         this.shopNamemm.text = this.updateDataarray[0]["shopnamemm"].toString();
         this.shopPhoneNo.text =
@@ -103,6 +104,19 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
         this.ownerPhoneNo.text =
             this.updateDataarray[0]["personph"].toString();
         this.street.text = this.updateDataarray[0]["street"].toString();
+        }else if(this.widget.regOrAss == "register"){
+          this.updateStatus = true;
+        this.shopSyskey = this.updateDataarray[0]["id"].toString();
+        this.shopName.text = this.updateDataarray[0]["name"].toString();
+        this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
+        this.shopPhoneNo.text =
+            this.updateDataarray[0]["phoneNumber"].toString();
+        this.ownerName.text = this.updateDataarray[0]["personName"].toString();
+        this.ownerPhoneNo.text =
+            this.updateDataarray[0]["personPhoneNumber"].toString();
+        this.street.text = this.updateDataarray[0]["street"].toString();
+        }
+       
         
         print("shopSyskey--> $shopSyskey");
       }
