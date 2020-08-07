@@ -2,10 +2,13 @@ import 'package:Surveyor/Services/Loading/LoadingServices.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:Surveyor/stores.dart';
+import 'package:Surveyor/stores_details.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 
+import 'Services/GeneralUse/Geolocation.dart';
+import 'Services/Messages/Messages.dart';
 import 'assets/custom_icons_icons.dart';
 
 class CheckNeighborhoodScreen extends StatefulWidget {
@@ -13,7 +16,7 @@ class CheckNeighborhoodScreen extends StatefulWidget {
   final String shopPhone;
   final String address;
   final String regOrAss;
-  final passData;
+  var passData;
 
   CheckNeighborhoodScreen(
     this.shopName,
@@ -31,16 +34,6 @@ class CheckNeighborhoodScreen extends StatefulWidget {
 class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   OnlineSerives onlineSerives = new OnlineSerives();
   var headerList;
-
-  Future<bool> _willPopCallback() async {
-    // await showDialog or Show add banners or whatever
-    // then
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => StoreScreen()),
-    );
-    return false; // return true if the route to be popped
-  }
-
   TextStyle cardHeader() {
     return TextStyle(
       height: 1.2,
@@ -325,9 +318,20 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 title: InkWell(
                   onTap: () {
                     print("asdfasdfasdf");
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => StoreScreen()),
-                    );
+                     getGPSstatus().then((status) => {
+                                    print("$status"),
+                                    if (status == true)
+                                      {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                StoresDetailsScreen(this.widget.passData,false,"assign"),
+                                          ),
+                                        ),
+                                      }
+                                    else
+                                      {ShowToast("Please open GPS")}
+                                  });
                   },
                   child: Container(
                     height: 40,

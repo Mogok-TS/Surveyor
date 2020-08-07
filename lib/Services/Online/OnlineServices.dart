@@ -46,7 +46,7 @@ class OnlineSerives {
   }
 
   Servererror(code) {
-    this.serverErr = "Server error. [" + code + "]";
+    this.serverErr = "Server error. [" + code.toString() + "]";
     return this.serverErr;
   }
 

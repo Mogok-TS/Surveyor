@@ -58,12 +58,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   double longitude = 0;
   double latitude = 0;
   var createRegistration;
-
   @override
   void initState() {
     super.initState();
 
     setState(() {
+      print("??>> ${this.widget.passData}");
       this.storeRegistration = this.widget.passData;
       if (this.storeRegistration.length == 0) {
         this.updateStatus = this.widget.updateStatuspass;
@@ -73,10 +73,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       } else {
         this.updateDataarray = this.storeRegistration;
       }
-
-      if (this.updateDataarray.length == 0) {
-        this.updateStatus = false;
-        Future.delayed(const Duration(milliseconds: 500), () {
+       Future.delayed(const Duration(milliseconds: 500), () {
           showLoading();
         });
         getCurrentLocation().then((k) {
@@ -93,21 +90,20 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 },
               );
         });
+      if (this.updateDataarray.length == 0) {
+        this.updateStatus = false;
       } else {
         this.updateStatus = true;
-        this.shopSyskey = this.updateDataarray[0]["id"].toString();
-        this.shopName.text = this.updateDataarray[0]["name"].toString();
-        this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
+        this.shopSyskey = this.updateDataarray[0]["2006260508497800827"].toString();
+        this.shopName.text = this.updateDataarray[0]["shopname"].toString();
+        this.shopNamemm.text = this.updateDataarray[0]["shopnamemm"].toString();
         this.shopPhoneNo.text =
-            this.updateDataarray[0]["phoneNumber"].toString();
-        this.ownerName.text = this.updateDataarray[0]["personName"].toString();
+            this.updateDataarray[0]["phoneno"].toString();
+        this.ownerName.text = this.updateDataarray[0]["personname"].toString();
         this.ownerPhoneNo.text =
-            this.updateDataarray[0]["personPhoneNumber"].toString();
+            this.updateDataarray[0]["personph"].toString();
         this.street.text = this.updateDataarray[0]["street"].toString();
-        this.latitude = this.updateDataarray[0]["locationData"]["latitude"];
-        this.longitude = this.updateDataarray[0]["locationData"]["longitude"];
-        this.plusCode = this.updateDataarray[0]["locationData"]["plusCode"];
-
+        
         print("shopSyskey--> $shopSyskey");
       }
       _getState();

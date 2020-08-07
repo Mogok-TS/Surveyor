@@ -65,7 +65,8 @@ class _StoreScreenState extends State<StoreScreen>  {
       String storeName, String phone, String address, data) {
     this.performType = data["status"];
     this.performTypearray = this.performType["performType"];
-//    print("${performTypearray}");
+    var shopData = [data];
+   print("${shopData}");
     return Container(
       color: Colors.grey[200],
       child: Card(
@@ -124,15 +125,20 @@ class _StoreScreenState extends State<StoreScreen>  {
                                   color: Colors.white,
                                   shape: buttonShape(),
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CheckNeighborhoodScreen(storeName,
-                                                phone, address, "assign",[data]),
-                                            // OutsideInsideNeighborhood(storeName,
-                                            //     phone, address, "none",[data]),
-                                      ),
-                                    );
+                                   getGPSstatus().then((status) => {
+                                    print("$status"),
+                                    if (status == true)
+                                      {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                StoresDetailsScreen(shopData, false,"assign"),
+                                          ),
+                                        ),
+                                      }
+                                    else
+                                      {ShowToast("Please open GPS")}
+                                  });
                                   },
                                   child: Center(
                                     child: Text(
