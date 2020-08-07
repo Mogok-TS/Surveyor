@@ -73,51 +73,53 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       } else {
         this.updateDataarray = this.storeRegistration;
       }
-       Future.delayed(const Duration(milliseconds: 500), () {
-          showLoading();
-        });
-        getCurrentLocation().then((k) {
-          print({"$k"});
-          latitude = k.latitude;
-          longitude = k.longitude;
-          googlePlusparam = {"lat": latitude, "lng": longitude};
-          this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
-                (value1) => {
-                  setState(() {
-                    this.plusCode = "${value1["data"]["plusCode"]}";
-                    hideLoadingDialog();
-                  }),
-                },
-              );
-        });
+      Future.delayed(const Duration(milliseconds: 500), () {
+        showLoading();
+      });
+      getCurrentLocation().then((k) {
+        print({"$k"});
+        latitude = k.latitude;
+        longitude = k.longitude;
+        googlePlusparam = {"lat": latitude, "lng": longitude};
+        this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
+              (value1) => {
+                setState(() {
+                  this.plusCode = "${value1["data"]["plusCode"]}";
+                  hideLoadingDialog();
+                }),
+              },
+            );
+      });
       if (this.updateDataarray.length == 0) {
         this.updateStatus = false;
       } else {
         this.updateStatus = true;
-        if(this.widget.regOrAss == "assign"){
-           this.shopSyskey = this.updateDataarray[0]["2006260508497800827"].toString();
-        this.shopName.text = this.updateDataarray[0]["shopname"].toString();
-        this.shopNamemm.text = this.updateDataarray[0]["shopnamemm"].toString();
-        this.shopPhoneNo.text =
-            this.updateDataarray[0]["phoneno"].toString();
-        this.ownerName.text = this.updateDataarray[0]["personname"].toString();
-        this.ownerPhoneNo.text =
-            this.updateDataarray[0]["personph"].toString();
-        this.street.text = this.updateDataarray[0]["street"].toString();
-        }else if(this.widget.regOrAss == "register"){
+        if (this.widget.regOrAss == "assign") {
+          this.shopSyskey =
+              this.updateDataarray[0]["2006260508497800827"].toString();
+          this.shopName.text = this.updateDataarray[0]["shopname"].toString();
+          this.shopNamemm.text =
+              this.updateDataarray[0]["shopnamemm"].toString();
+          this.shopPhoneNo.text = this.updateDataarray[0]["phoneno"].toString();
+          this.ownerName.text =
+              this.updateDataarray[0]["personname"].toString();
+          this.ownerPhoneNo.text =
+              this.updateDataarray[0]["personph"].toString();
+          this.street.text = this.updateDataarray[0]["street"].toString();
+        } else if (this.widget.regOrAss == "register") {
           this.updateStatus = true;
-        this.shopSyskey = this.updateDataarray[0]["id"].toString();
-        this.shopName.text = this.updateDataarray[0]["name"].toString();
-        this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
-        this.shopPhoneNo.text =
-            this.updateDataarray[0]["phoneNumber"].toString();
-        this.ownerName.text = this.updateDataarray[0]["personName"].toString();
-        this.ownerPhoneNo.text =
-            this.updateDataarray[0]["personPhoneNumber"].toString();
-        this.street.text = this.updateDataarray[0]["street"].toString();
+          this.shopSyskey = this.updateDataarray[0]["id"].toString();
+          this.shopName.text = this.updateDataarray[0]["name"].toString();
+          this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
+          this.shopPhoneNo.text =
+              this.updateDataarray[0]["phoneNumber"].toString();
+          this.ownerName.text =
+              this.updateDataarray[0]["personName"].toString();
+          this.ownerPhoneNo.text =
+              this.updateDataarray[0]["personPhoneNumber"].toString();
+          this.street.text = this.updateDataarray[0]["street"].toString();
         }
-       
-        
+
         print("shopSyskey--> $shopSyskey");
       }
       _getState();
@@ -219,6 +221,40 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 {
                   setState(() {
                     _wardList.add(wardData[i]["description"]);
+                  })
+                }
+            },
+          );
+    }
+  }
+
+  _getTown(params) {
+    if (params != null) {
+      onlineSerives.getTown(params).then(
+            (value) => {
+              townData = value['data'],
+              for (var i = 0; i < townData.length; i++)
+                {
+                  setState(() {
+                    _townList.add(townData[i]["description"]);
+                  }),
+                }
+            },
+          );
+    }
+  }
+
+  _getWard(params) {
+    if (params != null) {
+      onlineSerives.getWard(params).then(
+            (value) => {
+              wardData = value['data'],
+              // print("Value" + wardData.toString()),
+              for (var i = 0; i < wardData.length; i++)
+                {
+                  setState(() {
+                    _wardList.add(wardData[i]["description"]);
+                    // print("Ward List" + _wardList.toString());
                   })
                 }
             },
@@ -331,6 +367,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     }
   }
 
+  var allCode = [];
+  var allAddress = [];
+
   List<String> _stateList = ['State'];
   String _state = 'State';
   var stateObject;
@@ -360,15 +399,17 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   ];
   String _townOrVillagetract = 'Town/Village Tract?';
 
-  var townBool = false;
+  var townCode;
   var townData;
   List<String> _townList = ['Town'];
   String _town = "Town";
 
-  var wardBool = false;
+  var wardCode;
   var wardData;
   List<String> _wardList = ["Ward"];
   String _ward = "Ward";
+
+  var n2Code;
 
   @override
   Widget build(BuildContext context) {
@@ -689,6 +730,26 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             onChanged: (value) {
                               setState(() {
                                 _townShip = value;
+                                for (var i = 0;
+                                    i < townShipObject.length;
+                                    i++) {
+                                  if (_townShip ==
+                                      townShipObject[i]["description"]) {
+                                    var data = {
+                                      "id": "0",
+                                      "code": "",
+                                      "description": "",
+                                      "parentid": townShipObject[i]["id"]
+                                    };
+                                    _townShipId = townShipObject[i]["id"];
+                                    _townShipCode = townShipObject[i]["code"];
+                                    break;
+                                  } else if (_townShip == "TownShip") {
+                                    _townShipId = "";
+                                    _townShipCode = "";
+                                    break;
+                                  }
+                                }
                               });
                             },
                           ),
@@ -729,17 +790,32 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             onChanged: (value) {
                               setState(() {
                                 _townOrVillagetract = value;
-                                getTownWard();
-                                if (_townOrVillagetract == "Town") {
-                                  this.townBool = true;
-                                  this.wardBool = false;
-                                } else if (_townOrVillagetract ==
-                                    "Village Tract") {
-                                  this.wardBool = true;
-                                  this.townBool = false;
-                                } else if (_townOrVillagetract == "Town/Village Tract?"){
-                                  this.wardBool = false;
-                                  this.townBool = false;
+                                for (var i = 0;
+                                    i < townShipObject.length;
+                                    i++) {
+                                  if (value == "Town") {
+                                    n2Code = "1";
+                                    var paramsTown = {
+                                      "id": "0",
+                                      "code": "",
+                                      "description": "",
+                                      "parentid": townShipObject[i]["id"],
+                                      "n2": "1"
+                                    };
+                                    _getTown(paramsTown);
+                                  } else if (value == "Village Tract") {
+                                    n2Code = "2";
+                                    var params = {
+                                      "id": "0",
+                                      "code": "",
+                                      "description": "",
+                                      "parentid": townShipObject[i]["id"],
+                                      "n2": "2"
+                                    };
+                                    _getWard(params);
+                                  } else if (value == "Town/Village Tract?") {
+                                    n2Code = "0";
+                                  }
                                 }
                               });
                             },
@@ -755,7 +831,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       ),
                     ],
                   ),
-                  if (townBool == true)
+                  if (n2Code == "1")
                     Stack(
                       children: <Widget>[
                         Container(
@@ -782,6 +858,21 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   _town = value;
+                                  for (var i = 0; i < townData.length; i++) {
+                                    townCode = townData[i]["code"];
+                                  }
+                                  allCode = [
+                                    townCode.toString(),
+                                    _townShipCode.toString(),
+                                    _districtCode.toString(),
+                                    _stateCode.toString()
+                                  ];
+                                  allAddress = [
+                                    _town.toString(),
+                                    _townShip.toString(),
+                                    _district.toString(),
+                                    _state.toString(),
+                                  ];
                                 });
                               },
                             ),
@@ -796,7 +887,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         ),
                       ],
                     ),
-                  if (wardBool == true)
+                  if (n2Code == "2")
                     Stack(
                       children: <Widget>[
                         Container(
@@ -823,6 +914,21 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   _ward = value;
+                                  for (var i = 0; i < wardData.length; i++) {
+                                    wardCode = wardData[i]["code"];
+                                  }
+                                  allCode = [
+                                    wardCode.toString(),
+                                    _townShipCode.toString(),
+                                    _districtCode.toString(),
+                                    _stateCode.toString()
+                                  ];
+                                  allAddress = [
+                                    _ward.toString(),
+                                    _townShip.toString(),
+                                    _district.toString(),
+                                    _state.toString(),
+                                  ];
                                 });
                               },
                             ),
