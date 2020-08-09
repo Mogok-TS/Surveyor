@@ -20,6 +20,8 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final String surveyType;
   final String regOrAss;
   final passData;
+  final question;
+
   NeighborhoodSurveyScreen(
       this.isNeighborhood,
       this.isOutside,
@@ -31,7 +33,9 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
       this.surveyStage,
       this.surveyType,
       this.regOrAss,
-      this.passData);
+      this.passData,
+      this.question
+      );
 
   @override
   _NeighborhoodSurveyScreenState createState() =>
@@ -64,41 +68,51 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var groupId2 = "";
   var newQuestionarray = [];
   var _allData = {};
-  _clickDone() {
+  
+  _clickDoneAssignStore() {
+    
+    print("allquestion>>??"+this.questions.toString());
+    print("??>>"+this.widget.passData.toString());
     var pssOject = this.widget.passData[0];
-    _allData["status"] = true;
+    _allData["id"] = "0";
+    _allData["active"] = true;
     _allData["name"] = pssOject["shopname"];
     _allData["mmName"] = pssOject["shopnamemm"];
     _allData["personName"] = pssOject["username"];
-    _allData["personPhoneNumber"] = pssOject["phoneno"];
+    _allData["personPhoneNumber"] = pssOject["personph"];
     _allData["phoneNumber"] = pssOject["phoneno"];
-    // _allData["stateId"] = pssOject["status"]["stateId"];
-    // _allData["districtId"] = pssOject["status"]["districtId"];
-    // _allData["townshipId"] = pssOject["status"]["townshipId"];
-    // _allData["townId"] = pssOject["status"]["townId"];
-    // _allData["wardId"] = pssOject["status"]["wardId"];
-    // _allData["address"] = pssOject["status"]["address"];
-    // _allData["street"] = pssOject["status"]["street"];
-    // _allData["t12"] = pssOject["status"]["t12"];
-    // _allData["locationData"] = {
-    //   "locationData":pssOject["status"]["locationData"]["locationData"],
-    // 	"longitude": pssOject["status"]["locationData"]["longitude"],
-    // 	"plusCode" : pssOject["status"]["locationData"]["plusCode"],
-    // 	"minuCode" : pssOject["status"]["locationData"]["minuCode"]
-    // };
+    _allData["stateId"] = pssOject["stateid"];
+    _allData["districtId"] = pssOject["districtid"];
+    _allData["townshipId"] = pssOject["townshipid"];
+    _allData["townId"] = pssOject["townid"];
+    _allData["wardId"] = pssOject["wardid"];
+    _allData["address"] = pssOject["address"];
+    _allData["street"] = pssOject["street"];
+    _allData["t12"] = pssOject["phoneno"];
+    
+    _allData["locationData"] = {
+      "latitude": pssOject["lat"],					
+			"longitude":pssOject["long"],					
+			"plusCode" : pssOject["pluscode"],			
+			"minuCode" : pssOject["mimu"]	
+    };
+    var questionAndAnswer;
+      print("question>>"+questions.toString());
+
     for (var i = 0; i < this.questions.length; i++) {
-      // print("questions>>"+this.questions[i].toString());
       var loopData = this.questions[i];
+      var singleQueAndAns;
       if (loopData["questionType"] == "Fill in the Blank") {
-        // print("textbox>>"+loopData.toString());
+        
       } else if (loopData["questionType"] == "Checkbox") {
-        print("checkbox>>" + loopData.toString());
+
       } else if (loopData["questionType"] == "Attach Photograph") {
-        // print("photo>>"+loopData.toString());
       } else if (loopData["questionType"] == "Multiple Choice") {
-        // print("radio>>"+loopData.toString());
       }
     }
+    _allData["locationData"] = questionAndAnswer;
+    print("alldata>>"+_allData.toString());
+    print("section>>"+this.widget.question.toString());
   }
 
   List<Object> _images = List<Object>();
@@ -118,14 +132,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget buildRadio(var answerList, var questionIndex) {
-//    print("${answerList}");
-    print("${this.newQuestionarray}");
     var index = questionIndex - 1;
-    print("${this.newQuestionarray[index]}");
-//    print("${answerList[0]["syskey"].toString()}");
     return Column(
       children: <Widget>[
-//        Text("$index")
         for (var q = 0; q < answerList.length; q++)
           RadioListTile(
             groupValue: this.newQuestionarray[index].toString() == "syskey"
@@ -137,7 +146,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             onChanged: (aaa) {
               setState(() {
                 this.newQuestionarray[index] = aaa.toString();
-                print("aa2->$index");
               });
             },
           ),
@@ -146,7 +154,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget attachPhotograph(String t1, String t2, var data) {
-    print("param>>>" + data.toString());
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -260,13 +267,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   Widget multipleChoice(String t1, String t2, var answerdata, var radioValues,
       var value, var questionIndex) {
-//    this.newQuestionarray.add("syskey");
-    print("${this.newQuestionarray}");
-    //  print("radioValues>>"+radioValues[0]["value"]);
-    // print("radioValues>>"+radioValues.toString());
-    List fList = radioValues;
-    String id = value;
-    var groupID, groupID2;
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -528,7 +528,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   void initState() {
     super.initState();
 //    if(){} for questionNature
-
+    print("re>>"+this.widget.regOrAss);
     if (this.widget.surveyType == "Neighborhood Survey") {
       this.questionNature = "Neighborhood Survey";
     } else if (this.widget.surveyType == "Outside of Store") {
@@ -548,15 +548,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       "maxRows": "",
       "current": ""
     };
-//    print("${param}");
     this
         .onlineSerives
         .getQuestions(param)
         .then((result) => {
               setState(() {
                 if (result["status"] == true) {
-                  print(result);
                   this.questions = result["data"];
+                  
                   for (var ss = 0; ss < this.questions.length; ss++) {
                     if (this.questions[ss]["questionType"] == "Multiple Choice")
                       this.newQuestionarray.add("syskey");
@@ -585,7 +584,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _widget = attachPhotograph(data['t1'], data['t2'], data["answerList"]);
     }
     if (data["questionType"] == "Multiple Choice") {
-      print("${data["answerList"]}");
       _widget = multipleChoice(data['t1'], data['t2'], data["answerList"],
           data["radioData"], data["radio"], questionIndex);
     }
@@ -690,7 +688,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               icon: new Container(),
               title: InkWell(
                 onTap: () {
-                  print("asdfasdfasdf");
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                         builder: (context) => OutsideInsideNeighborhood(
@@ -702,7 +699,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             this.widget.storeNumber,
                             this.widget.address,
                             this.widget.regOrAss,
-                            this.widget.passData)),
+                            this.widget.passData,
+                            this.widget.question
+                            )),
                   );
                 },
                 child: Container(
@@ -730,7 +729,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               icon: new Container(),
               title: InkWell(
                 onTap: () {
-                  _clickDone();
+                  if(this.widget.regOrAss == "assign"){
+                    setState(() {
+                  _clickDoneAssignStore();
+                    });
+                  }else{
+
+                  }
                   // Navigator.of(context).pushReplacement(
                   //   MaterialPageRoute(
                   //       builder: (context) => OutsideInsideNeighborhood(

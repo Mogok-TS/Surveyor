@@ -17,7 +17,7 @@ class OutsideInsideNeighborhood extends StatefulWidget {
   final String address;
   final String regOrAss;
   final passData;
-
+  final question;
   OutsideInsideNeighborhood(
     this.isNeighborhood,
     this.isOutside,
@@ -28,6 +28,7 @@ class OutsideInsideNeighborhood extends StatefulWidget {
     this.address,
     this.regOrAss,
     this.passData,
+    this.question
   );
 
   @override
@@ -189,7 +190,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             "This is text for the instruciotns",
                                             "Neighborhood Survey",
                                             this.widget.regOrAss,
-                                            this.widget.passData),
+                                            this.widget.passData,
+                                            this.widget.question
+                                            ),
                                   ),
                                 );
                               },
@@ -244,7 +247,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             "This is text for the instruciotns",
                                             "Outside of store",
                                             this.widget.regOrAss,
-                                            this.widget.passData),
+                                            this.widget.passData,
+                                            this.widget.question
+                                            ),
                                   ),
                                 );
                               },
@@ -299,7 +304,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             "This is text for the instruciotns",
                                             "Inside of Store",
                                             this.widget.regOrAss,
-                                            this.widget.passData),
+                                            this.widget.passData,
+                                            this.widget.question
+                                            ),
                                   ),
                                 );
                               },
@@ -354,7 +361,8 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             "This is text for the instruciotns",
                                             "Store Operator",
                                             this.widget.regOrAss,
-                                            this.widget.passData),
+                                            this.widget.passData,
+                                            this.widget.question),
                                   ),
                                 );
                               },

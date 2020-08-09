@@ -38,10 +38,12 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
     var isInside;
     var isStoreOperater;
     var secitons = passData["sections"];
+    var section;
     for (var i = 0; i < secitons.length; i++) {
-      
+      section = secitons[i];
       if(secitons[i]["sectionDescription"]== "Neighborhood Survey"){
         isNeighborhood = true;
+        
       }
       if(secitons[i]["sectionDescription"]== "Store Operator Information"){
         isStoreOperater = true;
@@ -71,7 +73,9 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                                             this.widget.shopPhone,
                                             this.widget.address,
                                             this.widget.regOrAss,
-                                            this.widget.passData)),
+                                            this.widget.passData,
+                                            section,
+                                            )),
                               );
                             },
           
@@ -293,49 +297,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // Container(
-                //   margin: EdgeInsets.only(bottom: 10),
-                //   child: Card(
-                //     child: Container(
-                //       child: Column(
-                //         children: <Widget>[
-                //           InkWell(
-                //             onTap: () {
-                //               Navigator.of(context).pushReplacement(
-                //                 MaterialPageRoute(
-                //                     builder: (context) =>
-                //                         OutsideInsideNeighborhood(
-                //                             true,
-                //                             true,
-                //                             true,
-                //                             true,
-                //                             this.widget.shopName,
-                //                             this.widget.shopPhone,
-                //                             this.widget.address,
-                //                             this.widget.regOrAss,
-                //                             this.widget.passData)),
-                //               );
-                //             },
-                //             child: ListTile(
-                //                 title: Container(
-                //               margin: EdgeInsets.only(top: 10, bottom: 10),
-                //               child: Column(
-                //                 mainAxisAlignment: MainAxisAlignment.start,
-                //                 crossAxisAlignment: CrossAxisAlignment.start,
-                //                 children: <Widget>[
-                //                   Text("Neighborhood"),
-                //                   Text("Outside of Store"),
-                //                   Text("Inside of Store"),
-                //                   Text("Store Operator"),
-                //                 ],
-                //               ),
-                //             )),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Container(
                   width: 700,
                   color: Colors.grey[200],
@@ -376,9 +337,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                  if (headerList.length > 0)
                  for (var i = 0; i < headerList.length; i++)
                 _listTileWidget(headerList[i]),
-                
-             
-                
               ],
             ),
           ),
@@ -394,7 +352,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 icon: new Container(),
                 title: InkWell(
                   onTap: () {
-                    print("asdfasdfasdf");
                     getGPSstatus().then((status) => {
                           print("$status"),
                           if (status == true)
