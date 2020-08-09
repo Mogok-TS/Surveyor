@@ -3,6 +3,7 @@ import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:localstorage/localstorage.dart';
 
 import '../stores.dart';
 
@@ -15,9 +16,11 @@ class GmapS extends StatefulWidget {
 }
 
 class MapSampleState extends State<GmapS> {
+  final LocalStorage storage = new LocalStorage('Surveyor');
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Geolocator geolocator = Geolocator();
+  GoogleMapController googleMapController;
 
   static CameraPosition _kGooglePlex;
 
@@ -62,24 +65,20 @@ class MapSampleState extends State<GmapS> {
   }
 
   Future<void> createNewMarker(double lati, double long) async {
-      final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          bearing: 0.0,
-          target: LatLng(lati, long),
-          tilt: 0.0,
-          zoom: 18.5)));
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        bearing: 0.0, target: LatLng(lati, long), tilt: 0.0, zoom: 18.5)));
 
-      final MarkerId markerId = MarkerId("1");
+    final MarkerId markerId = MarkerId("1");
 
-      final Marker marker = Marker(
-          markerId: markerId,
-          position: LatLng(lati, long),
-          infoWindow: InfoWindow(title: "current position"),
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure));
-      setState(() {
-        markers[markerId] = marker;
-      });
+    final Marker marker = Marker(
+        markerId: markerId,
+        position: LatLng(lati, long),
+        infoWindow: InfoWindow(title: "current position"),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure));
+    setState(() {
+      markers[markerId] = marker;
+    });
   }
 
   Future<Position> _getLocation() async {
@@ -111,23 +110,16 @@ class MapSampleState extends State<GmapS> {
         } else {
           _getAddress(value).then((val) async {
             if (value.latitude != null && value.longitude != null) {
-              List addressList = [
-                {
-                  "Name": "i Mart",
-                  "lati": (value.latitude + 0.0001000),
-                  "long": (value.longitude + 0.0001000)
-                },
-                {
-                  "Name": "Queen Mart",
-                  "lati": (value.latitude + 0.0002000),
-                  "long": (value.longitude + 0.0003000)
-                },
-                {
-                  "Name": "Pyae Wa",
-                  "lati": (value.latitude + 0.0004000),
-                  "long": (value.longitude + 0.0006000)
-                }
-              ];
+              List addressList = [];
+              List list = this.storage.getItem("storeData")["shopsByUser"];
+              for (var i = 0; i < list.length; i++) {
+                print(list[i]["lat"]);
+                addressList.add({
+                  "Name": list[i]["shopname"],
+                  "lati": double.parse(list[i]["lat"]),
+                  "long": double.parse(list[i]["long"])
+                });
+              }
               for (var i = 0; i < addressList.length; i++) {
                 final MarkerId markerId = MarkerId("id is $i");
 
@@ -135,9 +127,11 @@ class MapSampleState extends State<GmapS> {
                     markerId: markerId,
                     position:
                         LatLng(addressList[i]["lati"], addressList[i]["long"]),
-                    infoWindow: InfoWindow(title: addressList[i]["Name"]),
+                    infoWindow: InfoWindow(
+                        title: addressList[i]["Name"], snippet: "Shop Name"),
                     icon: BitmapDescriptor.defaultMarkerWithHue(
                         BitmapDescriptor.hueRed));
+
                 setState(() {
                   markers[markerId] = marker;
                 });
