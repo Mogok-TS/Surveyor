@@ -83,142 +83,252 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   _clickDoneAssignStore() {
     showLoadingDialog();
     var _question = this.widget.question;
-    print("_question>>??" + _question.toString());
-    print("allquestion>>??" + this.questions.toString());
-    print("??>>" + this.widget.passData.toString());
     var pssOject = this.widget.passData[0];
-    if(this.widget.regOrAss == "assign"){
+    if (this.widget.regOrAss == "assign") {
+      _allData["id"] = pssOject["shopsyskey"];
+      _allData["active"] = true;
+      _allData["name"] = pssOject["shopname"];
+      _allData["mmName"] = pssOject["shopnamemm"];
+      _allData["personName"] = pssOject["username"];
+      _allData["personPhoneNumber"] = pssOject["personph"];
+      _allData["phoneNumber"] = pssOject["phoneno"];
+      _allData["stateId"] = pssOject["stateid"];
+      _allData["districtId"] = pssOject["districtid"];
+      _allData["townshipId"] = pssOject["townshipid"];
+      _allData["townId"] = pssOject["townid"];
+      _allData["wardId"] = pssOject["wardid"];
+      _allData["address"] = pssOject["address"];
+      _allData["street"] = pssOject["street"];
+      _allData["t12"] = "";
+      _allData["svrHdrData"] = {
+        "n1": "1",
+        "n2": pssOject["shopsyskey"].toString(),
+        "n3": this.widget.header["headerSyskey"].toString()
+      };
+      _allData["locationData"] = {
+        "latitude": pssOject["lat"],
+        "longitude": pssOject["long"],
+        "plusCode": pssOject["pluscode"],
+        "minuCode": pssOject["mimu"]
+      };
+      var questionAndAnswer = [];
 
-    }else{
+      for (var i = 0; i < this.questions.length; i++) {
+        var loopData = this.questions[i];
+        var singleQueAndAns = {};
 
-    }
-    _allData["id"] = pssOject["shopsyskey"];
-    _allData["active"] = true;
-    _allData["name"] = pssOject["shopname"];
-    _allData["mmName"] = pssOject["shopnamemm"];
-    _allData["personName"] = pssOject["username"];
-    _allData["personPhoneNumber"] = pssOject["personph"];
-    _allData["phoneNumber"] = pssOject["phoneno"];
-    _allData["stateId"] = pssOject["stateid"];
-    _allData["districtId"] = pssOject["districtid"];
-    _allData["townshipId"] = pssOject["townshipid"];
-    _allData["townId"] = pssOject["townid"];
-    _allData["wardId"] = pssOject["wardid"];
-    _allData["address"] = pssOject["address"];
-    _allData["street"] = pssOject["street"];
-    _allData["t12"] = "";
-    _allData["svrHdrData"] = {
-      "n1": "1",
-      "n2": pssOject["shopsyskey"].toString(),
-      "n3": this.widget.header["headerSyskey"].toString()
-    };
-    _allData["locationData"] = {
-      "latitude": pssOject["lat"],
-      "longitude": pssOject["long"],
-      "plusCode": pssOject["pluscode"],
-      "minuCode": pssOject["mimu"]
-    };
-    var questionAndAnswer = [];
-
-    for (var i = 0; i < this.questions.length; i++) {
-      var loopData = this.questions[i];
-      var singleQueAndAns = {};
-      
-      if (loopData["questionType"] == "Fill in the Blank") {
-        // print("fill>>"+loopData.toString());
-        var _value = {};
-        _value["questionTypeId"] = loopData["n2"];
-        _value["questionNatureId"] = _question["sectionSyskey"];
-        _value["questionId"] = loopData["syskey"];
-        _value["answerId"] = "";
-        for(var pp = 0; pp < this.fillAnswerArray.length; pp++){
-          if(this.fillAnswerArray[pp]["questionSyskey"] == loopData["syskey"]){
-            _value["remark"] = this.fillAnswerArray[pp]["answer"];
-            break;
-          }
-        }
-        _value["desc"] = loopData["controller"];
-        _value["instruction"] = loopData["t2"];
-        _value["t4"] = "";
-        _value["t5"] = "";
-        questionAndAnswer.add(_value);
-      } else if (loopData["questionType"] == "Checkbox") {
-       
-        for (var ii = 0; ii < loopData["answerList"].length; ii++) {
-          var answerList = loopData["answerList"][ii];
-          if (answerList["check"] == true) {
-            var _value = {};
-            _value["questionTypeId"] = loopData["n2"];
-            _value["questionNatureId"] = _question["sectionSyskey"];
-            _value["questionId"] = loopData["syskey"];
-            _value["answerId"] = answerList["syskey"];
-            _value["remark"] = "";
-            _value["desc"] = answerList["t1"];
-            _value["instruction"] = loopData["t2"];
-            _value["t4"] = "";
-            _value["t5"] = "";
-            questionAndAnswer.add(_value);
-          }
-        }
-        singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
-      } else if (loopData["questionType"] == "Attach Photograph") {
-        var answerList = loopData["answerList"][0];
-        if (answerList["image"].length > 0) {
-          for (var ii = 0; ii < answerList["image"].length; ii++) {
-            var _value = {};
-            _value["questionTypeId"] = loopData["n2"];
-            _value["questionNatureId"] = _question["sectionSyskey"];
-            _value["questionId"] = loopData["syskey"];
-            _value["answerId"] = "";
-            _value["remark"] = "";
-            _value["desc"] = "";
-            _value["instruction"] = loopData["t2"];
-            _value["t4"] = "";
-            _value["t5"] = "";
-            for(var q = 0; q < this.imageList.length; q++){
-              _svr9DataListObject["t1"] = this.imageList[q]["base64Image"];
-              _svr9DataListObject["t2"] = this.imageList[q]["imageName"];
-              svr9DataList.add(_svr9DataListObject);
+        if (loopData["questionType"] == "Fill in the Blank") {
+          // print("fill>>"+loopData.toString());
+          var _value = {};
+          _value["questionTypeId"] = loopData["n2"];
+          _value["questionNatureId"] = _question["sectionSyskey"];
+          _value["questionId"] = loopData["syskey"];
+          _value["answerId"] = "";
+          for (var pp = 0; pp < this.fillAnswerArray.length; pp++) {
+            if (this.fillAnswerArray[pp]["questionSyskey"] ==
+                loopData["syskey"]) {
+              _value["remark"] = this.fillAnswerArray[pp]["answer"];
+              break;
             }
-            _value["svr9DataList"] = svr9DataList;
-            questionAndAnswer.add(_value);
           }
-        }
-      } else if (loopData["questionType"] == "Multiple Choice") {
-        for (var ii = 0; ii < loopData["answerList"].length; ii++) {
-          var answerList = loopData["answerList"][ii];
-          if (answerList["radio"] == loopData["radio"]) {
-            var _value = {};
-            _value["questionTypeId"] = loopData["n2"];
-            _value["questionNatureId"] = _question["sectionSyskey"];
-            _value["questionId"] = loopData["syskey"];
-            _value["answerId"] = answerList["syskey"];
-            _value["remark"] = "";
-            _value["desc"] = answerList["t1"];
-            _value["instruction"] = loopData["t2"];
-            _value["t4"] = "";
-            _value["t5"] = "";
-            questionAndAnswer.add(_value);
+          _value["desc"] = loopData["controller"];
+          _value["instruction"] = loopData["t2"];
+          _value["t4"] = "";
+          _value["t5"] = "";
+          questionAndAnswer.add(_value);
+        } else if (loopData["questionType"] == "Checkbox") {
+          for (var ii = 0; ii < loopData["answerList"].length; ii++) {
+            var answerList = loopData["answerList"][ii];
+            if (answerList["check"] == true) {
+              var _value = {};
+              _value["questionTypeId"] = loopData["n2"];
+              _value["questionNatureId"] = _question["sectionSyskey"];
+              _value["questionId"] = loopData["syskey"];
+              _value["answerId"] = answerList["syskey"];
+              _value["remark"] = "";
+              _value["desc"] = answerList["t1"];
+              _value["instruction"] = loopData["t2"];
+              _value["t4"] = "";
+              _value["t5"] = "";
+              questionAndAnswer.add(_value);
+            }
           }
+          singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
+        } else if (loopData["questionType"] == "Attach Photograph") {
+          var answerList = loopData["answerList"][0];
+          if (answerList["image"].length > 0) {
+            for (var ii = 0; ii < answerList["image"].length; ii++) {
+              var _value = {};
+              _value["questionTypeId"] = loopData["n2"];
+              _value["questionNatureId"] = _question["sectionSyskey"];
+              _value["questionId"] = loopData["syskey"];
+              _value["answerId"] = "";
+              _value["remark"] = "";
+              _value["desc"] = "";
+              _value["instruction"] = loopData["t2"];
+              _value["t4"] = "";
+              _value["t5"] = "";
+              for (var q = 0; q < this.imageList.length; q++) {
+                _svr9DataListObject["t1"] = this.imageList[q]["base64Image"];
+                _svr9DataListObject["t2"] = this.imageList[q]["imageName"];
+                svr9DataList.add(_svr9DataListObject);
+              }
+              _value["svr9DataList"] = svr9DataList;
+              questionAndAnswer.add(_value);
+            }
+          }
+        } else if (loopData["questionType"] == "Multiple Choice") {
+          for (var ii = 0; ii < loopData["answerList"].length; ii++) {
+            var answerList = loopData["answerList"][ii];
+            if (answerList["radio"] == loopData["radio"]) {
+              var _value = {};
+              _value["questionTypeId"] = loopData["n2"];
+              _value["questionNatureId"] = _question["sectionSyskey"];
+              _value["questionId"] = loopData["syskey"];
+              _value["answerId"] = answerList["syskey"];
+              _value["remark"] = "";
+              _value["desc"] = answerList["t1"];
+              _value["instruction"] = loopData["t2"];
+              _value["t4"] = "";
+              _value["t5"] = "";
+              questionAndAnswer.add(_value);
+            }
+          }
+          print("multi>>" + loopData.toString());
+          print("alldata>>" + _allData["quesAndAns"].toString());
         }
-         print("multi>>"+loopData.toString());
-        
       }
+      _allData["quesAndAns"] = questionAndAnswer;
+    } else {
+      print("passData>>" + this.widget.passData.toString());
+      _allData["id"] = pssOject["id"];
+      _allData["active"] = true;
+      _allData["name"] = pssOject["name"];
+      _allData["mmName"] = pssOject["mmName"];
+      _allData["personName"] = pssOject["personName"];
+      _allData["personPhoneNumber"] = pssOject["personPhoneNumber"];
+      _allData["phoneNumber"] = pssOject["phoneNumber"];
+      _allData["stateId"] = pssOject["stateId"];
+      _allData["districtId"] = pssOject["districtId"];
+      _allData["townshipId"] = pssOject["townshipId"];
+      _allData["townId"] = pssOject["townId"];
+      _allData["wardId"] = pssOject["wardId"];
+      _allData["address"] = pssOject["address"];
+      _allData["street"] = pssOject["street"];
+      _allData["t12"] = "";
+      _allData["svrHdrData"] = {
+        "n1": "1",
+        "n2": pssOject["id"].toString(),
+        "n3": this.widget.header["headerSyskey"].toString()
+      };
+
+      _allData["locationData"] = {
+        "latitude": pssOject["locationData"]["latitude"],
+        "longitude": pssOject["locationData"]["longitude"],
+        "plusCode": pssOject["locationData"]["plusCode"],
+        "minuCode": pssOject["locationData"]["minuCode"]
+      };
+       var questionAndAnswer = [];
+
+      for (var i = 0; i < this.questions.length; i++) {
+        var loopData = this.questions[i];
+        var singleQueAndAns = {};
+
+        if (loopData["questionType"] == "Fill in the Blank") {
+          // print("fill>>"+loopData.toString());
+          var _value = {};
+          _value["questionTypeId"] = loopData["n2"];
+          _value["questionNatureId"] = _question["sectionSyskey"];
+          _value["questionId"] = loopData["syskey"];
+          _value["answerId"] = "";
+          for (var pp = 0; pp < this.fillAnswerArray.length; pp++) {
+            if (this.fillAnswerArray[pp]["questionSyskey"] ==
+                loopData["syskey"]) {
+              _value["remark"] = this.fillAnswerArray[pp]["answer"];
+              break;
+            }
+          }
+          _value["desc"] = loopData["controller"];
+          _value["instruction"] = loopData["t2"];
+          _value["t4"] = "";
+          _value["t5"] = "";
+          questionAndAnswer.add(_value);
+        } else if (loopData["questionType"] == "Checkbox") {
+          for (var ii = 0; ii < loopData["answerList"].length; ii++) {
+            var answerList = loopData["answerList"][ii];
+            if (answerList["check"] == true) {
+              var _value = {};
+              _value["questionTypeId"] = loopData["n2"];
+              _value["questionNatureId"] = _question["sectionSyskey"];
+              _value["questionId"] = loopData["syskey"];
+              _value["answerId"] = answerList["syskey"];
+              _value["remark"] = "";
+              _value["desc"] = answerList["t1"];
+              _value["instruction"] = loopData["t2"];
+              _value["t4"] = "";
+              _value["t5"] = "";
+              questionAndAnswer.add(_value);
+            }
+          }
+          singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
+        } else if (loopData["questionType"] == "Attach Photograph") {
+          var answerList = loopData["answerList"][0];
+          if (answerList["image"].length > 0) {
+            for (var ii = 0; ii < answerList["image"].length; ii++) {
+              var _value = {};
+              _value["questionTypeId"] = loopData["n2"];
+              _value["questionNatureId"] = _question["sectionSyskey"];
+              _value["questionId"] = loopData["syskey"];
+              _value["answerId"] = "";
+              _value["remark"] = "";
+              _value["desc"] = "";
+              _value["instruction"] = loopData["t2"];
+              _value["t4"] = "";
+              _value["t5"] = "";
+              for (var q = 0; q < this.imageList.length; q++) {
+                _svr9DataListObject["t1"] = this.imageList[q]["base64Image"];
+                _svr9DataListObject["t2"] = this.imageList[q]["imageName"];
+                svr9DataList.add(_svr9DataListObject);
+              }
+              _value["svr9DataList"] = svr9DataList;
+              questionAndAnswer.add(_value);
+            }
+          }
+        } else if (loopData["questionType"] == "Multiple Choice") {
+          for (var ii = 0; ii < loopData["answerList"].length; ii++) {
+            var answerList = loopData["answerList"][ii];
+            if (answerList["radio"] == loopData["radio"]) {
+              var _value = {};
+              _value["questionTypeId"] = loopData["n2"];
+              _value["questionNatureId"] = _question["sectionSyskey"];
+              _value["questionId"] = loopData["syskey"];
+              _value["answerId"] = answerList["syskey"];
+              _value["remark"] = "";
+              _value["desc"] = answerList["t1"];
+              _value["instruction"] = loopData["t2"];
+              _value["t4"] = "";
+              _value["t5"] = "";
+              questionAndAnswer.add(_value);
+            }
+          }
+        }
+      }
+      _allData["quesAndAns"] = questionAndAnswer;
+      print("alldata>>" + _allData["quesAndAns"].toString());
+
     }
-     _allData["quesAndAns"] = questionAndAnswer;
-     print("quesandans"+_allData["quesAndAns"].toString());
+
 //    setState(() {
 //      _consoleLable = _allData.toString();
 //    });
-    print("alldata>>" + _allData["quesAndAns"].toString());
-    this.onlineSerives.createStore(_allData).then((reslut) => {
-      hideLoadingDialog(),
-      if (reslut["status"] == true){
+    // this.onlineSerives.createStore(_allData).then((reslut) => {
+    //   hideLoadingDialog(),
+    //   if (reslut["status"] == true){
 
-      }else{
-        
-      }
-    });
+    //   }else{
+
+    //   }
+    // });
   }
 
   // Future getImageFromCamera(var images) async {
@@ -606,8 +716,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                           this.fillAnswerArray.add(_obj);
                         } else {
                           for (var qe = 0;
-                          qe < this.fillAnswerArray.length;
-                          qe++) {
+                              qe < this.fillAnswerArray.length;
+                              qe++) {
                             if (this.fillAnswerArray[qe]["questionSyskey"] ==
                                 questionData["syskey"]) {
                               index = qe;
@@ -990,12 +1100,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 icon: new Container(),
                 title: InkWell(
                   onTap: () {
-                    print("image data ----- " + imageList.toString());
-                    if (this.widget.regOrAss == "assign") {
-                      setState(() {
-                        _clickDoneAssignStore();
-                      });
-                    } else {}
+                    setState(() {
+                      _clickDoneAssignStore();
+                    });
                     // Navigator.of(context).pushReplacement(
                     //   MaterialPageRoute(
                     //       builder: (context) => OutsideInsideNeighborhood(
@@ -1028,8 +1135,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       ),
     );
   }
-
-
 }
 
 class ShowImage extends StatefulWidget {
