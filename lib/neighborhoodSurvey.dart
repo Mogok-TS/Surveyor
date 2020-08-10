@@ -99,21 +99,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     for (var i = 0; i < this.questions.length; i++) {
       var loopData = this.questions[i];
       var singleQueAndAns = {};
+      print(loopData["questionType"].toString());
       if (loopData["questionType"] == "Fill in the Blank") {
-        print("fill>>" + loopData.toString());
-        singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
+       
          var _value = {};
             _value["questionTypeId"] = loopData["n2"];
             _value["questionNatureId"] = _question["sectionSyskey"];
             _value["questionId"] = loopData["syskey"];
             _value["answerId"] = "";
-            _value["remark"] = "";
+            _value["remark"] = loopData["controller"];
             _value["desc"] = "";
             _value["instruction"] = loopData["t2"];
             _value["t4"] = "";
             _value["t5"] = "";
+            questionAndAnswer.add(_value);
       } else if (loopData["questionType"] == "Checkbox") {
-        
         for (var ii = 0; ii < loopData["answerList"].length; ii++) {
           var answerList = loopData["answerList"][ii];
           if (answerList["check"] == true) {
@@ -149,7 +149,18 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
         }
       } else if (loopData["questionType"] == "Multiple Choice") {
-        singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
+         print("multi>>" + loopData.toString());
+        var _value = {};
+            _value["questionTypeId"] = loopData["n2"];
+            _value["questionNatureId"] = _question["sectionSyskey"];
+            _value["questionId"] = loopData["syskey"];
+            _value["answerId"] = "";
+            _value["remark"] = loopData["radio"];
+            _value["desc"] = "";
+            _value["instruction"] = loopData["t2"];
+            _value["t4"] = "";
+            _value["t5"] = "";
+            questionAndAnswer.add(_value);
       }
     }
     _allData["quesAndAns"] = questionAndAnswer;
