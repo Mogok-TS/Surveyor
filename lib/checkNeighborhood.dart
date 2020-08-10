@@ -33,143 +33,15 @@ class CheckNeighborhoodScreen extends StatefulWidget {
 
 class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   OnlineSerives onlineSerives = new OnlineSerives();
-
-//  var headerList = [
-//    {
-//      "fromDate": "20200101",
-//      "toDate": "20201231",
-//      "headerSyskey": "1",
-//      "headerCode": "",
-//      "headerDescription": "Surveyor Header Test Data 1",
-//      "sections": [
-//        {
-//          "questions": [
-//            {
-//              "questionDescription": "Neighborhood Type",
-//              "questionSyskey": "2007261736169400018"
-//            },
-//            {
-//              "questionDescription": "Store Type",
-//              "questionSyskey": "2007261737373700022"
-//            },
-//            {
-//              "questionDescription": "Road Access Type",
-//              "questionSyskey": "2007261738472600026"
-//            },
-//            {
-//              "questionDescription": "Building Material Type",
-//              "questionSyskey": "2007261740291000030"
-//            },
-//            {
-//              "questionDescription": "Building Type",
-//              "questionSyskey": "2007271813568900006"
-//            },
-//            {
-//              "questionDescription": "Building Size",
-//              "questionSyskey": "2007271814326800007"
-//            },
-//            {
-//              "questionDescription": "Store outlet of occupation(s) of patrons",
-//              "questionSyskey": "2007271827442300008"
-//            },
-//            {
-//              "questionDescription": "Store outlet of average income of patrons",
-//              "questionSyskey": "2007271829526300009"
-//            },
-//            {
-//              "questionDescription": "Store outlet of frequency of passerbys",
-//              "questionSyskey": "2007271830243000010"
-//            }
-//          ],
-//          "sectionSyskey": "1",
-//          "sectionDescription": "Neighborhood Survey"
-//        },
-//        {
-//          "questions": [
-//            {
-//              "questionDescription": "Operation date and time",
-//              "questionSyskey": "2007270617116200035"
-//            },
-//            {
-//              "questionDescription": "NRC number",
-//              "questionSyskey": "2007270623216600040"
-//            },
-//            {
-//              "questionDescription": "Date of Birth",
-//              "questionSyskey": "2007270624116400041"
-//            },
-//            {
-//              "questionDescription": "Number of workers",
-//              "questionSyskey": "2007270654306100042"
-//            }
-//          ],
-//          "sectionSyskey": "4",
-//          "sectionDescription": "Store Operator Information"
-//        },
-//        {
-//          "questions": [
-//            {
-//              "questionDescription": "Take a photo store sign board",
-//              "questionSyskey": "2007271803224200002"
-//            },
-//            {
-//              "questionDescription": "Take a photo the whole of store",
-//              "questionSyskey": "2007271809254900004"
-//            }
-//          ],
-//          "sectionSyskey": "2",
-//          "sectionDescription": "Outside of Store"
-//        },
-//        {
-//          "questions": [
-//            {
-//              "questionDescription": "Store Type(On premise/Off premise)",
-//              "questionSyskey": "2007270536087300029"
-//            },
-//            {
-//              "questionDescription": "Store Type(Modern trade /Traditional trade)",
-//              "questionSyskey": "2007270537288800031"
-//            },
-//            {
-//              "questionDescription": "Display material type",
-//              "questionSyskey": "2007270538561800033"
-//            }
-//          ],
-//          "sectionSyskey": "3",
-//          "sectionDescription": "Inside of Store"
-//        }
-//      ],
-//      "status": "1"
-//    },
-//    {
-//      "fromDate": "20200101",
-//      "toDate": "20201231",
-//      "headerSyskey": "2",
-//      "headerCode": "",
-//      "headerDescription": "Surveyor Header Test Data 2",
-//      "sections": [
-//        {
-//          "questions": [],
-//          "sectionSyskey": "2",
-//          "sectionDescription": "Outside of Store"
-//        },
-//        {
-//          "questions": [],
-//          "sectionSyskey": "3",
-//          "sectionDescription": "Inside of Store"
-//        }
-//      ],
-//      "status": "1"
-//    }
-//  ];
   var headerList = [];
 
   Widget _listTileWidget(var passData) {
-//    print("${passData}");
+    print("${passData}");
     var isNeighborhood;
     var isOutside;
     var isInside;
     var isStoreOperater;
+    var header = passData;
     var secitons = passData["sections"];
     var section;
     for (var i = 0; i < secitons.length; i++) {
@@ -205,6 +77,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                         this.widget.regOrAss,
                         this.widget.passData,
                         section,
+                      header,
                       )),
             );
           },
@@ -396,4 +269,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       ),
     );
   }
+
+
 }
