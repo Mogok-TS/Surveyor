@@ -528,7 +528,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   void initState() {
     super.initState();
 //    if(){} for questionNature
-    print("re>>"+this.widget.regOrAss);
+    print("re>>"+this.widget.surveyType);
     if (this.widget.surveyType == "Neighborhood Survey") {
       this.questionNature = "Neighborhood Survey";
     } else if (this.widget.surveyType == "Outside of Store") {
@@ -598,6 +598,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         drawer: MainMenuWidget(),
         appBar: AppBar(
           backgroundColor: CustomIcons.appbarColor,
+          title: Text("Questions"),
         ),
         body: SingleChildScrollView(
           child: Column(

@@ -126,6 +126,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
         drawer: MainMenuWidget(),
         appBar: AppBar(
           backgroundColor: CustomIcons.appbarColor,
+          title: Text("Sections"),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -245,7 +246,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                             this.widget.shopPhone,
                                             this.widget.address,
                                             "This is text for the instruciotns",
-                                            "Outside of store",
+                                            "Outside of Store",
                                             this.widget.regOrAss,
                                             this.widget.passData,
                                             this.widget.question
@@ -256,7 +257,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               title: Container(
                                   margin: EdgeInsets.only(top: 20, bottom: 10),
                                   child: Text(
-                                    "Outside of store",
+                                    "Outside of Store",
                                     style: cardHeader(),
                                   )),
                               subtitle: Column(
@@ -437,7 +438,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
               title: InkWell(
                 onTap: () {
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => StoreScreen()));
+                      MaterialPageRoute(builder: (context) => CheckNeighborhoodScreen(this.widget.shopName,this.widget.shopPhone,this.widget.address,this.widget.regOrAss,this.widget.passData)));
                 },
                 child: Container(
                   height: 40,
