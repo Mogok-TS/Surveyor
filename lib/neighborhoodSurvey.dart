@@ -6,6 +6,7 @@ import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:load/load.dart';
 import 'assets/custom_icons_icons.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -79,11 +80,17 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var _svr9DataListObject = {};
 
   _clickDoneAssignStore() {
+    showLoadingDialog();
     var _question = this.widget.question;
     print("_question>>??" + _question.toString());
     print("allquestion>>??" + this.questions.toString());
     print("??>>" + this.widget.passData.toString());
     var pssOject = this.widget.passData[0];
+    if(this.widget.regOrAss == "assign"){
+
+    }else{
+
+    }
     _allData["id"] = pssOject["shopsyskey"];
     _allData["active"] = true;
     _allData["name"] = pssOject["shopname"];
@@ -189,6 +196,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _consoleLable = _allData.toString();
     });
     print("alldata>>" + _allData["quesAndAns"].toString());
+    this.onlineSerives.createStore(_allData).then((reslut) => {
+      hideLoadingDialog(),
+      if (reslut["status"] == true){
+
+      }else{
+        
+      }
+    });
   }
 
   // Future getImageFromCamera(var images) async {
@@ -798,178 +813,179 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        drawer: MainMenuWidget(),
-        appBar: AppBar(
-          backgroundColor: CustomIcons.appbarColor,
-          title: Text("Questions"),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: Colors.grey[200],
-                child: Container(
-                  width: 700,
-                  margin:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        child: Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SelectableText(_consoleLable),
-                              Text(
-                                this.widget.surveyType,
-                                textAlign: TextAlign.end,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              if (this.widget.surveyType == "Store Operator")
+      child: LoadingProvider(
+        child: Scaffold(
+          drawer: MainMenuWidget(),
+          appBar: AppBar(
+            backgroundColor: CustomIcons.appbarColor,
+            title: Text("Questions"),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: Colors.grey[200],
+                  child: Container(
+                    width: 700,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          child: Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SelectableText(_consoleLable),
                                 Text(
-                                  this.widget.storeName,
-                                  textAlign: TextAlign.left,
+                                  this.widget.surveyType,
+                                  textAlign: TextAlign.end,
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              if (this.widget.surveyType == "Store Operator")
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                              if (this.widget.surveyType == "Store Operator")
-                                Text(
-                                  this.widget.storeNumber,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.0,
+                                if (this.widget.surveyType == "Store Operator")
+                                  Text(
+                                    this.widget.storeName,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                ),
-                              if (this.widget.surveyType == "Store Operator")
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                              if (this.widget.surveyType == "Store Operator")
-                                Text(
-                                  this.widget.address,
-                                  style: TextStyle(height: 1.3),
-                                ),
-                            ],
+                                if (this.widget.surveyType == "Store Operator")
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                if (this.widget.surveyType == "Store Operator")
+                                  Text(
+                                    this.widget.storeNumber,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.0,
+                                    ),
+                                  ),
+                                if (this.widget.surveyType == "Store Operator")
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                if (this.widget.surveyType == "Store Operator")
+                                  Text(
+                                    this.widget.address,
+                                    style: TextStyle(height: 1.3),
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              if (_status)
-                if (questions.length > 0)
-                  for (var i = 0; i < questions.length; i++)
-                    _allWidget(questions[i], i),
-              if (!_status)
-                Container(
-                  height: 50,
-                  color: Colors.grey[300],
-                  child: Center(
-                    child: Text(
-                      "No Data",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
+                if (_status)
+                  if (questions.length > 0)
+                    for (var i = 0; i < questions.length; i++)
+                      _allWidget(questions[i], i),
+                if (!_status)
+                  Container(
+                    height: 50,
+                    color: Colors.grey[300],
+                    child: Center(
+                      child: Text(
+                        "No Data",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  )
+              ],
+            ),
+          ),
+          bottomNavigationBar: new BottomNavigationBar(
+            backgroundColor: CustomIcons.appbarColor,
+            items: [
+              new BottomNavigationBarItem(
+                icon: new Container(),
+                title: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => OutsideInsideNeighborhood(
+                            this.widget.isNeighborhood,
+                            this.widget.isOutside,
+                            this.widget.isInside,
+                            this.widget.isStoreOperater,
+                            this.widget.storeName,
+                            this.widget.storeNumber,
+                            this.widget.address,
+                            this.widget.regOrAss,
+                            this.widget.passData,
+                            this.widget.question,
+                            this.widget.header),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 300,
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Center(
+                      child: new Text(
+                        "Back",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 15),
                       ),
                     ),
                   ),
-                )
+                ),
+              ),
+              new BottomNavigationBarItem(
+                icon: new Container(),
+                title: new Container(),
+              ),
+              new BottomNavigationBarItem(
+                icon: new Container(),
+                title: InkWell(
+                  onTap: () {
+                    print("image data ----- " + imageList.toString());
+                    if (this.widget.regOrAss == "assign") {
+                      setState(() {
+                        _clickDoneAssignStore();
+                      });
+                    } else {}
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(
+                    //       builder: (context) => OutsideInsideNeighborhood(
+                    //           this.widget.storeName,
+                    //           this.widget.storeNumber,
+                    //           this.widget.address,
+                    //           this.widget.surveyType, [])),
+                    // );
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 300,
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Center(
+                      child: new Text(
+                        "Done",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 15),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
-        ),
-        bottomNavigationBar: new BottomNavigationBar(
-          backgroundColor: CustomIcons.appbarColor,
-          items: [
-            new BottomNavigationBarItem(
-              icon: new Container(),
-              title: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => OutsideInsideNeighborhood(
-                          this.widget.isNeighborhood,
-                          this.widget.isOutside,
-                          this.widget.isInside,
-                          this.widget.isStoreOperater,
-                          this.widget.storeName,
-                          this.widget.storeNumber,
-                          this.widget.address,
-                          this.widget.regOrAss,
-                          this.widget.passData,
-                          this.widget.question,
-                          this.widget.header),
-                    ),
-                  );
-                },
-                child: Container(
-                  height: 40,
-                  width: 300,
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Center(
-                    child: new Text(
-                      "Back",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 15),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            new BottomNavigationBarItem(
-              icon: new Container(),
-              title: new Container(),
-            ),
-            new BottomNavigationBarItem(
-              icon: new Container(),
-              title: InkWell(
-                onTap: () {
-                  print("image data ----- " + imageList.toString());
-                  _clickDoneAssignStore();
-                  if (this.widget.regOrAss == "assign") {
-                    setState(() {
-                      _clickDoneAssignStore();
-                    });
-                  } else {}
-                  // Navigator.of(context).pushReplacement(
-                  //   MaterialPageRoute(
-                  //       builder: (context) => OutsideInsideNeighborhood(
-                  //           this.widget.storeName,
-                  //           this.widget.storeNumber,
-                  //           this.widget.address,
-                  //           this.widget.surveyType, [])),
-                  // );
-                },
-                child: Container(
-                  height: 40,
-                  width: 300,
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Center(
-                    child: new Text(
-                      "Done",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 15),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

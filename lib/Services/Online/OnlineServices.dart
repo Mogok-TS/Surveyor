@@ -161,8 +161,10 @@ class OnlineSerives {
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+
     if (response != null) {
       data = json.decode(response.body);
+      print({"$data"});
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
@@ -172,7 +174,6 @@ class OnlineSerives {
           this.status = false;
         } else {
           print("Hey" + data["status"]);
-
           ShowToast("Server fail.");
           this.status = false;
         }
