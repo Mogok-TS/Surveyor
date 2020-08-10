@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:Surveyor/Services/Loading/LoadingServices.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
@@ -265,7 +266,7 @@ class OnlineSerives {
       dataarray["maxRows"] = listdata["maxRows"];
       dataarray["current"] = listdata["current"];
       dataarray["ansListType"] = listdata["ansListType"];
-
+      dataarray["controller"] = null;
       var answerList = [];
       var allArray = data["list"][i]["answerList"];
       var radioList = [];
@@ -288,7 +289,6 @@ class OnlineSerives {
         objectarray["check"] = false;
         objectarray["radio"] = answerListData["syskey"];
         objectarray["image"] = [];
-        objectarray["controller"] = "";
         listIndex["id"] = ii;
         listIndex["value"] = answerListData["syskey"];
         answerList.add(objectarray);
@@ -306,6 +306,7 @@ class OnlineSerives {
       array1.add(dataarray);
     }
     returnData["data"] = array1;
+
 
     return returnData;
   }

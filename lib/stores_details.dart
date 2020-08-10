@@ -1373,7 +1373,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                 this.shopName.text,
                                 this.shopPhoneNo.text,
                                 this.street.text.toString(),
-                                "register",
+                                this.widget.regOrAss,
                                 this.widget.passData)
                             //  OutsideInsideNeighborhood(
                             //   this.shopName.text,

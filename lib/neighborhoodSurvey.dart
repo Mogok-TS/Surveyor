@@ -34,8 +34,7 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
       this.surveyType,
       this.regOrAss,
       this.passData,
-      this.question
-      );
+      this.question);
 
   @override
   _NeighborhoodSurveyScreenState createState() =>
@@ -68,11 +67,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var groupId2 = "";
   var newQuestionarray = [];
   var _allData = {};
-  
+
   _clickDoneAssignStore() {
-    
-    print("allquestion>>??"+this.questions.toString());
-    print("??>>"+this.widget.passData.toString());
+    var _question = this.widget.question;
+    print("allquestion>>??" + this.questions.toString());
+    print("??>>" + this.widget.passData.toString());
     var pssOject = this.widget.passData[0];
     _allData["id"] = "0";
     _allData["active"] = true;
@@ -89,33 +88,73 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     _allData["address"] = pssOject["address"];
     _allData["street"] = pssOject["street"];
     _allData["t12"] = pssOject["phoneno"];
-    
     _allData["locationData"] = {
-      "latitude": pssOject["lat"],					
-			"longitude":pssOject["long"],					
-			"plusCode" : pssOject["pluscode"],			
-			"minuCode" : pssOject["mimu"]	
+      "latitude": pssOject["lat"],
+      "longitude": pssOject["long"],
+      "plusCode": pssOject["pluscode"],
+      "minuCode": pssOject["mimu"]
     };
-    var questionAndAnswer;
-      print("question>>"+questions.toString());
+    var questionAndAnswer = [];
 
     for (var i = 0; i < this.questions.length; i++) {
       var loopData = this.questions[i];
-      var singleQueAndAns;
+      var singleQueAndAns = {};
       if (loopData["questionType"] == "Fill in the Blank") {
-        
+        print("fill>>" + loopData.toString());
+        singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
+         var _value = {};
+            _value["questionTypeId"] = loopData["n2"];
+            _value["questionNatureId"] = _question["sectionSyskey"];
+            _value["questionId"] = loopData["syskey"];
+            _value["answerId"] = "";
+            _value["remark"] = "";
+            _value["desc"] = "";
+            _value["instruction"] = loopData["t2"];
+            _value["t4"] = "";
+            _value["t5"] = "";
       } else if (loopData["questionType"] == "Checkbox") {
-
+        
+        for (var ii = 0; ii < loopData["answerList"].length; ii++) {
+          var answerList = loopData["answerList"][ii];
+          if (answerList["check"] == true) {
+            var _value = {};
+            _value["questionTypeId"] = loopData["n2"];
+            _value["questionNatureId"] = _question["sectionSyskey"];
+            _value["questionId"] = loopData["syskey"];
+            _value["answerId"] = answerList["syskey"];
+            _value["remark"] = "";
+            _value["desc"] = answerList["t2"];
+            _value["instruction"] = loopData["t2"];
+            _value["t4"] = "";
+            _value["t5"] = "";
+            questionAndAnswer.add(_value);
+          }
+        }
+        singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
       } else if (loopData["questionType"] == "Attach Photograph") {
+        var answerList = loopData["answerList"][0];
+        if (answerList["image"].length > 0) {
+          for (var ii = 0; ii < answerList["image"].length; ii++) {
+            var _value = {};
+            _value["questionTypeId"] = loopData["n2"];
+            _value["questionNatureId"] = _question["sectionSyskey"];
+            _value["questionId"] = loopData["syskey"];
+            _value["answerId"] = answerList["syskey"];
+            _value["remark"] = "";
+            _value["desc"] = answerList["t2"];
+            _value["instruction"] = loopData["t2"];
+            _value["t4"] = "";
+            _value["t5"] = "";
+            questionAndAnswer.add(_value);
+          }
+        }
       } else if (loopData["questionType"] == "Multiple Choice") {
+        singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
       }
     }
-    _allData["locationData"] = questionAndAnswer;
-    print("alldata>>"+_allData.toString());
-    print("section>>"+this.widget.question.toString());
+    _allData["quesAndAns"] = questionAndAnswer;
+    print("alldata>>" + _allData["quesAndAns"].toString());
   }
-
-  List<Object> _images = List<Object>();
 
   Future getImageFromCamera(var images) async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -387,7 +426,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget fillintheBlank(String t1, String t2) {
+  Widget fillintheBlank(String t1, String t2,var _controller) {
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -435,6 +474,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                     // margin: EdgeInsets.fromLTRB(23, 20, 20, 20),
                     child: TextField(
+                      onChanged: (val){
+                        setState(() {
+                          _controller = val;
+                        });
+                      },
                       decoration: InputDecoration(
                         focusColor: Colors.black,
                         prefixIcon: Icon(
@@ -456,7 +500,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget storeImage(File image, int index, var data) {
+  Widget storeImage(var image, int index, var data) {
     return Container(
       margin: EdgeInsets.all(5),
       child: Center(
@@ -476,7 +520,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               child: GestureDetector(
                 onTap: () {
                   setState(() {
-                    _images.removeAt(data[index]);
+                    data.removeAt(index);
                   });
                 },
                 child: Image(
@@ -528,7 +572,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   void initState() {
     super.initState();
 //    if(){} for questionNature
-    print("re>>"+this.widget.surveyType);
+    print("re>>" + this.widget.surveyType);
     if (this.widget.surveyType == "Neighborhood Survey") {
       this.questionNature = "Neighborhood Survey";
     } else if (this.widget.surveyType == "Outside of Store") {
@@ -555,7 +599,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               setState(() {
                 if (result["status"] == true) {
                   this.questions = result["data"];
-                  
+
                   for (var ss = 0; ss < this.questions.length; ss++) {
                     if (this.questions[ss]["questionType"] == "Multiple Choice")
                       this.newQuestionarray.add("syskey");
@@ -575,7 +619,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     answerArray = data["answerList"];
 
     if (data["questionType"] == "Fill in the Blank") {
-      _widget = fillintheBlank(data['t1'], data['t2']);
+      _widget = fillintheBlank(data['t1'], data['t2'],data["controller"]);
     }
     if (data["questionType"] == "Checkbox") {
       _widget = checkBox(data['t1'], data['t2'], data['answerList']);
@@ -701,8 +745,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             this.widget.address,
                             this.widget.regOrAss,
                             this.widget.passData,
-                            this.widget.question
-                            )),
+                            this.widget.question)),
                   );
                 },
                 child: Container(
@@ -730,13 +773,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               icon: new Container(),
               title: InkWell(
                 onTap: () {
-                  if(this.widget.regOrAss == "assign"){
+                  if (this.widget.regOrAss == "assign") {
                     setState(() {
-                  _clickDoneAssignStore();
+                      _clickDoneAssignStore();
                     });
-                  }else{
-
-                  }
+                  } else {}
                   // Navigator.of(context).pushReplacement(
                   //   MaterialPageRoute(
                   //       builder: (context) => OutsideInsideNeighborhood(

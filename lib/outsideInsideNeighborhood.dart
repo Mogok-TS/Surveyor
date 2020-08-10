@@ -59,7 +59,11 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
       ],
     );
   }
-
+  @override
+  void initState() {
+    super.initState();
+    print("question>>"+this.widget.question.toString());
+  }
   Widget _statusButton(String text) {
     return GestureDetector(
       onTap: () {},
