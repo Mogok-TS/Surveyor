@@ -827,8 +827,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     child: Text(
                                       val,
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold
-                                      ),
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   );
                                 },
@@ -837,45 +836,40 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   _townOrVillagetract = value;
-                                  for (var i = 0;
-                                      i < townShipObject.length;
-                                      i++) {
-                                    if (value == "Town") {
-                                      n2Code = "1";
-                                      var paramsTown = {
-                                        "id": "0",
-                                        "code": "",
-                                        "description": "",
-                                        "parentid": townShipObject[i]["id"],
-                                        "n2": "1"
-                                      };
-                                      print("--->" + paramsTown.toString());
-                                      _getTown(paramsTown);
-                                    } else {
-                                      _town = "Town";
-                                      _ward = "Ward";
-                                    }
-                                    if (value == "Village Tract") {
-                                      n2Code = "2";
-                                      var paramsTract = {
-                                        "id": "0",
-                                        "code": "",
-                                        "description": "",
-                                        "parentid": townShipObject[i]["id"],
-                                        "n2": "2"
-                                      };
-                                      _getVillageTract(paramsTract);
-                                    } else {
-                                      _villageTract = "Village Tract";
-                                      _village = "Village";
-                                    }
-                                    if (value == "Town/Village Tract?") {
-                                      n2Code = "0";
-                                      _town = "Town";
-                                      _ward = "Ward";
-                                      _villageTract = "Village Tract";
-                                      _village = "Village";
-                                    }
+                                  if (value == "Town") {
+                                    n2Code = "1";
+                                    var paramsTown = {
+                                      "id": "",
+                                      "code": "",
+                                      "description": "",
+                                      "parentid": _townShipId,
+                                      "n2": "1"
+                                    };
+                                    _getTown(paramsTown);
+                                  } else {
+                                    _town = "Town";
+                                    _ward = "Ward";
+                                  }
+                                  if (value == "Village Tract") {
+                                    n2Code = "2";
+                                    var paramsTract = {
+                                      "id": "",
+                                      "code": "",
+                                      "description": "",
+                                      "parentid": _townShipId,
+                                      "n2": "2"
+                                    };
+                                    _getVillageTract(paramsTract);
+                                  } else {
+                                    _villageTract = "Village Tract";
+                                    _village = "Village";
+                                  }
+                                  if (value == "Town/Village Tract?") {
+                                    n2Code = "0";
+                                    _town = "Town";
+                                    _ward = "Ward";
+                                    _villageTract = "Village Tract";
+                                    _village = "Village";
                                   }
                                   _town = "Town";
                                   _townList = ['Town'];
@@ -924,13 +918,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   _town = value;
                                   for (var i = 0; i < townData.length; i++) {
                                     var params = {
-                                      "id": "0",
+                                      "id": "",
                                       "code": "",
                                       "description": "",
                                       "parentid": townData[i]["id"],
                                       "n2": "1"
                                     };
-                                    print("this is townId" + townData[i]["id"]);
                                     townCode = townData[i]["code"];
                                     _townId = townData[i]["id"];
                                     _getWard(params);
@@ -1024,16 +1017,16 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   for (var i = 0;
                                       i < _villageTractData.length;
                                       i++) {
-                                    villageTractCode =
-                                        _villageTractData[i]["code"];
-                                    villageTractId = _villageTractData[i]["id"];
                                     var params = {
-                                      "id": "0",
+                                      "id": "",
                                       "code": "",
                                       "description": "",
                                       "parentid": _villageTractData[i]["id"],
                                       "n2": "2"
                                     };
+                                    villageTractCode =
+                                        _villageTractData[i]["code"];
+                                    villageTractId = _villageTractData[i]["id"];
                                     _getVillage(params);
                                   }
                                 });
@@ -1208,7 +1201,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         this._village == null ||
                         this._village == "Village" ||
                         this._village.isEmpty ||
-                    this.shopName.text == "" ||
+                        this.shopName.text == "" ||
                         this.shopName.text == null ||
                         this.shopName.text.isEmpty ||
                         this.shopNamemm.text == "" ||
