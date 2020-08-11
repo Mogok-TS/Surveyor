@@ -849,6 +849,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                         "parentid": townShipObject[i]["id"],
                                         "n2": "1"
                                       };
+                                      print("--->" + paramsTown.toString());
                                       _getTown(paramsTown);
                                     } else {
                                       _town = "Town";
