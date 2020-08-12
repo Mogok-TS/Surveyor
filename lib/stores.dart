@@ -279,11 +279,11 @@ class _StoreScreenState extends State<StoreScreen>  {
                 this.onlineSerives.getsvrShoplist(newParam).then((res) => {
                   if (res == true)
                     {
-                      this.storeData = this.storage.getItem("storeData"),
+//                      this.storeData = this.storage.getItem("storeData"),
                       this.storeRegistration =
                           this.storage.getItem("storeReg"),
                       print("${storeRegistration}"),
-                      this.assignStores = this.storeData["shopsByUser"],
+                      this.assignStores = this.storage.getItem("storeData"),
                       setState(() {
                         this.count = this.assignStores.length.toString();
                       }),

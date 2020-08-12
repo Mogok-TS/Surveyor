@@ -500,7 +500,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       controller: shopName,
                       cursorColor: CustomIcons.textField,
                       decoration: InputDecoration(
-                        labelText: 'Name',
+                        labelText: 'Shop Name',
                         labelStyle:
                             TextStyle(color: Colors.black54, fontSize: 18),
                         focusColor: Colors.black,

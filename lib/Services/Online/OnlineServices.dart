@@ -135,9 +135,9 @@ class OnlineSerives {
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
-        if (data["status"] == "SUCCESS!") {
+        if (data["status"] == "SUCCESS") {
           this.status = true;
-          this.storage.setItem("storeData", data["data"]);
+          this.storage.setItem("storeData", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;
