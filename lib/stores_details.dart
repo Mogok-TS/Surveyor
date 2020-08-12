@@ -445,9 +445,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     margin: EdgeInsets.only(top: 10.0),
                     child: Row(
                       children: <Widget>[
-                        SizedBox(
-                          width: 20.0,
-                        ),
                         IconButton(
                           icon: Icon(
                             Location.my_location,
@@ -470,7 +467,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     child: Row(
                       children: <Widget>[
                         SizedBox(
-                          width: 20.0,
+                          width: 5.0,
                         ),
                         IconButton(
                           icon: Icon(
@@ -498,17 +495,15 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: TextField(
+                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: TextFormField(
                       controller: shopName,
+                      cursorColor: CustomIcons.textField,
                       decoration: InputDecoration(
+                        labelText: 'Name',
+                        labelStyle:
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusColor: Colors.black,
-                        prefixIcon: Icon(
-                          Icons.store,
-                          color: CustomIcons.iconColor,
-                        ),
-                        hintText: 'Name',
-                        hintStyle: TextStyle(fontSize: 18, height: 1.5),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -516,17 +511,15 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: TextField(
+                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: TextFormField(
                       controller: shopNamemm,
+                      cursorColor: CustomIcons.textField,
                       decoration: InputDecoration(
+                        labelText: 'Shop Name (Myanmar)',
+                        labelStyle:
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusColor: Colors.black,
-                        prefixIcon: Icon(
-                          Icons.store,
-                          color: CustomIcons.iconColor,
-                        ),
-                        hintText: 'ဆိုင်နာမည်',
-                        hintStyle: TextStyle(fontSize: 18, height: 1.5),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -534,18 +527,16 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: TextField(
+                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: TextFormField(
                       keyboardType: TextInputType.number,
                       controller: shopPhoneNo,
+                      cursorColor: CustomIcons.textField,
                       decoration: InputDecoration(
                         focusColor: Colors.black,
-                        prefixIcon: Icon(
-                          Icons.phone,
-                          color: CustomIcons.iconColor,
-                        ),
-                        hintText: 'Shop Phone No',
-                        hintStyle: TextStyle(fontSize: 18, height: 1.5),
+                        labelText: 'Shop Phone No',
+                        labelStyle:
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -553,17 +544,15 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: TextField(
+                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: TextFormField(
                       controller: ownerName,
+                      cursorColor: CustomIcons.textField,
                       decoration: InputDecoration(
                         focusColor: Colors.black,
-                        prefixIcon: Icon(
-                          Icons.person_outline,
-                          color: CustomIcons.iconColor,
-                        ),
-                        hintText: 'Owner Name',
-                        hintStyle: TextStyle(fontSize: 18, height: 1.5),
+                        labelText: 'Owner Name',
+                        labelStyle:
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -571,35 +560,41 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: TextField(
+                    margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: TextFormField(
                       keyboardType: TextInputType.number,
                       controller: ownerPhoneNo,
+                      cursorColor: CustomIcons.textField,
                       decoration: InputDecoration(
                         focusColor: Colors.black,
-                        prefixIcon: Icon(
-                          Icons.phone_android,
-                          color: CustomIcons.iconColor,
-                        ),
-                        hintText: 'Owner Phone No',
-                        hintStyle: TextStyle(fontSize: 18, height: 1.5),
+                        labelText: 'Owner Phone No',
+                        labelStyle:
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
                       ),
                     ),
                   ),
-                  Stack(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 20, top: 20),
+                        child: Text(
+                          "State",
+                          style: TextStyle(fontSize: 17, color: Colors.black54),
+                        ),
+                      ),
                       Container(
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
-                        padding: EdgeInsets.only(left: 44.0),
+                        padding: EdgeInsets.only(left: 10.0),
                         margin:
-                            EdgeInsets.only(top: 0.0, left: 16.0, right: 16.0),
+                            EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
                         // margin: EdgeInsets.fromLTRB(left, top, right, bottom),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
@@ -651,26 +646,27 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 15.0, left: 28.0),
-                        child: Icon(
-                          Icons.location_on,
-                          color: CustomIcons.iconColor,
-                        ),
-                      ),
                     ],
                   ),
-                  Stack(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 20, top: 20),
+                        child: Text(
+                          "District",
+                          style: TextStyle(fontSize: 17, color: Colors.black54),
+                        ),
+                      ),
                       Container(
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
-                        padding: EdgeInsets.only(left: 44.0),
+                        padding: EdgeInsets.only(left: 10.0),
                         margin:
-                            EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
+                            EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
                             isExpanded: true,
@@ -726,26 +722,27 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                        child: Icon(
-                          Icons.location_on,
-                          color: CustomIcons.iconColor,
-                        ),
-                      ),
                     ],
                   ),
-                  Stack(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 20, top: 20),
+                        child: Text(
+                          "TownShip",
+                          style: TextStyle(fontSize: 17, color: Colors.black54),
+                        ),
+                      ),
                       Container(
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
-                        padding: EdgeInsets.only(left: 44.0),
+                        padding: EdgeInsets.only(left: 10.0),
                         margin:
-                            EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
+                            EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
                             isExpanded: true,
@@ -796,27 +793,29 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                        child: Icon(
-                          Icons.location_on,
-                          color: CustomIcons.iconColor,
-                        ),
-                      ),
                     ],
                   ),
                   if (_townShip != "TownShip")
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 20, top: 20),
+                          child: Text(
+                            "Town/Village Tract?",
+                            style:
+                                TextStyle(fontSize: 17, color: Colors.black54),
+                          ),
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 44.0),
-                          margin: EdgeInsets.only(
-                              top: 20.0, left: 16.0, right: 16.0),
+                          padding: EdgeInsets.only(left: 10.0),
+                          margin:
+                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
                               isExpanded: true,
@@ -880,27 +879,29 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                          child: Icon(
-                            Icons.not_listed_location,
-                            color: CustomIcons.iconColor,
-                          ),
-                        ),
                       ],
                     ),
                   if (n2Code == "1")
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 20, top: 20),
+                          child: Text(
+                            "Town",
+                            style:
+                                TextStyle(fontSize: 17, color: Colors.black54),
+                          ),
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 44.0),
-                          margin: EdgeInsets.only(
-                              top: 20.0, left: 16.0, right: 16.0),
+                          padding: EdgeInsets.only(left: 10.0),
+                          margin:
+                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               isExpanded: true,
@@ -933,27 +934,29 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                          child: Icon(
-                            Icons.location_on,
-                            color: CustomIcons.iconColor,
-                          ),
-                        ),
                       ],
                     ),
                   if (n2Code == "1")
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 20, top: 20),
+                          child: Text(
+                            "Ward",
+                            style:
+                                TextStyle(fontSize: 17, color: Colors.black54),
+                          ),
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 44.0),
-                          margin: EdgeInsets.only(
-                              top: 20.0, left: 16.0, right: 16.0),
+                          padding: EdgeInsets.only(left: 10.0),
+                          margin:
+                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               isExpanded: true,
@@ -978,27 +981,29 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                          child: Icon(
-                            Icons.location_on,
-                            color: CustomIcons.iconColor,
-                          ),
-                        ),
                       ],
                     ),
                   if (n2Code == "2")
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 20, top: 20),
+                          child: Text(
+                            "Village Tract",
+                            style:
+                                TextStyle(fontSize: 17, color: Colors.black54),
+                          ),
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 44.0),
-                          margin: EdgeInsets.only(
-                              top: 20.0, left: 16.0, right: 16.0),
+                          padding: EdgeInsets.only(left: 10.0),
+                          margin:
+                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               isExpanded: true,
@@ -1034,27 +1039,29 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                          child: Icon(
-                            Icons.location_on,
-                            color: CustomIcons.iconColor,
-                          ),
-                        ),
                       ],
                     ),
                   if (n2Code == "2")
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 20, top: 20),
+                          child: Text(
+                            "Village",
+                            style:
+                                TextStyle(fontSize: 17, color: Colors.black54),
+                          ),
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 44.0),
-                          margin: EdgeInsets.only(
-                              top: 20.0, left: 16.0, right: 16.0),
+                          padding: EdgeInsets.only(left: 10.0),
+                          margin:
+                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               isExpanded: true,
@@ -1081,28 +1088,18 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 35.0, left: 28.0),
-                          child: Icon(
-                            Icons.location_on,
-                            color: CustomIcons.iconColor,
-                          ),
-                        ),
                       ],
                     ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                    // margin: EdgeInsets.fromLTRB(23, 20, 20, 20),
-                    child: TextField(
+                    margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                    child: TextFormField(
                       controller: street,
+                      cursorColor: CustomIcons.textField,
                       decoration: InputDecoration(
                         focusColor: Colors.black,
-                        prefixIcon: Icon(
-                          Icons.location_on,
-                          color: CustomIcons.iconColor,
-                        ),
-                        hintText: 'Street',
-                        hintStyle: TextStyle(fontSize: 18, height: 1.5),
+                        labelText: 'Street',
+                        labelStyle:
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
