@@ -380,7 +380,7 @@ class _StoreScreenState extends State<StoreScreen>  {
                                     width: 10,
                                   ),
                                   Text(
-                                    "x/" + this.count,
+                                    "0/" + this.count,
                                     style: TextStyle(
                                       color: Colors.black,
                                     ),

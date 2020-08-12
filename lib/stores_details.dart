@@ -1189,18 +1189,18 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         this._townOrVillagetract == null ||
                         this._townOrVillagetract == "Town/Village Tract?" ||
                         this._townOrVillagetract.isEmpty ||
-                        this._town == null ||
-                        this._town == "Town" ||
-                        this._town.isEmpty ||
-                        this._ward == null ||
-                        this._ward == "Ward" ||
-                        this._ward.isEmpty ||
-                        this._villageTract == null ||
-                        this._villageTract == "Village Tract" ||
-                        this._villageTract.isEmpty ||
-                        this._village == null ||
-                        this._village == "Village" ||
-                        this._village.isEmpty ||
+//                        this._town == null ||
+//                        this._town == "Town" ||
+//                        this._town.isEmpty ||
+//                        this._ward == null ||
+//                        this._ward == "Ward" ||
+//                        this._ward.isEmpty ||
+//                        this._villageTract == null ||
+//                        this._villageTract == "Village Tract" ||
+//                        this._villageTract.isEmpty ||
+//                        this._village == null ||
+//                        this._village == "Village" ||
+//                        this._village.isEmpty ||
                         this.shopName.text == "" ||
                         this.shopName.text == null ||
                         this.shopName.text.isEmpty ||

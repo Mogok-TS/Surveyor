@@ -227,7 +227,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                           ),
                                           Expanded(
                                               child: _remainButton(
-                                                  "x Items remaining")),
+                                                  "0 Items remaining")),
                                         ],
                                       ),
                                     ),
