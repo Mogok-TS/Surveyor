@@ -352,37 +352,37 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       print("alldata>>" + json.encode(_allData["quesAndAns"]).toString());
     }
 
-    setState(() {
-      _consoleLable = _allData.toString();
-    });
-
-//    this.onlineSerives.createStore(_allData).then((reslut) =>
-//    {
-//      print("-->" + reslut.toString()),
-//      hideLoadingDialog(),
-//      if (reslut["status"] == true)
-//        {
-//          ShowToast("Saved successfully."),
-//              Navigator.of(context).pushReplacement(
-//                MaterialPageRoute(
-//                  builder: (context) => OutsideInsideNeighborhood(
-//                      this.widget.isNeighborhood,
-//                      this.widget.isOutside,
-//                      this.widget.isInside,
-//                      this.widget.isStoreOperater,
-//                      this.widget.storeName,
-//                      this.widget.storeNumber,
-//                      this.widget.address,
-//                      this.widget.regOrAss,
-//                      this.widget.passData,
-//                      this.widget.question,
-//                      this.widget.header),
-//                ),
-//              ),
-//        }
-//      else
-//        {}
+//    setState(() {
+//      _consoleLable = _allData.toString();
 //    });
+
+    this.onlineSerives.createStore(_allData).then((reslut) =>
+    {
+      print("-->" + reslut.toString()),
+      hideLoadingDialog(),
+      if (reslut["status"] == true)
+        {
+          ShowToast("Saved successfully."),
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => OutsideInsideNeighborhood(
+                      this.widget.isNeighborhood,
+                      this.widget.isOutside,
+                      this.widget.isInside,
+                      this.widget.isStoreOperater,
+                      this.widget.storeName,
+                      this.widget.storeNumber,
+                      this.widget.address,
+                      this.widget.regOrAss,
+                      this.widget.passData,
+                      this.widget.question,
+                      this.widget.header),
+                ),
+              ),
+        }
+      else
+        {}
+    });
   }
 
   // Future getImageFromCamera(var images) async {
