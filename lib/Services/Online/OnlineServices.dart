@@ -267,7 +267,7 @@ class OnlineSerives {
       dataarray["maxRows"] = listdata["maxRows"];
       dataarray["current"] = listdata["current"];
       dataarray["ansListType"] = listdata["ansListType"];
-      dataarray["controller"] = null;
+      dataarray["controller"] = "";
       var answerList = [];
       var allArray = data["list"][i]["answerList"];
       var radioList = [];

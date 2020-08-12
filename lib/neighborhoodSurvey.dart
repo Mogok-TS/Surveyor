@@ -81,6 +81,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var svr9DataList = [];
   var _svr9DataListObject = {};
   var fillAnswerArray = [];
+  TextEditingController _controller = new TextEditingController();
 
   _clickDoneAssignStore() {
     showLoading();
@@ -127,17 +128,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["syskey"].toString();
           _value["answerId"] = "0";
-          for (var pp = 0; pp < this.fillAnswerArray.length; pp++) {
-            aa = 0;
-            if (this.fillAnswerArray[pp]["questionSyskey"] ==
-                loopData["syskey"]) {
-              _value["remark"] = this.fillAnswerArray[pp]["answer"];
-              aa = 1;
-            }
-          }
-          if (aa == 0) {
-            _value["remark"] = "";
-          }
+         _value["remark"] = loopData["controller"];
           _value["desc"] = "";
           _value["instruction"] = loopData["t2"];
           _value["t4"] = "";
@@ -266,13 +257,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["syskey"].toString();
           _value["answerId"] = "0";
-          for (var pp = 0; pp < this.fillAnswerArray.length; pp++) {
-            if (this.fillAnswerArray[pp]["questionSyskey"] ==
-                loopData["syskey"]) {
-              _value["remark"] = this.fillAnswerArray[pp]["answer"].toString();
-              break;
-            }
-          }
+          _value["remark"] = loopData["controller"];
           _value["desc"] = "";
           _value["instruction"] = loopData["t2"];
           _value["t4"] = "";
@@ -360,9 +345,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       print("alldata>>" + json.encode(_allData["quesAndAns"]).toString());
     }
 
-//    setState(() {
-//      _consoleLable = _allData.toString();
-//    });
+  //  setState(() {
+  //    _consoleLable = _allData.toString();
+  //  });
 
     this.onlineSerives.createStore(_allData).then((reslut) => {
           print("-->" + reslut.toString()),
@@ -720,6 +705,15 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget fillintheBlank(String t1, String t2, var questionData) {
+    // var index = 0;
+    // for(var ss = 0; ss < this.fillAnswerArray.length; ss++){
+    //   if(this.fillAnswerArray[ss]["questionSyskey"] == questionData["syskey"]){
+    //     index = ss;
+    //     this._controller.text = this.fillAnswerArray[ss]["answer"].toString();
+    //   }
+    // }
+    TextEditingController _textController = new TextEditingController();
+    _textController.text = questionData["controller"];
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -767,33 +761,35 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                     // margin: EdgeInsets.fromLTRB(23, 20, 20, 20),
                     child: TextField(
+                      controller: _textController,
                       onChanged: (val) {
-                        var _obj = {};
-                        var checkSyskey = 0;
-                        var index = 0;
-                        if (this.fillAnswerArray.length == 0) {
-                          _obj["questionSyskey"] = questionData["syskey"];
-                          _obj["answer"] = val;
-                          this.fillAnswerArray.add(_obj);
-                        } else {
-                          for (var qe = 0;
-                              qe < this.fillAnswerArray.length;
-                              qe++) {
-                            if (this.fillAnswerArray[qe]["questionSyskey"] ==
-                                questionData["syskey"]) {
-                              index = qe;
-                              checkSyskey = 1;
-                              break;
-                            }
-                          }
-                          if (checkSyskey == 0) {
-                            _obj["questionSyskey"] = questionData["syskey"];
-                            _obj["answer"] = val;
-                            this.fillAnswerArray.add(_obj);
-                          } else {
-                            this.fillAnswerArray[index]["answer"] = val;
-                          }
-                        }
+                        questionData["controller"] = _textController.text;
+                        // var _obj = {};
+                        // var checkSyskey = 0;
+                        // var index = 0;
+                        // if (this.fillAnswerArray.length == 0) {
+                        //   _obj["questionSyskey"] = questionData["syskey"];
+                        //   _obj["answer"] = val;
+                        //   this.fillAnswerArray.add(_obj);
+                        // } else {
+                        //   for (var qe = 0;
+                        //       qe < this.fillAnswerArray.length;
+                        //       qe++) {
+                        //     if (this.fillAnswerArray[qe]["questionSyskey"] ==
+                        //         questionData["syskey"]) {
+                        //       index = qe;
+                        //       checkSyskey = 1;
+                        //       break;
+                        //     }
+                        //   }
+                        //   if (checkSyskey == 0) {
+                        //     _obj["questionSyskey"] = questionData["syskey"];
+                        //     _obj["answer"] = val;
+                        //     this.fillAnswerArray.add(_obj);
+                        //   } else {
+                        //     this.fillAnswerArray[index]["answer"] = val;
+                        //   }
+                        // }
                       },
                       decoration: InputDecoration(
                         focusColor: Colors.black,
@@ -938,8 +934,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   this.questions = result["data"];
 
                   for (var ss = 0; ss < this.questions.length; ss++) {
-                    if (this.questions[ss]["questionType"] == "Multiple Choice")
+                    if (this.questions[ss]["questionType"] ==
+                        "Multiple Choice") {
                       this.newQuestionarray.add("syskey");
+                    }
                   }
                   _status = true;
                 } else {
