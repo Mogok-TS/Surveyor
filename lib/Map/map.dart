@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
+import 'package:Surveyor/Services/Messages/Messages.dart';
+import 'package:Surveyor/stores_details.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,6 +26,7 @@ class MapSampleState extends State<GmapS> {
   GoogleMapController googleMapController;
 
   static CameraPosition _kGooglePlex;
+  var _latLong;
 
   void toUserLocation() {
     _getLocation().then((value) {
@@ -33,6 +37,11 @@ class MapSampleState extends State<GmapS> {
           _getAddress(value).then((val) async {
             if (value.latitude != null && value.longitude != null) {
               final GoogleMapController controller = await _controller.future;
+              this._latLong = {};
+              this._latLong = {
+                "lat":value.latitude,
+                "long":value.longitude
+              };
               controller.animateCamera(CameraUpdate.newCameraPosition(
                   CameraPosition(
                       bearing: 0.0,
@@ -154,6 +163,10 @@ class MapSampleState extends State<GmapS> {
     super.initState();
     locationFromServer();
     toUserLocation();
+    this._latLong = {
+      "lat":widget.lati,
+      "long":widget.long
+    };
     _kGooglePlex = CameraPosition(
       target: LatLng(widget.lati, widget.long),
       zoom: 10.0,
@@ -198,7 +211,11 @@ class MapSampleState extends State<GmapS> {
               },
               markers: Set<Marker>.of(markers.values),
               onTap: (latLong) {
-                print(latLong);
+                print("-->" + latLong.toString());
+                this._latLong = {
+                  "lat":latLong.latitude,
+                  "long":latLong.longitude
+                };
                 createNewMarker(latLong.latitude, latLong.longitude);
               },
             ),
@@ -238,8 +255,27 @@ class MapSampleState extends State<GmapS> {
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(20),
           child: GestureDetector(
-            onTap: () {},
-            child: Image.asset("location.png", width: 50),
+            onTap: () {
+              getGPSstatus().then((status) => {
+                print("$status"),
+                if (status == true)
+                  {
+                    this.storage.setItem("Maplatlong", this._latLong),
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            StoresDetailsScreen([], false,"Map"),
+                      ),
+                    ),
+                  }
+                else
+                  {ShowToast("Please open GPS")}
+              });
+            },
+            child: Image(
+              image: AssetImage('assets/location.png'),
+              width: 50,
+            ),
           ),
         ),
       ),

@@ -12,6 +12,7 @@ import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/Services/Loading/LoadingServices.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:load/load.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'Services/GeneralUse/PhoneNumber.dart';
@@ -33,6 +34,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   var updateStatus;
   var shopSyskey;
   OnlineSerives onlineSerives = new OnlineSerives();
+  final LocalStorage storage = new LocalStorage('Surveyor');
 
 //  TextEditingController shopCode = new TextEditingController();
   TextEditingController shopName = new TextEditingController();
@@ -79,8 +81,16 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       });
       getCurrentLocation().then((k) {
         print({"$k"});
-        latitude = k.latitude;
-        longitude = k.longitude;
+        if(this.widget.regOrAss == "Map"){
+          var _latLong = this.storage.getItem("Maplatlong");
+          print("--->" + _latLong.toString());
+          latitude = _latLong["lat"];
+          longitude = _latLong["long"];
+        }else{
+          latitude = k.latitude;
+          longitude = k.longitude;
+        }
+
         googlePlusparam = {"lat": latitude, "lng": longitude};
         this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
               (result) => {
