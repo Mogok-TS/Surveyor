@@ -1,4 +1,4 @@
-package com.auderbox.surveyor
+package com.surveyor.mit
 
 import io.flutter.embedding.android.FlutterActivity
 
