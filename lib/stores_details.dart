@@ -154,11 +154,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
 
   _getDistrict(params) {
     _districtList = [
-      "District",
+      "-",
     ];
-    _district = "District";
-    _townShip = "TownShip";
-    _townShipList = ["TownShip"];
+    _district = "-";
+    _townShip = "-";
+    _townShipList = ["-"];
     if (params != null) {
       onlineSerives.getDistrict(params).then((val) => {
             print(val.toString()),
@@ -173,19 +173,17 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     } else {
       setState(() {
         _districtList = [
-          "District",
+          "-",
         ];
       });
     }
   }
 
   _getTownShip(params) {
-    _townShip = "TownShip";
+    _townShip = "-";
     _townShipList = [
-      "TownShip",
+      "-",
     ];
-    print("All Code" + allCode.toString());
-    print("All Address" + allAddress.toString());
     if (params != null) {
       onlineSerives.getTownship(params).then((val) => {
             print(val.toString()),
@@ -194,14 +192,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               {
                 setState(() {
                   _townShipList.add(townShipObject[i]["description"]);
-                  print("Hello" + townShipObject[i]["id"]);
                 }),
               },
           });
     } else {
       setState(() {
         _townShipList = [
-          "District",
+          "-",
         ];
       });
     }
@@ -233,7 +230,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 {
                   setState(() {
                     _wardList.add(wardData[i]["description"]);
-                    print("Ward List" + _wardList.toString());
                   })
                 }
             },
@@ -377,58 +373,58 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   var allCode;
   var allAddress;
 
-  List<String> _stateList = ['State'];
-  String _state = 'State';
+  List<String> _stateList = ['-'];
+  String _state = '-';
   var stateObject;
   var _stateCode;
   var _stateId;
 
   List<String> _districtList = [
-    'District',
+    '-',
   ];
-  String _district = "District";
+  String _district = "-";
   var districtObject;
   var _districtCode;
   var _districtId;
 
   List<String> _townShipList = [
-    'TownShip',
+    '-',
   ];
-  String _townShip = 'TownShip';
+  String _townShip = '-';
   var townShipObject;
   var _townShipCode;
   var _townShipId;
 
   var _townOrVillagetractList = [
-    'Town/Village Tract?',
+    '-',
     'Town',
     'Village Tract',
   ];
-  String _townOrVillagetract = "Town/Village Tract?";
+  String _townOrVillagetract = "-";
 
   var townCode;
   var _townId;
   var townData;
-  List<String> _townList = ['Town'];
-  String _town = "Town";
+  List<String> _townList = ['-'];
+  String _town = "-";
 
   var wardCode;
   var wardData;
   var _wardId;
-  List<String> _wardList = ["Ward"];
-  String _ward = "Ward";
+  List<String> _wardList = ["-"];
+  String _ward = "-";
 
   var villageTractCode;
   var villageTractId;
   var _villageTractData;
-  List<String> _villageTractList = ["Village Tract"];
-  String _villageTract = "Village Tract";
+  List<String> _villageTractList = ["-"];
+  String _villageTract = "-";
 
   var villageCode;
   var _villageData;
   var villageId;
-  List<String> _villageList = ["Village"];
-  String _village = "Village";
+  List<String> _villageList = ["-"];
+  String _village = "-";
   var n2Code;
 
   @override
@@ -602,7 +598,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         padding: EdgeInsets.only(left: 10.0),
                         margin:
                             EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
-                        // margin: EdgeInsets.fromLTRB(left, top, right, bottom),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
                             isExpanded: true,
@@ -631,23 +626,23 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     _stateCode = stateObject[i]["code"];
                                     _getDistrict(data);
                                     break;
-                                  } else if (_state == "State") {
+                                  } else if (_state == "-") {
                                     n2Code = "0";
-                                    _townOrVillagetract = "Town/Village Tract?";
+                                    _townOrVillagetract = "-";
                                     _getDistrict(null);
                                     break;
                                   }
                                 }
-                                _townOrVillagetract = "Town/Village Tract?";
+                                _townOrVillagetract = "-";
                                 n2Code = "0";
-                                _town = "Town";
-                                _townList = ['Town'];
-                                _ward = "Ward";
-                                _wardList = ['Ward'];
-                                _villageTract = "Village Tract";
-                                _villageTractList = ["Village Tract"];
-                                _village = "Village";
-                                _villageList = ["Village"];
+                                _town = "-";
+                                _townList = ['-'];
+                                _ward = "-";
+                                _wardList = ['-'];
+                                _villageTract = "-";
+                                _villageTractList = ["-"];
+                                _village = "-";
+                                _villageList = ["-"];
                               });
                             },
                           ),
@@ -705,25 +700,25 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     _districtCode = districtObject[i]["code"];
                                     _getTownShip(data);
                                     break;
-                                  } else if (_district == "District") {
+                                  } else if (_district == "-") {
                                     _districtId = "";
                                     _districtCode = "";
                                     n2Code = "0";
-                                    _townOrVillagetract = "Town/Village Tract?";
+                                    _townOrVillagetract = "-";
                                     _getTownShip(null);
                                     break;
                                   }
                                 }
-                                _townOrVillagetract = "Town/Village Tract?";
+                                _townOrVillagetract = "-";
                                 n2Code = "0";
-                                _town = "Town";
-                                _townList = ['Town'];
-                                _ward = "Ward";
-                                _wardList = ['Ward'];
-                                _villageTract = "Village Tract";
-                                _villageTractList = ["Village Tract"];
-                                _village = "Village";
-                                _villageList = ["Village"];
+                                _town = "-";
+                                _townList = ['-'];
+                                _ward = "-";
+                                _wardList = ['-'];
+                                _villageTract = "-";
+                                _villageTractList = ["-"];
+                                _village = "-";
+                                _villageList = ["-"];
                               });
                             },
                           ),
@@ -779,22 +774,22 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     _townShipId = townShipObject[i]["id"];
                                     _townShipCode = townShipObject[i]["code"];
                                     break;
-                                  } else if (_townShip == "TownShip") {
+                                  } else if (_townShip == "-") {
                                     _townShipId = "";
                                     _townShipCode = "";
                                     break;
                                   }
                                 }
-                                _townOrVillagetract = "Town/Village Tract?";
+                                _townOrVillagetract = "-";
                                 n2Code = "0";
-                                _town = "Town";
-                                _townList = ['Town'];
-                                _ward = "Ward";
-                                _wardList = ['Ward'];
-                                _villageTract = "Village Tract";
-                                _villageTractList = ["Village Tract"];
-                                _village = "Village";
-                                _villageList = ["Village"];
+                                _town = "-";
+                                _townList = ['-'];
+                                _ward = "-";
+                                _wardList = ['-'];
+                                _villageTract = "-";
+                                _villageTractList = ["-"];
+                                _village = "-";
+                                _villageList = ["-"];
                               });
                             },
                           ),
@@ -802,7 +797,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       ),
                     ],
                   ),
-                  if (_townShip != "TownShip")
+                  if (_townShip != "-")
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -853,8 +848,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     };
                                     _getTown(paramsTown);
                                   } else {
-                                    _town = "Town";
-                                    _ward = "Ward";
+                                    _town = "-";
+                                    _ward = "-";
                                   }
                                   if (value == "Village Tract") {
                                     n2Code = "2";
@@ -867,20 +862,20 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     };
                                     _getVillageTract(paramsTract);
                                   } else {
-                                    _villageTract = "Village Tract";
-                                    _village = "Village";
+                                    _villageTract = "-";
+                                    _village = "-";
                                   }
-                                  if (value == "Town/Village Tract?") {
+                                  if (value == '-') {
                                     n2Code = "0";
-                                    _town = "Town";
-                                    _ward = "Ward";
-                                    _villageTract = "Village Tract";
-                                    _village = "Village";
+                                    _town = "-";
+                                    _ward = "-";
+                                    _villageTract = "-";
+                                    _village = "-";
                                   }
-                                  _town = "Town";
-                                  _townList = ['Town'];
-                                  _ward = "Ward";
-                                  _wardList = ['Ward'];
+                                  _town = "-";
+                                  _townList = ['-'];
+                                  _ward = "-";
+                                  _wardList = ['-'];
                                 });
                               },
                             ),
@@ -1191,7 +1186,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
 //                        this._townShip == "TownShip" ||
 //                        this._townShip.isEmpty ||
 //                        this._townOrVillagetract == null ||
-//                        this._townOrVillagetract == "Town/Village Tract?" ||
+//                        this._townOrVillagetract == "-" ||
 //                        this._townOrVillagetract.isEmpty ||
 ////                        this._town == null ||
 ////                        this._town == "Town" ||
@@ -1461,8 +1456,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           this._townShip == "TownShip" ||
                           this._townShip.isEmpty ||
                           this._townOrVillagetract == null ||
-                          this._townOrVillagetract ==
-                              "Town/Village Tract?" ||
+                          this._townOrVillagetract == "-" ||
                           this._townOrVillagetract.isEmpty ||
 //                        this._town == null ||
 //                        this._town == "Town" ||
@@ -1529,7 +1523,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "mmName": this.shopNamemm.text.toString(),
                             "personName": this.ownerName.text.toString(),
                             "personPhoneNumber":
-                            this.ownerPhoneNo.text.toString(),
+                                this.ownerPhoneNo.text.toString(),
                             "phoneNumber": this.shopPhoneNo.text.toString(),
                             "stateId": _stateId,
                             "districtId": _districtId,
@@ -1553,7 +1547,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "mmName": this.shopNamemm.text.toString(),
                             "personName": this.ownerName.text.toString(),
                             "personPhoneNumber":
-                            this.ownerPhoneNo.text.toString(),
+                                this.ownerPhoneNo.text.toString(),
                             "phoneNumber": this.shopPhoneNo.text.toString(),
                             "stateId": _stateId,
                             "districtId": _districtId,
@@ -1573,45 +1567,39 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         }
                         ;
                         print("Data" + "${param}");
-                        this
-                            .onlineSerives
-                            .createStore(param)
-                            .then((reslut) => {
-                          print("${reslut}"),
-                          if (reslut["status"] == true)
-                            {
-                              hideLoadingDialog(),
-                              if (this.updateStatus == false)
+                        this.onlineSerives.createStore(param).then((reslut) => {
+                              print("${reslut}"),
+                              if (reslut["status"] == true)
                                 {
-                                  ShowToast("Saved successfully."),
+                                  hideLoadingDialog(),
+                                  if (this.updateStatus == false)
+                                    {
+                                      ShowToast("Saved successfully."),
+                                    }
+                                  else
+                                    {
+                                      ShowToast("Updated successfully."),
+                                    },
+                                  setState(() {
+                                    this.createRegistration = reslut["data"];
+                                    print("hello" + "${reslut["data"]}");
+                                    this.updateDataarray = [
+                                      this.createRegistration
+                                    ];
+                                    this.shopSyskey = this
+                                        .updateDataarray[0]["id"]
+                                        .toString();
+                                    print("$shopSyskey");
+                                    this.updateStatus = true;
+                                    this.widget.updateStatuspass =
+                                        this.updateStatus;
+                                  }),
                                 }
                               else
                                 {
-                                  ShowToast(
-                                      "Updated successfully."),
-                                },
-                              setState(() {
-                                this.createRegistration =
-                                reslut["data"];
-                                print(
-                                    "hello" + "${reslut["data"]}");
-                                this.updateDataarray = [
-                                  this.createRegistration
-                                ];
-                                this.shopSyskey = this
-                                    .updateDataarray[0]["id"]
-                                    .toString();
-                                print("$shopSyskey");
-                                this.updateStatus = true;
-                                this.widget.updateStatuspass =
-                                    this.updateStatus;
-                              }),
-                            }
-                          else
-                            {
-                              hideLoadingDialog(),
-                            }
-                        });
+                                  hideLoadingDialog(),
+                                }
+                            });
                       }
                     },
                     child: Column(
@@ -1648,18 +1636,18 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   this.street.text.toString(),
                                   this.widget.regOrAss,
                                   this.widget.passData)
-                            //  OutsideInsideNeighborhood(
-                            //   this.shopName.text,
-                            //   this.shopNamemm.text,
-                            //   this.shopPhoneNo.text,
-                            //   this.ownerName.text,
-                            //   this.ownerPhoneNo.text,
-                            //   this.street.text,
-                            //   this.plusCode,
-                            //   this.widget.regOrAss,
-                            //   this.widget.passData,
-                            // ),
-                          ),
+                              //  OutsideInsideNeighborhood(
+                              //   this.shopName.text,
+                              //   this.shopNamemm.text,
+                              //   this.shopPhoneNo.text,
+                              //   this.ownerName.text,
+                              //   this.ownerPhoneNo.text,
+                              //   this.street.text,
+                              //   this.plusCode,
+                              //   this.widget.regOrAss,
+                              //   this.widget.passData,
+                              // ),
+                              ),
                         );
                       }
                     },
@@ -1670,15 +1658,15 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           alignment: Alignment.center,
                           child: this.updateStatus == false
                               ? Text(
-                            "Next",
-                            style: TextStyle(
-                                color: Colors.white38, fontSize: 16),
-                          )
+                                  "Next",
+                                  style: TextStyle(
+                                      color: Colors.white38, fontSize: 16),
+                                )
                               : Text(
-                            "Next",
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 16),
-                          ),
+                                  "Next",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
                         ),
                       ],
                     ),
