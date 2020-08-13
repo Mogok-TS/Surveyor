@@ -20,6 +20,8 @@ class OutsideInsideNeighborhood extends StatefulWidget {
   final question;
   final header;
 
+  
+ 
   OutsideInsideNeighborhood(
       this.isNeighborhood,
       this.isOutside,
@@ -39,6 +41,70 @@ class OutsideInsideNeighborhood extends StatefulWidget {
 }
 
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
+
+   Widget sectionList(var passSection){
+    return  Container(
+                    child: Card(
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          NeighborhoodSurveyScreen(
+                                              this.widget.isNeighborhood,
+                                              this.widget.isOutside,
+                                              this.widget.isInside,
+                                              this.widget.isStoreOperater,
+                                              this.widget.shopName,
+                                              this.widget.shopPhone,
+                                              this.widget.address,
+                                              "This is text for the instruciotns",
+                                              passSection["sectionDescription"],
+                                              this.widget.regOrAss,
+                                              this.widget.passData,
+                                              passSection,
+                                              this.widget.header,
+                                              this.widget.header["sections"]
+                                              ),
+                                    ),
+                                  );
+                                },
+                                title: Container(
+                                    margin:
+                                        EdgeInsets.only(top: 20, bottom: 10),
+                                    child: Text(
+                                      passSection["sectionDescription"],
+                                      style: cardHeader(),
+                                    )),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 20),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: _statusButton("Status"),
+                                          ),
+                                          Expanded(
+                                              child: _remainButton(
+                                                  "x Items remaining")),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+  }
+
   String serveytype;
   OnlineSerives onlineSerives = new OnlineSerives();
 
@@ -66,7 +132,8 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   @override
   void initState() {
     super.initState();
-    print("question>>" + this.widget.passData.toString());
+    print("header>>" + this.widget.header.toString());
+    print("question>>"+ this.widget.question.toString());
   }
 
   Widget _statusButton(String text) {
@@ -178,241 +245,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
-                if (this.widget.isNeighborhood == true)
-                  Container(
-                    child: Card(
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NeighborhoodSurveyScreen(
-                                              this.widget.isNeighborhood,
-                                              this.widget.isOutside,
-                                              this.widget.isInside,
-                                              this.widget.isStoreOperater,
-                                              this.widget.shopName,
-                                              this.widget.shopPhone,
-                                              this.widget.address,
-                                              "This is text for the instruciotns",
-                                              "Neighborhood Survey",
-                                              this.widget.regOrAss,
-                                              this.widget.passData,
-                                              this.widget.question,
-                                            this.widget.header
-                                          ),
-                                    ),
-                                  );
-                                },
-                                title: Container(
-                                    margin:
-                                        EdgeInsets.only(top: 20, bottom: 10),
-                                    child: Text(
-                                      "Neighborhood",
-                                      style: cardHeader(),
-                                    )),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 20),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: _statusButton("Status"),
-                                          ),
-                                          Expanded(
-                                              child: _remainButton(
-                                                  "0 Items remaining")),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                if (this.widget.isOutside == true)
-                  Container(
-                    child: Card(
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NeighborhoodSurveyScreen(
-                                              this.widget.isNeighborhood,
-                                              this.widget.isOutside,
-                                              this.widget.isInside,
-                                              this.widget.isStoreOperater,
-                                              this.widget.shopName,
-                                              this.widget.shopPhone,
-                                              this.widget.address,
-                                              "This is text for the instruciotns",
-                                              "Outside of Store",
-                                              this.widget.regOrAss,
-                                              this.widget.passData,
-                                              this.widget.question,
-                                              this.widget.header),
-                                    ),
-                                  );
-                                },
-                                title: Container(
-                                    margin:
-                                        EdgeInsets.only(top: 20, bottom: 10),
-                                    child: Text(
-                                      "Outside of Store",
-                                      style: cardHeader(),
-                                    )),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 20),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: _statusButton("Status"),
-                                          ),
-                                          Expanded(
-                                              child: _remainButton(
-                                                  "x Items remaining")),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                if (this.widget.isInside == true)
-                  Container(
-                    child: Card(
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NeighborhoodSurveyScreen(
-                                              this.widget.isNeighborhood,
-                                              this.widget.isOutside,
-                                              this.widget.isInside,
-                                              this.widget.isStoreOperater,
-                                              this.widget.shopName,
-                                              this.widget.shopPhone,
-                                              this.widget.address,
-                                              "This is text for the instruciotns",
-                                              "Inside of Store",
-                                              this.widget.regOrAss,
-                                              this.widget.passData,
-                                              this.widget.question,this.widget.header),
-                                    ),
-                                  );
-                                },
-                                title: Container(
-                                    margin:
-                                        EdgeInsets.only(top: 20, bottom: 10),
-                                    child: Text(
-                                      "Inside of Store",
-                                      style: cardHeader(),
-                                    )),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 20),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: _statusButton("Status"),
-                                          ),
-                                          Expanded(
-                                              child: _remainButton(
-                                                  "x Items remaining")),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                if (this.widget.isStoreOperater == true)
-                  Container(
-                    child: Card(
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NeighborhoodSurveyScreen(
-                                              this.widget.isNeighborhood,
-                                              this.widget.isOutside,
-                                              this.widget.isInside,
-                                              this.widget.isStoreOperater,
-                                              this.widget.shopName,
-                                              this.widget.shopPhone,
-                                              this.widget.address,
-                                              "This is text for the instruciotns",
-                                              "Store Operator",
-                                              this.widget.regOrAss,
-                                              this.widget.passData,
-                                              this.widget.question,this.widget.header),
-                                    ),
-                                  );
-                                },
-                                title: Container(
-                                    margin:
-                                        EdgeInsets.only(top: 20, bottom: 10),
-                                    child: Text(
-                                      "Store Operator",
-                                      style: cardHeader(),
-                                    )),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 20),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: _statusButton("Status"),
-                                          ),
-                                          Expanded(
-                                              child: _remainButton(
-                                                  "x Items remaining")),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
+                for(var x=0;x<this.widget.question.length;x++)
+                sectionList(this.widget.question[x])                 
+                
               ],
             ),
           ),

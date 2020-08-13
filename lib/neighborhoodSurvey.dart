@@ -28,6 +28,7 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final passData;
   final question;
   final header;
+  final allsection;
 
   NeighborhoodSurveyScreen(
       this.isNeighborhood,
@@ -42,7 +43,9 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
       this.regOrAss,
       this.passData,
       this.question,
-      this.header);
+      this.header,
+      this.allsection
+      );
 
   @override
   _NeighborhoodSurveyScreenState createState() =>
@@ -705,16 +708,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget fillintheBlank(String t1, String t2, var questionData) {
-    // var index = 0;
-    // for(var ss = 0; ss < this.fillAnswerArray.length; ss++){
-    //   if(this.fillAnswerArray[ss]["questionSyskey"] == questionData["syskey"]){
-    //     index = ss;
-    //     this._controller.text = this.fillAnswerArray[ss]["answer"].toString();
-    //   }
-    // }
+  Widget fillintheBlank(var data) {
+    var t1 = data["QuestionCode"];
+    var t2 = data["QuestionDescription"];
     TextEditingController _textController = new TextEditingController();
-    _textController.text = questionData["controller"];
+    _textController.text = data["AnswerDesc"];
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -764,7 +762,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     child: TextField(
                       controller: _textController,
                       onChanged: (val) {
-                        questionData["controller"] = _textController.text;
+                        data["AnswerDesc"] = _textController.text;
                         // var _obj = {};
                         // var checkSyskey = 0;
                         // var index = 0;
@@ -923,6 +921,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     "SectionSyskey": this.widget.question["sectionSyskey"],
     "HeaderSyskey": this.widget.header["headerSyskey"],
 };
+
+ print("SectionSyskey???>>"+this.widget.question["sectionSyskey"]);
+ print("HeaderSyskey???>>>"+this.widget.header["headerSyskey"]);
     this
         .onlineSerives
         .getQuestions(param)
@@ -934,7 +935,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     var _data = {};
                     _data["sysKey"] = questions[ss]["QuestionSyskey"];
                     if(questions[ss]["TypeDesc"] == "Attach Photograph"){
-                      print("photo>>"+questions[ss].toString());
                       if(questions[ss]["QuestionShopSyskey"] != null){
                         
                         _data["images"] = questions[ss]["AnswerShopPhoto"];
@@ -1008,22 +1008,19 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   Widget _allWidget(var data, var questionIndex,var primarydata) {
     if(primarydata["images"] == null){
       primarydata["images"] =[];
-      print(primarydata["images"].toString());
     }
     Widget _widget;
-    var answerArray;
-    answerArray = data["answerList"];
-
-    // if (data["questionType"] == "Fill in the Blank") {
-    //   _widget = fillintheBlank(data['t1'], data['t2'], data);
-    // }
-    // if (data["TypeDesc"] == "Checkbox") {
-    //   _widget = checkBox(data);
-    // }
-    // else
+   
      if (data["TypeDesc"] == "Attach Photograph") {
       _widget = attachPhotograph(data,primarydata["images"]);
-    }else{
+    }
+    else if(data["TypeDesc"] == "Fill in the Blank"){
+      _widget = fillintheBlank(data);
+    }
+    // else if(data["TypeDesc"] == "Checkbox"){
+    //   _widget = checkBox(data);
+    // }
+    else{
       _widget = Container(
         child: Text(data["TypeDesc"]),
       );
@@ -1150,7 +1147,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             this.widget.address,
                             this.widget.regOrAss,
                             this.widget.passData,
-                            this.widget.question,
+                            this.widget.allsection,
                             this.widget.header),
                       ),
                     );

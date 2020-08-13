@@ -45,18 +45,22 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
     var secitons = passData["sections"];
     var section;
     for (var i = 0; i < secitons.length; i++) {
-      section = secitons[i];
+      
       if (secitons[i]["sectionDescription"] == "Neighborhood Survey") {
         isNeighborhood = true;
+        section = header["sections"];
       }
       if (secitons[i]["sectionDescription"] == "Store Operator Information") {
         isStoreOperater = true;
+        section = header["sections"];
       }
       if (secitons[i]["sectionDescription"] == "Outside of Store") {
         isOutside = true;
+        section = header["sections"];
       }
       if (secitons[i]["sectionDescription"] == "Inside of Store") {
         isInside = true;
+        section = header["sections"];
       }
     }
     return Container(
@@ -64,6 +68,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       child: Card(
         child: ListTile(
           onTap: () {
+            print("oo>>"+section.toString());
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                   builder: (context) => OutsideInsideNeighborhood(
@@ -77,7 +82,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                         this.widget.regOrAss,
                         this.widget.passData,
                         section,
-                      header,
+                        header,
                       )),
             );
           },
@@ -269,6 +274,4 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       ),
     );
   }
-
-
 }
