@@ -1108,37 +1108,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       ),
                     ),
                   ),
-                  // Container(
-
-                  //   margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  //   child: Column(
-                  //     children: <Widget>[
-                  //       Card(
-                  //         child: Row(children: <Widget>[
-                  //           Text("Latitude :",style: TextStyle(
-                  //             fontSize: 20,
-                  //           ),),
-                  //           SizedBox(width: 10,),
-                  //           Text(latitude,style: TextStyle(
-                  //             fontSize: 20,
-                  //           ),),
-                  //         ],)
-                  //       ),
-                  //       Card(
-                  //         child: Row(children: <Widget>[
-                  //           Text("Longitude :",style: TextStyle(
-                  //             fontSize: 20,
-                  //           ),),
-                  //           SizedBox(width: 10,),
-                  //           Text(longitude,style: TextStyle(
-                  //             fontSize: 20,
-                  //           ),),
-                  //         ],)
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // storeImage(),
+                 
                 ],
               ),
             ),
