@@ -63,8 +63,8 @@ class _StoreScreenState extends State<StoreScreen>  {
 
   Widget buildAssignItem(
       String storeName, String phone, String address, data) {
-    this.performType = data["status"];
-    this.performTypearray = this.performType["performType"];
+//    this.performType = data["status"];
+//    this.performTypearray = this.performType["performType"];
     var shopData = [data];
    print("${shopData}");
     return Container(
@@ -112,7 +112,8 @@ class _StoreScreenState extends State<StoreScreen>  {
                                   child: Center(
                                     child: Column(
                                       children: <Widget>[
-                                        buildStatusText(this.performTypearray)
+//                                        buildStatusText(this.performTypearray)
+                                      Text("In Progress")
                                       ],
                                     ),
                                   ),
@@ -284,6 +285,7 @@ class _StoreScreenState extends State<StoreScreen>  {
                           this.storage.getItem("storeReg"),
                       print("${storeRegistration}"),
                       this.assignStores = this.storage.getItem("storeData"),
+                      print("${this.assignStores}"),
                       setState(() {
                         this.count = this.assignStores.length.toString();
                       }),
