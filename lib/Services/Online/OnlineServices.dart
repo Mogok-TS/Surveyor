@@ -222,7 +222,7 @@ class OnlineSerives {
   Future getQuestions(params) async {
     var returnData = {};
     this.mainData();
-    this.url = this.url + "/surveyor/searchQuestionList";
+    this.url = this.url + "/shop/getSvrHdrShopDataListByHdrSKCatSK";
     var body = json.encode(params);
     var data;
     var response = await http
@@ -249,66 +249,7 @@ class OnlineSerives {
     }
     returnData["status"] = this.status;
     var array1 = [];
-
-    for (var i = 0; i < data["list"].length; i++) {
-      var listdata = data["list"][i];
-      var dataarray = {};
-      dataarray["syskey"] = listdata["syskey"];
-      dataarray["date"] = listdata["date"];
-      dataarray["t1"] = listdata["t1"];
-      dataarray["t2"] = listdata["t2"];
-      dataarray["t3"] = listdata["t3"];
-      dataarray["n1"] = listdata["n1"];
-      dataarray["n2"] = listdata["n2"];
-      dataarray["n3"] = listdata["n3"];
-
-      dataarray["questionNature"] = listdata["questionNature"];
-      dataarray["questionType"] = listdata["questionType"];
-      dataarray["maxRows"] = listdata["maxRows"];
-      dataarray["current"] = listdata["current"];
-      dataarray["ansListType"] = listdata["ansListType"];
-      dataarray["controller"] = "";
-      var answerList = [];
-      var allArray = data["list"][i]["answerList"];
-      var radioList = [];
-      var radioListIndex = [];
-      for (var ii = 0; ii < allArray.length; ii++) {
-        var answerListData = allArray[ii];
-        print("answewr>>" + answerListData.toString());
-        var objectarray = {};
-        var listIndex = {};
-        objectarray["syskey"] = answerListData["syskey"];
-        objectarray["date"] = answerListData["date"];
-        objectarray["t1"] = answerListData["t1"];
-        objectarray["t2"] = answerListData["t2"];
-        objectarray["t3"] = answerListData["t3"];
-        objectarray["n1"] = answerListData["n1"];
-        objectarray["n2"] = answerListData["n2"];
-        objectarray["n3"] = answerListData["n3"];
-        objectarray["imagePathForMobile"] =
-            answerListData["imagePathForMobile"];
-        objectarray["check"] = false;
-        objectarray["radio"] = answerListData["syskey"];
-        objectarray["image"] = [];
-        listIndex["id"] = ii;
-        listIndex["value"] = answerListData["syskey"];
-        answerList.add(objectarray);
-        radioList.add(answerListData["syskey"]);
-        radioListIndex.add(listIndex);
-      }
-      dataarray["answerList"] = answerList;
-      dataarray["radioValue"] = radioList;
-      dataarray["radioData"] = radioListIndex;
-      if (radioList.length > 0) {
-        dataarray["radio"] = radioList[0];
-      } else {
-        dataarray["radio"] = [];
-      }
-      array1.add(dataarray);
-    }
-    returnData["data"] = array1;
-
-
+    returnData["data"] = data["list"];
     return returnData;
   }
 
