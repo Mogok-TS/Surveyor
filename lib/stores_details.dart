@@ -66,6 +66,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     super.initState();
 
     setState(() {
+      _getState();
       print("??>> ${this.widget.passData}");
       this.storeRegistration = this.widget.passData;
       if (this.storeRegistration.length == 0) {
@@ -125,6 +126,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               this.updateDataarray[0]["personph"].toString();
           this.street.text = this.updateDataarray[0]["street"].toString();
           this.allAddress = this.updateDataarray[0]["address"].toString();
+          this._stateId = this.updateDataarray[0]['stateid'].toString();
+          this._districtId = this.updateDataarray[0]['districtid'].toString();
+          this._townShipId = this.updateDataarray[0]['townshipid'].toString();
+          this._townId = this.updateDataarray[0]['townid'].toString();
+          this._wardId = this.updateDataarray[0]['wardid'].toString();
+          _getUpdateData();
         } else if (this.widget.regOrAss == "register") {
           this.updateStatus = true;
           this.shopSyskey = this.updateDataarray[0]["id"].toString();
@@ -138,13 +145,145 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               this.updateDataarray[0]["personPhoneNumber"].toString();
           this.street.text = this.updateDataarray[0]["street"].toString();
           this.allAddress = this.updateDataarray[0]["address"].toString();
+          this._stateId = this.updateDataarray[0]['stateid'].toString();
+          this._districtId = this.updateDataarray[0]['districtid'].toString();
+          this._townShipId = this.updateDataarray[0]['townshipid'].toString();
+          this._townId = this.updateDataarray[0]['townid'].toString();
+          this._wardId = this.updateDataarray[0]['wardid'].toString();
+          _getUpdateData();
         }
 
         print("shopSyskey--> $shopSyskey");
       }
-      _getState();
     });
-//    });
+  }
+
+  _getUpdateData() {
+    var params = {
+      "id": "",
+      "code": "",
+      "description": "",
+      "parentid": "",
+      "n2": ''
+    };
+    onlineSerives.getState(params).then((value) => {
+          this.stateObject = value["data"],
+          for (var i = 0; i < stateObject.length; i++)
+            {
+              if (this._stateId == stateObject[i]['id'])
+                {
+                  this._state = stateObject[i]['description'],
+                }
+            }
+        });
+    var districtData = {
+      "id": "0",
+      "code": "",
+      "description": "",
+      "parentid": this._stateId,
+      "n2": ''
+    };
+    onlineSerives.getDistrict(districtData).then((val) => {
+          this.districtObject = val["data"],
+          for (var i = 0; i < districtObject.length; i++)
+            {
+              _districtList.add(districtObject[i]["description"]),
+              if (this._districtId == districtObject[i]['id'])
+                {
+                  this._district = districtObject[i]['description'],
+                }
+            },
+        });
+    var townData = {
+      "id": "",
+      "code": "",
+      "description": "",
+      "parentid": this._districtId,
+    };
+    onlineSerives.getTownship(townData).then((val) => {
+          this.townShipObject = val["data"],
+          for (var i = 0; i < townShipObject.length; i++)
+            {
+              _townShipList.add(townShipObject[i]['description']),
+              if (this._townShipId == townShipObject[i]['id'])
+                {
+                  this._townShip = townShipObject[i]["description"],
+                }
+            },
+        });
+
+    var dataTown = {
+      "id": "",
+      "code": "",
+      "description": "",
+      "parentid": this._townShipId,
+      "n2": "0"
+    };
+    onlineSerives.getTown(dataTown).then(
+          (value) => {
+            this.townData = value["data"],
+            for (var i = 0; i < this.townData.length; i++)
+              {
+                if (this._townId == this.townData[i]['id'])
+                  {
+                    this.n2Code = this.townData[i]['n2'],
+                    if (this.n2Code == 1)
+                      {
+                        this.n2Code = '1',
+                        _townOrVillagetract = "Town",
+                        _townList.add(this.townData[i]['description']),
+                        _town = this.townData[i]['description'],
+                      }
+                    else if (this.n2Code == 2)
+                      {
+                        this.n2Code = '2',
+                        _townOrVillagetract = "Village Tract",
+                        _villageTractList.add(this.townData[i]['description']),
+                        _villageTract = this.townData[i]['description'],
+                      }
+                  }
+              }
+          },
+        );
+    var dataWard = {
+      "id": "",
+      "code": "",
+      "description": "",
+      "parentid": this._townId,
+      "n2": "1"
+    };
+    onlineSerives.getWard(dataWard).then(
+          (value) => {
+            this.wardData = value['data'],
+            for (var i = 0; i < wardData.length; i++)
+              {
+                _wardList.add(wardData[i]["description"]),
+                if (this._wardId == wardData[i]['id'])
+                  {
+                    this._ward = wardData[i]['description'],
+                  }
+              }
+          },
+        );
+
+    // var dataParams = {
+    //   "id": "",
+    //   "code": "",
+    //   "description": "",
+    //   "parentid": this._townId,
+    //   "n2": "2"
+    // };
+    // onlineSerives.getWard(dataParams).then((value) => {
+    //       _villageData = value['data'],
+    //       for (var i = 0; i < _villageData.length; i++)
+    //         {
+    //           _villageList.add(_villageData[i]['description']),
+    //           if (this._wardId == _villageData[i]['id'])
+    //             {
+    //               this._village = _villageData[i]['description'],
+    //             }
+    //         }
+    //     });
   }
 
   _getState() {
@@ -1022,7 +1161,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                         margin: EdgeInsets.symmetric(horizontal: 20.0),
+                          margin: EdgeInsets.symmetric(horizontal: 20.0),
                           child: DropdownButtonHideUnderline(
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -1052,7 +1191,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                       };
                                       villageTractCode =
                                           _villageTractData[i]["code"];
-                                      villageTractId = _villageTractData[i]["id"];
+                                      villageTractId =
+                                          _villageTractData[i]["id"];
                                       _getVillage(params);
                                     }
                                   });
