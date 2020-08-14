@@ -607,56 +607,58 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             bottom: BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
-                        padding: EdgeInsets.only(left: 10.0),
-                        margin:
-                            EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+                        margin: EdgeInsets.symmetric(horizontal: 20.0),
                         child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            isExpanded: true,
-                            items: _stateList.map(
-                              (val) {
-                                return DropdownMenuItem(
-                                  value: val,
-                                  child: Text(val),
-                                );
-                              },
-                            ).toList(),
-                            value: _state,
-                            onChanged: (value) {
-                              setState(() {
-                                _state = value;
-                                for (var i = 0; i < stateObject.length; i++) {
-                                  if (_state == stateObject[i]["description"]) {
-                                    var data = {
-                                      "id": "0",
-                                      "code": "",
-                                      "description": "",
-                                      "parentid": stateObject[i]["id"]
-                                    };
-                                    print(data.toString());
-                                    _stateId = stateObject[i]["id"];
-                                    _stateCode = stateObject[i]["code"];
-                                    _getDistrict(data);
-                                    break;
-                                  } else if (_state == "-") {
-                                    n2Code = "0";
-                                    _townOrVillagetract = "-";
-                                    _getDistrict(null);
-                                    break;
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            child: DropdownButton(
+                              isExpanded: true,
+                              items: _stateList.map(
+                                (val) {
+                                  return DropdownMenuItem(
+                                    value: val,
+                                    child: Text(val),
+                                  );
+                                },
+                              ).toList(),
+                              value: _state,
+                              onChanged: (value) {
+                                setState(() {
+                                  _state = value;
+                                  for (var i = 0; i < stateObject.length; i++) {
+                                    if (_state ==
+                                        stateObject[i]["description"]) {
+                                      var data = {
+                                        "id": "0",
+                                        "code": "",
+                                        "description": "",
+                                        "parentid": stateObject[i]["id"]
+                                      };
+                                      print(data.toString());
+                                      _stateId = stateObject[i]["id"];
+                                      _stateCode = stateObject[i]["code"];
+                                      _getDistrict(data);
+                                      break;
+                                    } else if (_state == "-") {
+                                      n2Code = "0";
+                                      _townOrVillagetract = "-";
+                                      _getDistrict(null);
+                                      break;
+                                    }
                                   }
-                                }
-                                _townOrVillagetract = "-";
-                                n2Code = "0";
-                                _town = "-";
-                                _townList = ['-'];
-                                _ward = "-";
-                                _wardList = ['-'];
-                                _villageTract = "-";
-                                _villageTractList = ["-"];
-                                _village = "-";
-                                _villageList = ["-"];
-                              });
-                            },
+                                  _townOrVillagetract = "-";
+                                  n2Code = "0";
+                                  _town = "-";
+                                  _townList = ['-'];
+                                  _ward = "-";
+                                  _wardList = ['-'];
+                                  _villageTract = "-";
+                                  _villageTractList = ["-"];
+                                  _village = "-";
+                                  _villageList = ["-"];
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -678,61 +680,62 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             bottom: BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
-                        padding: EdgeInsets.only(left: 10.0),
-                        margin:
-                            EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+                        margin: EdgeInsets.symmetric(horizontal: 20.0),
                         child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            isExpanded: true,
-                            items: _districtList.map(
-                              (val) {
-                                return DropdownMenuItem(
-                                  value: val,
-                                  child: Text(val),
-                                );
-                              },
-                            ).toList(),
-                            value: _district,
-                            onChanged: (value) {
-                              setState(() {
-                                _district = value;
-                                for (var i = 0;
-                                    i < districtObject.length;
-                                    i++) {
-                                  if (_district ==
-                                      districtObject[i]["description"]) {
-                                    var data = {
-                                      "id": "0",
-                                      "code": "",
-                                      "description": "",
-                                      "parentid": districtObject[i]["id"]
-                                    };
-                                    print(data.toString());
-                                    _districtId = districtObject[i]["id"];
-                                    _districtCode = districtObject[i]["code"];
-                                    _getTownShip(data);
-                                    break;
-                                  } else if (_district == "-") {
-                                    _districtId = "";
-                                    _districtCode = "";
-                                    n2Code = "0";
-                                    _townOrVillagetract = "-";
-                                    _getTownShip(null);
-                                    break;
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            child: DropdownButton(
+                              isExpanded: true,
+                              items: _districtList.map(
+                                (val) {
+                                  return DropdownMenuItem(
+                                    value: val,
+                                    child: Text(val),
+                                  );
+                                },
+                              ).toList(),
+                              value: _district,
+                              onChanged: (value) {
+                                setState(() {
+                                  _district = value;
+                                  for (var i = 0;
+                                      i < districtObject.length;
+                                      i++) {
+                                    if (_district ==
+                                        districtObject[i]["description"]) {
+                                      var data = {
+                                        "id": "0",
+                                        "code": "",
+                                        "description": "",
+                                        "parentid": districtObject[i]["id"]
+                                      };
+                                      print(data.toString());
+                                      _districtId = districtObject[i]["id"];
+                                      _districtCode = districtObject[i]["code"];
+                                      _getTownShip(data);
+                                      break;
+                                    } else if (_district == "-") {
+                                      _districtId = "";
+                                      _districtCode = "";
+                                      n2Code = "0";
+                                      _townOrVillagetract = "-";
+                                      _getTownShip(null);
+                                      break;
+                                    }
                                   }
-                                }
-                                _townOrVillagetract = "-";
-                                n2Code = "0";
-                                _town = "-";
-                                _townList = ['-'];
-                                _ward = "-";
-                                _wardList = ['-'];
-                                _villageTract = "-";
-                                _villageTractList = ["-"];
-                                _village = "-";
-                                _villageList = ["-"];
-                              });
-                            },
+                                  _townOrVillagetract = "-";
+                                  n2Code = "0";
+                                  _town = "-";
+                                  _townList = ['-'];
+                                  _ward = "-";
+                                  _wardList = ['-'];
+                                  _villageTract = "-";
+                                  _villageTractList = ["-"];
+                                  _village = "-";
+                                  _villageList = ["-"];
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -754,56 +757,57 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             bottom: BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
-                        padding: EdgeInsets.only(left: 10.0),
-                        margin:
-                            EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+                        margin: EdgeInsets.symmetric(horizontal: 20.0),
                         child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            isExpanded: true,
-                            items: _townShipList.map(
-                              (val) {
-                                return DropdownMenuItem(
-                                  value: val,
-                                  child: Text(val),
-                                );
-                              },
-                            ).toList(),
-                            value: _townShip,
-                            onChanged: (value) {
-                              setState(() {
-                                _townShip = value;
-                                for (var i = 0;
-                                    i < townShipObject.length;
-                                    i++) {
-                                  if (_townShip ==
-                                      townShipObject[i]["description"]) {
-                                    var data = {
-                                      "id": "0",
-                                      "code": "",
-                                      "description": "",
-                                      "parentid": townShipObject[i]["id"]
-                                    };
-                                    _townShipId = townShipObject[i]["id"];
-                                    _townShipCode = townShipObject[i]["code"];
-                                    break;
-                                  } else if (_townShip == "-") {
-                                    _townShipId = "";
-                                    _townShipCode = "";
-                                    break;
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            child: DropdownButton(
+                              isExpanded: true,
+                              items: _townShipList.map(
+                                (val) {
+                                  return DropdownMenuItem(
+                                    value: val,
+                                    child: Text(val),
+                                  );
+                                },
+                              ).toList(),
+                              value: _townShip,
+                              onChanged: (value) {
+                                setState(() {
+                                  _townShip = value;
+                                  for (var i = 0;
+                                      i < townShipObject.length;
+                                      i++) {
+                                    if (_townShip ==
+                                        townShipObject[i]["description"]) {
+                                      var data = {
+                                        "id": "0",
+                                        "code": "",
+                                        "description": "",
+                                        "parentid": townShipObject[i]["id"]
+                                      };
+                                      _townShipId = townShipObject[i]["id"];
+                                      _townShipCode = townShipObject[i]["code"];
+                                      break;
+                                    } else if (_townShip == "-") {
+                                      _townShipId = "";
+                                      _townShipCode = "";
+                                      break;
+                                    }
                                   }
-                                }
-                                _townOrVillagetract = "-";
-                                n2Code = "0";
-                                _town = "-";
-                                _townList = ['-'];
-                                _ward = "-";
-                                _wardList = ['-'];
-                                _villageTract = "-";
-                                _villageTractList = ["-"];
-                                _village = "-";
-                                _villageList = ["-"];
-                              });
-                            },
+                                  _townOrVillagetract = "-";
+                                  n2Code = "0";
+                                  _town = "-";
+                                  _townList = ['-'];
+                                  _ward = "-";
+                                  _wardList = ['-'];
+                                  _villageTract = "-";
+                                  _villageTractList = ["-"];
+                                  _village = "-";
+                                  _villageList = ["-"];
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -827,69 +831,70 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 10.0),
-                          margin:
-                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+                          margin: EdgeInsets.symmetric(horizontal: 20.0),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              items: _townOrVillagetractList.map(
-                                (val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(
-                                      val,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  );
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                items: _townOrVillagetractList.map(
+                                  (val) {
+                                    return DropdownMenuItem(
+                                      value: val,
+                                      child: Text(
+                                        val,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    );
+                                  },
+                                ).toList(),
+                                value: _townOrVillagetract,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _townOrVillagetract = value;
+                                    if (value == "Town") {
+                                      n2Code = "1";
+                                      var paramsTown = {
+                                        "id": "",
+                                        "code": "",
+                                        "description": "",
+                                        "parentid": _townShipId,
+                                        "n2": "1"
+                                      };
+                                      _getTown(paramsTown);
+                                    } else {
+                                      _town = "-";
+                                      _ward = "-";
+                                    }
+                                    if (value == "Village Tract") {
+                                      n2Code = "2";
+                                      var paramsTract = {
+                                        "id": "",
+                                        "code": "",
+                                        "description": "",
+                                        "parentid": _townShipId,
+                                        "n2": "2"
+                                      };
+                                      _getVillageTract(paramsTract);
+                                    } else {
+                                      _villageTract = "-";
+                                      _village = "-";
+                                    }
+                                    if (value == '-') {
+                                      n2Code = "0";
+                                      _town = "-";
+                                      _ward = "-";
+                                      _villageTract = "-";
+                                      _village = "-";
+                                    }
+                                    _town = "-";
+                                    _townList = ['-'];
+                                    _ward = "-";
+                                    _wardList = ['-'];
+                                  });
                                 },
-                              ).toList(),
-                              value: _townOrVillagetract,
-                              onChanged: (value) {
-                                setState(() {
-                                  _townOrVillagetract = value;
-                                  if (value == "Town") {
-                                    n2Code = "1";
-                                    var paramsTown = {
-                                      "id": "",
-                                      "code": "",
-                                      "description": "",
-                                      "parentid": _townShipId,
-                                      "n2": "1"
-                                    };
-                                    _getTown(paramsTown);
-                                  } else {
-                                    _town = "-";
-                                    _ward = "-";
-                                  }
-                                  if (value == "Village Tract") {
-                                    n2Code = "2";
-                                    var paramsTract = {
-                                      "id": "",
-                                      "code": "",
-                                      "description": "",
-                                      "parentid": _townShipId,
-                                      "n2": "2"
-                                    };
-                                    _getVillageTract(paramsTract);
-                                  } else {
-                                    _villageTract = "-";
-                                    _village = "-";
-                                  }
-                                  if (value == '-') {
-                                    n2Code = "0";
-                                    _town = "-";
-                                    _ward = "-";
-                                    _villageTract = "-";
-                                    _village = "-";
-                                  }
-                                  _town = "-";
-                                  _townList = ['-'];
-                                  _ward = "-";
-                                  _wardList = ['-'];
-                                });
-                              },
+                              ),
                             ),
                           ),
                         ),
@@ -913,38 +918,39 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 10.0),
-                          margin:
-                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+                          margin: EdgeInsets.symmetric(horizontal: 20.0),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              items: _townList.map(
-                                (val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(val),
-                                  );
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                items: _townList.map(
+                                  (val) {
+                                    return DropdownMenuItem(
+                                      value: val,
+                                      child: Text(val),
+                                    );
+                                  },
+                                ).toList(),
+                                value: _town,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _town = value;
+                                    for (var i = 0; i < townData.length; i++) {
+                                      var params = {
+                                        "id": "",
+                                        "code": "",
+                                        "description": "",
+                                        "parentid": townData[i]["id"],
+                                        "n2": "1"
+                                      };
+                                      townCode = townData[i]["code"];
+                                      _townId = townData[i]["id"];
+                                      _getWard(params);
+                                    }
+                                  });
                                 },
-                              ).toList(),
-                              value: _town,
-                              onChanged: (value) {
-                                setState(() {
-                                  _town = value;
-                                  for (var i = 0; i < townData.length; i++) {
-                                    var params = {
-                                      "id": "",
-                                      "code": "",
-                                      "description": "",
-                                      "parentid": townData[i]["id"],
-                                      "n2": "1"
-                                    };
-                                    townCode = townData[i]["code"];
-                                    _townId = townData[i]["id"];
-                                    _getWard(params);
-                                  }
-                                });
-                              },
+                              ),
                             ),
                           ),
                         ),
@@ -968,30 +974,31 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 10.0),
-                          margin:
-                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+                          margin: EdgeInsets.symmetric(horizontal: 20.0),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              items: _wardList.map(
-                                (val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(val),
-                                  );
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                items: _wardList.map(
+                                  (val) {
+                                    return DropdownMenuItem(
+                                      value: val,
+                                      child: Text(val),
+                                    );
+                                  },
+                                ).toList(),
+                                value: _ward,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _ward = value;
+                                    for (var i = 0; i < wardData.length; i++) {
+                                      wardCode = wardData[i]["code"];
+                                      _wardId = wardData[i]["id"];
+                                    }
+                                  });
                                 },
-                              ).toList(),
-                              value: _ward,
-                              onChanged: (value) {
-                                setState(() {
-                                  _ward = value;
-                                  for (var i = 0; i < wardData.length; i++) {
-                                    wardCode = wardData[i]["code"];
-                                    _wardId = wardData[i]["id"];
-                                  }
-                                });
-                              },
+                              ),
                             ),
                           ),
                         ),
@@ -1015,41 +1022,42 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 10.0),
-                          margin:
-                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+                         margin: EdgeInsets.symmetric(horizontal: 20.0),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              items: _villageTractList.map(
-                                (val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(val),
-                                  );
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                items: _villageTractList.map(
+                                  (val) {
+                                    return DropdownMenuItem(
+                                      value: val,
+                                      child: Text(val),
+                                    );
+                                  },
+                                ).toList(),
+                                value: _villageTract,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _villageTract = value;
+                                    for (var i = 0;
+                                        i < _villageTractData.length;
+                                        i++) {
+                                      var params = {
+                                        "id": "",
+                                        "code": "",
+                                        "description": "",
+                                        "parentid": _villageTractData[i]["id"],
+                                        "n2": "2"
+                                      };
+                                      villageTractCode =
+                                          _villageTractData[i]["code"];
+                                      villageTractId = _villageTractData[i]["id"];
+                                      _getVillage(params);
+                                    }
+                                  });
                                 },
-                              ).toList(),
-                              value: _villageTract,
-                              onChanged: (value) {
-                                setState(() {
-                                  _villageTract = value;
-                                  for (var i = 0;
-                                      i < _villageTractData.length;
-                                      i++) {
-                                    var params = {
-                                      "id": "",
-                                      "code": "",
-                                      "description": "",
-                                      "parentid": _villageTractData[i]["id"],
-                                      "n2": "2"
-                                    };
-                                    villageTractCode =
-                                        _villageTractData[i]["code"];
-                                    villageTractId = _villageTractData[i]["id"];
-                                    _getVillage(params);
-                                  }
-                                });
-                              },
+                              ),
                             ),
                           ),
                         ),
@@ -1073,32 +1081,33 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               bottom: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 10.0),
-                          margin:
-                              EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+                          margin: EdgeInsets.symmetric(horizontal: 20.0),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              items: _villageList.map(
-                                (val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(val),
-                                  );
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                items: _villageList.map(
+                                  (val) {
+                                    return DropdownMenuItem(
+                                      value: val,
+                                      child: Text(val),
+                                    );
+                                  },
+                                ).toList(),
+                                value: _village,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _village = value;
+                                    for (var i = 0;
+                                        i < _villageData.length;
+                                        i++) {
+                                      villageCode = _villageData[i]["code"];
+                                      villageId = _villageData[i]["id"];
+                                    }
+                                  });
                                 },
-                              ).toList(),
-                              value: _village,
-                              onChanged: (value) {
-                                setState(() {
-                                  _village = value;
-                                  for (var i = 0;
-                                      i < _villageData.length;
-                                      i++) {
-                                    villageCode = _villageData[i]["code"];
-                                    villageId = _villageData[i]["id"];
-                                  }
-                                });
-                              },
+                              ),
                             ),
                           ),
                         ),
