@@ -81,12 +81,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       });
       getCurrentLocation().then((k) {
         print({"$k"});
-        if(this.widget.regOrAss == "Map"){
+        if (this.widget.regOrAss == "Map") {
           var _latLong = this.storage.getItem("Maplatlong");
           print("--->" + _latLong.toString());
           latitude = _latLong["lat"];
           longitude = _latLong["long"];
-        }else{
+        } else {
           latitude = k.latitude;
           longitude = k.longitude;
         }
@@ -124,6 +124,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           this.ownerPhoneNo.text =
               this.updateDataarray[0]["personph"].toString();
           this.street.text = this.updateDataarray[0]["street"].toString();
+          this.allAddress = this.updateDataarray[0]["address"].toString();
         } else if (this.widget.regOrAss == "register") {
           this.updateStatus = true;
           this.shopSyskey = this.updateDataarray[0]["id"].toString();
@@ -136,6 +137,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           this.ownerPhoneNo.text =
               this.updateDataarray[0]["personPhoneNumber"].toString();
           this.street.text = this.updateDataarray[0]["street"].toString();
+          this.allAddress = this.updateDataarray[0]["address"].toString();
         }
 
         print("shopSyskey--> $shopSyskey");
@@ -1118,7 +1120,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       ),
                     ),
                   ),
-                 
                 ],
               ),
             ),
@@ -1207,26 +1208,49 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             getPhoneNumber(this.shopPhoneNo.text);
                         this.ownerPhoneNo.text =
                             getPhoneNumber(this.ownerPhoneNo.text);
-                        allCode = wardCode +
-                            "" +
-                            townCode +
-                            "" +
-                            _townShipCode +
-                            "" +
-                            _districtCode +
-                            "" +
-                            _stateCode;
-                        allAddress = street.text +
-                            "," +
-                            _ward +
-                            "," +
-                            _town +
-                            "," +
-                            _townShip +
-                            "," +
-                            _district +
-                            "," +
-                            _state;
+                        if (this.n2Code == 1) {
+                          allCode = wardCode +
+                              "" +
+                              townCode +
+                              "" +
+                              _townShipCode +
+                              "" +
+                              _districtCode +
+                              "" +
+                              _stateCode;
+                          allAddress = street.text +
+                              "," +
+                              _ward +
+                              "," +
+                              _town +
+                              "," +
+                              _townShip +
+                              "," +
+                              _district +
+                              "," +
+                              _state;
+                        } else if (this.n2Code == 2) {
+                          allCode = villageCode +
+                              "" +
+                              villageTractCode +
+                              "" +
+                              _townShipCode +
+                              "" +
+                              _districtCode +
+                              "" +
+                              _stateCode;
+                          allAddress = street.text +
+                              "," +
+                              _village +
+                              "," +
+                              _villageTract +
+                              "," +
+                              _townShip +
+                              "," +
+                              _district +
+                              "," +
+                              _state;
+                        }
                         if (this.updateStatus == true) {
                           param = {
                             "id": this.shopSyskey,
@@ -1240,8 +1264,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "stateId": _stateId,
                             "districtId": _districtId,
                             "townshipId": _townShipId,
-                            "townId": _townId,
-                            "wardId": _ward,
+                            "townId":
+                                this.n2Code == 1 ? _townId : villageTractId,
+                            "wardId": this.n2Code == 1 ? _wardId : villageId,
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
@@ -1264,8 +1289,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "stateId": _stateId,
                             "districtId": _districtId,
                             "townshipId": _townShipId,
-                            "townId": _townId,
-                            "wardId": _wardId,
+                            "townId":
+                                this.n2Code == 1 ? _townId : villageTractId,
+                            "wardId": this.n2Code == 1 ? _wardId : villageId,
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
@@ -1345,7 +1371,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               builder: (context) => CheckNeighborhoodScreen(
                                   this.shopName.text,
                                   this.shopPhoneNo.text,
-                                  this.street.text.toString(),
+                                  this.allAddress,
                                   this.widget.regOrAss,
                                   this.widget.passData)
                               //  OutsideInsideNeighborhood(

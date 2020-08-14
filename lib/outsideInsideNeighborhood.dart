@@ -20,8 +20,6 @@ class OutsideInsideNeighborhood extends StatefulWidget {
   final question;
   final header;
 
-  
- 
   OutsideInsideNeighborhood(
       this.isNeighborhood,
       this.isOutside,
@@ -41,68 +39,61 @@ class OutsideInsideNeighborhood extends StatefulWidget {
 }
 
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
-
-   Widget sectionList(var passSection){
-    return  Container(
-                    child: Card(
-                      child: Container(
-                        child: Column(
+  Widget sectionList(var passSection) {
+    return Container(
+      child: Card(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => NeighborhoodSurveyScreen(
+                            this.widget.isNeighborhood,
+                            this.widget.isOutside,
+                            this.widget.isInside,
+                            this.widget.isStoreOperater,
+                            this.widget.shopName,
+                            this.widget.shopPhone,
+                            this.widget.address,
+                            "This is text for the instruciotns",
+                            passSection["sectionDescription"],
+                            this.widget.regOrAss,
+                            this.widget.passData,
+                            passSection,
+                            this.widget.header,
+                            this.widget.header["sections"]),
+                      ),
+                    );
+                  },
+                  title: Container(
+                      margin: EdgeInsets.only(top: 20, bottom: 10),
+                      child: Text(
+                        passSection["sectionDescription"],
+                        style: cardHeader(),
+                      )),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        child: Row(
                           children: <Widget>[
-                            ListTile(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NeighborhoodSurveyScreen(
-                                              this.widget.isNeighborhood,
-                                              this.widget.isOutside,
-                                              this.widget.isInside,
-                                              this.widget.isStoreOperater,
-                                              this.widget.shopName,
-                                              this.widget.shopPhone,
-                                              this.widget.address,
-                                              "This is text for the instruciotns",
-                                              passSection["sectionDescription"],
-                                              this.widget.regOrAss,
-                                              this.widget.passData,
-                                              passSection,
-                                              this.widget.header,
-                                              this.widget.header["sections"]
-                                              ),
-                                    ),
-                                  );
-                                },
-                                title: Container(
-                                    margin:
-                                        EdgeInsets.only(top: 20, bottom: 10),
-                                    child: Text(
-                                      passSection["sectionDescription"],
-                                      style: cardHeader(),
-                                    )),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 20),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: _statusButton("Status"),
-                                          ),
-                                          Expanded(
-                                              child: _remainButton(
-                                                  "x Items remaining")),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )),
+                            Expanded(
+                              child: _statusButton("Status"),
+                            ),
+                            Expanded(child: _remainButton("x Items remaining")),
                           ],
                         ),
-                      ),
-                    ),
-                  );
+                      )
+                    ],
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   String serveytype;
@@ -133,7 +124,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   void initState() {
     super.initState();
     print("header>>" + this.widget.header.toString());
-    print("question>>"+ this.widget.question.toString());
+    print("question>>" + this.widget.question.toString());
   }
 
   Widget _statusButton(String text) {
@@ -245,82 +236,97 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
-                for(var x=0;x<this.widget.question.length;x++)
-                sectionList(this.widget.question[x])                 
-                
+                for (var x = 0; x < this.widget.question.length; x++)
+                  sectionList(this.widget.question[x])
               ],
             ),
           ),
         ),
-        bottomNavigationBar: new BottomNavigationBar(
-          backgroundColor: CustomIcons.appbarColor,
-          items: [
-            new BottomNavigationBarItem(
-              icon: new Container(),
-              title: InkWell(
-                onTap: () {
-                  print("asdfasdfasdf");
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
+        bottomNavigationBar: Container(
+          color: CustomIcons.appbarColor,
+          height: 50.0,
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => CheckNeighborhoodScreen(
+                              this.widget.shopName,
+                              this.widget.shopPhone,
+                              this.widget.address,
+                              this.widget.regOrAss,
+                              this.widget.passData)),
+                    );
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 300,
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Center(
+                      child: new Text(
+                        "Back",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 15),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => CheckNeighborhoodScreen(
                             this.widget.shopName,
                             this.widget.shopPhone,
                             this.widget.address,
                             this.widget.regOrAss,
-                            this.widget.passData)),
-                  );
-                },
-                child: Container(
-                  height: 40,
-                  width: 300,
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Center(
-                    child: new Text(
-                      "Back",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 15),
+                            this.widget.passData)));
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 300,
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Center(
+                      child: new Text(
+                        "Done",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 15),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            new BottomNavigationBarItem(
-              icon: new Container(),
-              title: new Container(),
-            ),
-            new BottomNavigationBarItem(
-              icon: new Container(),
-              title: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => CheckNeighborhoodScreen(
-                          this.widget.shopName,
-                          this.widget.shopPhone,
-                          this.widget.address,
-                          this.widget.regOrAss,
-                          this.widget.passData)));
-                },
-                child: Container(
-                  height: 40,
-                  width: 300,
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Center(
-                    child: new Text(
-                      "Done",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 15),
+              Expanded(
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 40,
+                    width: 300,
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Center(
+                      child: new Text(
+                        "Complete",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 15),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

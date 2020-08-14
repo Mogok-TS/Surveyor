@@ -200,6 +200,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                     style: TextStyle(fontSize: 15),
                   ),
                   onPressed: () {
+                    FocusScope.of(context).requestFocus(new FocusNode());
                     if (userID.text == "" ||
                         userID.text == null ||
                         userID.text.isEmpty ||

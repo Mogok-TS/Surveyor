@@ -45,7 +45,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
     var secitons = passData["sections"];
     var section;
     for (var i = 0; i < secitons.length; i++) {
-      
       if (secitons[i]["sectionDescription"] == "Neighborhood Survey") {
         isNeighborhood = true;
         section = header["sections"];
@@ -68,7 +67,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       child: Card(
         child: ListTile(
           onTap: () {
-            print("oo>>"+section.toString());
+            print("oo>>" + section.toString());
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                   builder: (context) => OutsideInsideNeighborhood(
@@ -219,56 +218,50 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
               ],
             ),
           ),
-          bottomNavigationBar: new BottomNavigationBar(
-            backgroundColor: CustomIcons.appbarColor,
-            items: [
-              new BottomNavigationBarItem(
-                icon: new Container(),
-                title: new Container(),
-              ),
-              new BottomNavigationBarItem(
-                icon: new Container(),
-                title: InkWell(
-                  onTap: () {
-                    getGPSstatus().then((status) => {
-                          print("$status"),
-                          if (status == true)
-                            {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => StoreScreen(),
-                                ),
+          bottomNavigationBar: Container(
+            color: CustomIcons.appbarColor,
+            height: 50.0,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      getGPSstatus().then((status) => {
+                            print("$status"),
+                            if (status == true)
+                              {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => StoreScreen(),
+                                  ),
 //                                  builder: (context) => StoresDetailsScreen(
 //                                      this.widget.passData, false, "assign"),
 //                                ),
-                              ),
-                            }
-                          else
-                            {ShowToast("Please open GPS")}
-                        });
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 300,
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Center(
-                      child: new Text(
-                        "Back",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 15),
+                                ),
+                              }
+                            else
+                              {ShowToast("Please open GPS")}
+                          });
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 300,
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      child: Center(
+                        child: new Text(
+                          "Back",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 15),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              new BottomNavigationBarItem(
-                icon: new Container(),
-                title: new Container(),
-              ),
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
