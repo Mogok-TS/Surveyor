@@ -183,8 +183,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             var data = {};
             data["t1"] = "";
             data["t2"] = "";
-            data["t3"] = loopPrimary["checkDatas"][x]["syskey"];
-            data["n2"] = loopPrimary["checkDatas"][x]["text"];
+            data["t3"] = loopPrimary["checkDatas"][x]["text"];
+            data["n2"] = loopPrimary["checkDatas"][x]["syskey"];
             datalist.add(data);
           }
           _value["svr9DataList"] = datalist;
@@ -215,8 +215,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           var datalist = [];
           for (var x = 0; x < loopPrimary["images"].length; x++) {
             var loopObj = loopPrimary["images"][x];
+           
+
+    
             var data = {};
-            data["t1"] = "";
+            data["t1"] = loopObj["base64"].toString();
             data["t2"] = loopObj["name"].toString();
             data["t3"] = "";
             data["n2"] = "";
@@ -305,7 +308,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         "${nowdate.second}" +
         "${nowdate.millisecond}";
   }
-
+  String base64String;
   Future getImageFromCamera(var syskey, var images) async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
@@ -316,8 +319,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         datas["image"] = image;
         datas["name"] = imageName;
         datas["type"] = "file";
+        imageFileList(syskey, imageName, image,datas);
         images.add(datas);
-        imageFileList(syskey, imageName, image);
       }
     });
   }
@@ -334,10 +337,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         datas["image"] = files[i];
         datas["name"] = imageName;
         datas["type"] = "file";
+        imageFileList(syskey, imageName, files[i],datas);
         images.add(datas);
         // images.add(files[i]);
-        newImageName();
-        imageFileList(syskey, imageName, files[i]);
       });
     }
   }
@@ -350,7 +352,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   // }
 
   Future<void> imageFileList(
-      var syskey, var imageName, var imageFileList) async {
+      var syskey, var imageName, var imageFileList,var datasobj) async {
     // List returnList = [];
     var result = await FlutterImageCompress.compressWithFile(
       imageFileList.path,
@@ -361,11 +363,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
 
     String base64Image = "data:image/png;base64," + base64Encode(result);
+    datasobj["base64"] = base64Image;
     imageList.add({
       "syskey": "$syskey",
       "base64Image": "$base64Image",
       "imageName": "$imageName"
     });
+  }
+  Future<String> convertBase64(var imagefile) async{
+    var result = await FlutterImageCompress.compressWithFile(
+      imagefile.path,
+      minWidth: 500,
+      minHeight: 500,
+      quality: 50,
+      rotate: 0,
+    );
+    String base64Image = "data:image/png;base64," + base64Encode(result);
+    return base64Image;
   }
 
   Widget buildRadio(var answerList, var questionIndex) {
@@ -743,7 +757,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget storeImage(var image, int index, var data, var imageLists) {
-    print("object");
     return Container(
       margin: EdgeInsets.all(5),
       child: Center(
@@ -777,7 +790,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 );
               } else {
                 return Image(
-                  image: FileImage(image),
+                  image: FileImage(image["image"]),
                   height: 200,
                   width: 200,
                   fit: BoxFit.fill,
@@ -887,7 +900,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     var _data = {};
                     _data["sysKey"] = questions[ss]["QuestionSyskey"];
                     if (questions[ss]["TypeDesc"] == "Attach Photograph") {
-                      if (questions[ss]["QuestionShopSyskey"] != null) {
+                      if (questions[ss]["QuestionShopSyskey"] != "") {
                         var onlinePhoto = [];
                         if (questions[ss]["AnswerShopPhoto"].length > 0) {
                           for (var y = 0;
@@ -898,11 +911,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             datas["image"] = shopPhoto["PhotoPath"];
                             datas["name"] = shopPhoto["PhotoName"];
                             datas["type"] = "online";
+                            datas["base64"] = "";
                             onlinePhoto.add(datas);
                           }
                         }
-
-                        _data["images"] = onlinePhoto;
+                        _data["images"] = [];
                       } else {
                         _data["images"] = [];
                       }
@@ -1196,28 +1209,28 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: InkWell(
                     onTap: () {
                       print(this._status);
-                      if (this._status == true) {
+                      if (this._status == true && this.questions.length>0) {
                         setState(() {
                           _clickDoneAssignStore();
                         });
                       } else {
                         showLoading();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => OutsideInsideNeighborhood(
-                                this.widget.isNeighborhood,
-                                this.widget.isOutside,
-                                this.widget.isInside,
-                                this.widget.isStoreOperater,
-                                this.widget.storeName,
-                                this.widget.storeNumber,
-                                this.widget.address,
-                                this.widget.regOrAss,
-                                this.widget.passData,
-                                this.widget.allsection,
-                                this.widget.header),
-                          ),
-                        );
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => OutsideInsideNeighborhood(
+                              this.widget.isNeighborhood,
+                              this.widget.isOutside,
+                              this.widget.isInside,
+                              this.widget.isStoreOperater,
+                              this.widget.storeName,
+                              this.widget.storeNumber,
+                              this.widget.address,
+                              this.widget.regOrAss,
+                              this.widget.passData,
+                              this.widget.allsection,
+                              this.widget.header),
+                        ),
+                      );
                       }
                     },
                     child: Column(
@@ -1237,86 +1250,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               ],
             ),
           ),
-          // bottomNavigationBar: new BottomNavigationBar(
-          //   backgroundColor: CustomIcons.appbarColor,
-          //   items: [
-          //     new BottomNavigationBarItem(
-          //       icon: new Container(),
-          //       title: InkWell(
-          //         onTap: () {
-          //           Navigator.of(context).pushReplacement(
-          //             MaterialPageRoute(
-          //               builder: (context) => OutsideInsideNeighborhood(
-          //                   this.widget.isNeighborhood,
-          //                   this.widget.isOutside,
-          //                   this.widget.isInside,
-          //                   this.widget.isStoreOperater,
-          //                   this.widget.storeName,
-          //                   this.widget.storeNumber,
-          //                   this.widget.address,
-          //                   this.widget.regOrAss,
-          //                   this.widget.passData,
-          //                   this.widget.question,
-          //                   this.widget.header),
-          //             ),
-          //           );
-          //         },
-          //         child: Container(
-          //           height: 40,
-          //           width: 300,
-          //           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          //           child: Center(
-          //             child: new Text(
-          //               "Back",
-          //               textAlign: TextAlign.center,
-          //               style: TextStyle(
-          //                   fontWeight: FontWeight.bold,
-          //                   color: Colors.white,
-          //                   fontSize: 15),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     new BottomNavigationBarItem(
-          //       icon: new Container(),
-          //       title: new Container(),
-          //     ),
-          //     new BottomNavigationBarItem(
-          //       icon: new Container(),
-          //       title: InkWell(
-          //         onTap: () {
-          //           setState(() {
-          //             _clickDoneAssignStore();
-          //           });
-          //           // Navigator.of(context).pushReplacement(
-          //           //   MaterialPageRoute(
-          //           //       builder: (context) => OutsideInsideNeighborhood(
-          //           //           this.widget.storeName,
-          //           //           this.widget.storeNumber,
-          //           //           this.widget.address,
-          //           //           this.widget.surveyType, [])),
-          //           // );
-          //         },
-          //         child: Container(
-          //           height: 40,
-          //           width: 300,
-          //           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          //           child: Center(
-          //             child: new Text(
-          //               "Done",
-          //               textAlign: TextAlign.center,
-          //               style: TextStyle(
-          //                   fontWeight: FontWeight.bold,
-          //                   color: Colors.white,
-          //                   fontSize: 15),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+      
         ),
       ),
     );
