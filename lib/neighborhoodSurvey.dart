@@ -107,6 +107,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
       _allData["svrHdrData"] = {
+        "syskey": "",
         "n1": "1",
         "n2": "", //pssOject["shopsyskey"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
@@ -134,6 +135,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
       _allData["svrHdrData"] = {
+        "syskey": "",
         "n1": "1",
         "n2": "", //pssOject["id"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
@@ -158,6 +160,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       if (loopData["TypeDesc"] == "Fill in the Blank") {
         var _value = {};
         print("fill>>" + loopData.toString());
+        _value["id"] = "";
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
         _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -167,9 +170,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _value["instruction"] = loopData["QuestionDescription"];
         _value["t4"] = "";
         _value["t5"] = "";
+        _value["n8"] = "0";
+        _value["n9"] = "0";
+        _value["n10"] = "0";
+        _value["svr9DataList"] = [];
         questionAndAnswer.add(_value);
       } else if (loopData["TypeDesc"] == "Checkbox") {
         var _value = {};
+        _value["id"] = "";
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
         _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -177,10 +185,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _value["instruction"] = loopData["QuestionDescription"];
         _value["t4"] = "";
         _value["t5"] = "";
+        _value["n8"] = "0";
+        _value["n9"] = "0";
+        _value["n10"] = "0";
         if (loopPrimary["checkDatas"].length > 0) {
           var datalist = [];
           for (var x = 0; x < loopPrimary["checkDatas"].length; x++) {
             var data = {};
+            data["recordStatus"] = 1;
             data["t1"] = "";
             data["t2"] = "";
             data["t3"] = loopPrimary["checkDatas"][x]["text"];
@@ -191,6 +203,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         } else {
           var datalist = [];
           var data = {};
+          data["recordStatus"] = 1;
           data["t1"] = "";
           data["t2"] = "";
           data["t3"] = "";
@@ -199,9 +212,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["svr9DataList"] = datalist;
         }
         questionAndAnswer.add(_value);
-        singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
+        // singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
       } else if (loopData["TypeDesc"] == "Attach Photograph") {
         var _value = {};
+        _value["id"] = "";
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
         _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -211,14 +225,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _value["instruction"] = loopData["QuestionDescription"];
         _value["t4"] = "";
         _value["t5"] = "";
+        _value["n8"] = "0";
+        _value["n9"] = "0";
+        _value["n10"] = "0";
         if (loopPrimary["images"].length > 0) {
           var datalist = [];
           for (var x = 0; x < loopPrimary["images"].length; x++) {
             var loopObj = loopPrimary["images"][x];
-           
 
-    
             var data = {};
+            data["recordStatus"] = 1;
             data["t1"] = loopObj["base64"].toString();
             data["t2"] = loopObj["name"].toString();
             data["t3"] = "";
@@ -230,6 +246,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         } else {
           var datalist = [];
           var data = {};
+          data["recordStatus"] = 1;
           data["t1"] = "";
           data["t2"] = "";
           data["t3"] = "";
@@ -243,6 +260,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           if (this.newQuestionarray[ss]["questionSyskey"].toString() ==
               loopData["QuestionSyskey"].toString()) {
             var _value = {};
+            _value["id"] = "";
             _value["questionTypeId"] = loopData["TypeSK"].toString();
             _value["questionNatureId"] = _question["sectionSyskey"].toString();
             _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -253,6 +271,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["instruction"] = loopData["QuestionDescription"];
             _value["t4"] = "";
             _value["t5"] = "";
+            _value["n8"] = "0";
+            _value["n9"] = "0";
+            _value["n10"] = "0";
+            _value["svr9DataList"] = [];
             questionAndAnswer.add(_value);
           }
         }
@@ -308,6 +330,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         "${nowdate.second}" +
         "${nowdate.millisecond}";
   }
+
   String base64String;
   Future getImageFromCamera(var syskey, var images) async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -319,7 +342,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         datas["image"] = image;
         datas["name"] = imageName;
         datas["type"] = "file";
-        imageFileList(syskey, imageName, image,datas);
+        imageFileList(syskey, imageName, image, datas);
         images.add(datas);
       }
     });
@@ -337,7 +360,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         datas["image"] = files[i];
         datas["name"] = imageName;
         datas["type"] = "file";
-        imageFileList(syskey, imageName, files[i],datas);
+        imageFileList(syskey, imageName, files[i], datas);
         images.add(datas);
         // images.add(files[i]);
       });
@@ -352,7 +375,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   // }
 
   Future<void> imageFileList(
-      var syskey, var imageName, var imageFileList,var datasobj) async {
+      var syskey, var imageName, var imageFileList, var datasobj) async {
     // List returnList = [];
     var result = await FlutterImageCompress.compressWithFile(
       imageFileList.path,
@@ -370,7 +393,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       "imageName": "$imageName"
     });
   }
-  Future<String> convertBase64(var imagefile) async{
+
+  Future<String> convertBase64(var imagefile) async {
     var result = await FlutterImageCompress.compressWithFile(
       imagefile.path,
       minWidth: 500,
@@ -1209,28 +1233,28 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: InkWell(
                     onTap: () {
                       print(this._status);
-                      if (this._status == true && this.questions.length>0) {
+                      if (this._status == true && this.questions.length > 0) {
                         setState(() {
                           _clickDoneAssignStore();
                         });
                       } else {
                         showLoading();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => OutsideInsideNeighborhood(
-                              this.widget.isNeighborhood,
-                              this.widget.isOutside,
-                              this.widget.isInside,
-                              this.widget.isStoreOperater,
-                              this.widget.storeName,
-                              this.widget.storeNumber,
-                              this.widget.address,
-                              this.widget.regOrAss,
-                              this.widget.passData,
-                              this.widget.allsection,
-                              this.widget.header),
-                        ),
-                      );
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => OutsideInsideNeighborhood(
+                                this.widget.isNeighborhood,
+                                this.widget.isOutside,
+                                this.widget.isInside,
+                                this.widget.isStoreOperater,
+                                this.widget.storeName,
+                                this.widget.storeNumber,
+                                this.widget.address,
+                                this.widget.regOrAss,
+                                this.widget.passData,
+                                this.widget.allsection,
+                                this.widget.header),
+                          ),
+                        );
                       }
                     },
                     child: Column(
@@ -1250,7 +1274,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               ],
             ),
           ),
-      
         ),
       ),
     );
