@@ -91,6 +91,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     var _question = this.widget.question;
     var pssOject = this.widget.passData[0];
     if (this.widget.regOrAss == "assign") {
+
       _allData["id"] = ""; //pssOject["shopsyskey"];
       _allData["active"] = true;
       _allData["name"] = pssOject["shopname"];
@@ -106,6 +107,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["address"] = pssOject["address"];
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
+      
       _allData["svrHdrData"] = {
         "syskey": "",
         "n1": "1",
@@ -134,9 +136,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["address"] = pssOject["address"];
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
+
       _allData["svrHdrData"] = {
+        //todo 1
         "syskey": "",
-        "n1": "1",
+        "n1": "0",
         "n2": "", //pssOject["id"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
       };
@@ -160,7 +164,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       if (loopData["TypeDesc"] == "Fill in the Blank") {
         var _value = {};
         print("fill>>" + loopData.toString());
-        _value["id"] = "";
+         _value["id"] = loopData["QuestionShopSyskey"];
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
         _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -168,25 +172,25 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _value["remark"] = loopData["AnswerDesc"];
         _value["desc"] = "";
         _value["instruction"] = loopData["QuestionDescription"];
-        _value["t4"] = "";
+        _value["t4"] = loopData["Comment"];
         _value["t5"] = "";
         _value["n8"] = "0";
-        _value["n9"] = "0";
-        _value["n10"] = "0";
+        _value["n9"] = loopData["Flag"];
+        _value["n10"] = loopData["ApprovedFlag"];
         _value["svr9DataList"] = [];
         questionAndAnswer.add(_value);
       } else if (loopData["TypeDesc"] == "Checkbox") {
         var _value = {};
-        _value["id"] = "";
+        _value["id"] = loopData["QuestionShopSyskey"];
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
         _value["questionId"] = loopData["QuestionSyskey"].toString();
         _value["remark"] = "";
         _value["instruction"] = loopData["QuestionDescription"];
-        _value["t4"] = "";
+        _value["t4"] = loopData["Comment"];
         _value["t5"] = "";
         _value["n8"] = "0";
-        _value["n9"] = "0";
+        _value["n9"] = loopData["Flag"];
         _value["n10"] = "0";
         if (loopPrimary["checkDatas"].length > 0) {
           var datalist = [];
@@ -215,7 +219,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         // singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
       } else if (loopData["TypeDesc"] == "Attach Photograph") {
         var _value = {};
-        _value["id"] = "";
+         _value["id"] = loopData["QuestionShopSyskey"];
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
         _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -223,10 +227,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _value["remark"] = "";
         _value["desc"] = "";
         _value["instruction"] = loopData["QuestionDescription"];
-        _value["t4"] = "";
+        _value["t4"] = loopData["Comment"];
         _value["t5"] = "";
         _value["n8"] = "0";
-        _value["n9"] = "0";
+        _value["n9"] = loopData["Flag"];
         _value["n10"] = "0";
         if (loopPrimary["images"].length > 0) {
           var datalist = [];
@@ -260,7 +264,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           if (this.newQuestionarray[ss]["questionSyskey"].toString() ==
               loopData["QuestionSyskey"].toString()) {
             var _value = {};
-            _value["id"] = "";
+             _value["id"] = loopData["QuestionShopSyskey"];
             _value["questionTypeId"] = loopData["TypeSK"].toString();
             _value["questionNatureId"] = _question["sectionSyskey"].toString();
             _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -269,10 +273,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["remark"] = "";
             _value["desc"] = this.newQuestionarray[ss]["answerDesc"].toString();
             _value["instruction"] = loopData["QuestionDescription"];
-            _value["t4"] = "";
+            _value["t4"] = loopData["Comment"];
             _value["t5"] = "";
             _value["n8"] = "0";
-            _value["n9"] = "0";
+            _value["n9"] = loopData["Flag"];
             _value["n10"] = "0";
             _value["svr9DataList"] = [];
             questionAndAnswer.add(_value);
@@ -920,6 +924,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               setState(() {
                 if (result["status"] == true) {
                   this.questions = result["data"];
+                  print("questions>>"+questions.toString());
                   for (var ss = 0; ss < this.questions.length; ss++) {
                     var _data = {};
                     _data["sysKey"] = questions[ss]["QuestionSyskey"];
