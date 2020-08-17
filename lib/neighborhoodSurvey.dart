@@ -72,7 +72,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   bool check3 = false;
   bool check4 = false;
   OnlineSerives onlineSerives = new OnlineSerives();
-  var questions = [];
+  List questions = [];
   List imageList = [];
   var questionNature;
   bool _status = true;
@@ -86,13 +86,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var fillAnswerArray = [];
   TextEditingController _controller = new TextEditingController();
   var _primaryData = [];
+
   _clickDoneAssignStore() {
     showLoading();
     var _question = this.widget.question;
     var pssOject = this.widget.passData[0];
     if (this.widget.regOrAss == "assign") {
-
       _allData["id"] = ""; //pssOject["shopsyskey"];
+      _allData["active"] = true;
       _allData["active"] = true;
       _allData["name"] = pssOject["shopname"];
       _allData["mmName"] = pssOject["shopnamemm"];
@@ -107,6 +108,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["address"] = pssOject["address"];
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
+      print("--->" + this.questions[0].toString());
       _allData["svrHdrData"] = {
         "syskey": this.questions[0]["HeaderShopSyskey"].toString(),
         "n1": "1",
@@ -162,7 +164,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       if (loopData["TypeDesc"] == "Fill in the Blank") {
         var _value = {};
         print("fill>>" + loopData.toString());
-         _value["id"] = loopData["QuestionShopSyskey"];
+        _value["id"] = loopData["QuestionShopSyskey"];
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
         _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -170,11 +172,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _value["remark"] = loopData["AnswerDesc"];
         _value["desc"] = "";
         _value["instruction"] = loopData["QuestionDescription"];
-        _value["t4"] = loopData["Comment"];
+        if (loopData["Comment"] == null) {
+          _value["t4"] = "";
+        } else {
+          _value["t4"] = loopData["Comment"];
+        }
         _value["t5"] = "";
         _value["n8"] = "0";
-        _value["n9"] = loopData["Flag"];
-        _value["n10"] = loopData["ApprovedFlag"];
+        if (loopData["Flag"] == null) {
+          _value["n9"] = "0";
+        } else {
+          _value["n9"] = loopData["Flag"];
+        }
+        if (loopData["ApprovedFlag"] == null) {
+          _value["n10"] = "0";
+        } else {
+          _value["n10"] = loopData["ApprovedFlag"];
+        }
         _value["svr9DataList"] = [];
         questionAndAnswer.add(_value);
       } else if (loopData["TypeDesc"] == "Checkbox") {
@@ -185,11 +199,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _value["questionId"] = loopData["QuestionSyskey"].toString();
         _value["remark"] = "";
         _value["instruction"] = loopData["QuestionDescription"];
-        _value["t4"] = loopData["Comment"];
+        if (loopData["Comment"] == null) {
+          _value["t4"] = "";
+        } else {
+          _value["t4"] = loopData["Comment"];
+        }
         _value["t5"] = "";
         _value["n8"] = "0";
-        _value["n9"] = loopData["Flag"];
-        _value["n10"] = "0";
+        if (loopData["Flag"] == null) {
+          _value["n9"] = "0";
+        } else {
+          _value["n9"] = loopData["Flag"];
+        }
+        if (loopData["ApprovedFlag"] == null) {
+          _value["n10"] = "0";
+        } else {
+          _value["n10"] = loopData["ApprovedFlag"];
+        }
         if (loopPrimary["checkDatas"].length > 0) {
           var datalist = [];
           for (var x = 0; x < loopPrimary["checkDatas"].length; x++) {
@@ -217,7 +243,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         // singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
       } else if (loopData["TypeDesc"] == "Attach Photograph") {
         var _value = {};
-         _value["id"] = loopData["QuestionShopSyskey"];
+        _value["id"] = loopData["QuestionShopSyskey"];
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
         _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -225,11 +251,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _value["remark"] = "";
         _value["desc"] = "";
         _value["instruction"] = loopData["QuestionDescription"];
-        _value["t4"] = loopData["Comment"];
+        if (loopData["Comment"] == null) {
+          _value["t4"] = "";
+        } else {
+          _value["t4"] = loopData["Comment"];
+        }
         _value["t5"] = "";
         _value["n8"] = "0";
-        _value["n9"] = loopData["Flag"];
-        _value["n10"] = "0";
+        if (loopData["Flag"] == null) {
+          _value["n9"] = "0";
+        } else {
+          _value["n9"] = loopData["Flag"];
+        }
+        if (loopData["ApprovedFlag"] == null) {
+          _value["n10"] = "0";
+        } else {
+          _value["n10"] = loopData["ApprovedFlag"];
+        }
         if (loopPrimary["images"].length > 0) {
           var datalist = [];
           for (var x = 0; x < loopPrimary["images"].length; x++) {
@@ -262,7 +300,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           if (this.newQuestionarray[ss]["questionSyskey"].toString() ==
               loopData["QuestionSyskey"].toString()) {
             var _value = {};
-             _value["id"] = loopData["QuestionShopSyskey"];
+            _value["id"] = loopData["QuestionShopSyskey"];
             _value["questionTypeId"] = loopData["TypeSK"].toString();
             _value["questionNatureId"] = _question["sectionSyskey"].toString();
             _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -271,11 +309,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["remark"] = "";
             _value["desc"] = this.newQuestionarray[ss]["answerDesc"].toString();
             _value["instruction"] = loopData["QuestionDescription"];
-            _value["t4"] = loopData["Comment"];
+            if (loopData["Comment"] == null) {
+              _value["t4"] = "";
+            } else {
+              _value["t4"] = loopData["Comment"];
+            }
             _value["t5"] = "";
             _value["n8"] = "0";
-            _value["n9"] = loopData["Flag"];
-            _value["n10"] = "0";
+            if (loopData["Flag"] == null) {
+              _value["n9"] = "0";
+            } else {
+              _value["n9"] = loopData["Flag"];
+            }
+            if (loopData["ApprovedFlag"] == null) {
+              _value["n10"] = "0";
+            } else {
+              _value["n10"] = loopData["ApprovedFlag"];
+            }
             _value["svr9DataList"] = [];
             questionAndAnswer.add(_value);
           }
@@ -289,30 +339,30 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     });
 
     this.onlineSerives.createStore(_allData).then((reslut) => {
-          hideLoadingDialog(),
-          if (reslut["status"] == true)
-            {
-              ShowToast("Saved successfully."),
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => OutsideInsideNeighborhood(
-                      this.widget.isNeighborhood,
-                      this.widget.isOutside,
-                      this.widget.isInside,
-                      this.widget.isStoreOperater,
-                      this.widget.storeName,
-                      this.widget.storeNumber,
-                      this.widget.address,
-                      this.widget.regOrAss,
-                      this.widget.passData,
-                      this.widget.allsection,
-                      this.widget.header),
-                ),
-              )
-            }
-          else
-            {}
-        });
+      hideLoadingDialog(),
+      if (reslut["status"] == true)
+        {
+          ShowToast("Saved successfully."),
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => OutsideInsideNeighborhood(
+                  this.widget.isNeighborhood,
+                  this.widget.isOutside,
+                  this.widget.isInside,
+                  this.widget.isStoreOperater,
+                  this.widget.storeName,
+                  this.widget.storeNumber,
+                  this.widget.address,
+                  this.widget.regOrAss,
+                  this.widget.passData,
+                  this.widget.allsection,
+                  this.widget.header),
+            ),
+          )
+        }
+      else
+        {}
+    });
   }
 
   // Future getImageFromCamera(var images) async {
@@ -334,6 +384,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   String base64String;
+
   Future getImageFromCamera(var syskey, var images) async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
@@ -676,14 +727,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget fillintheBlank(var data) {
-    if (data["AnswerDesc"] == null) {
-      data["AnswerDesc"] = "";
-    }
+    print("123==> ${data}");
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     TextEditingController _textController = new TextEditingController();
     _textController.text = data["AnswerDesc"];
-
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -734,32 +782,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       controller: _textController,
                       onChanged: (val) {
                         data["AnswerDesc"] = _textController.text;
-                        // var _obj = {};
-                        // var checkSyskey = 0;
-                        // var index = 0;
-                        // if (this.fillAnswerArray.length == 0) {
-                        //   _obj["questionSyskey"] = questionData["syskey"];
-                        //   _obj["answer"] = val;
-                        //   this.fillAnswerArray.add(_obj);
-                        // } else {
-                        //   for (var qe = 0;
-                        //       qe < this.fillAnswerArray.length;
-                        //       qe++) {
-                        //     if (this.fillAnswerArray[qe]["questionSyskey"] ==
-                        //         questionData["syskey"]) {
-                        //       index = qe;
-                        //       checkSyskey = 1;
-                        //       break;
-                        //     }
-                        //   }
-                        //   if (checkSyskey == 0) {
-                        //     _obj["questionSyskey"] = questionData["syskey"];
-                        //     _obj["answer"] = val;
-                        //     this.fillAnswerArray.add(_obj);
-                        //   } else {
-                        //     this.fillAnswerArray[index]["answer"] = val;
-                        //   }
-                        // }
                       },
                       decoration: InputDecoration(
                         focusColor: Colors.black,
@@ -894,9 +916,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     super.initState();
 //    if(){} for questionNature
     var _pssOject;
-    if(this.widget.regOrAss == "assign"){
+    if (this.widget.regOrAss == "assign") {
       _pssOject = this.widget.passData[0]["shopsyskey"];
-    }else{
+    } else {
       _pssOject = this.widget.passData[0]["id"];
     }
 
@@ -912,27 +934,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     var param = {
       "HeaderShopSyskey": "",
       "ShopTransSyskey": "",
-      "SectionSyskey": this.widget.question["sectionSyskey"],
-      "HeaderSyskey": this.widget.header["headerSyskey"],
+      "SectionSyskey": this.widget.question["sectionSyskey"].toString(),
+      "HeaderSyskey": this.widget.header["headerSyskey"].toString(),
       "ShopSyskey": _pssOject.toString(),
     };
-    // var param = {
-    //   "HeaderShopSyskey": "",
-    //   "ShopTransSyskey": "",
-    //   "SectionSyskey": "",
-    //   "HeaderSyskey": "",
-    // };
 
+//   var param = { "svrHdrSK": [ "2", "1", "3" ], "CategorySK": [ ] };
+    print("1234-->" + param.toString());
     this
         .onlineSerives
         .getQuestions(param)
         .then((result) => {
               setState(() {
                 if (result["status"] == true) {
-                  this.questions = result["data"];
-                  print("questions>>"+questions.toString());
-                  for (var ss = 0; ss < this.questions.length; ss++) {
+                  questions = result["data"];
+                  for (var ss = 0; ss < questions.length; ss++) {
                     var _data = {};
+                    print("2356-->" + questions[ss]["QuestionSyskey"]);
                     _data["sysKey"] = questions[ss]["QuestionSyskey"];
                     if (questions[ss]["TypeDesc"] == "Attach Photograph") {
                       if (questions[ss]["QuestionShopSyskey"] != "") {
@@ -956,6 +974,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       }
                       _data["checkDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Checkbox") {
+                      print("1234567890");
                       var checkData = [];
                       for (var x = 0;
                           x < questions[ss]["answers"].length;
@@ -972,6 +991,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["radioDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Multiple Choice") {
                       var answerSyskey;
+                      print("0987654321");
                       if (questions[ss]["QuestionShopSyskey"] != "") {
                         answerSyskey = questions[ss]["AnswerSyskey"].toString();
                       } else {
@@ -1018,6 +1038,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["images"] = [];
                     }
                     _primaryData.add(_data);
+                    print("ddd--> ${_primaryData}");
                   }
                   _status = true;
                 } else {
@@ -1078,13 +1099,15 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     if (primarydata["images"] == null) {
       primarydata["images"] = [];
     }
+    print("37--> ${data}" );
     Widget _widget;
 
     if (data["TypeDesc"] == "Attach Photograph") {
       _widget = attachPhotograph(data, primarydata["images"]);
     } else if (data["TypeDesc"] == "Fill in the Blank") {
       _widget = fillintheBlank(data);
-    } else if (data["TypeDesc"] == "Checkbox") {
+    }
+    else if (data["TypeDesc"] == "Checkbox") {
       _widget = checkBox(data, primarydata["checkDatas"]);
     } else if (data["TypeDesc"] == "Multiple Choice") {
       var t1 = data["QuestionCode"];
@@ -1097,10 +1120,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         child: Text(data.toString()),
       );
     }
-    // if (data["questionType"] == "Multiple Choice") {
-    //   _widget = multipleChoice(data['t1'], data['t2'], data["answerList"],
-    //       data["radioData"], data["radio"], questionIndex);
-    // }
+//     if (data["questionType"] == "Multiple Choice") {
+//       _widget = multipleChoice(data['t1'], data['t2'], data["answerList"],
+//           data["radioData"], data["radio"], questionIndex);
+//     }
     return _widget;
   }
 

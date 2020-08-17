@@ -38,11 +38,11 @@ class OnlineSerives {
   void URL() {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
-//      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+//      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
       this
           .storage
-          .setItem('URL', "http://52.253.88.71:8084/madbrepository/");
+          .setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
     }
   }
 
@@ -221,6 +221,7 @@ class OnlineSerives {
 
   Future getQuestions(params) async {
     var returnData = {};
+    var _array = [];
     this.mainData();
     this.url = this.url + "/shop/getSvrHdrShopDataListByHdrSKCatSK";
     var body = json.encode(params);
@@ -228,13 +229,43 @@ class OnlineSerives {
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    print("123456-->");
     print("${response.body}");
+    var ab = "";
     if (response != null) {
       data = json.decode(response.body);
-
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
+          var _bojArray = {};
+          var dataList = data["list"];
+          for(var ii = 0; ii < dataList.length; ii++){
+            var _data = dataList[ii];
+            _bojArray["SectionSK"] = dataList[ii]["SectionSK"];
+            _bojArray["HeaderSyskey"] = dataList[ii]["HeaderSyskey"];
+            _bojArray["QuestionCode"] = dataList[ii]["QuestionCode"];
+            _bojArray["QuestionSyskey"] = dataList[ii]["QuestionSyskey"];
+            _bojArray["SectionDesc"] = dataList[ii]["SectionDesc"];
+            _bojArray["Platform"] = dataList[ii]["Platform"];
+            _bojArray["QuestionShopSyskey"] = dataList[ii]["QuestionShopSyskey"];
+            if(_data["QuestionShopSyskey"].toString() == ""){
+              _bojArray["HeaderShopSyskey"] = "";
+              _bojArray["AnswerShopPhoto"] = [];
+              _bojArray["AnswerDesc"] = "";
+            }else{
+              _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+              _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
+              _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
+            }
+            _bojArray["TypeSK"] = dataList[ii]["TypeSK"];
+            _bojArray["TypeDesc"] = dataList[ii]["TypeDesc"];
+            _bojArray["answers"] = dataList[ii]["answers"];
+            _bojArray["HeaderDescription"] = dataList[ii]["HeaderDescription"];
+            _bojArray["QuestionDescription"] = dataList[ii]["QuestionDescription"];
+            _array.add(json.encode(_bojArray));
+          }
+
+          print("RES $_array");
         } else {
           ShowToast("Server fail.");
           this.status = false;
@@ -247,33 +278,14 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
+    List aj = json.decode(_array.toString());
+//    print("AA>> ${aj.length}");
+//    for(var j = 0; j < aj.length;j++){
+//      print("RR >>  ${aj[j]["QuestionSyskey"]}");
+//    }
     returnData["status"] = this.status;
-    var array = [];
-    var _bojArray = {};
-    for(var ii = 0; ii < data["list"].length; ii++){
-      var _data = data['list'][ii];
-      _bojArray["SectionSK"] = _data["SectionSK"].toString();
-      _bojArray["HeaderSyskey"] = _data["HeaderSyskey"].toString();
-      _bojArray["QuestionCode"] = _data["QuestionCode"].toString();
-      _bojArray["QuestionSyskey"] = _data["QuestionSyskey"].toString();
-      _bojArray["SectionDesc"] = _data["SectionDesc"].toString();
-      _bojArray["Platform"] = _data["Platform"].toString();
-      _bojArray["QuestionShopSyskey"] = _data["QuestionShopSyskey"].toString();
-      if(_data["QuestionShopSyskey"].toString() == ""){
-        _bojArray["QuestionShopSyskey"] = "";
-        _bojArray["AnswerShopPhoto"] = [];
-      }else{
-        _bojArray["QuestionShopSyskey"] = _data["HeaderShopSyskey"].toString();
-        _bojArray["AnswerShopPhoto"] = _data["AnswerShopPhoto"].toString();
-      }
-      _bojArray["TypeSK"] = _data["TypeSK"].toString();
-      _bojArray["TypeDesc"] = _data["TypeDesc"].toString();
-      _bojArray["answers"] = _data["answers"].toString();
-      _bojArray["HeaderDescription"] = _data["HeaderDescription"].toString();
-      _bojArray["QuestionDescription"] = _data["QuestionDescription"].toString();
-      array.add(_bojArray);
-    }
-    returnData["data"] = array;
+    returnData["data"] = aj;
+
     return returnData;
   }
 
