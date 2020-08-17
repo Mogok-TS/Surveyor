@@ -107,9 +107,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["address"] = pssOject["address"];
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
-      
       _allData["svrHdrData"] = {
-        "syskey": "",
+        "syskey": this.questions[0]["HeaderShopSyskey"].toString(),
         "n1": "1",
         "n2": "", //pssOject["shopsyskey"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
@@ -138,8 +137,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["t12"] = "";
 
       _allData["svrHdrData"] = {
-        //todo 1
-        "syskey": "",
+        "syskey": this.questions[0]["HeaderShopSyskey"].toString(),
         "n1": "0",
         "n2": "", //pssOject["id"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
@@ -895,6 +893,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   void initState() {
     super.initState();
 //    if(){} for questionNature
+    var _pssOject;
+    if(this.widget.regOrAss == "assign"){
+      _pssOject = this.widget.passData[0]["shopsyskey"];
+    }else{
+      _pssOject = this.widget.passData[0]["id"];
+    }
+
     if (this.widget.surveyType == "Neighborhood Survey") {
       this.questionNature = "Neighborhood Survey";
     } else if (this.widget.surveyType == "Outside of Store") {
@@ -909,6 +914,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       "ShopTransSyskey": "",
       "SectionSyskey": this.widget.question["sectionSyskey"],
       "HeaderSyskey": this.widget.header["headerSyskey"],
+      "ShopSyskey": _pssOject.toString(),
     };
     // var param = {
     //   "HeaderShopSyskey": "",

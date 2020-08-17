@@ -248,8 +248,32 @@ class OnlineSerives {
       this.status = false;
     }
     returnData["status"] = this.status;
-    var array1 = [];
-    returnData["data"] = data["list"];
+    var array = [];
+    var _bojArray = {};
+    for(var ii = 0; ii < data["list"].length; ii++){
+      var _data = data['list'][ii];
+      _bojArray["SectionSK"] = _data["SectionSK"].toString();
+      _bojArray["HeaderSyskey"] = _data["HeaderSyskey"].toString();
+      _bojArray["QuestionCode"] = _data["QuestionCode"].toString();
+      _bojArray["QuestionSyskey"] = _data["QuestionSyskey"].toString();
+      _bojArray["SectionDesc"] = _data["SectionDesc"].toString();
+      _bojArray["Platform"] = _data["Platform"].toString();
+      _bojArray["QuestionShopSyskey"] = _data["QuestionShopSyskey"].toString();
+      if(_data["QuestionShopSyskey"].toString() == ""){
+        _bojArray["QuestionShopSyskey"] = "";
+        _bojArray["AnswerShopPhoto"] = [];
+      }else{
+        _bojArray["QuestionShopSyskey"] = _data["HeaderShopSyskey"].toString();
+        _bojArray["AnswerShopPhoto"] = _data["AnswerShopPhoto"].toString();
+      }
+      _bojArray["TypeSK"] = _data["TypeSK"].toString();
+      _bojArray["TypeDesc"] = _data["TypeDesc"].toString();
+      _bojArray["answers"] = _data["answers"].toString();
+      _bojArray["HeaderDescription"] = _data["HeaderDescription"].toString();
+      _bojArray["QuestionDescription"] = _data["QuestionDescription"].toString();
+      array.add(_bojArray);
+    }
+    returnData["data"] = array;
     return returnData;
   }
 
