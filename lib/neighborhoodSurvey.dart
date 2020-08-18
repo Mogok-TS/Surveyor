@@ -216,15 +216,27 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         } else {
           _value["n10"] = loopData["ApprovedFlag"];
         }
+        print("00--> ${loopPrimary["checkDatas"]}");
         if (loopPrimary["checkDatas"].length > 0) {
           var datalist = [];
           for (var x = 0; x < loopPrimary["checkDatas"].length; x++) {
             var data = {};
+            if(loopPrimary["checkDatas"][x]["check"] == true){
+              data["recordStatus"] = 1;
+              data["t1"] = "";
+              data["t2"] = "";
+              data["t3"] = loopPrimary["checkDatas"][x]["text"];
+              data["n2"] = loopPrimary["checkDatas"][x]["syskey"];
+              datalist.add(data);
+            }
+          }
+          if(datalist.length==0){
+            var data = {};
             data["recordStatus"] = 1;
             data["t1"] = "";
             data["t2"] = "";
-            data["t3"] = loopPrimary["checkDatas"][x]["text"];
-            data["n2"] = loopPrimary["checkDatas"][x]["syskey"];
+            data["t3"] = "";
+            data["n2"] = "";
             datalist.add(data);
           }
           _value["svr9DataList"] = datalist;
