@@ -200,7 +200,6 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                     style: TextStyle(fontSize: 15),
                   ),
                   onPressed: () {
-                    FocusScope.of(context).requestFocus(new FocusNode());
                     if (userID.text == "" ||
                         userID.text == null ||
                         userID.text.isEmpty ||
@@ -208,6 +207,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         password.text == null ||
                         password.text.isEmpty) {
                       ShowToast("Please, fill all fields");
+                      FocusScope.of(context).requestFocus(new FocusNode());
                     } else {
                       this.userID.text = getPhoneNumber(this.userID.text);
                       var param = {
@@ -215,6 +215,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         "password": password.text.toString()
                       };
                       showLoading();
+                      FocusScope.of(context).requestFocus(new FocusNode());
                       this
                           .onlineSerives
                           .loginData(param)

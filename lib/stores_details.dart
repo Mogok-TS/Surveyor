@@ -114,8 +114,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       } else {
         this.updateStatus = true;
         if (this.widget.regOrAss == "assign") {
-          this.shopSyskey =
-              this.updateDataarray[0]["2006260508497800827"].toString();
+          this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
           this.shopName.text = this.updateDataarray[0]["shopname"].toString();
           this.shopNamemm.text =
               this.updateDataarray[0]["shopnamemm"].toString();
@@ -173,6 +172,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               if (this._stateId == stateObject[i]['id'])
                 {
                   this._state = stateObject[i]['description'],
+                  _stateCode = stateObject[i]['code'],
                 }
             }
         });
@@ -185,12 +185,14 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     };
     onlineSerives.getDistrict(districtData).then((val) => {
           this.districtObject = val["data"],
+          print(this.districtObject.toString()),
           for (var i = 0; i < districtObject.length; i++)
             {
               _districtList.add(districtObject[i]["description"]),
               if (this._districtId == districtObject[i]['id'])
                 {
                   this._district = districtObject[i]['description'],
+                  _districtCode = districtObject[i]["code"],
                 }
             },
         });
@@ -208,6 +210,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               if (this._townShipId == townShipObject[i]['id'])
                 {
                   this._townShip = townShipObject[i]["description"],
+                  _townShipCode = townShipObject[i]["code"],
                 }
             },
         });
@@ -233,6 +236,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         _townOrVillagetract = "Town",
                         _townList.add(this.townData[i]['description']),
                         _town = this.townData[i]['description'],
+                        townCode = this.townData[i]["code"],
                       }
                     else if (this.n2Code == 2)
                       {
@@ -240,6 +244,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         _townOrVillagetract = "Village Tract",
                         _villageTractList.add(this.townData[i]['description']),
                         _villageTract = this.townData[i]['description'],
+                        villageTractCode = this._villageTractData[i]["code"],
                       }
                   }
               }
@@ -261,29 +266,31 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 if (this._wardId == wardData[i]['id'])
                   {
                     this._ward = wardData[i]['description'],
+                    wardCode = wardData[i]["code"],
                   }
               }
           },
         );
 
-    // var dataParams = {
-    //   "id": "",
-    //   "code": "",
-    //   "description": "",
-    //   "parentid": this._townId,
-    //   "n2": "2"
-    // };
-    // onlineSerives.getWard(dataParams).then((value) => {
-    //       _villageData = value['data'],
-    //       for (var i = 0; i < _villageData.length; i++)
-    //         {
-    //           _villageList.add(_villageData[i]['description']),
-    //           if (this._wardId == _villageData[i]['id'])
-    //             {
-    //               this._village = _villageData[i]['description'],
-    //             }
-    //         }
-    //     });
+    var dataParams = {
+      "id": "",
+      "code": "",
+      "description": "",
+      "parentid": this._townId,
+      "n2": "2"
+    };
+    onlineSerives.getWard(dataParams).then((value) => {
+          _villageData = value['data'],
+          for (var i = 0; i < _villageData.length; i++)
+            {
+              _villageList.add(_villageData[i]['description']),
+              if (this._wardId == _villageData[i]['id'])
+                {
+                  this._village = _villageData[i]['description'],
+                  villageCode = _villageData[i]["code"],
+                }
+            }
+        });
   }
 
   _getState() {
@@ -312,7 +319,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     _townShipList = ["-"];
     if (params != null) {
       onlineSerives.getDistrict(params).then((val) => {
-            print(val.toString()),
             districtObject = val["data"],
             for (var i = 0; i < districtObject.length; i++)
               {
@@ -365,7 +371,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                   setState(() {
                     _townList.add(townData[i]["description"]);
                   }),
-                }
+                },
             },
           );
     }
@@ -376,7 +382,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       onlineSerives.getWard(params).then(
             (value) => {
               wardData = value['data'],
-              print("Value" + wardData.toString()),
               for (var i = 0; i < wardData.length; i++)
                 {
                   setState(() {
@@ -404,7 +409,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
 
   _getVillage(params) {
     if (params != null) {
-      onlineSerives.getTown(params).then((value) => {
+      onlineSerives.getWard(params).then((value) => {
             _villageData = value['data'],
             for (var i = 0; i < _villageData.length; i++)
               {
@@ -1076,16 +1081,23 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   setState(() {
                                     _town = value;
                                     for (var i = 0; i < townData.length; i++) {
-                                      var params = {
-                                        "id": "",
-                                        "code": "",
-                                        "description": "",
-                                        "parentid": townData[i]["id"],
-                                        "n2": "1"
-                                      };
-                                      townCode = townData[i]["code"];
-                                      _townId = townData[i]["id"];
-                                      _getWard(params);
+                                      if (_town == townData[i]['description']) {
+                                        var params = {
+                                          "id": "",
+                                          "code": "",
+                                          "description": "",
+                                          "parentid": townData[i]["id"],
+                                          "n2": "1"
+                                        };
+                                        _townId = townData[i]["id"];
+                                        townCode = townData[i]["code"];
+                                        _ward = "-";
+                                        _wardList = ['-'];
+                                        _getWard(params);
+                                      } else if (_town == "-") {
+                                        _ward = "-";
+                                        _wardList = ['-'];
+                                      }
                                     }
                                   });
                                 },
@@ -1132,8 +1144,10 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   setState(() {
                                     _ward = value;
                                     for (var i = 0; i < wardData.length; i++) {
-                                      wardCode = wardData[i]["code"];
-                                      _wardId = wardData[i]["id"];
+                                      if (_ward == wardData[i]['description']) {
+                                        wardCode = wardData[i]["code"];
+                                        _wardId = wardData[i]["id"];
+                                      }
                                     }
                                   });
                                 },
@@ -1182,18 +1196,27 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     for (var i = 0;
                                         i < _villageTractData.length;
                                         i++) {
-                                      var params = {
-                                        "id": "",
-                                        "code": "",
-                                        "description": "",
-                                        "parentid": _villageTractData[i]["id"],
-                                        "n2": "2"
-                                      };
-                                      villageTractCode =
-                                          _villageTractData[i]["code"];
-                                      villageTractId =
-                                          _villageTractData[i]["id"];
-                                      _getVillage(params);
+                                      if (_villageTract ==
+                                          _villageTractData[i]['description']) {
+                                        var params = {
+                                          "id": "",
+                                          "code": "",
+                                          "description": "",
+                                          "parentid": _villageTractData[i]
+                                              ["id"],
+                                          "n2": "2"
+                                        };
+                                        villageTractCode =
+                                            _villageTractData[i]["code"];
+                                        villageTractId =
+                                            _villageTractData[i]["id"];
+                                        _village = "-";
+                                        _villageList = ['-'];
+                                        _getVillage(params);
+                                      } else if (_villageTract == "-") {
+                                        _village = "-";
+                                        _villageList = ['-'];
+                                      }
                                     }
                                   });
                                 },
@@ -1242,8 +1265,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     for (var i = 0;
                                         i < _villageData.length;
                                         i++) {
-                                      villageCode = _villageData[i]["code"];
-                                      villageId = _villageData[i]["id"];
+                                      if (_village ==
+                                          _villageData[i]['description']) {
+                                        villageCode = _villageData[i]["code"];
+                                        villageId = _villageData[i]["id"];
+                                      }
                                     }
                                   });
                                 },
@@ -1307,6 +1333,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
+                      print("thisCode" + this.n2Code);
                       var param;
                       if (this._state == null ||
                           this._state == "-" ||
@@ -1357,7 +1384,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             getPhoneNumber(this.shopPhoneNo.text);
                         this.ownerPhoneNo.text =
                             getPhoneNumber(this.ownerPhoneNo.text);
-                        if (this.n2Code == 1) {
+                        if (this.n2Code == "1") {
                           allCode = wardCode +
                               "" +
                               townCode +
@@ -1378,7 +1405,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               _district +
                               "," +
                               _state;
-                        } else if (this.n2Code == 2) {
+                        } else if (this.n2Code == "2") {
                           allCode = villageCode +
                               "" +
                               villageTractCode +
@@ -1400,6 +1427,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               "," +
                               _state;
                         }
+                        print(this.allCode);
+                        print(this.allAddress);
                         if (this.updateStatus == true) {
                           param = {
                             "id": this.shopSyskey,
@@ -1414,8 +1443,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "districtId": _districtId,
                             "townshipId": _townShipId,
                             "townId":
-                                this.n2Code == 1 ? _townId : villageTractId,
-                            "wardId": this.n2Code == 1 ? _wardId : villageId,
+                                this.n2Code == "1" ? _townId : villageTractId,
+                            "wardId": this.n2Code == "1" ? _wardId : villageId,
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
@@ -1423,7 +1452,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               "latitude": latitude,
                               "longitude": longitude,
                               "plusCode": this.plusCode.toString(),
-                              "minuCode": '',
+                              "minuCode": this.allCode,
                             }
                           };
                         } else {
@@ -1439,8 +1468,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "districtId": _districtId,
                             "townshipId": _townShipId,
                             "townId":
-                                this.n2Code == 1 ? _townId : villageTractId,
-                            "wardId": this.n2Code == 1 ? _wardId : villageId,
+                                this.n2Code == "1" ? _townId : villageTractId,
+                            "wardId": this.n2Code == "1" ? _wardId : villageId,
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
