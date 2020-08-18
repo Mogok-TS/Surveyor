@@ -249,15 +249,43 @@ class OnlineSerives {
             _bojArray["SectionDesc"] = dataList[ii]["SectionDesc"];
             _bojArray["Platform"] = dataList[ii]["Platform"];
             _bojArray["QuestionShopSyskey"] = dataList[ii]["QuestionShopSyskey"];
-            if(_data["QuestionShopSyskey"].toString() == ""){
-              _bojArray["HeaderShopSyskey"] = "";
-              _bojArray["AnswerShopPhoto"] = [];
-              _bojArray["AnswerDesc"] = "";
-            }else{
-              checkSaveorupdate = "update";
-              _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
-              _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
-              _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
+            if(dataList[ii]["TypeSK"].toString() == "1" || dataList[ii]["TypeSK"].toString() == "3"){
+              _bojArray["AnswerSyskey"] = "";
+              if(dataList[ii]["AnswerShopPhoto"] == null || dataList[ii]["AnswerShopPhoto"].length == 0){
+                _bojArray["HeaderShopSyskey"] = "";
+                _bojArray["AnswerShopPhoto"] = [];
+                _bojArray["AnswerDesc"] = "";
+              }else{
+                checkSaveorupdate = "update";
+                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
+                _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
+              }
+            }else if(dataList[ii]["TypeSK"].toString() == "2"){
+              if(dataList[ii]["AnswerSyskey"] == "" || dataList[ii]["AnswerSyskey"] == null){
+                _bojArray["HeaderShopSyskey"] = "";
+                _bojArray["AnswerShopPhoto"] = [];
+                _bojArray["AnswerDesc"] = "";
+                _bojArray["AnswerSyskey"] = "";
+              }else{
+                checkSaveorupdate = "update";
+                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
+                _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
+                _bojArray["AnswerSyskey"] = dataList[ii]["AnswerSyskey"];
+              }
+            }else if(dataList[ii]["TypeSK"].toString() == "4"){
+              _bojArray["AnswerSyskey"] = "";
+              if(dataList[ii]["AnswerDesc"] == "" || dataList[ii]["AnswerDesc"] == null){
+                _bojArray["HeaderShopSyskey"] = "";
+                _bojArray["AnswerShopPhoto"] = [];
+                _bojArray["AnswerDesc"] = "";
+              }else{
+                checkSaveorupdate = "update";
+                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
+                _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
+              }
             }
             _bojArray["TypeSK"] = dataList[ii]["TypeSK"];
             _bojArray["TypeDesc"] = dataList[ii]["TypeDesc"];

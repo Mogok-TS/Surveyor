@@ -966,6 +966,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     };
 
 //   var param = { "svrHdrSK": [ "2", "1", "3" ], "CategorySK": [ ] };
+    showLoading();
     print("1234-->" + param.toString());
     this
         .onlineSerives
@@ -974,13 +975,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               setState(() {
                 this._checkSaveorupdate = result["checkSaveorupdate"];
                 if (result["status"] == true) {
+                  hideLoadingDialog();
                   questions = result["data"];
                   for (var ss = 0; ss < questions.length; ss++) {
                     var _data = {};
                     print("2356-->" + questions[ss]["QuestionSyskey"]);
                     _data["sysKey"] = questions[ss]["QuestionSyskey"];
                     if (questions[ss]["TypeDesc"] == "Attach Photograph") {
-                      if (questions[ss]["QuestionShopSyskey"] != "") {
                         var onlinePhoto = [];
                         if (questions[ss]["AnswerShopPhoto"].length > 0) {
                           for (var y = 0;
@@ -994,11 +995,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             datas["base64"] = "";
                             onlinePhoto.add(datas);
                           }
+                        }else{
+                          _data["images"] = [];
                         }
-                        _data["images"] = [];
-                      } else {
-                        _data["images"] = [];
-                      }
                       _data["checkDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Checkbox") {
                       print("check>>" + this.questions[ss].toString());
@@ -1012,7 +1011,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                         checkObj["text"] = answers["answerDesc"];
                         checkObj["syskey"] = answers["answerSK"];
                         checkObj["check"] = false;
-                        if (questions[ss]["QuestionShopSyskey"] != "") {
+                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
                           for (var y = 0;
                               y < questions[ss]["AnswerShopPhoto"].length;
                               y++) {
@@ -1021,20 +1020,18 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                   checkObj["check"] = true;
                                 }
                               }
+                          checkData.add(checkObj);
+                        }else{
+                          checkData.add(checkObj);
                         }
-                        checkData.add(checkObj);
                       }
                       _data["checkDatas"] = checkData;
                       _data["images"] = [];
                       _data["radioDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Multiple Choice") {
                       var answerSyskey;
-                      print("0987654321");
-                      if (questions[ss]["QuestionShopSyskey"] != "") {
-                        answerSyskey = questions[ss]["AnswerSyskey"].toString();
-                      } else {
-                        answerSyskey = "";
-                      }
+                      answerSyskey = questions[ss]["AnswerSyskey"].toString();
+                      print("0987654321-->" + answerSyskey);
                       var radioObj = {};
                       var radioData = [];
                       var syskeys = {};
@@ -1057,8 +1054,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               getdefaultAns["answerDesc"].toString();
                         } else {
                           syskeys["answerSyskey"] = answerSyskey.toString();
-                          if (answerSyskey.toString() ==
-                              answers["answerSK"].toString()) {
+                          if (answerSyskey.toString() == answers["answerSK"].toString()) {
+                            syskeys["answerSyskey"] =
+                                answers["answerSK"].toString();
                             syskeys["answerDesc"] =
                                 answers["answerDesc"].toString();
                           }
@@ -1067,6 +1065,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       }
 
                       this.newQuestionarray.add(syskeys);
+                      print("aa-->" + this.newQuestionarray.toString());
                       radioObj["qustionSyskey"] =
                           _data["radioDatas"] = radioData;
                       _data["checkDatas"] = [];
@@ -1081,6 +1080,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   _status = true;
                 } else {
                   _status = false;
+                  hideLoadingDialog();
                 }
               }),
             })
