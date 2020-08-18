@@ -222,6 +222,7 @@ class OnlineSerives {
   Future getQuestions(params) async {
     var returnData = {};
     var _array = [];
+    var checkSaveorupdate = "save";
     this.mainData();
     this.url = this.url + "/shop/getSvrHdrShopDataListByHdrSKCatSK";
     var body = json.encode(params);
@@ -253,6 +254,7 @@ class OnlineSerives {
               _bojArray["AnswerShopPhoto"] = [];
               _bojArray["AnswerDesc"] = "";
             }else{
+              checkSaveorupdate = "update";
               _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
               _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
               _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
@@ -285,6 +287,7 @@ class OnlineSerives {
 //    }
     returnData["status"] = this.status;
     returnData["data"] = aj;
+    returnData["checkSaveorupdate"] = checkSaveorupdate;
 
     return returnData;
   }

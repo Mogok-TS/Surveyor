@@ -1448,6 +1448,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
+                             "svrHdrData":{
+                               "syskey": "",
+                               "n1": "1",
+                               "n2": "",
+                               "n3":""
+                            },
                             "locationData": {
                               "latitude": latitude,
                               "longitude": longitude,
@@ -1473,6 +1479,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
+                            "svrHdrData":{
+                              "syskey": "",
+                              "n1": "1",
+                              "n2": "",
+                              "n3":""
+                            },
                             "locationData": {
                               "latitude": latitude,
                               "longitude": longitude,

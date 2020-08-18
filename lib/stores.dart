@@ -323,7 +323,11 @@ class _StoreScreenState extends State<StoreScreen>  {
                 IconButton(
                   icon: Icon(Icons.map),
                   onPressed: () {
-                    showLoading();
+                    getGPSstatus().then((status) => {
+                      print("$status"),
+                      if (status == true)
+                        {
+                        showLoading(),
                     _getLocation().then((value) {
                       setState(() {
                         if (value == null) {
@@ -351,6 +355,10 @@ class _StoreScreenState extends State<StoreScreen>  {
                       });
                     }).catchError((error) {
                       print(error);
+                    }),
+                        }
+                      else
+                        {ShowToast("Please open GPS")}
                     });
                   },
                 )

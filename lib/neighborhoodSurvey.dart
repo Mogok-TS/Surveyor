@@ -86,13 +86,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var fillAnswerArray = [];
   TextEditingController _controller = new TextEditingController();
   var _primaryData = [];
+  var _checkSaveorupdate;
 
   _clickDoneAssignStore() {
     showLoading();
     var _question = this.widget.question;
     var pssOject = this.widget.passData[0];
     if (this.widget.regOrAss == "assign") {
-      _allData["id"] = "";//pssOject["shopsyskey"];
+      _allData["id"] = pssOject["shopsyskey"];
       _allData["active"] = true;
       _allData["active"] = true;
       _allData["name"] = pssOject["shopname"];
@@ -109,10 +110,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
       print("--->" + this.questions[0].toString());
+      var _syskey = "";
+      if(this._checkSaveorupdate == "update"){
+        _syskey = this.questions[0]["HeaderShopSyskey"].toString();
+      }else{
+        _syskey = "";
+      }
       _allData["svrHdrData"] = {
-        "syskey": this.questions[0]["HeaderShopSyskey"].toString(),
+        "syskey": _syskey,
         "n1": "1",
-        "n2": "",//pssOject["shopsyskey"].toString(),
+        "n2": pssOject["shopsyskey"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
       };
 
@@ -123,7 +130,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         "minuCode": pssOject["mimu"]
       };
     } else {
-      _allData["id"] = "";//pssOject["id"];
+      _allData["id"] = pssOject["id"];
       _allData["active"] = true;
       _allData["name"] = pssOject["name"];
       _allData["mmName"] = pssOject["mmName"];
@@ -138,11 +145,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["address"] = pssOject["address"];
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
-
+        var _syskey = "";
+        if(this._checkSaveorupdate == "update"){
+          _syskey = this.questions[0]["HeaderShopSyskey"].toString();
+        }else{
+          _syskey = "";
+        }
       _allData["svrHdrData"] = {
-        "syskey": this.questions[0]["HeaderShopSyskey"].toString(),
+        "syskey": _syskey,
         "n1": "0",
-        "n2":  "",//pssOject["id"].toString(),
+        "n2":  pssOject["id"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
       };
 
@@ -347,10 +359,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     }
     _allData["quesAndAns"] = questionAndAnswer;
 
-//    setState(() {
-//      _consoleLable = _allData.toString();
-//      hideLoadingDialog();
-//    });
+    setState(() {
+      _consoleLable = _allData.toString();
+      hideLoadingDialog();
+    });
 
     this.onlineSerives.createStore(_allData).then((reslut) => {
       hideLoadingDialog(),
@@ -960,6 +972,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         .getQuestions(param)
         .then((result) => {
               setState(() {
+                this._checkSaveorupdate = result["checkSaveorupdate"];
                 if (result["status"] == true) {
                   questions = result["data"];
                   for (var ss = 0; ss < questions.length; ss++) {
@@ -989,6 +1002,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["checkDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Checkbox") {
                       print("1234567890");
+
                       var checkData = [];
                       for (var x = 0;
                           x < questions[ss]["answers"].length;
