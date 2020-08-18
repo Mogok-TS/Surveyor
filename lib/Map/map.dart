@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
+
+
 import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
-import 'package:Surveyor/stores_details.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:localstorage/localstorage.dart';
-
 import '../stores.dart';
+import '../stores_details.dart';
 
 class GmapS extends StatefulWidget {
   double lati;
@@ -25,8 +28,17 @@ class MapSampleState extends State<GmapS> {
   Geolocator geolocator = Geolocator();
   GoogleMapController googleMapController;
 
+  final Set<Polygon> _polygon = {};
   static CameraPosition _kGooglePlex;
   var _latLong;
+
+  List data;
+   localJsonData() async {
+    var jsonText = await rootBundle.loadString("assets/township.json");
+      setState(() {
+       data = json.decode(jsonText);
+    });
+  }
 
   void toUserLocation() {
     _getLocation().then((value) {
@@ -57,6 +69,56 @@ class MapSampleState extends State<GmapS> {
                   infoWindow: InfoWindow(title: "current position"),
                   icon: BitmapDescriptor.defaultMarkerWithHue(
                       BitmapDescriptor.hueAzure));
+
+              for (var a = 0; a < data.length; a++) {
+                List<LatLng> latlng = List();
+                setState(() {
+                  latlng = [];
+                });
+                List list1 = data
+                    .where((element) =>
+                        element["properties"]["TS_PCODE"].toString() ==
+                        "MMR010011")
+                    .toList();
+
+                for (var b = 0; b < list1.length; b++) {
+                  List list2 = list1[b]["geometry"]["coordinates"];
+                  for (var c = 0; c < list2.length; c++) {
+                  for (var d = 0; d < list2[c].length; d++) {
+                  for (var e = 0; e < list2[c][d].length; e++) {
+                        double lati =
+                            double.parse(list2[c][d][e][1].toString());
+                        double long =
+                            double.parse(list2[c][d][e][0].toString());
+                        LatLng location = LatLng(lati, long);
+                        latlng.add(location);
+                      }
+                    }
+                  }
+                }
+
+                _polygon.add(Polygon(
+                    polygonId: PolygonId('area'),
+                    points: latlng,
+                    geodesic: true,
+                    strokeColor: Colors.red.withOpacity(0.6),
+                    strokeWidth: 5,
+                    fillColor: Colors.redAccent.withOpacity(0.1),
+                    visible: true));
+              }
+////////////////////////
+              // LatLng one = LatLng(22.932661, 96.511031);
+              // LatLng two = LatLng(22.916806, 96.505243);
+              // LatLng three = LatLng(22.920920, 96.488876);
+              // LatLng four = LatLng(22.944552, 96.524601);
+              // LatLng five = LatLng(22.932661, 96.511031);
+
+              // latlng.add(one);
+              // latlng.add(two);
+              // latlng.add(three);
+              // latlng.add(four);
+              // latlng.add(five);
+
               setState(() {
                 markers[markerId] = marker;
               });
@@ -120,9 +182,9 @@ class MapSampleState extends State<GmapS> {
           _getAddress(value).then((val) async {
             if (value.latitude != null && value.longitude != null) {
               List addressList = [];
-              List list = this.storage.getItem("storeData")["shopsByUser"];
+              List list = this.storage.getItem("storeData");
               for (var i = 0; i < list.length; i++) {
-                print(list[i]["lat"]);
+                print("234567-->" + list[i]["lat"].toString());
                 addressList.add({
                   "Name": list[i]["shopname"],
                   "lati": double.parse(list[i]["lat"]),
@@ -161,6 +223,7 @@ class MapSampleState extends State<GmapS> {
   @override
   void initState() {
     super.initState();
+    this.localJsonData();
     locationFromServer();
     toUserLocation();
     this._latLong = {
@@ -168,7 +231,10 @@ class MapSampleState extends State<GmapS> {
       "long":widget.long
     };
     _kGooglePlex = CameraPosition(
-      target: LatLng(widget.lati, widget.long),
+      target: LatLng(
+        widget.lati,
+        widget.long,
+      ),
       zoom: 10.0,
     );
   }
@@ -210,6 +276,7 @@ class MapSampleState extends State<GmapS> {
                 _controller.complete(controller);
               },
               markers: Set<Marker>.of(markers.values),
+              polygons: _polygon,
               onTap: (latLong) {
                 print("-->" + latLong.toString());
                 this._latLong = {
@@ -250,6 +317,9 @@ class MapSampleState extends State<GmapS> {
                 ),
               ),
             ),
+            Padding(
+                padding: const EdgeInsets.only(right: 10, top: 10),
+                child: IconButton(icon: Icon(Icons.menu), onPressed: () {})),
           ],
         ),
         floatingActionButton: Padding(
@@ -281,4 +351,5 @@ class MapSampleState extends State<GmapS> {
       ),
     );
   }
+  
 }
