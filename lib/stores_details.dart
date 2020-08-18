@@ -144,14 +144,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               this.updateDataarray[0]["personPhoneNumber"].toString();
           this.street.text = this.updateDataarray[0]["street"].toString();
           this.allAddress = this.updateDataarray[0]["address"].toString();
-          this._stateId = this.updateDataarray[0]['stateid'].toString();
-          this._districtId = this.updateDataarray[0]['districtid'].toString();
-          this._townShipId = this.updateDataarray[0]['townshipid'].toString();
-          this._townId = this.updateDataarray[0]['townid'].toString();
-          this._wardId = this.updateDataarray[0]['wardid'].toString();
+          this._stateId = this.updateDataarray[0]['stateId'].toString();
+          this._districtId = this.updateDataarray[0]['districtId'].toString();
+          this._townShipId = this.updateDataarray[0]['townshipId'].toString();
+          this._townId = this.updateDataarray[0]['townId'].toString();
+          this._wardId = this.updateDataarray[0]['wardId'].toString();
           _getUpdateData();
         }
-
         print("shopSyskey--> $shopSyskey");
       }
     });
@@ -165,6 +164,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       "parentid": "",
       "n2": ''
     };
+    print(this._stateId);
     onlineSerives.getState(params).then((value) => {
           this.stateObject = value["data"],
           for (var i = 0; i < stateObject.length; i++)
@@ -1448,11 +1448,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
-                             "svrHdrData":{
-                               "syskey": "",
-                               "n1": "1",
-                               "n2": "",
-                               "n3":""
+                            "svrHdrData": {
+                              "syskey": "",
+                              "n1": "1",
+                              "n2": "",
+                              "n3": ""
                             },
                             "locationData": {
                               "latitude": latitude,
@@ -1479,11 +1479,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
-                            "svrHdrData":{
+                            "svrHdrData": {
                               "syskey": "",
                               "n1": "1",
                               "n2": "",
-                              "n3":""
+                              "n3": ""
                             },
                             "locationData": {
                               "latitude": latitude,
