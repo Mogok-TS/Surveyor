@@ -111,9 +111,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["t12"] = "";
       print("--->" + this.questions[0].toString());
       var _syskey = "";
-      if(this._checkSaveorupdate == "update"){
+      if (this._checkSaveorupdate == "update") {
         _syskey = this.questions[0]["HeaderShopSyskey"].toString();
-      }else{
+      } else {
         _syskey = "";
       }
       _allData["svrHdrData"] = {
@@ -145,16 +145,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["address"] = pssOject["address"];
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
-        var _syskey = "";
-        if(this._checkSaveorupdate == "update"){
-          _syskey = this.questions[0]["HeaderShopSyskey"].toString();
-        }else{
-          _syskey = "";
-        }
+      var _syskey = "";
+      if (this._checkSaveorupdate == "update") {
+        _syskey = this.questions[0]["HeaderShopSyskey"].toString();
+      } else {
+        _syskey = "";
+      }
       _allData["svrHdrData"] = {
         "syskey": _syskey,
         "n1": "0",
-        "n2":  pssOject["id"].toString(),
+        "n2": pssOject["id"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
       };
 
@@ -234,7 +234,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           var datalist = [];
           for (var x = 0; x < loopPrimary["checkDatas"].length; x++) {
             var data = {};
-            if(loopPrimary["checkDatas"][x]["check"] == true){
+            if (loopPrimary["checkDatas"][x]["check"] == true) {
               data["recordStatus"] = 1;
               data["t1"] = "";
               data["t2"] = "";
@@ -243,7 +243,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               datalist.add(data);
             }
           }
-          if(datalist.length==0){
+          if (datalist.length == 0) {
             var data = {};
             data["recordStatus"] = 1;
             data["t1"] = "";
@@ -365,30 +365,30 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     });
 
     this.onlineSerives.createStore(_allData).then((reslut) => {
-      hideLoadingDialog(),
-      if (reslut["status"] == true)
-        {
-          ShowToast("Saved successfully."),
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => OutsideInsideNeighborhood(
-                  this.widget.isNeighborhood,
-                  this.widget.isOutside,
-                  this.widget.isInside,
-                  this.widget.isStoreOperater,
-                  this.widget.storeName,
-                  this.widget.storeNumber,
-                  this.widget.address,
-                  this.widget.regOrAss,
-                  this.widget.passData,
-                  this.widget.allsection,
-                  this.widget.header),
-            ),
-          )
-        }
-      else
-        {}
-    });
+          hideLoadingDialog(),
+          if (reslut["status"] == true)
+            {
+              ShowToast("Saved successfully."),
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => OutsideInsideNeighborhood(
+                      this.widget.isNeighborhood,
+                      this.widget.isOutside,
+                      this.widget.isInside,
+                      this.widget.isStoreOperater,
+                      this.widget.storeName,
+                      this.widget.storeNumber,
+                      this.widget.address,
+                      this.widget.regOrAss,
+                      this.widget.passData,
+                      this.widget.allsection,
+                      this.widget.header),
+                ),
+              )
+            }
+          else
+            {}
+        });
   }
 
   // Future getImageFromCamera(var images) async {
@@ -1001,7 +1001,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       }
                       _data["checkDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Checkbox") {
-                      print("1234567890");
+                      print("check>>" + this.questions[ss].toString());
 
                       var checkData = [];
                       for (var x = 0;
@@ -1012,6 +1012,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                         checkObj["text"] = answers["answerDesc"];
                         checkObj["syskey"] = answers["answerSK"];
                         checkObj["check"] = false;
+                        if (questions[ss]["QuestionShopSyskey"] != "") {
+                          for (var y = 0;
+                              y < questions[ss]["AnswerShopPhoto"].length;
+                              y++) {
+                                var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
+                                if(shopPhoto["CheckBoxSyskey"] == answers["answerSK"]){
+                                  checkObj["check"] = true;
+                                }
+                              }
+                        }
                         checkData.add(checkObj);
                       }
                       _data["checkDatas"] = checkData;
@@ -1127,15 +1137,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     if (primarydata["images"] == null) {
       primarydata["images"] = [];
     }
-    print("37--> ${data}" );
+    print("37--> ${data}");
     Widget _widget;
 
     if (data["TypeDesc"] == "Attach Photograph") {
       _widget = attachPhotograph(data, primarydata["images"]);
     } else if (data["TypeDesc"] == "Fill in the Blank") {
       _widget = fillintheBlank(data);
-    }
-    else if (data["TypeDesc"] == "Checkbox") {
+    } else if (data["TypeDesc"] == "Checkbox") {
       _widget = checkBox(data, primarydata["checkDatas"]);
     } else if (data["TypeDesc"] == "Multiple Choice") {
       var t1 = data["QuestionCode"];
