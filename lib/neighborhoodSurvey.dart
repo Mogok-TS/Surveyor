@@ -92,7 +92,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     var _question = this.widget.question;
     var pssOject = this.widget.passData[0];
     if (this.widget.regOrAss == "assign") {
-      _allData["id"] = ""; //pssOject["shopsyskey"];
+      _allData["id"] = "";//pssOject["shopsyskey"];
       _allData["active"] = true;
       _allData["active"] = true;
       _allData["name"] = pssOject["shopname"];
@@ -112,9 +112,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["svrHdrData"] = {
         "syskey": this.questions[0]["HeaderShopSyskey"].toString(),
         "n1": "1",
-        "n2": "", //pssOject["shopsyskey"].toString(),
+        "n2": "",//pssOject["shopsyskey"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
       };
+
       _allData["locationData"] = {
         "latitude": pssOject["lat"],
         "longitude": pssOject["long"],
@@ -122,7 +123,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         "minuCode": pssOject["mimu"]
       };
     } else {
-      _allData["id"] = ""; //pssOject["id"];
+      _allData["id"] = "";//pssOject["id"];
       _allData["active"] = true;
       _allData["name"] = pssOject["name"];
       _allData["mmName"] = pssOject["mmName"];
@@ -141,7 +142,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["svrHdrData"] = {
         "syskey": this.questions[0]["HeaderShopSyskey"].toString(),
         "n1": "0",
-        "n2": "", //pssOject["id"].toString(),
+        "n2":  "",//pssOject["id"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
       };
 
@@ -346,9 +347,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     }
     _allData["quesAndAns"] = questionAndAnswer;
 
-    setState(() {
-      _consoleLable = _allData.toString();
-    });
+//    setState(() {
+//      _consoleLable = _allData.toString();
+//      hideLoadingDialog();
+//    });
 
     this.onlineSerives.createStore(_allData).then((reslut) => {
       hideLoadingDialog(),
