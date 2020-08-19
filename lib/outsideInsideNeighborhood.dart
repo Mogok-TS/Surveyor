@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:Surveyor/checkNeighborhood.dart';
 import 'package:Surveyor/neighborhoodSurvey.dart';
 import 'package:Surveyor/stores.dart';
@@ -39,7 +41,11 @@ class OutsideInsideNeighborhood extends StatefulWidget {
 }
 
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
-  Widget sectionList(var passSection) {
+  var headerItems =[];
+  var allItem =0;
+  var answerItem =0;
+  var continueStatus = false;
+  Widget sectionList(var passSection,var item) {
     return Container(
       child: Card(
         child: Container(
@@ -83,7 +89,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             Expanded(
                               child: _statusButton("Status"),
                             ),
-                            Expanded(child: _remainButton("x Items remaining")),
+                            Expanded(child: _remainButton( item["remain"].toString()+" Items remaining")),
                           ],
                         ),
                       )
@@ -122,10 +128,84 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
 
   @override
   void initState() {
+    var _pssOject;
+    if (this.widget.regOrAss == "assign") {
+      _pssOject = this.widget.passData[0]["shopsyskey"];
+    } else {
+      _pssOject = this.widget.passData[0]["id"];
+    }
     super.initState();
-    print("header>>" + this.widget.header.toString());
-    print("question>>" + this.widget.question.toString());
+     var param = {
+      "HeaderShopSyskey": "",
+      "ShopTransSyskey": "",
+      "SectionSyskey": "",
+      "HeaderSyskey": this.widget.header["headerSyskey"].toString(),
+      "ShopSyskey": _pssOject.toString(),
+    };
+  var data;
+  var sinpleData = {};
+  var totalCount;
+  var answeredCount;
+  var sections = this.widget.header["sections"];
+    this.onlineSerives.getQuestions(param).then((value) => {
+        data = value["data"],
+        print("datalength>>"+data.length.toString()),
+
+      for (var i = 0; i < sections.length; i++) {
+          sinpleData = {},
+          totalCount =0,
+          answeredCount = 0,
+          sinpleData["desc"] = sections[i]["sectionDescription"],
+          for(var ii=0;ii<data.length;ii++){
+            print("data>>>??"+data[ii].toString()),
+            if(data[ii]["SectionDesc"] == sections[i]["sectionDescription"]){
+              this.allItem++,
+            totalCount++,
+              if(data[ii]["TypeDesc"] == "Fill in the Blank"){
+                if(data[ii]["AnswerDesc"] != ""){
+                    answeredCount++,
+                    answerItem++,
+                }
+              }else if(data[ii]["TypeDesc"] == "Attach Photograph"){
+                if(data[ii]["AnswerShopPhoto"].length>0){
+                    answeredCount++,
+                    answerItem++,
+                }
+              }else if(data[ii]["TypeDesc"] == "Checkbox"){
+                if(data[ii]["AnswerShopPhoto"].length>0){
+                    answeredCount++,
+                    answerItem++,
+                }
+              }else if(data[ii]["TypeDesc"] == "Multiple Choice"){
+                if(data[ii]["AnswerDesc"] != ""){
+                  answeredCount++,
+                  answerItem++,
+                }
+              },
+              print("OKI"),
+            }
+          },
+          sinpleData["answted"] = answeredCount,
+          sinpleData["total"] = totalCount,
+          sinpleData["remain"] = totalCount -answeredCount,
+          setState(()=>{
+          headerItems.add(sinpleData)
+          
+          }),
+      },
+      setState(()=>{
+        if(allItem == answerItem){
+          continueStatus = true,
+        }
+      }),
+       print("headeritems>>"+headerItems.toString()),
+       print("allitem"+allItem.toString()),
+       print("answerItem"+answerItem.toString()),
+       
+    });
+    
   }
+ 
 
   Widget _statusButton(String text) {
     return GestureDetector(
@@ -236,8 +316,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
+                if(this.headerItems.length == this.widget.question.length)
                 for (var x = 0; x < this.widget.question.length; x++)
-                  sectionList(this.widget.question[x])
+                  sectionList(this.widget.question[x],this.headerItems[x])
               ],
             ),
           ),
@@ -277,34 +358,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                   ),
                 ),
               ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => CheckNeighborhoodScreen(
-                            this.widget.shopName,
-                            this.widget.shopPhone,
-                            this.widget.address,
-                            this.widget.regOrAss,
-                            this.widget.passData)));
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 300,
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Center(
-                      child: new Text(
-                        "Done",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 15),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+             
               Expanded(
                 child: InkWell(
                   onTap: () {},
@@ -313,14 +367,20 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     width: 300,
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: Center(
-                      child: new Text(
+                      child: continueStatus == true? Text(
                         "Complete",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                             fontSize: 15),
-                      ),
+                      ):Text(
+                                  "Complete",
+                                  style: TextStyle(
+                                      color: Colors.white38,
+                                      fontWeight: FontWeight.bold,
+                                       fontSize: 15),
+                                ),
                     ),
                   ),
                 ),
