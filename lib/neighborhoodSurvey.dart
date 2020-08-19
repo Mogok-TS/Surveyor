@@ -619,6 +619,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               scrollDirection: Axis.vertical,
               crossAxisCount: 3,
               children: List.generate(imageslist.length, (index) {
+                
                 return storeImage(
                     imageslist[index], index, imageslist, imageList);
               }),
@@ -834,7 +835,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget storeImage(var image, int index, var data, var imageLists) {
-    return Container(
+    var  online = this.subUrl + image["image"].toString();
+    print("image??>>>>"+image["image"].toString());
+    if(image["image"]  != ""){
+      return Container(
       margin: EdgeInsets.all(5),
       child: Center(
         child: Stack(
@@ -867,7 +871,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 );
               } else {
                 return Image(
-                  image: FileImage(image["image"]),
+                  image: FileImage(online),
                   height: 200,
                   width: 200,
                   fit: BoxFit.fill,
@@ -906,6 +910,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         ),
       ),
     );
+    }else{
+      return Container();
+    }
+    
   }
 
   Widget headerBuilder(String title, String secondTitle) {
@@ -939,7 +947,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       ),
     );
   }
-
+  var subUrl;
   @override
   void initState() {
     super.initState();
@@ -952,7 +960,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     }
 
     this.url = this.storage.getItem('URL');
+    this.subUrl =url.substring(0, url.lastIndexOf("8084/")) +"/8084";
 
+    print("url>>>>>" + subUrl);
     if (this.widget.surveyType == "Neighborhood Survey") {
       this.questionNature = "Neighborhood Survey";
     } else if (this.widget.surveyType == "Outside of Store") {
@@ -1001,6 +1011,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             datas["base64"] = "";
                             onlinePhoto.add(datas);
                           }
+                          _data["images"] = onlinePhoto;
+                          print("onlinephoto>>"+onlinePhoto.toString());
                         }else{
                           _data["images"] = [];
                         }

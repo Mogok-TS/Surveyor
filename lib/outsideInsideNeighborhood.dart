@@ -205,7 +205,12 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     });
     
   }
- 
+  clickComplete(){
+    var param = {"RespHdrSyskey":"1"};
+    this.onlineSerives.saveComplete(param).then((value) => {
+      print("return>>>>>>>>>>"+value.toString()),
+    });
+  }
 
   Widget _statusButton(String text) {
     return GestureDetector(
@@ -361,7 +366,13 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
              
               Expanded(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    if(continueStatus == true){
+                     this.clickComplete();
+                    }else{
+                      this.clickComplete();
+                    }
+                  },
                   child: Container(
                     height: 40,
                     width: 300,
