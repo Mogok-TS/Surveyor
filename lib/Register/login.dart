@@ -215,19 +215,36 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         "password": password.text.toString()
                       };
                       showLoading();
+                      var _loginData;
                       FocusScope.of(context).requestFocus(new FocusNode());
                       this
                           .onlineSerives
                           .loginData(param)
                           .then((data) => {
+                                _loginData = this.storage.getItem("loginData"),
                                 if (data == true)
                                   {
-                                    hideLoadingDialog(),
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) => StoreScreen(),
-                                      ),
-                                    )
+                                    this
+                                        .onlineSerives
+                                        .getSurveyorroutebyuser(
+                                            _loginData["syskey"])
+                                        .then((returnVal) => {
+                                              if (returnVal == true)
+                                                {
+                                                  hideLoadingDialog(),
+                                                  Navigator.of(context)
+                                                      .pushReplacement(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          StoreScreen(),
+                                                    ),
+                                                  )
+                                                }
+                                              else
+                                                {
+                                                  hideLoadingDialog(),
+                                                }
+                                            }),
                                   }
                                 else
                                   {

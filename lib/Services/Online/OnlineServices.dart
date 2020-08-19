@@ -386,6 +386,8 @@ class OnlineSerives {
     };
     return param;
   }
+
+
   Future getDistrict(params) async {
     this.mainData();
     this.url = this.url + "shop/get-district";
@@ -555,5 +557,37 @@ class OnlineSerives {
       "data":data["list"]
     };
     return param;
+  }
+
+  Future getSurveyorroutebyuser(userID) async {
+    this.mainData();
+    this.url = this.url + "/surveyor/get-route/" + userID;
+    var data;
+    var response = await http
+        .get(this.url, headers: this.headersWithKey)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+          this.storage.setItem("Routebyuser", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+//    var param = {
+//      "status":this.status,
+//      "data":data["list"]
+//    };
+    return this.status;
   }
 }

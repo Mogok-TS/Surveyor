@@ -1427,8 +1427,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               "," +
                               _state;
                         }
-                        print(this.allCode);
-                        print(this.allAddress);
+                        print("1235-->" + this.allCode);
+                        print("1233-->" + this.allAddress);
                         if (this.updateStatus == true) {
                           param = {
                             "id": this.shopSyskey,

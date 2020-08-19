@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:load/load.dart';
+import 'package:localstorage/localstorage.dart';
 import 'Services/Loading/LoadingServices.dart';
 import 'assets/custom_icons_icons.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
@@ -72,6 +73,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   bool check3 = false;
   bool check4 = false;
   OnlineSerives onlineSerives = new OnlineSerives();
+  LocalStorage storage = new LocalStorage('Surveyor');
   List questions = [];
   List imageList = [];
   var questionNature;
@@ -87,6 +89,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   TextEditingController _controller = new TextEditingController();
   var _primaryData = [];
   var _checkSaveorupdate;
+  var url, _imageURL;
 
   _clickDoneAssignStore() {
     showLoading();
@@ -947,6 +950,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     } else {
       _pssOject = this.widget.passData[0]["id"];
     }
+
+    this.url = this.storage.getItem('URL');
 
     if (this.widget.surveyType == "Neighborhood Survey") {
       this.questionNature = "Neighborhood Survey";
