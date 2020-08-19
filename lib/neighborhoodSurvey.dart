@@ -514,7 +514,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget attachPhotograph(data, imageslist) {
+  Widget attachPhotograph(data, _imageslist) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     var images = [];
@@ -595,7 +595,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 RaisedButton(
                   child: Text("Camera"),
                   onPressed: () {
-                    getImageFromCamera(data["QuestionSyskey"], imageslist);
+                    getImageFromCamera(data["QuestionSyskey"], _imageslist);
                   },
                 ),
                 SizedBox(
@@ -604,7 +604,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 RaisedButton(
                   child: Text("Library"),
                   onPressed: () {
-                    getImageFromGallery(data["QuestionSyskey"], imageslist);
+                    getImageFromGallery(data["QuestionSyskey"], _imageslist);
                   },
                 ),
                 Spacer(),
@@ -618,10 +618,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               controller: ScrollController(keepScrollOffset: false),
               scrollDirection: Axis.vertical,
               crossAxisCount: 3,
-              children: List.generate(imageslist.length, (index) {
+              children: List.generate(_imageslist.length, (index) {
                 
                 return storeImage(
-                    imageslist[index], index, imageslist, imageList);
+                    _imageslist[index], index, _imageslist, imageList);
               }),
             ),
           ),
@@ -835,8 +835,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget storeImage(var image, int index, var data, var imageLists) {
+
     var  online = this.subUrl + image["image"].toString();
-    print("image??>>>>"+image["image"].toString());
+    print("image??>>>>??"+online.toString());
     if(image["image"]  != ""){
       return Container(
       margin: EdgeInsets.all(5),
@@ -849,7 +850,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ShowImage(
-                              image: Image.network(image["image"]),
+                              image: Image.network(online.toString()),
                             )));
               } else {
                 Navigator.push(
@@ -864,14 +865,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             }, child: Builder(builder: (context) {
               if (image["type"] == "online") {
                 return Image.network(
-                  image["image"],
+                  online.toString(),
                   height: 200,
                   width: 200,
                   fit: BoxFit.fill,
                 );
               } else {
                 return Image(
-                  image: FileImage(online),
+                  image: FileImage(image["image"]),
                   height: 200,
                   width: 200,
                   fit: BoxFit.fill,
@@ -960,7 +961,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     }
 
     this.url = this.storage.getItem('URL');
-    this.subUrl =url.substring(0, url.lastIndexOf("8084/")) +"/8084";
+    this.subUrl =url.substring(0, url.lastIndexOf("8084/")) +"8084";
 
     print("url>>>>>" + subUrl);
     if (this.widget.surveyType == "Neighborhood Survey") {
