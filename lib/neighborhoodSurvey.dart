@@ -121,7 +121,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       }
       _allData["svrHdrData"] = {
         "syskey": _syskey,
-        "n1": "1",
+        "n1": "0",
         "n2": pssOject["shopsyskey"].toString(),
         "n3": this.widget.header["headerSyskey"].toString()
       };
