@@ -359,10 +359,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     }
     _allData["quesAndAns"] = questionAndAnswer;
 
-    setState(() {
-      _consoleLable = _allData.toString();
-      hideLoadingDialog();
-    });
+//    setState(() {
+//      _consoleLable = _allData.toString();
+//      hideLoadingDialog();
+//    });
 
     this.onlineSerives.createStore(_allData).then((reslut) => {
           hideLoadingDialog(),
@@ -977,6 +977,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 if (result["status"] == true) {
                   hideLoadingDialog();
                   questions = result["data"];
+                  print("123-->" + questions.toString());
                   for (var ss = 0; ss < questions.length; ss++) {
                     var _data = {};
                     print("2356-->" + questions[ss]["QuestionSyskey"]);
