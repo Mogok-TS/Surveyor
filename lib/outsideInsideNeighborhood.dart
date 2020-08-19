@@ -138,7 +138,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     } else {
       _pssOject = this.widget.passData[0]["id"];
     }
-    print("header>>>>??????"+this.widget.header.toString());
     super.initState();
      var param = {
       "HeaderShopSyskey": "",
@@ -155,17 +154,12 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     this.onlineSerives.getQuestions(param).then((value) => {
 
         data = value["data"],
-        print("alldata>>"+data.toString()),
       for (var i = 0; i < sections.length; i++) {
           sinpleData = {},
           totalCount =0,
           answeredCount = 0,
           sinpleData["desc"] = sections[i]["sectionDescription"],
           for(var ii=0;ii<data.length;ii++){
-            print("questions>>>>>>><<????"+ data[ii].toString()),
-            if(headerShopSyskey == ""){
-              headerShopSyskey == data[ii]["HeaderShopSyskey"],
-            },
             if(data[ii]["SectionDesc"] == sections[i]["sectionDescription"]){
               this.allItem++,
             totalCount++,
@@ -190,32 +184,31 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                   answerItem++,
                 }
               },
+            },
+            if(data[ii]["HeaderShopSyskey"].toString() != ""){
+              headerShopSyskey = "",
+              headerShopSyskey = data[ii]["HeaderShopSyskey"].toString(),
             }
           },
           sinpleData["answered"] = answeredCount,
           sinpleData["total"] = totalCount,
           sinpleData["remain"] = totalCount -answeredCount,
           setState(()=>{
-          headerItems.add(sinpleData)
-          
+          headerItems.add(sinpleData),
           }),
+          
       },
       setState(()=>{
         if(allItem == answerItem){
           continueStatus = true,
         }
       }),
-       print("headeritems>>"+headerItems.toString()),
-       print("allitem"+allItem.toString()),
-       print("answerItem"+answerItem.toString()),
-       
     });
     
   }
   clickComplete(){
     var param = {"RespHdrSyskey":"1"};
     this.onlineSerives.saveComplete(param).then((value) => {
-      print("return>>>>>>>>>>"+value.toString()),
       if(value == true){
       ShowToast("Completed successfully"),
       }

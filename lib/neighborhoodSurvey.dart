@@ -31,7 +31,7 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final question;
   final header;
   final allsection;
-  final headershopKey;
+  final String headershopKey;
   NeighborhoodSurveyScreen(
       this.isNeighborhood,
       this.isOutside,
@@ -173,14 +173,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
     for (var i = 0; i < this.questions.length; i++) {
       var loopData = this.questions[i];
-      print("loop>>" + loopData.toString());
       var loopPrimary = {};
       loopPrimary = this._primaryData[i];
       var singleQueAndAns = {};
 
       if (loopData["TypeDesc"] == "Fill in the Blank") {
         var _value = {};
-        print("fill>>" + loopData.toString());
         _value["id"] = loopData["QuestionShopSyskey"];
         _value["questionTypeId"] = loopData["TypeSK"].toString();
         _value["questionNatureId"] = _question["sectionSyskey"].toString();
@@ -233,7 +231,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         } else {
           _value["n10"] = loopData["ApprovedFlag"];
         }
-        print("00--> ${loopPrimary["checkDatas"]}");
         if (loopPrimary["checkDatas"].length > 0) {
           var datalist = [];
           for (var x = 0; x < loopPrimary["checkDatas"].length; x++) {
@@ -633,7 +630,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget multipleChoice(var t1, var t2, var data, var questionIndex) {
-    print("obj>>" + data.toString());
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -758,7 +754,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget fillintheBlank(var data) {
-    print("123==> ${data}");
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     TextEditingController _textController = new TextEditingController();
@@ -838,7 +833,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   Widget storeImage(var image, int index, var data, var imageLists) {
 
     var  online = this.subUrl + image["image"].toString();
-    print("image??>>>>??"+online.toString());
     if(image["image"]  != ""){
       return Container(
       margin: EdgeInsets.all(5),
@@ -952,6 +946,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var subUrl;
   @override
   void initState() {
+    print("headershopkey>>>>>>>>>>>>>>>>>>>>--------------------------"+this.widget.headershopKey);
     super.initState();
 //    if(){} for questionNature
     var _pssOject;
@@ -964,7 +959,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     this.url = this.storage.getItem('URL');
     this.subUrl =url.substring(0, url.lastIndexOf("8084/")) +"8084";
 
-    print("url>>>>>" + subUrl);
     if (this.widget.surveyType == "Neighborhood Survey") {
       this.questionNature = "Neighborhood Survey";
     } else if (this.widget.surveyType == "Outside of Store") {
@@ -984,7 +978,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
 //   var param = { "svrHdrSK": [ "2", "1", "3" ], "CategorySK": [ ] };
     showLoading();
-    print("1234-->" + param.toString());
     this
         .onlineSerives
         .getQuestions(param)
@@ -994,10 +987,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 if (result["status"] == true) {
                   hideLoadingDialog();
                   questions = result["data"];
-                  print("123-->" + questions.toString());
                   for (var ss = 0; ss < questions.length; ss++) {
                     var _data = {};
-                    print("2356-->" + questions[ss]["QuestionSyskey"]);
                     _data["sysKey"] = questions[ss]["QuestionSyskey"];
                     if (questions[ss]["TypeDesc"] == "Attach Photograph") {
                         var onlinePhoto = [];
@@ -1014,13 +1005,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             onlinePhoto.add(datas);
                           }
                           _data["images"] = onlinePhoto;
-                          print("onlinephoto>>"+onlinePhoto.toString());
                         }else{
                           _data["images"] = [];
                         }
                       _data["checkDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Checkbox") {
-                      print("check>>" + this.questions[ss].toString());
 
                       var checkData = [];
                       for (var x = 0;
@@ -1051,7 +1040,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     } else if (questions[ss]["TypeDesc"] == "Multiple Choice") {
                       var answerSyskey;
                       answerSyskey = questions[ss]["AnswerSyskey"].toString();
-                      print("0987654321-->" + answerSyskey);
                       var radioObj = {};
                       var radioData = [];
                       var syskeys = {};
@@ -1085,7 +1073,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       }
 
                       this.newQuestionarray.add(syskeys);
-                      print("aa-->" + this.newQuestionarray.toString());
                       radioObj["qustionSyskey"] =
                           _data["radioDatas"] = radioData;
                       _data["checkDatas"] = [];
@@ -1095,7 +1082,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["images"] = [];
                     }
                     _primaryData.add(_data);
-                    print("ddd--> ${_primaryData}");
                   }
                   _status = true;
                 } else {
@@ -1157,7 +1143,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     if (primarydata["images"] == null) {
       primarydata["images"] = [];
     }
-    print("37--> ${data}");
     Widget _widget;
 
     if (data["TypeDesc"] == "Attach Photograph") {
@@ -1323,7 +1308,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      print(this._status);
                       if (this._status == true && this.questions.length > 0) {
                         setState(() {
                           _clickDoneAssignStore();
