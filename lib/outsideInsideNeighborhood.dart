@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/checkNeighborhood.dart';
 import 'package:Surveyor/neighborhoodSurvey.dart';
 import 'package:Surveyor/stores.dart';
@@ -209,6 +210,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     var param = {"RespHdrSyskey":"1"};
     this.onlineSerives.saveComplete(param).then((value) => {
       print("return>>>>>>>>>>"+value.toString()),
+      if(value == true){
+      ShowToast("Completed successfully"),
+      }
     });
   }
 
@@ -369,8 +373,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                   onTap: () {
                     if(continueStatus == true){
                      this.clickComplete();
-                    }else{
-                      this.clickComplete();
                     }
                   },
                   child: Container(
