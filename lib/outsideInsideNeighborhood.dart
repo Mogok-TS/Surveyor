@@ -70,7 +70,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             this.widget.passData,
                             passSection,
                             this.widget.header,
-                            this.widget.header["sections"]),
+                            this.widget.header["sections"],
+                            this.headerShopSyskey
+                            ),
                       ),
                     );
                   },
@@ -126,8 +128,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
       ],
     );
   }
-
+ var headerShopSyskey = "";
   @override
+  
   void initState() {
     var _pssOject;
     if (this.widget.regOrAss == "assign") {
@@ -135,6 +138,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     } else {
       _pssOject = this.widget.passData[0]["id"];
     }
+    print("header>>>>??????"+this.widget.header.toString());
     super.initState();
      var param = {
       "HeaderShopSyskey": "",
@@ -149,16 +153,19 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   var answeredCount;
   var sections = this.widget.header["sections"];
     this.onlineSerives.getQuestions(param).then((value) => {
-        data = value["data"],
-        print("datalength>>"+data.length.toString()),
 
+        data = value["data"],
+        print("alldata>>"+data.toString()),
       for (var i = 0; i < sections.length; i++) {
           sinpleData = {},
           totalCount =0,
           answeredCount = 0,
           sinpleData["desc"] = sections[i]["sectionDescription"],
           for(var ii=0;ii<data.length;ii++){
-            print("data>>>??"+data[ii].toString()),
+            print("questions>>>>>>><<????"+ data[ii].toString()),
+            if(headerShopSyskey == ""){
+              headerShopSyskey == data[ii]["HeaderShopSyskey"],
+            },
             if(data[ii]["SectionDesc"] == sections[i]["sectionDescription"]){
               this.allItem++,
             totalCount++,
@@ -183,10 +190,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                   answerItem++,
                 }
               },
-              print("OKI"),
             }
           },
-          sinpleData["answted"] = answeredCount,
+          sinpleData["answered"] = answeredCount,
           sinpleData["total"] = totalCount,
           sinpleData["remain"] = totalCount -answeredCount,
           setState(()=>{

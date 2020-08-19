@@ -31,7 +31,7 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final question;
   final header;
   final allsection;
-
+  final headershopKey;
   NeighborhoodSurveyScreen(
       this.isNeighborhood,
       this.isOutside,
@@ -46,7 +46,9 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
       this.passData,
       this.question,
       this.header,
-      this.allsection);
+      this.allsection,
+      this.headershopKey,
+      );
 
   @override
   _NeighborhoodSurveyScreenState createState() =>
@@ -112,13 +114,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _allData["address"] = pssOject["address"];
       _allData["street"] = pssOject["street"];
       _allData["t12"] = "";
-      print("--->" + this.questions[0].toString());
-      var _syskey = "";
-      if (this._checkSaveorupdate == "update") {
-        _syskey = this.questions[0]["HeaderShopSyskey"].toString();
-      } else {
-        _syskey = "";
-      }
+      var _syskey = this.widget.headershopKey;
+      // if (this._checkSaveorupdate == "update") {
+      //   _syskey = this.questions[0]["HeaderShopSyskey"].toString();
+      // } else {
+      //   _syskey = "";
+      // }
       _allData["svrHdrData"] = {
         "syskey": _syskey,
         "n1": "0",
