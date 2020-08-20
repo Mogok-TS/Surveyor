@@ -90,9 +90,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: _statusButton("Status"),
+                              child: _statusButton("Status",item["remain"]),
                             ),
-                            Expanded(child: _remainButton( item["remain"].toString()+" Items remaining")),
+                            Expanded(child: _remainButton( item["remain"].toString()+" Items remaining",item["remain"])),
                           ],
                         ),
                       )
@@ -215,7 +215,8 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     });
   }
 
-  Widget _statusButton(String text) {
+  Widget _statusButton(String text,var item) {
+
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -224,16 +225,24 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
           border: Border.all(width: 1, color: Color(0XFFE0E0E0)),
         ),
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
+          child: item==0? Text(
+            "Complete",
+            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+          ):Text(
+            "Pending",
+            style: TextStyle(color: Color(0xFFe0ac08), fontWeight: FontWeight.bold),
+          )
         ),
       ),
     );
   }
 
-  Widget _remainButton(text) {
+  Widget _remainButton(text,var item) {
+    if(item >1){
+      text = item.toString() + " Items remaining";
+    }else{
+      text = item.toString() + " Item remaining";
+    }
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -255,11 +264,15 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
           ),
         ),
         child: Center(
-          child: Text(
+          child: item == 0?Text(
+            text,
+            style: TextStyle(
+                color: Colors.red[200], fontWeight: FontWeight.bold),
+          ): Text(
             text,
             style: TextStyle(
                 color: CustomIcons.appbarColor, fontWeight: FontWeight.bold),
-          ),
+          )
         ),
       ),
     );
