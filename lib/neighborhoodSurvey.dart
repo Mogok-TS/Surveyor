@@ -94,12 +94,24 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var url, _imageURL;
 
   _clickDoneAssignStore() {
+    var saveCondition ="";
+    if(this.widget.headershopKey == ""){
+      saveCondition = "0";
+    }else{
+      for (var i = 0; i <questions.length; i++) {
+        if(questions[i]["AnswerShopPhoto"].length>0){
+          saveCondition = "1";
+          break;
+        }
+      }
+    }
+    ShowToast(saveCondition);
     showLoading();
     var _question = this.widget.question;
     var pssOject = this.widget.passData[0];
     if (this.widget.regOrAss == "assign") {
       _allData["id"] = pssOject["shopsyskey"];
-      _allData["saveCondition"] = "";
+      _allData["saveCondition"] = saveCondition;
       _allData["active"] = true;
       _allData["active"] = true;
       _allData["name"] = pssOject["shopname"];
