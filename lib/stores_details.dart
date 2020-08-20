@@ -50,6 +50,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   TextEditingController villageorWard = new TextEditingController();
   TextEditingController ward = new TextEditingController();
   TextEditingController street = new TextEditingController();
+  ScrollController _controller = new ScrollController();
 
   var geolocator = Geolocator();
   Future<bool> gpsCheck;
@@ -596,6 +597,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             title: Text("Store Detail"),
           ),
           body: SingleChildScrollView(
+            controller: _controller,
             child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1307,6 +1309,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
+//                      _controller.animateTo(180.0,
+//                          duration: Duration(milliseconds: 500), curve: Curves.ease);
                       showLoading();
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
