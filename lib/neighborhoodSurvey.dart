@@ -94,13 +94,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var url, _imageURL;
 
   _clickDoneAssignStore() {
-    var saveCondition ="";
+    var saveCondition ="1";
     if(this.widget.headershopKey == ""){
       saveCondition = "0";
     }else{
       for (var i = 0; i <questions.length; i++) {
         if(questions[i]["AnswerShopPhoto"].length>0){
-          saveCondition = "1";
+          saveCondition = "";
+          break;
+        }
+        if(questions[i]["AnswerDesc"] !=""){
+          saveCondition = "";
+          break;
+        }
+        if(Icons.question_answer[i]["AnswerSyskey"] != ""){
+          saveCondition = "";
           break;
         }
       }
