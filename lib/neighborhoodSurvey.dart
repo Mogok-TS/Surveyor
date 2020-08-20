@@ -107,7 +107,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           saveCondition = "";
           break;
         }
-        if(Icons.question_answer[i]["AnswerSyskey"] != ""){
+        if(questions[i]["AnswerSyskey"] != ""){
           saveCondition = "";
           break;
         }
