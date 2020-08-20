@@ -99,6 +99,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     var pssOject = this.widget.passData[0];
     if (this.widget.regOrAss == "assign") {
       _allData["id"] = pssOject["shopsyskey"];
+      _allData["saveCondition"] = "";
       _allData["active"] = true;
       _allData["active"] = true;
       _allData["name"] = pssOject["shopname"];
@@ -135,6 +136,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       };
     } else {
       _allData["id"] = pssOject["id"];
+      _allData["saveCondition"] = "";
       _allData["active"] = true;
       _allData["name"] = pssOject["name"];
       _allData["mmName"] = pssOject["mmName"];
