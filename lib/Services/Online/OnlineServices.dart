@@ -598,9 +598,10 @@ class OnlineSerives {
   Future saveComplete(param) async {
     this.mainData();
     this.url = this.url + "shop/updateStatusRespHdr";
+    var body = json.encode(param);
     var data;
     var response = await http
-        .get(this.url, headers: this.headersWithKey)
+        .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
         print("2345-->" + this.url.toString());
         print("sss--> ${response.body}");
