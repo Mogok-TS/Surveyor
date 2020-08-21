@@ -86,12 +86,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var imageName;
   var _consoleLable = "";
   var svr9DataList = [];
-  var _svr9DataListObject = {};
   var fillAnswerArray = [];
-  TextEditingController _controller = new TextEditingController();
   var _primaryData = [];
   var _checkSaveorupdate;
-  var url, _imageURL;
+  var url;
   var saveCondition = "1";
 
   _clickDoneAssignStore() {
@@ -539,6 +537,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget attachPhotograph(data, _imageslist) {
+    
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     var images = [];
@@ -644,7 +643,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               crossAxisCount: 3,
               children: List.generate(_imageslist.length, (index) {
                 return storeImage(
-                    _imageslist[index], index, _imageslist, imageList);
+                    _imageslist[index], index, _imageslist);
               }),
             ),
           ),
@@ -855,7 +854,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget storeImage(var image, int index, var data, var imageLists) {
+  Widget storeImage(var image, int index, var data) {
     var online = this.subUrl + image["image"].toString();
     if (image["image"] != "") {
       return Container(
@@ -905,7 +904,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   onTap: () {
                     setState(() {
                       data.removeAt(index);
-                      imageLists.removeAt(index);
+                      // imageLists.removeAt(index);
 //                    this.svr9DataList = [];
                     });
                   },
@@ -971,8 +970,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   @override
   void initState() {
-    print("headershopkey>>>>>>>>>>>>>>>>>>>>--------------------------" +
-        this.widget.headershopKey);
+   
     super.initState();
 //    if(){} for questionNature
     var _pssOject;
@@ -1111,12 +1109,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     _primaryData.add(_data);
                   }
                   _status = true;
-                  print("2121-->" + this.widget.headershopKey.toString());
                   if (this.widget.headershopKey == "") {
                     saveCondition = "0";
                   } else {
                     for (var i = 0; i < questions.length; i++) {
-                      print(" 11--> ${questions[i]["AnswerDesc"]}");
                       if (questions[i]["AnswerShopPhoto"].length > 0) {
                         saveCondition = "";
                         break;
