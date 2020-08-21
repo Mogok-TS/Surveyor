@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
@@ -92,7 +92,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var url;
   var saveCondition = "1";
 
-  _clickDoneAssignStore() {
+  _clickDoneAssignStore() async {
     var checkPHoto ="sinple";
     for (var i = 0; i < this.questions.length; i++) {
       var loopdata = questions[i];
@@ -320,7 +320,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
             var data = {};
             data["recordStatus"] = 1;
+            if(loopObj["type"] == "online"){
+              final imgBase64Str = await networkImageToBase64(this.subUrl + loopObj["image"].toString());
+              data["t1"] = imgBase64Str.toString();
+            }else{
             data["t1"] = loopObj["base64"].toString();
+            }
             data["t2"] = loopObj["name"].toString();
             data["t3"] = "";
             data["n2"] = "";
@@ -416,12 +421,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     }
   }
 
-  // Future getImageFromCamera(var images) async {
-  //   final image = await ImagePicker.pickImage(source: ImageSource.camera);
-  //   setState(() {
-  //     images.add(image);
-  //   });
-  // }
+ 
 
   void newImageName() {
     var nowdate = DateTime.now();
@@ -439,7 +439,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   Future getImageFromCamera(var syskey, var images) async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
-      if (image.path == '') {
+      if(image != null){
+         if (image.path == '') {
       } else {
         newImageName();
         var datas = {};
@@ -449,6 +450,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         imageFileList(syskey, imageName, image, datas);
         images.add(datas);
       }
+      }
+     
     });
   }
 
@@ -471,12 +474,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     }
   }
 
-  // Future getImageFromGallery(var images) async {
-  //   final image = await ImagePicker.pickImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     images.add(image);
-  //   });
-  // }
+  
 
   Future<void> imageFileList(
       var syskey, var imageName, var imageFileList, var datasobj) async {
@@ -968,6 +966,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   var subUrl;
 
+
+Future<String> networkImageToBase64(String imageUrl) async {
+    http.Response response = await http.get(imageUrl);
+    final bytes = response?.bodyBytes;
+    return (bytes != null ? base64Encode(bytes) : null);
+}
   @override
   void initState() {
    

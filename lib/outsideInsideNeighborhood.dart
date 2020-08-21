@@ -236,7 +236,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   }
 
   clickComplete() {
-    var param = {"RespHdrSyskey": "1"};
+    var param = {"RespHdrSyskey":this.headerShopSyskey.toString()};
     this.onlineSerives.saveComplete(param).then((value) => {
           if (value == true)
             {
