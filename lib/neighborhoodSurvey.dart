@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
-import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +95,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var saveCondition = "1";
 
   _clickDoneAssignStore() {
+    var checkPHoto ="sinple";
+    for (var i = 0; i < this.questions.length; i++) {
+      var loopdata = questions[i];
+      var loopPrimary = _primaryData[i];
+      if(loopdata["TypeDesc"] == "Attach Photograph"){
+        checkPHoto = "have";
+        if(loopPrimary["images"].length>0){
+          checkPHoto = "answered";
+          break;
+        }
+      }
+    }
+    if(checkPHoto == "have"){
+      ShowToast("Please answer  the photo questions at least one");
+    }else{
+
+    
     ShowToast(saveCondition);
     showLoading();
     var _question = this.widget.question;
@@ -399,6 +415,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           else
             {}
         });
+    }
   }
 
   // Future getImageFromCamera(var images) async {
