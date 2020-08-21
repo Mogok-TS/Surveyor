@@ -21,7 +21,7 @@ class StoreScreen extends StatefulWidget {
   _StoreScreenState createState() => _StoreScreenState();
 }
 
-class _StoreScreenState extends State<StoreScreen>  {
+class _StoreScreenState extends State<StoreScreen> {
   final LocalStorage storage = new LocalStorage('Surveyor');
   var storeData;
   var assignStores = [];
@@ -61,12 +61,11 @@ class _StoreScreenState extends State<StoreScreen>  {
     );
   }
 
-  Widget buildAssignItem(
-      String storeName, String phone, String address, data) {
+  Widget buildAssignItem(String storeName, String phone, String address, data) {
 //    this.performType = data["status"];
 //    this.performTypearray = this.performType["performType"];
     var shopData = [data];
-   print("${shopData}");
+    print("${shopData}");
     return Container(
       color: Colors.grey[200],
       child: Card(
@@ -113,7 +112,7 @@ class _StoreScreenState extends State<StoreScreen>  {
                                     child: Column(
                                       children: <Widget>[
 //                                        buildStatusText(this.performTypearray)
-                                      Text("In Progress")
+                                        Text("In Progress")
                                       ],
                                     ),
                                   ),
@@ -126,20 +125,24 @@ class _StoreScreenState extends State<StoreScreen>  {
                                   color: Colors.white,
                                   shape: buttonShape(),
                                   onPressed: () {
-                                   getGPSstatus().then((status) => {
-                                    print("$status"),
-                                    if (status == true)
-                                      {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                StoresDetailsScreen(shopData, false,"assign"),
-                                          ),
-                                        ),
-                                      }
-                                    else
-                                      {ShowToast("Please open GPS")}
-                                  });
+                                    getGPSstatus().then((status) => {
+                                          print("$status"),
+                                          if (status == true)
+                                            {
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      StoresDetailsScreen(
+                                                          shopData,
+                                                          false,
+                                                          "assign"),
+                                                ),
+                                              ),
+                                            }
+                                          else
+                                            {ShowToast("Please open GPS")}
+                                        });
                                   },
                                   child: Center(
                                     child: Text(
@@ -227,7 +230,8 @@ class _StoreScreenState extends State<StoreScreen>  {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            StoresDetailsScreen([data], false,"register"),
+                                            StoresDetailsScreen(
+                                                [data], false, "register"),
                                       ),
                                     );
                                   },
@@ -271,41 +275,43 @@ class _StoreScreenState extends State<StoreScreen>  {
     print("${shopParam}");
     Future.delayed(const Duration(milliseconds: 500), () {
       showLoading();
-          this
-              .onlineSerives
-              .getStores(shopParam)
-              .then((result) => {
-            if (result == true)
-              {
-                this.onlineSerives.getsvrShoplist(newParam).then((res) => {
-                  if (res == true)
-                    {
+      this
+          .onlineSerives
+          .getStores(shopParam)
+          .then((result) => {
+                if (result == true)
+                  {
+                    this.onlineSerives.getsvrShoplist(newParam).then((res) => {
+                          if (res == true)
+                            {
 //                      this.storeData = this.storage.getItem("storeData"),
-                      this.storeRegistration =
-                          this.storage.getItem("storeReg"),
-                      print("${storeRegistration}"),
-                      this.assignStores = this.storage.getItem("storeData"),
-                      print("${this.assignStores}"),
-                      setState(() {
-                        this.count = this.assignStores.length.toString();
-                      }),
-                      hideLoadingDialog(),
-                    }
-                  else
-                    {
-                      this.assignStores = [],
-                      hideLoadingDialog(),
-                    }
-                }),
-              }
-            else
-              {
-                this.storeRegistration = [],
-                this.assignStores = [],
-                hideLoadingDialog()
-              }
-          })
-              .catchError((onError) => {hideLoadingDialog()});
+                              this.storeRegistration =
+                                  this.storage.getItem("storeReg"),
+                              print("${storeRegistration}"),
+                              this.assignStores =
+                                  this.storage.getItem("storeData"),
+                              print("${this.assignStores}"),
+                              setState(() {
+                                this.count =
+                                    this.assignStores.length.toString();
+                              }),
+                              hideLoadingDialog(),
+                            }
+                          else
+                            {
+                              this.assignStores = [],
+                              hideLoadingDialog(),
+                            }
+                        }),
+                  }
+                else
+                  {
+                    this.storeRegistration = [],
+                    this.assignStores = [],
+                    hideLoadingDialog()
+                  }
+              })
+          .catchError((onError) => {hideLoadingDialog()});
     });
   }
 
@@ -324,42 +330,46 @@ class _StoreScreenState extends State<StoreScreen>  {
                   icon: Icon(Icons.map),
                   onPressed: () {
                     getGPSstatus().then((status) => {
-                      print("$status"),
-                      if (status == true)
-                        {
-                        showLoading(),
-                    _getLocation().then((value) {
-                      setState(() {
-                        if (value == null) {
-                          print(value);
-                        } else {
-                          _getAddress(value).then((val) async {
-                            if (value.latitude != null &&
-                                value.longitude != null) {
-                              print(value);
-                              hideLoadingDialog();
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => GmapS(
-                                      lati: value.latitude,
-                                      long: value.longitude),
-                                ),
-                              );
-                            } else {
-                              print(val);
+                          print("$status"),
+                          if (status == true)
+                            {
+                              showLoading(),
+                              _getLocation().then((value) {
+                                setState(() {
+                                  if (value == null) {
+                                    print(value);
+                                  } else {
+                                    _getAddress(value).then((val) async {
+                                      if (value.latitude != null &&
+                                          value.longitude != null) {
+                                        print(value);
+                                        hideLoadingDialog();
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) => GmapS(
+                                              lati: value.latitude,
+                                              long: value.longitude,
+                                              regass: 'Map',
+                                              passLength: [],
+                                              updateStatus: false,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        print(val);
+                                      }
+                                    }).catchError((error) {
+                                      print(error);
+                                    });
+                                  }
+                                });
+                              }).catchError((error) {
+                                print(error);
+                              }),
                             }
-                          }).catchError((error) {
-                            print(error);
-                          });
-                        }
-                      });
-                    }).catchError((error) {
-                      print(error);
-                    }),
-                        }
-                      else
-                        {ShowToast("Please open GPS")}
-                    });
+                          else
+                            {ShowToast("Please open GPS")}
+                        });
                   },
                 )
               ],
@@ -429,7 +439,8 @@ class _StoreScreenState extends State<StoreScreen>  {
                         Container(
                             child: showAssignStore == true
                                 ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       this.assignStores.length == 0
@@ -456,7 +467,10 @@ class _StoreScreenState extends State<StoreScreen>  {
                                           : Column(
                                               children: <Widget>[
                                                 for (var i = 0;
-                                                    i < this.assignStores.length;
+                                                    i <
+                                                        this
+                                                            .assignStores
+                                                            .length;
                                                     i++)
                                                   buildAssignItem(
                                                       this
@@ -537,7 +551,8 @@ class _StoreScreenState extends State<StoreScreen>  {
                         Container(
                             child: showRegisterStore == true
                                 ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       this.storeRegistration.length == 0
@@ -615,7 +630,8 @@ class _StoreScreenState extends State<StoreScreen>  {
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                StoresDetailsScreen([], false,"register"),
+                                                StoresDetailsScreen(
+                                                    [], false, "newStore"),
                                           ),
                                         ),
                                       }

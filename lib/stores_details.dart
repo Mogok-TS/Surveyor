@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'package:Surveyor/Map/map.dart';
 import 'package:Surveyor/assets/circle_icons.dart';
 import 'package:Surveyor/assets/location_icons.dart';
 import 'package:Surveyor/stores.dart';
@@ -18,6 +19,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'Services/GeneralUse/PhoneNumber.dart';
 import 'assets/custom_icons_icons.dart';
 import 'checkNeighborhood.dart';
+import 'Map/map.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
   final String regOrAss;
@@ -81,6 +83,55 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       Future.delayed(const Duration(milliseconds: 500), () {
         showLoading();
       });
+
+      if (this.updateDataarray.length == 0) {
+        this.updateStatus = false;
+      } else {
+        this.updateStatus = true;
+        if (this.widget.regOrAss == "assign") {
+          this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
+          this.shopName.text = this.updateDataarray[0]["shopname"].toString();
+          this.shopNamemm.text =
+              this.updateDataarray[0]["shopnamemm"].toString();
+          this.shopPhoneNo.text = this.updateDataarray[0]["phoneno"].toString();
+          this.ownerName.text =
+              this.updateDataarray[0]["personname"].toString();
+          this.ownerPhoneNo.text =
+              this.updateDataarray[0]["personph"].toString();
+          this.street.text = this.updateDataarray[0]["street"].toString();
+          this.allAddress = this.updateDataarray[0]["address"].toString();
+          this._stateId = this.updateDataarray[0]["stateid"].toString();
+          this._districtId = this.updateDataarray[0]["districtid"].toString();
+          this._townShipId = this.updateDataarray[0]["townshipid"].toString();
+          this.townVillageTractId =
+              this.updateDataarray[0]["townid"].toString();
+          this.wardVillageId = this.updateDataarray[0]["wardid"].toString();
+          this.latitude = double.parse(this.updateDataarray[0]["lat"]);
+          this.longitude = double.parse(this.updateDataarray[0]["long"]);
+        } else if (this.widget.regOrAss == "register") {
+          this.updateStatus = true;
+          this.shopSyskey = this.updateDataarray[0]["id"].toString();
+          this.shopName.text = this.updateDataarray[0]["name"].toString();
+          this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
+          this.shopPhoneNo.text =
+              this.updateDataarray[0]["phoneNumber"].toString();
+          this.ownerName.text =
+              this.updateDataarray[0]["personName"].toString();
+          this.ownerPhoneNo.text =
+              this.updateDataarray[0]["personPhoneNumber"].toString();
+          this.street.text = this.updateDataarray[0]["street"].toString();
+          this.allAddress = this.updateDataarray[0]["address"].toString();
+          this._stateId = this.updateDataarray[0]["stateId"].toString();
+          this._districtId = this.updateDataarray[0]["districtId"].toString();
+          this._townShipId = this.updateDataarray[0]["townshipId"].toString();
+          this.townVillageTractId =
+              this.updateDataarray[0]['townId'].toString();
+          this.wardVillageId = this.updateDataarray[0]["wardId"].toString();
+          this.latitude = this.updateDataarray[0]["locationData"]["latitude"];
+          this.longitude = this.updateDataarray[0]["locationData"]["longitude"];
+        }
+        print("shopSyskey--> $shopSyskey");
+      }
       getCurrentLocation().then((k) {
         print({"$k"});
         if (this.widget.regOrAss == "Map") {
@@ -88,7 +139,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           print("--->" + _latLong.toString());
           latitude = _latLong["lat"];
           longitude = _latLong["long"];
-        } else {
+        } else if (this.widget.regOrAss == "newStore") {
           latitude = k.latitude;
           longitude = k.longitude;
         }
@@ -110,53 +161,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               },
             );
       });
-      if (this.updateDataarray.length == 0) {
-        this.updateStatus = false;
-      } else {
-        this.updateStatus = true;
-        if (this.widget.regOrAss == "assign") {
-          this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
-          this.shopName.text = this.updateDataarray[0]["shopname"].toString();
-          this.shopNamemm.text =
-              this.updateDataarray[0]["shopnamemm"].toString();
-          this.shopPhoneNo.text = this.updateDataarray[0]["phoneno"].toString();
-          this.ownerName.text =
-              this.updateDataarray[0]["personname"].toString();
-          this.ownerPhoneNo.text =
-              this.updateDataarray[0]["personph"].toString();
-          this.street.text = this.updateDataarray[0]["street"].toString();
-          this.allAddress = this.updateDataarray[0]["address"].toString();
-          this._stateId = this.updateDataarray[0]['stateid'].toString();
-          this._districtId = this.updateDataarray[0]['districtid'].toString();
-          this._townShipId = this.updateDataarray[0]['townshipid'].toString();
-          this.townVillageTractId =
-              this.updateDataarray[0]['townid'].toString();
-          this.wardVillageId = this.updateDataarray[0]['wardid'].toString();
-          _getUpdateData();
-        } else if (this.widget.regOrAss == "register") {
-          this.updateStatus = true;
-          this.shopSyskey = this.updateDataarray[0]["id"].toString();
-          this.shopName.text = this.updateDataarray[0]["name"].toString();
-          this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
-          this.shopPhoneNo.text =
-              this.updateDataarray[0]["phoneNumber"].toString();
-          this.ownerName.text =
-              this.updateDataarray[0]["personName"].toString();
-          this.ownerPhoneNo.text =
-              this.updateDataarray[0]["personPhoneNumber"].toString();
-          this.street.text = this.updateDataarray[0]["street"].toString();
-          this.allAddress = this.updateDataarray[0]["address"].toString();
-          this._stateId = this.updateDataarray[0]['stateId'].toString();
-          this._districtId = this.updateDataarray[0]['districtId'].toString();
-          this._townShipId = this.updateDataarray[0]['townshipId'].toString();
-          this.townVillageTractId =
-              this.updateDataarray[0]['townId'].toString();
-          this.wardVillageId = this.updateDataarray[0]['wardId'].toString();
-          _getUpdateData();
-        }
-        print("shopSyskey--> $shopSyskey");
-      }
     });
+    _getUpdateData();
   }
 
   _getUpdateData() {
@@ -178,7 +184,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     {
                       this._state = stateObject[i]['description'],
                       _stateCode = stateObject[i]['code'],
-                    }
+                    },
                 }
               else if (this.widget.regOrAss == "newStore")
                 {
@@ -693,23 +699,38 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 10.0),
-                    child: Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Location.my_location,
-                            color: CustomIcons.iconColor,
-                            size: 25,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => GmapS(
+                              lati: this.latitude,
+                              long: this.longitude,
+                              regass: this.widget.regOrAss,
+                              passLength: this.widget.passData,
+                              updateStatus: this.widget.updateStatuspass,
+                            ),
                           ),
-                          onPressed: null,
-                        ),
-                        // Text(this.latitude),
-                        Text(
-                          "${latitude}" + " / " + "${longitude}",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                        );
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(
+                              Location.my_location,
+                              color: CustomIcons.iconColor,
+                              size: 25,
+                            ),
+                            onPressed: null,
+                          ),
+                          // Text(this.latitude),
+                          Text(
+                            "${latitude}" + " / " + "${longitude}",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(

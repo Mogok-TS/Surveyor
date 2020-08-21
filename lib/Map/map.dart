@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-
 import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
@@ -16,7 +15,16 @@ import '../stores_details.dart';
 class GmapS extends StatefulWidget {
   double lati;
   double long;
-  GmapS({Key key, @required this.lati, @required this.long}) : super(key: key);
+  String regass;
+  var passLength, updateStatus;
+  GmapS({
+    Key key,
+    @required this.lati,
+    @required this.long,
+    @required this.regass,
+    @required this.passLength,
+    @required this.updateStatus,
+  }) : super(key: key);
   @override
   State<GmapS> createState() => MapSampleState();
 }
@@ -33,10 +41,10 @@ class MapSampleState extends State<GmapS> {
   var _latLong;
 
   List data;
-   localJsonData() async {
+  localJsonData() async {
     var jsonText = await rootBundle.loadString("assets/township.json");
-      setState(() {
-       data = json.decode(jsonText);
+    setState(() {
+      data = json.decode(jsonText);
     });
   }
 
@@ -50,10 +58,7 @@ class MapSampleState extends State<GmapS> {
             if (value.latitude != null && value.longitude != null) {
               final GoogleMapController controller = await _controller.future;
               this._latLong = {};
-              this._latLong = {
-                "lat":value.latitude,
-                "long":value.longitude
-              };
+              this._latLong = {"lat": value.latitude, "long": value.longitude};
               controller.animateCamera(CameraUpdate.newCameraPosition(
                   CameraPosition(
                       bearing: 0.0,
@@ -84,8 +89,8 @@ class MapSampleState extends State<GmapS> {
                 for (var b = 0; b < list1.length; b++) {
                   List list2 = list1[b]["geometry"]["coordinates"];
                   for (var c = 0; c < list2.length; c++) {
-                  for (var d = 0; d < list2[c].length; d++) {
-                  for (var e = 0; e < list2[c][d].length; e++) {
+                    for (var d = 0; d < list2[c].length; d++) {
+                      for (var e = 0; e < list2[c][d].length; e++) {
                         double lati =
                             double.parse(list2[c][d][e][1].toString());
                         double long =
@@ -226,10 +231,7 @@ class MapSampleState extends State<GmapS> {
     this.localJsonData();
     locationFromServer();
     toUserLocation();
-    this._latLong = {
-      "lat":widget.lati,
-      "long":widget.long
-    };
+    this._latLong = {"lat": widget.lati, "long": widget.long};
     _kGooglePlex = CameraPosition(
       target: LatLng(
         widget.lati,
@@ -257,11 +259,22 @@ class MapSampleState extends State<GmapS> {
             IconButton(
               icon: Icon(Icons.clear),
               onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => StoreScreen(),
-                  ),
-                );
+                if (this.widget.regass == "Map") {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => StoreScreen(),
+                    ),
+                  );
+                } else {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => StoresDetailsScreen(
+                          this.widget.passLength,
+                          this.widget.updateStatus,
+                          this.widget.regass),
+                    ),
+                  );
+                }
               },
             )
           ],
@@ -280,8 +293,8 @@ class MapSampleState extends State<GmapS> {
               onTap: (latLong) {
                 print("-->" + latLong.toString());
                 this._latLong = {
-                  "lat":latLong.latitude,
-                  "long":latLong.longitude
+                  "lat": latLong.latitude,
+                  "long": latLong.longitude
                 };
                 createNewMarker(latLong.latitude, latLong.longitude);
               },
@@ -327,20 +340,22 @@ class MapSampleState extends State<GmapS> {
           child: GestureDetector(
             onTap: () {
               getGPSstatus().then((status) => {
-                print("$status"),
-                if (status == true)
-                  {
-                    this.storage.setItem("Maplatlong", this._latLong),
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            StoresDetailsScreen([], false,"Map"),
-                      ),
-                    ),
-                  }
-                else
-                  {ShowToast("Please open GPS")}
-              });
+                    print("$status"),
+                    if (status == true)
+                      {
+                        this.storage.setItem("Maplatlong", this._latLong),
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => StoresDetailsScreen(
+                                this.widget.passLength,
+                                this.widget.updateStatus,
+                                this.widget.regass),
+                          ),
+                        ),
+                      }
+                    else
+                      {ShowToast("Please open GPS")}
+                  });
             },
             child: Image(
               image: AssetImage('assets/location.png'),
@@ -351,5 +366,4 @@ class MapSampleState extends State<GmapS> {
       ),
     );
   }
-  
 }
