@@ -38,11 +38,11 @@ class OnlineSerives {
   void URL() {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
-      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-//      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+//      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
       this
           .storage
-          .setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
+          .setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
 
@@ -252,12 +252,16 @@ class OnlineSerives {
             if(dataList[ii]["TypeSK"].toString() == "1" || dataList[ii]["TypeSK"].toString() == "3"){
               _bojArray["AnswerSyskey"] = "";
               if(dataList[ii]["AnswerShopPhoto"] == null || dataList[ii]["AnswerShopPhoto"].length == 0){
-                _bojArray["HeaderShopSyskey"] = "";
+                if(dataList[ii]["HeaderShopSyskey"] != null){
+                  _bojArray["HeaderShopSyskey"] = dataList[ii]["HeaderShopSyskey"];
+                }else{
+                  _bojArray["HeaderShopSyskey"] = "";
+                }
                 _bojArray["AnswerShopPhoto"] = [];
                 _bojArray["AnswerDesc"] = "";
               }else{
                 checkSaveorupdate = "update";
-                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["HeaderShopSyskey"] = dataList[ii]["HeaderShopSyskey"];
                 _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
               }

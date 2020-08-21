@@ -76,7 +76,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.6'),
+                        child: Text('Version 1.0.7'),
                       ),
                     ],
                     child: Icon(

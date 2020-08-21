@@ -17,7 +17,39 @@ void showLoading(){
                 strokeWidth: 3,
                 backgroundColor: Color(0xFFCCCCCC),
                 valueColor: new AlwaysStoppedAnimation<Color>(
-                    Colors.red)),
+                    Colors.red))
+            ,
+            color: Colors.white,
+          ),
+        ),
+      ),
+
+    ),
+    tapDismiss: false,
+  );
+}
+
+void showLoading_text(text){
+  showCustomLoadingWidget(
+    Center(
+      child:Container(
+        height: 85,
+        width: 500,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(6.0),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: <Widget>[
+                Text(text.toString()),
+                CircularProgressIndicator(
+                    strokeWidth: 3,
+                    backgroundColor: Color(0xFFCCCCCC),
+                    valueColor: new AlwaysStoppedAnimation<Color>(
+                        Colors.red)),
+              ],
+            )
+            ,
             color: Colors.white,
           ),
         ),

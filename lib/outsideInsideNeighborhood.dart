@@ -42,11 +42,12 @@ class OutsideInsideNeighborhood extends StatefulWidget {
 }
 
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
-  var headerItems =[];
-  var allItem =0;
-  var answerItem =0;
+  var headerItems = [];
+  var allItem = 0;
+  var answerItem = 0;
   var continueStatus = false;
-  Widget sectionList(var passSection,var item) {
+
+  Widget sectionList(var passSection, var item) {
     return Container(
       child: Card(
         child: Container(
@@ -71,8 +72,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             passSection,
                             this.widget.header,
                             this.widget.header["sections"],
-                            this.headerShopSyskey
-                            ),
+                            this.headerShopSyskey),
                       ),
                     );
                   },
@@ -90,9 +90,13 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: _statusButton("Status",item["remain"]),
+                              child: _statusButton("Status", item["remain"]),
                             ),
-                            Expanded(child: _remainButton( item["remain"].toString()+" Items remaining",item["remain"])),
+                            Expanded(
+                                child: _remainButton(
+                                    item["remain"].toString() +
+                                        " Items remaining",
+                                    item["remain"])),
                           ],
                         ),
                       )
@@ -128,9 +132,10 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
       ],
     );
   }
- var headerShopSyskey = "";
+
+  var headerShopSyskey = "";
+
   @override
-  
   void initState() {
     var _pssOject;
     if (this.widget.regOrAss == "assign") {
@@ -139,84 +144,108 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
       _pssOject = this.widget.passData[0]["id"];
     }
     super.initState();
-     var param = {
+    var param = {
       "HeaderShopSyskey": "",
       "ShopTransSyskey": "",
       "SectionSyskey": "",
       "HeaderSyskey": this.widget.header["headerSyskey"].toString(),
       "ShopSyskey": _pssOject.toString(),
     };
-  var data;
-  var sinpleData = {};
-  var totalCount;
-  var answeredCount;
-  var sections = this.widget.header["sections"];
+    var data;
+    var sinpleData = {};
+    var totalCount;
+    var answeredCount;
+    var sections = this.widget.header["sections"];
     this.onlineSerives.getQuestions(param).then((value) => {
+          data = value["data"],
+          for (var i = 0; i < sections.length; i++)
+            {
+              sinpleData = {},
+              totalCount = 0,
+              answeredCount = 0,
+              sinpleData["desc"] = sections[i]["sectionDescription"],
+              for (var ii = 0; ii < data.length; ii++)
+                {
+                  if (data[ii]["SectionDesc"] ==
+                      sections[i]["sectionDescription"])
+                    {
+                      this.allItem++,
+                      totalCount++,
+                      if (data[ii]["TypeDesc"] == "Fill in the Blank")
+                        {
+                          if (data[ii]["AnswerDesc"] != "")
+                            {
+                              answeredCount++,
+                              answerItem++,
+                            },
+                          print("fill-->" + answeredCount.toString()),
+                        }
 
-        data = value["data"],
-      for (var i = 0; i < sections.length; i++) {
-          sinpleData = {},
-          totalCount =0,
-          answeredCount = 0,
-          sinpleData["desc"] = sections[i]["sectionDescription"],
-          for(var ii=0;ii<data.length;ii++){
-            if(data[ii]["SectionDesc"] == sections[i]["sectionDescription"]){
-              this.allItem++,
-            totalCount++,
-              if(data[ii]["TypeDesc"] == "Fill in the Blank"){
-                if(data[ii]["AnswerDesc"] != ""){
-                    answeredCount++,
-                    answerItem++,
-                }
-              }else if(data[ii]["TypeDesc"] == "Attach Photograph"){
-                if(data[ii]["AnswerShopPhoto"].length>0){
-                    answeredCount++,
-                    answerItem++,
-                }
-              }else if(data[ii]["TypeDesc"] == "Checkbox"){
-                if(data[ii]["AnswerShopPhoto"].length>0){
-                    answeredCount++,
-                    answerItem++,
-                }
-              }else if(data[ii]["TypeDesc"] == "Multiple Choice"){
-                if(data[ii]["AnswerDesc"] != ""){
-                  answeredCount++,
-                  answerItem++,
-                }
-              },
+                      else if (data[ii]["TypeDesc"] == "Attach Photograph")
+                        {
+                          if (data[ii]["AnswerShopPhoto"].length > 0)
+                            {
+                              answeredCount++,
+                              answerItem++,
+                            },
+                          print("photo-->" + answeredCount.toString()),
+                        }
+                      else if (data[ii]["TypeDesc"] == "Checkbox")
+                        {
+                          if (data[ii]["AnswerShopPhoto"].length > 0)
+                            {
+                              answeredCount++,
+                              answerItem++,
+                            },
+                          print("check-->" + answeredCount.toString()),
+                        }
+                      else if (data[ii]["TypeDesc"] == "Multiple Choice")
+                        {
+                          if (data[ii]["AnswerSyskey"] != "")
+                            {
+                              answeredCount++,
+                              answerItem++,
+                            },
+                          print("000-->" + answeredCount.toString()),
+                        },
+                    },
+                  print("12--->" + data[ii]["HeaderShopSyskey"].toString()),
+                  if (data[ii]["HeaderShopSyskey"].toString() != "")
+                    {
+                      headerShopSyskey = "",
+                      headerShopSyskey =
+                          data[ii]["HeaderShopSyskey"].toString(),
+                    }
+                },
+              sinpleData["answered"] = answeredCount,
+              sinpleData["total"] = totalCount,
+              sinpleData["remain"] = totalCount - answeredCount,
+
+              setState(() => {
+                    headerItems.add(sinpleData),
+                  }),
+              print("--> ${headerItems.toString()}")
             },
-            if(data[ii]["HeaderShopSyskey"].toString() != ""){
-              headerShopSyskey = "",
-              headerShopSyskey = data[ii]["HeaderShopSyskey"].toString(),
-            }
-          },
-          sinpleData["answered"] = answeredCount,
-          sinpleData["total"] = totalCount,
-          sinpleData["remain"] = totalCount -answeredCount,
-          setState(()=>{
-          headerItems.add(sinpleData),
-          }),
-          
-      },
-      setState(()=>{
-        if(allItem == answerItem){
-          continueStatus = true,
-        }
-      }),
-    });
-    
+          setState(() => {
+                if (allItem == answerItem)
+                  {
+                    continueStatus = true,
+                  }
+              }),
+        });
   }
-  clickComplete(){
-    var param = {"RespHdrSyskey":"1"};
+
+  clickComplete() {
+    var param = {"RespHdrSyskey": "1"};
     this.onlineSerives.saveComplete(param).then((value) => {
-      if(value == true){
-      ShowToast("Completed successfully"),
-      }
-    });
+          if (value == true)
+            {
+              ShowToast("Completed successfully"),
+            }
+        });
   }
 
-  Widget _statusButton(String text,var item) {
-
+  Widget _statusButton(String text, var item) {
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -225,22 +254,25 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
           border: Border.all(width: 1, color: Color(0XFFE0E0E0)),
         ),
         child: Center(
-          child: item==0? Text(
-            "Complete",
-            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-          ):Text(
-            "Pending",
-            style: TextStyle(color: Color(0xFFe0ac08), fontWeight: FontWeight.bold),
-          )
-        ),
+            child: item == 0
+                ? Text(
+                    "Complete",
+                    style: TextStyle(
+                        color: Colors.green, fontWeight: FontWeight.bold),
+                  )
+                : Text(
+                    "Pending",
+                    style: TextStyle(
+                        color: Color(0xFFe0ac08), fontWeight: FontWeight.bold),
+                  )),
       ),
     );
   }
 
-  Widget _remainButton(text,var item) {
-    if(item >1){
+  Widget _remainButton(text, var item) {
+    if (item > 1) {
       text = item.toString() + " Items remaining";
-    }else{
+    } else {
       text = item.toString() + " Item remaining";
     }
     return GestureDetector(
@@ -264,16 +296,18 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
           ),
         ),
         child: Center(
-          child: item == 0?Text(
-            text,
-            style: TextStyle(
-                color: Colors.red[200], fontWeight: FontWeight.bold),
-          ): Text(
-            text,
-            style: TextStyle(
-                color: CustomIcons.appbarColor, fontWeight: FontWeight.bold),
-          )
-        ),
+            child: item == 0
+                ? Text(
+                    text,
+                    style: TextStyle(
+                        color: Colors.red[200], fontWeight: FontWeight.bold),
+                  )
+                : Text(
+                    text,
+                    style: TextStyle(
+                        color: CustomIcons.appbarColor,
+                        fontWeight: FontWeight.bold),
+                  )),
       ),
     );
   }
@@ -337,9 +371,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
-                if(this.headerItems.length == this.widget.question.length)
-                for (var x = 0; x < this.widget.question.length; x++)
-                  sectionList(this.widget.question[x],this.headerItems[x])
+                if (this.headerItems.length == this.widget.question.length)
+                  for (var x = 0; x < this.widget.question.length; x++)
+                    sectionList(this.widget.question[x], this.headerItems[x])
               ],
             ),
           ),
@@ -379,12 +413,11 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                   ),
                 ),
               ),
-             
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    if(continueStatus == true){
-                     this.clickComplete();
+                    if (continueStatus == true) {
+                      this.clickComplete();
                     }
                   },
                   child: Container(
@@ -392,20 +425,22 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     width: 300,
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: Center(
-                      child: continueStatus == true? Text(
-                        "Complete",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 15),
-                      ):Text(
-                                  "Complete",
-                                  style: TextStyle(
-                                      color: Colors.white38,
-                                      fontWeight: FontWeight.bold,
-                                       fontSize: 15),
-                                ),
+                      child: continueStatus == true
+                          ? Text(
+                              "Complete",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 15),
+                            )
+                          : Text(
+                              "Complete",
+                              style: TextStyle(
+                                  color: Colors.white38,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15),
+                            ),
                     ),
                   ),
                 ),

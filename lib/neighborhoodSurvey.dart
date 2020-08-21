@@ -32,23 +32,24 @@ class NeighborhoodSurveyScreen extends StatefulWidget {
   final header;
   final allsection;
   final String headershopKey;
+
   NeighborhoodSurveyScreen(
-      this.isNeighborhood,
-      this.isOutside,
-      this.isInside,
-      this.isStoreOperater,
-      this.storeName,
-      this.storeNumber,
-      this.address,
-      this.surveyStage,
-      this.surveyType,
-      this.regOrAss,
-      this.passData,
-      this.question,
-      this.header,
-      this.allsection,
-      this.headershopKey,
-      );
+    this.isNeighborhood,
+    this.isOutside,
+    this.isInside,
+    this.isStoreOperater,
+    this.storeName,
+    this.storeNumber,
+    this.address,
+    this.surveyStage,
+    this.surveyType,
+    this.regOrAss,
+    this.passData,
+    this.question,
+    this.header,
+    this.allsection,
+    this.headershopKey,
+  );
 
   @override
   _NeighborhoodSurveyScreenState createState() =>
@@ -92,27 +93,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var _primaryData = [];
   var _checkSaveorupdate;
   var url, _imageURL;
+  var saveCondition = "1";
 
   _clickDoneAssignStore() {
-    var saveCondition ="1";
-    if(this.widget.headershopKey == ""){
-      saveCondition = "0";
-    }else{
-      for (var i = 0; i <questions.length; i++) {
-        if(questions[i]["AnswerShopPhoto"].length>0){
-          saveCondition = "";
-          break;
-        }
-        if(questions[i]["AnswerDesc"] !=""){
-          saveCondition = "";
-          break;
-        }
-        if(questions[i]["AnswerSyskey"] != ""){
-          saveCondition = "";
-          break;
-        }
-      }
-    }
     ShowToast(saveCondition);
     showLoading();
     var _question = this.widget.question;
@@ -156,7 +139,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       };
     } else {
       _allData["id"] = pssOject["id"];
-      _allData["saveCondition"] = "";
+      _allData["saveCondition"] = saveCondition;
       _allData["active"] = true;
       _allData["name"] = pssOject["name"];
       _allData["mmName"] = pssOject["mmName"];
@@ -267,24 +250,24 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             }
           }
           if (datalist.length == 0) {
-            var data = {};
-            data["recordStatus"] = 1;
-            data["t1"] = "";
-            data["t2"] = "";
-            data["t3"] = "";
-            data["n2"] = "";
-            datalist.add(data);
+//            var data = {};
+//            data["recordStatus"] = 1;
+//            data["t1"] = "";
+//            data["t2"] = "";
+//            data["t3"] = "";
+//            data["n2"] = "";
+//            datalist.add(data);
           }
           _value["svr9DataList"] = datalist;
         } else {
           var datalist = [];
-          var data = {};
-          data["recordStatus"] = 1;
-          data["t1"] = "";
-          data["t2"] = "";
-          data["t3"] = "";
-          data["n2"] = "";
-          datalist.add(data);
+//          var data = {};
+//          data["recordStatus"] = 1;
+//          data["t1"] = "";
+//          data["t2"] = "";
+//          data["t3"] = "";
+//          data["n2"] = "";
+//          datalist.add(data);
           _value["svr9DataList"] = datalist;
         }
         questionAndAnswer.add(_value);
@@ -333,13 +316,17 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           questionAndAnswer.add(_value);
         } else {
           var datalist = [];
-          var data = {};
-          data["recordStatus"] = 1;
-          data["t1"] = "";
-          data["t2"] = "";
-          data["t3"] = "";
-          data["n2"] = "";
-          datalist.add(data);
+//          if (this.saveCondition == 1) {
+//            var data = {};
+//            data["recordStatus"] = 1;
+//            data["t1"] = "";
+//            data["t2"] = "";
+//            data["t3"] = "";
+//            data["n2"] = "";
+//            datalist.add(data);
+//          } else {
+//            datalist = [];
+//          }
           _value["svr9DataList"] = datalist;
           questionAndAnswer.add(_value);
         }
@@ -639,7 +626,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               scrollDirection: Axis.vertical,
               crossAxisCount: 3,
               children: List.generate(_imageslist.length, (index) {
-                
                 return storeImage(
                     _imageslist[index], index, _imageslist, imageList);
               }),
@@ -853,85 +839,83 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget storeImage(var image, int index, var data, var imageLists) {
-
-    var  online = this.subUrl + image["image"].toString();
-    if(image["image"]  != ""){
+    var online = this.subUrl + image["image"].toString();
+    if (image["image"] != "") {
       return Container(
-      margin: EdgeInsets.all(5),
-      child: Center(
-        child: Stack(
-          children: <Widget>[
-            GestureDetector(onTap: () {
-              if (image["type"] == "online") {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ShowImage(
-                              image: Image.network(online.toString()),
-                            )));
-              } else {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ShowImage(
-                              image: Image(
-                                image: FileImage(image["image"]),
-                              ),
-                            )));
-              }
-            }, child: Builder(builder: (context) {
-              if (image["type"] == "online") {
-                return Image.network(
-                  online.toString(),
-                  height: 200,
-                  width: 200,
-                  fit: BoxFit.fill,
-                );
-              } else {
-                return Image(
-                  image: FileImage(image["image"]),
-                  height: 200,
-                  width: 200,
-                  fit: BoxFit.fill,
-                );
-              }
-            })),
-            Positioned(
-              right: 2,
-              top: 0,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    data.removeAt(index);
-                    imageLists.removeAt(index);
+        margin: EdgeInsets.all(5),
+        child: Center(
+          child: Stack(
+            children: <Widget>[
+              GestureDetector(onTap: () {
+                if (image["type"] == "online") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ShowImage(
+                                image: Image.network(online.toString()),
+                              )));
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ShowImage(
+                                image: Image(
+                                  image: FileImage(image["image"]),
+                                ),
+                              )));
+                }
+              }, child: Builder(builder: (context) {
+                if (image["type"] == "online") {
+                  return Image.network(
+                    online.toString(),
+                    height: 200,
+                    width: 200,
+                    fit: BoxFit.fill,
+                  );
+                } else {
+                  return Image(
+                    image: FileImage(image["image"]),
+                    height: 200,
+                    width: 200,
+                    fit: BoxFit.fill,
+                  );
+                }
+              })),
+              Positioned(
+                right: 2,
+                top: 0,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      data.removeAt(index);
+                      imageLists.removeAt(index);
 //                    this.svr9DataList = [];
-                  });
-                },
-                child: Container(
-                  width: 25.0,
-                  height: 25.0,
-                  padding: const EdgeInsets.all(0),
-                  decoration: new BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image(
-                    image: AssetImage('assets/close.png'),
-                    color: Colors.red,
-                    height: 20,
-                    width: 20,
+                    });
+                  },
+                  child: Container(
+                    width: 25.0,
+                    height: 25.0,
+                    padding: const EdgeInsets.all(0),
+                    decoration: new BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image(
+                      image: AssetImage('assets/close.png'),
+                      color: Colors.red,
+                      height: 20,
+                      width: 20,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-    }else{
+      );
+    } else {
       return Container();
     }
-    
   }
 
   Widget headerBuilder(String title, String secondTitle) {
@@ -965,10 +949,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       ),
     );
   }
+
   var subUrl;
+
   @override
   void initState() {
-    print("headershopkey>>>>>>>>>>>>>>>>>>>>--------------------------"+this.widget.headershopKey);
+    print("headershopkey>>>>>>>>>>>>>>>>>>>>--------------------------" +
+        this.widget.headershopKey);
     super.initState();
 //    if(){} for questionNature
     var _pssOject;
@@ -979,7 +966,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     }
 
     this.url = this.storage.getItem('URL');
-    this.subUrl =url.substring(0, url.lastIndexOf("8084/")) +"8084";
+    this.subUrl = url.substring(0, url.lastIndexOf("8084/")) + "8084";
 
     if (this.widget.surveyType == "Neighborhood Survey") {
       this.questionNature = "Neighborhood Survey";
@@ -1013,26 +1000,25 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     var _data = {};
                     _data["sysKey"] = questions[ss]["QuestionSyskey"];
                     if (questions[ss]["TypeDesc"] == "Attach Photograph") {
-                        var onlinePhoto = [];
-                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                          for (var y = 0;
-                              y < questions[ss]["AnswerShopPhoto"].length;
-                              y++) {
-                            var datas = {};
-                            var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
-                            datas["image"] = shopPhoto["PhotoPath"];
-                            datas["name"] = shopPhoto["PhotoName"];
-                            datas["type"] = "online";
-                            datas["base64"] = "";
-                            onlinePhoto.add(datas);
-                          }
-                          _data["images"] = onlinePhoto;
-                        }else{
-                          _data["images"] = [];
+                      var onlinePhoto = [];
+                      if (questions[ss]["AnswerShopPhoto"].length > 0) {
+                        for (var y = 0;
+                            y < questions[ss]["AnswerShopPhoto"].length;
+                            y++) {
+                          var datas = {};
+                          var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
+                          datas["image"] = shopPhoto["PhotoPath"];
+                          datas["name"] = shopPhoto["PhotoName"];
+                          datas["type"] = "online";
+                          datas["base64"] = "";
+                          onlinePhoto.add(datas);
                         }
+                        _data["images"] = onlinePhoto;
+                      } else {
+                        _data["images"] = [];
+                      }
                       _data["checkDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Checkbox") {
-
                       var checkData = [];
                       for (var x = 0;
                           x < questions[ss]["answers"].length;
@@ -1046,13 +1032,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                           for (var y = 0;
                               y < questions[ss]["AnswerShopPhoto"].length;
                               y++) {
-                                var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
-                                if(shopPhoto["CheckBoxSyskey"] == answers["answerSK"]){
-                                  checkObj["check"] = true;
-                                }
-                              }
+                            var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
+                            if (shopPhoto["CheckBoxSyskey"] ==
+                                answers["answerSK"]) {
+                              checkObj["check"] = true;
+                            }
+                          }
                           checkData.add(checkObj);
-                        }else{
+                        } else {
                           checkData.add(checkObj);
                         }
                       }
@@ -1084,7 +1071,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               getdefaultAns["answerDesc"].toString();
                         } else {
                           syskeys["answerSyskey"] = answerSyskey.toString();
-                          if (answerSyskey.toString() == answers["answerSK"].toString()) {
+                          if (answerSyskey.toString() ==
+                              answers["answerSK"].toString()) {
                             syskeys["answerSyskey"] =
                                 answers["answerSK"].toString();
                             syskeys["answerDesc"] =
@@ -1106,6 +1094,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     _primaryData.add(_data);
                   }
                   _status = true;
+                  print("2121-->" + this.widget.headershopKey.toString());
+                  if (this.widget.headershopKey == "") {
+                    saveCondition = "0";
+                  } else {
+                    for (var i = 0; i < questions.length; i++) {
+                      print(" 11--> ${questions[i]["AnswerDesc"]}");
+                      if (questions[i]["AnswerShopPhoto"].length > 0) {
+                        saveCondition = "";
+                        break;
+                      }
+                      if (questions[i]["AnswerDesc"] != "") {
+                        saveCondition = "";
+                        break;
+                      }
+                      if (questions[i]["AnswerSyskey"] != "") {
+                        saveCondition = "";
+                        break;
+                      }
+                    }
+                  }
                 } else {
                   _status = false;
                   hideLoadingDialog();
@@ -1113,6 +1121,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               }),
             })
         .catchError((err) => {});
+
   }
 
   Future<void> showMessageAlert(String message) async {
