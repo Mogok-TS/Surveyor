@@ -1202,10 +1202,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         child: Text(data.toString()),
       );
     }
-//     if (data["questionType"] == "Multiple Choice") {
-//       _widget = multipleChoice(data['t1'], data['t2'], data["answerList"],
-//           data["radioData"], data["radio"], questionIndex);
-//     }
+
     return _widget;
   }
 
@@ -1690,9 +1687,9 @@ String _radioValue;
                     ),
                   ),
                 ),
-                dateTimePicker(),
-                fromToWidget(),
-                ratingWidget(),
+                // dateTimePicker(),
+                // fromToWidget(),
+                // ratingWidget(),
                 if (_status)
                   if (questions.length > 0)
                     for (var i = 0; i < questions.length; i++)
