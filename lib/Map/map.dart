@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:typed_data';
 import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
@@ -9,22 +9,26 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:localstorage/localstorage.dart';
+import 'dart:ui' as ui;
 import '../stores.dart';
 import '../stores_details.dart';
 
 class GmapS extends StatefulWidget {
   double lati;
   double long;
-  String regass;
-  var passLength, updateStatus;
-  GmapS({
-    Key key,
-    @required this.lati,
-    @required this.long,
-    @required this.regass,
-    @required this.passLength,
-    @required this.updateStatus,
-  }) : super(key: key);
+  var data;
+  var regass;
+  var passLength;
+  var updateStatus;
+  GmapS(
+      {Key key,
+      @required this.lati,
+      @required this.long,
+      @required this.data,
+      @required this.regass,
+      @required this.passLength,
+      @required this.updateStatus})
+      : super(key: key);
   @override
   State<GmapS> createState() => MapSampleState();
 }
@@ -35,13 +39,14 @@ class MapSampleState extends State<GmapS> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Geolocator geolocator = Geolocator();
   GoogleMapController googleMapController;
-
   final Set<Polygon> _polygon = {};
   static CameraPosition _kGooglePlex;
   var _latLong;
-
   List data;
-  localJsonData() async {
+
+  List polygonArray = [];
+
+  Future<void> localJsonData() async {
     var jsonText = await rootBundle.loadString("assets/township.json");
     setState(() {
       data = json.decode(jsonText);
@@ -54,20 +59,25 @@ class MapSampleState extends State<GmapS> {
         if (value == null) {
           print(value);
         } else {
-          _getAddress(value).then((aa) async {
+          _getAddress(value).then((val) async {
             if (value.latitude != null && value.longitude != null) {
               print("000--->" + this.widget.regass);
-              if(this.widget.regass == "newStore" || this.widget.regass == "Map"){
+              if (this.widget.regass == "newStore" ||
+                  this.widget.regass == "Map") {
                 print(widget.lati.toString() + " __" + widget.long.toString());
-                this._latLong = {"lat": value.latitude, "long": value.longitude};
-              }else{
+                this._latLong = {
+                  "lat": value.latitude,
+                  "long": value.longitude
+                };
+              } else {
                 this._latLong = {"lat": widget.lati, "long": widget.long};
               }
               final GoogleMapController controller = await _controller.future;
               controller.animateCamera(CameraUpdate.newCameraPosition(
                   CameraPosition(
                       bearing: 0.0,
-                      target: LatLng(this._latLong["lat"],this._latLong["long"]),
+                      target:
+                          LatLng(this._latLong["lat"], this._latLong["long"]),
                       tilt: 0.0,
                       zoom: 18.5)));
 
@@ -80,60 +90,48 @@ class MapSampleState extends State<GmapS> {
                   icon: BitmapDescriptor.defaultMarkerWithHue(
                       BitmapDescriptor.hueAzure));
 
-              for (var a = 0; a < data.length; a++) {
-                List<LatLng> latlng = List();
-                setState(() {
-                  latlng = [];
-                });
-                List list1 = data
-                    .where((element) =>
-                        element["properties"]["TS_PCODE"].toString() ==
-                        "MMR010011")
-                    .toList();
+              // for (var a = 0; a < data.length; a++) {
+              //   List<LatLng> latlng = List();
+              //   setState(() {
+              //     latlng = [];
+              //   });
+              //   List list1 = data
+              //       .where((element) =>
+              //           element["properties"]["TS_PCODE"].toString() ==
+              //           data[a]["properties"]["TS_PCODE"].toString())
+              //       .toList();
 
-                for (var b = 0; b < list1.length; b++) {
-                  List list2 = list1[b]["geometry"]["coordinates"];
-                  for (var c = 0; c < list2.length; c++) {
-                    for (var d = 0; d < list2[c].length; d++) {
-                      for (var e = 0; e < list2[c][d].length; e++) {
-                        double lati =
-                            double.parse(list2[c][d][e][1].toString());
-                        double long =
-                            double.parse(list2[c][d][e][0].toString());
-                        LatLng location = LatLng(lati, long);
-                        latlng.add(location);
-                      }
-                    }
-                  }
-                }
+              //   for (var b = 0; b < list1.length; b++) {
+              //     List list2 = list1[b]["geometry"]["coordinates"];
+              //     for (var c = 0; c < list2.length; c++) {
+              //       for (var d = 0; d < list2[c].length; d++) {
+              //         for (var e = 0; e < list2[c][d].length; e++) {
+              //           double lati =
+              //               double.parse(list2[c][d][e][1].toString());
+              //           double long =
+              //               double.parse(list2[c][d][e][0].toString());
+              //           LatLng location = LatLng(lati, long);
+              //           latlng.add(location);
+              //         }
+              //       }
+              //     }
+              //   }
 
-                _polygon.add(Polygon(
-                    polygonId: PolygonId('area'),
-                    points: latlng,
-                    geodesic: true,
-                    strokeColor: Colors.red.withOpacity(0.6),
-                    strokeWidth: 5,
-                    fillColor: Colors.redAccent.withOpacity(0.1),
-                    visible: true));
-              }
-////////////////////////
-              // LatLng one = LatLng(22.932661, 96.511031);
-              // LatLng two = LatLng(22.916806, 96.505243);
-              // LatLng three = LatLng(22.920920, 96.488876);
-              // LatLng four = LatLng(22.944552, 96.524601);
-              // LatLng five = LatLng(22.932661, 96.511031);
-
-              // latlng.add(one);
-              // latlng.add(two);
-              // latlng.add(three);
-              // latlng.add(four);
-              // latlng.add(five);
+              //   _polygon.add(Polygon(
+              //       polygonId: PolygonId('area'),
+              //       points: latlng,
+              //       geodesic: true,
+              //       strokeColor: Colors.red.withOpacity(0.6),
+              //       strokeWidth: 5,
+              //       fillColor: Colors.redAccent.withOpacity(0.1),
+              //       visible: true));
+              // }
 
               setState(() {
                 markers[markerId] = marker;
               });
             } else {
-              print(aa);
+              print(val);
             }
           }).catchError((error) {
             print(error);
@@ -143,6 +141,16 @@ class MapSampleState extends State<GmapS> {
     }).catchError((error) {
       print(error);
     });
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
   }
 
   Future<void> createNewMarker(double lati, double long) async {
@@ -192,9 +200,11 @@ class MapSampleState extends State<GmapS> {
           _getAddress(value).then((val) async {
             if (value.latitude != null && value.longitude != null) {
               List addressList = [];
+              // print(this.storage.getItem("storeData"));
               List list = this.storage.getItem("storeData");
+
               for (var i = 0; i < list.length; i++) {
-                print("234567-->" + list[i]["lat"].toString());
+                print(list[i]["lat"]);
                 addressList.add({
                   "Name": list[i]["shopname"],
                   "lati": double.parse(list[i]["lat"]),
@@ -202,6 +212,8 @@ class MapSampleState extends State<GmapS> {
                 });
               }
               for (var i = 0; i < addressList.length; i++) {
+                final Uint8List markerIcon =
+                    await getBytesFromAsset('assets/placeholder2.png', 50);
                 final MarkerId markerId = MarkerId("id is $i");
 
                 final Marker marker = Marker(
@@ -210,8 +222,77 @@ class MapSampleState extends State<GmapS> {
                         LatLng(addressList[i]["lati"], addressList[i]["long"]),
                     infoWindow: InfoWindow(
                         title: addressList[i]["Name"], snippet: "Shop Name"),
-                    icon: BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueRed));
+                    icon: BitmapDescriptor.fromBytes(markerIcon));
+
+                for (var v = 0; v < polygonArray.length; v++) {
+                  List<LatLng> latlng = List();
+                  setState(() {
+                    latlng = [];
+                  });
+                  List list1 = data
+                      .where((element) =>
+                          element["properties"]["TS_PCODE"].toString() ==
+                          polygonArray[v]["code"].toString())
+                      .toList();
+
+                  print(list1);
+
+                  for (var b = 0; b < list1.length; b++) {
+                    List list2 = list1[b]["geometry"]["coordinates"];
+
+                    print(list2);
+                    for (var c = 0; c < list2.length; c++) {
+                      for (var d = 0; d < list2[c].length; d++) {
+                        for (var e = 0; e < list2[c][d].length; e++) {
+                          double lati =
+                              double.parse(list2[c][d][e][1].toString());
+                          double long =
+                              double.parse(list2[c][d][e][0].toString());
+                          LatLng location = LatLng(lati, long);
+                          latlng.add(location);
+                        }
+                      }
+                    }
+                  }
+
+                  _polygon.add(Polygon(
+                      polygonId: PolygonId('area$v'),
+                      points: latlng,
+                      geodesic: true,
+                      strokeColor: Colors.red.withOpacity(0.6),
+                      strokeWidth: 5,
+                      fillColor: Colors.redAccent.withOpacity(0.1),
+                      visible: true));
+                }
+
+                setState(() {
+                  markers[markerId] = marker;
+                });
+              }
+
+              List storeregi = [];
+              List store = this.storage.getItem("storeReg");
+              final Uint8List markerIcon =
+                  await getBytesFromAsset('assets/placeholder.png', 50);
+              for (var a = 0; a < store.length; a++) {
+                storeregi.add({
+                  "name": store[a]["mmName"],
+                  "lati": double.parse(
+                      store[a]["locationData"]['latitude'].toString()),
+                  "long": double.parse(
+                      store[a]["locationData"]['longitude'].toString())
+                });
+              }
+              for (var i = 0; i < storeregi.length; i++) {
+                final MarkerId markerId = MarkerId("storeReg is $i");
+
+                final Marker marker = Marker(
+                    markerId: markerId,
+                    position:
+                        LatLng(storeregi[i]["lati"], storeregi[i]["long"]),
+                    infoWindow: InfoWindow(
+                        title: storeregi[i]["name"], snippet: "Shop Name"),
+                    icon: BitmapDescriptor.fromBytes(markerIcon));
 
                 setState(() {
                   markers[markerId] = marker;
@@ -233,14 +314,13 @@ class MapSampleState extends State<GmapS> {
   @override
   void initState() {
     super.initState();
-    this.localJsonData();
+    // localJsonData();
+    data = widget.data;
     locationFromServer();
     toUserLocation();
+    polygonArray = this.storage.getItem("RouteMimu");
     _kGooglePlex = CameraPosition(
-      target: LatLng(
-        widget.lati,
-        widget.long,
-      ),
+      target: LatLng(widget.lati, widget.long),
       zoom: 10.0,
     );
   }
@@ -295,19 +375,15 @@ class MapSampleState extends State<GmapS> {
               markers: Set<Marker>.of(markers.values),
               polygons: _polygon,
               onTap: (latLong) {
-                print("-->" + latLong.toString());
-                this._latLong = {
-                  "lat": latLong.latitude,
-                  "long": latLong.longitude
-                };
+                print(latLong);
                 createNewMarker(latLong.latitude, latLong.longitude);
               },
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 10),
               child: Container(
-                width: 180,
-                height: 100,
+                width: 182,
+                height: 150,
                 child: Card(
                   child: Column(
                     children: <Widget>[
@@ -329,20 +405,73 @@ class MapSampleState extends State<GmapS> {
                           ],
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.location_on, color: Colors.green),
+                            Text("  Registration Store"),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
-                padding: const EdgeInsets.only(right: 10, top: 10),
-                child: IconButton(icon: Icon(Icons.menu), onPressed: () {})),
           ],
         ),
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(20),
           child: GestureDetector(
             onTap: () {
+              // _getLocation().then((value) {
+              //   setState(() {
+              //     if (value == null) {
+              //       print(value);
+              //     } else {
+              //       _getAddress(value).then((val) async {
+              //         print(value.latitude);
+              //         print(value.longitude);
+
+              //         for (var a = 0; a < data.length; a++) {
+              //           List<LatLng> latlng = List();
+              //           setState(() {
+              //             latlng = [];
+              //           });
+              //           List list1 = data
+              //               .where((element) =>
+              //           element["properties"]["TS_PCODE"].toString() ==
+              //               data[a]["properties"]["TS_PCODE"].toString())
+              //               .toList();
+
+              //           for (var b = 0; b < list1.length; b++) {
+              //             List list2 = list1[b]["geometry"]["coordinates"];
+              //             for (var c = 0; c < list2.length; c++) {
+              //               for (var d = 0; d < list2[c].length; d++) {
+              //                 for (var e = 0; e < list2[c][d].length; e++) {
+              //                   double lati =
+              //                   double.parse(list2[c][d][e][1].toString());
+              //                   double long =
+              //                   double.parse(list2[c][d][e][0].toString());
+              //                   LatLng location = LatLng(lati, long);
+              //                   latlng.add(location);
+              //                 }
+              //               }
+              //             }
+              //           }
+
+              //           LatLng currentLocation =
+              //           LatLng(value.latitude, value.longitude);
+
+              //           _checkIfValidMarker(currentLocation, latlng,
+              //               data[a]["properties"]["TS"].toString());
+              //         }
+              //       });
+              //     }
+              //   });
+              // });
+
               getGPSstatus().then((status) => {
                     print("$status"),
                     if (status == true)
@@ -361,13 +490,49 @@ class MapSampleState extends State<GmapS> {
                       {ShowToast("Please open GPS")}
                   });
             },
-            child: Image(
-              image: AssetImage('assets/location.png'),
+            child: Image.asset(
+              "assets/location.png",
               width: 50,
+              color: Colors.blue,
             ),
           ),
         ),
       ),
     );
+  }
+
+  bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices, String townName) {
+    int intersectCount = 0;
+    for (int j = 0; j < vertices.length - 1; j++) {
+      if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
+        intersectCount++;
+      }
+    }
+
+    if ("${(intersectCount % 2) == 1}" == "true") {
+      print("${(intersectCount % 2) == 1}   $townName");
+    }
+
+    return ((intersectCount % 2) == 1); // odd = inside, even = outside;
+  }
+
+  bool rayCastIntersect(LatLng tap, LatLng vertA, LatLng vertB) {
+    double aY = vertA.latitude;
+    double bY = vertB.latitude;
+    double aX = vertA.longitude;
+    double bX = vertB.longitude;
+    double pY = tap.latitude;
+    double pX = tap.longitude;
+
+    if ((aY > pY && bY > pY) || (aY < pY && bY < pY) || (aX < pX && bX < pX)) {
+      return false; // a and b can't both be above or below pt.y, and a or
+      // b must be east of pt.x
+    }
+
+    double m = (aY - bY) / (aX - bX); // Rise over run
+    double bee = (-aX) * m + aY; // y = mx + b
+    double x = (pY - bee) / m; // algebra is neat!
+
+    return x > pX;
   }
 }

@@ -6,6 +6,7 @@ import 'package:Surveyor/checkNeighborhood.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
@@ -319,6 +320,15 @@ class _StoreScreenState extends State<StoreScreen> {
     });
   }
 
+  List data;
+
+  Future<void> localJsonData() async {
+    var jsonText = await rootBundle.loadString("assets/township.json");
+    setState(() {
+      data = json.decode(jsonText);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return LoadingProvider(
@@ -346,19 +356,22 @@ class _StoreScreenState extends State<StoreScreen> {
                                     _getAddress(value).then((val) async {
                                       if (value.latitude != null &&
                                           value.longitude != null) {
-                                        print(value);
-                                        hideLoadingDialog();
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) => GmapS(
-                                              lati: value.latitude,
-                                              long: value.longitude,
-                                              regass: 'Map',
-                                              passLength: [],
-                                              updateStatus: false,
+                                        localJsonData().then((val) {
+                                          print(value);
+                                          hideLoadingDialog();
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                              builder: (context) => GmapS(
+                                                lati: value.latitude,
+                                                long: value.longitude,
+                                                regass: 'Map',
+                                                passLength: [],
+                                                updateStatus: false,
+                                                data: data,
+                                              ),
                                             ),
-                                          ),
-                                        );
+                                          );
+                                        });
                                       } else {
                                         print(val);
                                       }
@@ -687,6 +700,4 @@ class _StoreScreenState extends State<StoreScreen> {
     }
     return "";
   }
-
-
 }

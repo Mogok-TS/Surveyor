@@ -710,6 +710,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               regass: this.widget.regOrAss,
                               passLength: this.widget.passData,
                               updateStatus: this.widget.updateStatuspass,
+                              data: null,
                             ),
                           ),
                         );
