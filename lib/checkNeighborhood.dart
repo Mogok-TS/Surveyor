@@ -6,6 +6,7 @@ import 'package:Surveyor/stores_details.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
+import 'package:localstorage/localstorage.dart';
 
 import 'Services/GeneralUse/Geolocation.dart';
 import 'Services/Messages/Messages.dart';
@@ -33,6 +34,7 @@ class CheckNeighborhoodScreen extends StatefulWidget {
 
 class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   OnlineSerives onlineSerives = new OnlineSerives();
+  LocalStorage storage = new LocalStorage('Surveyor');
   var headerList = [];
 
   Widget _listTileWidget(var passData) {
@@ -133,10 +135,34 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   }
 
   _getData() {
+    var routeData = this.storage.getItem('Routebyuser');
+    var passData;
+    var svrHdrSk = [];
+    var surDetail = [];
+    if(this.widget.regOrAss ==  "assign"){
+      passData = this.widget.passData;
+      print("1-->" + this.widget.passData.toString());
+      for(var i = 0; i < routeData.length; i++){
+        if(routeData[i]["regionId"].toString() == passData[0]["regionsyskey"].toString()){
+          surDetail = routeData[i]["surDetail"];
+        }
+      }
+      
+      if(surDetail.length == 0 ){
+        
+      }else{
+        for(var ss = 0; ss < surDetail.length; ss++){
+          svrHdrSk.add(surDetail[ss]["surveyId"]);
+        }
+      }
+    }else{
+
+    }
     var params = {
-      "svrHdrSK": ["2", "1", "3"],
+      "svrHdrSK": svrHdrSk,
       "CategorySK": []
     };
+    print("allSurveyor-->" + params.toString());
     this
         .onlineSerives
         .getHeaderList(params)

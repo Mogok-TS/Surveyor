@@ -108,9 +108,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     if(checkPHoto == "have"){
       ShowToast("Please answer  the photo questions at least one");
     }else{
-
-    
-    ShowToast(saveCondition);
+//    ShowToast(saveCondition);
     showLoading();
     var _question = this.widget.question;
     var pssOject = this.widget.passData[0];
@@ -1003,7 +1001,6 @@ Future<String> networkImageToBase64(String imageUrl) async {
       "HeaderSyskey": this.widget.header["headerSyskey"].toString(),
       "ShopSyskey": _pssOject.toString(),
     };
-
 //   var param = { "svrHdrSK": [ "2", "1", "3" ], "CategorySK": [ ] };
     showLoading();
     this

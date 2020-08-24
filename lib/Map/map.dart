@@ -54,15 +54,20 @@ class MapSampleState extends State<GmapS> {
         if (value == null) {
           print(value);
         } else {
-          _getAddress(value).then((val) async {
+          _getAddress(value).then((aa) async {
             if (value.latitude != null && value.longitude != null) {
+              print("000--->" + this.widget.regass);
+              if(this.widget.regass == "newStore" || this.widget.regass == "Map"){
+                print(widget.lati.toString() + " __" + widget.long.toString());
+                this._latLong = {"lat": value.latitude, "long": value.longitude};
+              }else{
+                this._latLong = {"lat": widget.lati, "long": widget.long};
+              }
               final GoogleMapController controller = await _controller.future;
-              this._latLong = {};
-              this._latLong = {"lat": value.latitude, "long": value.longitude};
               controller.animateCamera(CameraUpdate.newCameraPosition(
                   CameraPosition(
                       bearing: 0.0,
-                      target: LatLng(value.latitude, value.longitude),
+                      target: LatLng(this._latLong["lat"],this._latLong["long"]),
                       tilt: 0.0,
                       zoom: 18.5)));
 
@@ -70,7 +75,7 @@ class MapSampleState extends State<GmapS> {
 
               final Marker marker = Marker(
                   markerId: markerId,
-                  position: LatLng(value.latitude, value.longitude),
+                  position: LatLng(this._latLong["lat"], this._latLong["long"]),
                   infoWindow: InfoWindow(title: "current position"),
                   icon: BitmapDescriptor.defaultMarkerWithHue(
                       BitmapDescriptor.hueAzure));
@@ -128,7 +133,7 @@ class MapSampleState extends State<GmapS> {
                 markers[markerId] = marker;
               });
             } else {
-              print(val);
+              print(aa);
             }
           }).catchError((error) {
             print(error);
@@ -231,7 +236,6 @@ class MapSampleState extends State<GmapS> {
     this.localJsonData();
     locationFromServer();
     toUserLocation();
-    this._latLong = {"lat": widget.lati, "long": widget.long};
     _kGooglePlex = CameraPosition(
       target: LatLng(
         widget.lati,

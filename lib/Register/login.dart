@@ -61,7 +61,8 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                 Container(
                   margin: EdgeInsets.only(right: 5.0, top: 10.0),
                   child: PopupMenuButton(
-                    itemBuilder: (context) => <PopupMenuEntry<String>>[
+                    itemBuilder: (context) =>
+                    <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
                         enabled: false,
                         child: Center(
@@ -214,6 +215,10 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         "userId": userID.text.toString(),
                         "password": password.text.toString()
                       };
+                      var returnData = [];
+                      var getMimuparam;
+                      var checkIndex = 0;
+                      var mimuCodearray = [];
                       showLoading();
                       var _loginData;
                       FocusScope.of(context).requestFocus(new FocusNode());
@@ -221,38 +226,67 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                           .onlineSerives
                           .loginData(param)
                           .then((data) => {
-                                _loginData = this.storage.getItem("loginData"),
-                                if (data == true)
-                                  {
-                                    this
-                                        .onlineSerives
-                                        .getSurveyorroutebyuser(
-                                            _loginData["syskey"])
-                                        .then((returnVal) => {
-                                              if (returnVal == true)
-                                                {
-                                                  hideLoadingDialog(),
-                                                  Navigator.of(context)
-                                                      .pushReplacement(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          StoreScreen(),
-                                                    ),
-                                                  )
-                                                }
-                                              else
-                                                {
-                                                  hideLoadingDialog(),
-                                                }
-                                            }),
-                                  }
-                                else
-                                  {
-                                    hideLoadingDialog(),
-                                  }
-                              })
-                          .catchError((err) => {hideLoadingDialog()});
+                      _loginData = this.storage.getItem("loginData"),
+                      if (data == true)
+                      {
+                          this
+                              .onlineSerives
+                              .getSurveyorroutebyuser(
+                          _loginData["syskey"])
+                          .then((returnVal) => {
+                      if(returnVal["status"] == true){
+                          if(returnVal["data"].length > 0)
+                      {
+                        returnData = returnVal["data"],
+                    for(var ss = 0; ss < returnData.length; ss++){
+                    getMimuparam = {
+                    "id":returnData[ss]["regionId"].toString(),
+                    "code":"",
+                    "description":"",
+                    "parentid":"",
+                    "n2":""
+                    },
+                    print("regionID ---> " + getMimuparam.toString()),
+                    this.onlineSerives.getTownship(getMimuparam).then((townReturn) => {
+                      print("s->" + townReturn.toString()),
+                    if(townReturn["status"] == true){
+                    if(townReturn["data"].length > 0){
+                      checkIndex = ss,
+                      mimuCodearray.add({"code": townReturn["data"][0]["code"]}),
+                      if(returnData.length == mimuCodearray.length){
+                        print("11--->" + mimuCodearray.toString()),
+                        this.storage.setItem("RouteMimu", mimuCodearray),
+                        hideLoadingDialog(),
+                        Navigator.of(context)
+                            .pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                StoreScreen(),
+                          ),
+                        )
+                      }
                     }
+                    }else{
+                      hideLoadingDialog(),
+                    }
+                    }),
+                    }
+
+                    }else{
+                            hideLoadingDialog(),
+                          }
+                    }else{
+                        hideLoadingDialog(),
+                      }
+                    }),
+                    }
+                    else
+                    {
+                    hideLoadingDialog(),
+                    }
+                    })
+                        .catchError((err) => {hideLoadingDialog()});
+                  }
                   },
                   textColor: CustomIcons.buttonText,
                 ),
@@ -265,7 +299,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                     Text(
                       "Don't have an account?",
                       style:
-                          TextStyle(color: CustomIcons.iconColor, fontSize: 15),
+                      TextStyle(color: CustomIcons.iconColor, fontSize: 15),
                     ),
                     SizedBox(
                       width: 5,

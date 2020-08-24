@@ -38,11 +38,11 @@ class OnlineSerives {
   void URL() {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
-//      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+//      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
       this
           .storage
-          .setItem('URL', "http://52.253.88.71:8084/madbrepository/");
+          .setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
     }
   }
 
@@ -232,7 +232,7 @@ class OnlineSerives {
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     print("123456-->");
     print("${response.body}");
-    var ab = "";
+
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -249,6 +249,16 @@ class OnlineSerives {
             _bojArray["SectionDesc"] = dataList[ii]["SectionDesc"];
             _bojArray["Platform"] = dataList[ii]["Platform"];
             _bojArray["QuestionShopSyskey"] = dataList[ii]["QuestionShopSyskey"];
+            if(dataList[ii]["Flag"] == null){
+              _bojArray["Flag"] = 0;
+            }else{
+              _bojArray["Flag"] = dataList[ii]["Flag"];
+            }
+            if(dataList[ii]["Comment"] == null){
+              _bojArray["Comment"] = "";
+            }else{
+              _bojArray["Comment"] = dataList[ii]["Comment"];
+            }
             if(dataList[ii]["TypeSK"].toString() == "1" || dataList[ii]["TypeSK"].toString() == "3"){
               _bojArray["AnswerSyskey"] = "";
               if(dataList[ii]["AnswerShopPhoto"] == null || dataList[ii]["AnswerShopPhoto"].length == 0){
@@ -366,6 +376,7 @@ class OnlineSerives {
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    print("--> ${response.body}");
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -433,6 +444,7 @@ class OnlineSerives {
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    print("-> ${response.body}");
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -575,7 +587,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-          this.storage.setItem("Routebyuser", data["list"]);
+//          this.storage.setItem("Routebyuser", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;
@@ -588,11 +600,11 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-//    var param = {
-//      "status":this.status,
-//      "data":data["list"]
-//    };
-    return this.status;
+    var param = {
+      "status":this.status,
+      "data":data["list"]
+    };
+    return param;
   }
 
   Future saveComplete(param) async {
