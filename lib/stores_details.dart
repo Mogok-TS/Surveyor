@@ -108,6 +108,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           this.wardVillageId = this.updateDataarray[0]["wardid"].toString();
           this.latitude = double.parse(this.updateDataarray[0]["lat"]);
           this.longitude = double.parse(this.updateDataarray[0]["long"]);
+          _getUpdateData();
         } else if (this.widget.regOrAss == "register") {
           this.updateStatus = true;
           this.shopSyskey = this.updateDataarray[0]["id"].toString();
@@ -129,6 +130,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           this.wardVillageId = this.updateDataarray[0]["wardId"].toString();
           this.latitude = this.updateDataarray[0]["locationData"]["latitude"];
           this.longitude = this.updateDataarray[0]["locationData"]["longitude"];
+          _getUpdateData();
         }
         print("shopSyskey--> $shopSyskey");
       }
@@ -162,7 +164,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             );
       });
     });
-    _getUpdateData();
   }
 
   _getUpdateData() {
@@ -1455,7 +1456,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10),
                         hintText:
-                            '${this.street.text != '' ? this.street.text : ''}${this._village != '-' ? ',' + this._village : ''}${this._villageTract != '-' ? ',' + this._villageTract : ''}${this._ward != '-' ? ',' + this._ward : ''}${this._town != '-' ? ',' + this._town : ''}${this._townShip != '-' ? ',' + this._townShip : ''}${this._district != '-' ? ',' + this._district : ''}${this._state != '-' ? ',' + this._state : ''}',
+                            '${this.street.text != '' ? this.street.text + ',' : ''}${this._village != '-' ? this._village + ',' : ''}${this._villageTract != '-' ? this._villageTract + ',' : ''}${this._ward != '-' ? this._ward + ',' : ''}${this._town != '-' ? this._town + ',' : ''}${this._townShip != '-' ? this._townShip + ',' : ''}${this._district != '-' ? this._district + ',' : ''}${this._state != '-' ? this._state : ''}',
                         fillColor: Colors.grey[300],
                         filled: true,
                       ),
