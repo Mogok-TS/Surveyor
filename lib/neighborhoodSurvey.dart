@@ -93,175 +93,175 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var saveCondition = "1";
 
   _clickDoneAssignStore() async {
-    var checkPHoto ="sinple";
+    var checkPHoto = "sinple";
     for (var i = 0; i < this.questions.length; i++) {
       var loopdata = questions[i];
       var loopPrimary = _primaryData[i];
-      if(loopdata["TypeDesc"] == "Attach Photograph"){
+      if (loopdata["TypeDesc"] == "Attach Photograph") {
         checkPHoto = "have";
-        if(loopPrimary["images"].length>0){
+        if (loopPrimary["images"].length > 0) {
           checkPHoto = "answered";
           break;
         }
       }
     }
-    if(checkPHoto == "have"){
+    if (checkPHoto == "have") {
       ShowToast("Please answer  the photo questions at least one");
-    }else{
-//    ShowToast(saveCondition);
-    showLoading();
-    var _question = this.widget.question;
-    var pssOject = this.widget.passData[0];
-    if (this.widget.regOrAss == "assign") {
-      _allData["id"] = pssOject["shopsyskey"];
-      _allData["saveCondition"] = saveCondition;
-      _allData["active"] = true;
-      _allData["active"] = true;
-      _allData["name"] = pssOject["shopname"];
-      _allData["mmName"] = pssOject["shopnamemm"];
-      _allData["personName"] = pssOject["personname"];
-      _allData["personPhoneNumber"] = pssOject["personph"];
-      _allData["phoneNumber"] = pssOject["phoneno"];
-      _allData["stateId"] = pssOject["stateid"];
-      _allData["districtId"] = pssOject["districtid"];
-      _allData["townshipId"] = pssOject["townshipid"];
-      _allData["townId"] = pssOject["townid"];
-      _allData["wardId"] = pssOject["wardid"];
-      _allData["address"] = pssOject["address"];
-      _allData["street"] = pssOject["street"];
-      _allData["t12"] = "";
-      var _syskey = this.widget.headershopKey;
-      // if (this._checkSaveorupdate == "update") {
-      //   _syskey = this.questions[0]["HeaderShopSyskey"].toString();
-      // } else {
-      //   _syskey = "";
-      // }
-      _allData["svrHdrData"] = {
-        "syskey": _syskey,
-        "n1": "0",
-        "n2": pssOject["shopsyskey"].toString(),
-        "n3": this.widget.header["headerSyskey"].toString()
-      };
-
-      _allData["locationData"] = {
-        "latitude": pssOject["lat"],
-        "longitude": pssOject["long"],
-        "plusCode": pssOject["pluscode"],
-        "minuCode": pssOject["mimu"]
-      };
     } else {
-      _allData["id"] = pssOject["id"];
-      _allData["saveCondition"] = saveCondition;
-      _allData["active"] = true;
-      _allData["name"] = pssOject["name"];
-      _allData["mmName"] = pssOject["mmName"];
-      _allData["personName"] = pssOject["personName"];
-      _allData["personPhoneNumber"] = pssOject["personPhoneNumber"];
-      _allData["phoneNumber"] = pssOject["phoneNumber"];
-      _allData["stateId"] = pssOject["stateId"];
-      _allData["districtId"] = pssOject["districtId"];
-      _allData["townshipId"] = pssOject["townshipId"];
-      _allData["townId"] = pssOject["townId"];
-      _allData["wardId"] = pssOject["wardId"];
-      _allData["address"] = pssOject["address"];
-      _allData["street"] = pssOject["street"];
-      _allData["t12"] = "";
-      var _syskey = "";
-      if (this._checkSaveorupdate == "update") {
-        _syskey = this.questions[0]["HeaderShopSyskey"].toString();
+//    ShowToast(saveCondition);
+      showLoading();
+      var _question = this.widget.question;
+      var pssOject = this.widget.passData[0];
+      if (this.widget.regOrAss == "assign") {
+        _allData["id"] = pssOject["shopsyskey"];
+        _allData["saveCondition"] = saveCondition;
+        _allData["active"] = true;
+        _allData["active"] = true;
+        _allData["name"] = pssOject["shopname"];
+        _allData["mmName"] = pssOject["shopnamemm"];
+        _allData["personName"] = pssOject["personname"];
+        _allData["personPhoneNumber"] = pssOject["personph"];
+        _allData["phoneNumber"] = pssOject["phoneno"];
+        _allData["stateId"] = pssOject["stateid"];
+        _allData["districtId"] = pssOject["districtid"];
+        _allData["townshipId"] = pssOject["townshipid"];
+        _allData["townId"] = pssOject["townid"];
+        _allData["wardId"] = pssOject["wardid"];
+        _allData["address"] = pssOject["address"];
+        _allData["street"] = pssOject["street"];
+        _allData["t12"] = "";
+        var _syskey = this.widget.headershopKey;
+        // if (this._checkSaveorupdate == "update") {
+        //   _syskey = this.questions[0]["HeaderShopSyskey"].toString();
+        // } else {
+        //   _syskey = "";
+        // }
+        _allData["svrHdrData"] = {
+          "syskey": _syskey,
+          "n1": "0",
+          "n2": pssOject["shopsyskey"].toString(),
+          "n3": this.widget.header["headerSyskey"].toString()
+        };
+
+        _allData["locationData"] = {
+          "latitude": pssOject["lat"],
+          "longitude": pssOject["long"],
+          "plusCode": pssOject["pluscode"],
+          "minuCode": pssOject["mimu"]
+        };
       } else {
-        _syskey = "";
+        _allData["id"] = pssOject["id"];
+        _allData["saveCondition"] = saveCondition;
+        _allData["active"] = true;
+        _allData["name"] = pssOject["name"];
+        _allData["mmName"] = pssOject["mmName"];
+        _allData["personName"] = pssOject["personName"];
+        _allData["personPhoneNumber"] = pssOject["personPhoneNumber"];
+        _allData["phoneNumber"] = pssOject["phoneNumber"];
+        _allData["stateId"] = pssOject["stateId"];
+        _allData["districtId"] = pssOject["districtId"];
+        _allData["townshipId"] = pssOject["townshipId"];
+        _allData["townId"] = pssOject["townId"];
+        _allData["wardId"] = pssOject["wardId"];
+        _allData["address"] = pssOject["address"];
+        _allData["street"] = pssOject["street"];
+        _allData["t12"] = "";
+        var _syskey = "";
+        if (this._checkSaveorupdate == "update") {
+          _syskey = this.questions[0]["HeaderShopSyskey"].toString();
+        } else {
+          _syskey = "";
+        }
+        _allData["svrHdrData"] = {
+          "syskey": _syskey,
+          "n1": "0",
+          "n2": pssOject["id"].toString(),
+          "n3": this.widget.header["headerSyskey"].toString()
+        };
+
+        _allData["locationData"] = {
+          "latitude": pssOject["locationData"]["latitude"],
+          "longitude": pssOject["locationData"]["longitude"],
+          "plusCode": pssOject["locationData"]["plusCode"],
+          "minuCode": pssOject["locationData"]["minuCode"]
+        };
       }
-      _allData["svrHdrData"] = {
-        "syskey": _syskey,
-        "n1": "0",
-        "n2": pssOject["id"].toString(),
-        "n3": this.widget.header["headerSyskey"].toString()
-      };
+      var questionAndAnswer = [];
 
-      _allData["locationData"] = {
-        "latitude": pssOject["locationData"]["latitude"],
-        "longitude": pssOject["locationData"]["longitude"],
-        "plusCode": pssOject["locationData"]["plusCode"],
-        "minuCode": pssOject["locationData"]["minuCode"]
-      };
-    }
-    var questionAndAnswer = [];
+      for (var i = 0; i < this.questions.length; i++) {
+        var loopData = this.questions[i];
+        var loopPrimary = {};
+        loopPrimary = this._primaryData[i];
+        var singleQueAndAns = {};
 
-    for (var i = 0; i < this.questions.length; i++) {
-      var loopData = this.questions[i];
-      var loopPrimary = {};
-      loopPrimary = this._primaryData[i];
-      var singleQueAndAns = {};
-
-      if (loopData["TypeDesc"] == "Fill in the Blank") {
-        var _value = {};
-        _value["id"] = loopData["QuestionShopSyskey"];
-        _value["questionTypeId"] = loopData["TypeSK"].toString();
-        _value["questionNatureId"] = _question["sectionSyskey"].toString();
-        _value["questionId"] = loopData["QuestionSyskey"].toString();
-        _value["answerId"] = "0";
-        _value["remark"] = loopData["AnswerDesc"];
-        _value["desc"] = "";
-        _value["instruction"] = loopData["QuestionDescription"];
-        if (loopData["Comment"] == null) {
-          _value["t4"] = "";
-        } else {
-          _value["t4"] = loopData["Comment"];
-        }
-        _value["t5"] = "";
-        _value["n8"] = "0";
-        if (loopData["Flag"] == null) {
-          _value["n9"] = "0";
-        } else {
-          _value["n9"] = loopData["Flag"];
-        }
-        if (loopData["ApprovedFlag"] == null) {
-          _value["n10"] = "0";
-        } else {
-          _value["n10"] = loopData["ApprovedFlag"];
-        }
-        _value["svr9DataList"] = [];
-        questionAndAnswer.add(_value);
-      } else if (loopData["TypeDesc"] == "Checkbox") {
-        var _value = {};
-        _value["id"] = loopData["QuestionShopSyskey"];
-        _value["questionTypeId"] = loopData["TypeSK"].toString();
-        _value["questionNatureId"] = _question["sectionSyskey"].toString();
-        _value["questionId"] = loopData["QuestionSyskey"].toString();
-        _value["remark"] = "";
-        _value["instruction"] = loopData["QuestionDescription"];
-        if (loopData["Comment"] == null) {
-          _value["t4"] = "";
-        } else {
-          _value["t4"] = loopData["Comment"];
-        }
-        _value["t5"] = "";
-        _value["n8"] = "0";
-        if (loopData["Flag"] == null) {
-          _value["n9"] = "0";
-        } else {
-          _value["n9"] = loopData["Flag"];
-        }
-        if (loopData["ApprovedFlag"] == null) {
-          _value["n10"] = "0";
-        } else {
-          _value["n10"] = loopData["ApprovedFlag"];
-        }
-        if (loopPrimary["checkDatas"].length > 0) {
-          var datalist = [];
-          for (var x = 0; x < loopPrimary["checkDatas"].length; x++) {
-            var data = {};
-            if (loopPrimary["checkDatas"][x]["check"] == true) {
-              data["recordStatus"] = 1;
-              data["t1"] = "";
-              data["t2"] = "";
-              data["t3"] = loopPrimary["checkDatas"][x]["text"];
-              data["n2"] = loopPrimary["checkDatas"][x]["syskey"];
-              datalist.add(data);
-            }
+        if (loopData["TypeDesc"] == "Fill in the Blank") {
+          var _value = {};
+          _value["id"] = loopData["QuestionShopSyskey"];
+          _value["questionTypeId"] = loopData["TypeSK"].toString();
+          _value["questionNatureId"] = _question["sectionSyskey"].toString();
+          _value["questionId"] = loopData["QuestionSyskey"].toString();
+          _value["answerId"] = "0";
+          _value["remark"] = loopData["AnswerDesc"];
+          _value["desc"] = "";
+          _value["instruction"] = loopData["QuestionDescription"];
+          if (loopData["Comment"] == null) {
+            _value["t4"] = "";
+          } else {
+            _value["t4"] = loopData["Comment"];
           }
-          if (datalist.length == 0) {
+          _value["t5"] = "";
+          _value["n8"] = "0";
+          if (loopData["Flag"] == null) {
+            _value["n9"] = "0";
+          } else {
+            _value["n9"] = loopData["Flag"];
+          }
+          if (loopData["ApprovedFlag"] == null) {
+            _value["n10"] = "0";
+          } else {
+            _value["n10"] = loopData["ApprovedFlag"];
+          }
+          _value["svr9DataList"] = [];
+          questionAndAnswer.add(_value);
+        } else if (loopData["TypeDesc"] == "Checkbox") {
+          var _value = {};
+          _value["id"] = loopData["QuestionShopSyskey"];
+          _value["questionTypeId"] = loopData["TypeSK"].toString();
+          _value["questionNatureId"] = _question["sectionSyskey"].toString();
+          _value["questionId"] = loopData["QuestionSyskey"].toString();
+          _value["remark"] = "";
+          _value["instruction"] = loopData["QuestionDescription"];
+          if (loopData["Comment"] == null) {
+            _value["t4"] = "";
+          } else {
+            _value["t4"] = loopData["Comment"];
+          }
+          _value["t5"] = "";
+          _value["n8"] = "0";
+          if (loopData["Flag"] == null) {
+            _value["n9"] = "0";
+          } else {
+            _value["n9"] = loopData["Flag"];
+          }
+          if (loopData["ApprovedFlag"] == null) {
+            _value["n10"] = "0";
+          } else {
+            _value["n10"] = loopData["ApprovedFlag"];
+          }
+          if (loopPrimary["checkDatas"].length > 0) {
+            var datalist = [];
+            for (var x = 0; x < loopPrimary["checkDatas"].length; x++) {
+              var data = {};
+              if (loopPrimary["checkDatas"][x]["check"] == true) {
+                data["recordStatus"] = 1;
+                data["t1"] = "";
+                data["t2"] = "";
+                data["t3"] = loopPrimary["checkDatas"][x]["text"];
+                data["n2"] = loopPrimary["checkDatas"][x]["syskey"];
+                datalist.add(data);
+              }
+            }
+            if (datalist.length == 0) {
 //            var data = {};
 //            data["recordStatus"] = 1;
 //            data["t1"] = "";
@@ -269,10 +269,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 //            data["t3"] = "";
 //            data["n2"] = "";
 //            datalist.add(data);
-          }
-          _value["svr9DataList"] = datalist;
-        } else {
-          var datalist = [];
+            }
+            _value["svr9DataList"] = datalist;
+          } else {
+            var datalist = [];
 //          var data = {};
 //          data["recordStatus"] = 1;
 //          data["t1"] = "";
@@ -280,59 +280,60 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 //          data["t3"] = "";
 //          data["n2"] = "";
 //          datalist.add(data);
-          _value["svr9DataList"] = datalist;
-        }
-        questionAndAnswer.add(_value);
-        // singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
-      } else if (loopData["TypeDesc"] == "Attach Photograph") {
-        var _value = {};
-        _value["id"] = loopData["QuestionShopSyskey"];
-        _value["questionTypeId"] = loopData["TypeSK"].toString();
-        _value["questionNatureId"] = _question["sectionSyskey"].toString();
-        _value["questionId"] = loopData["QuestionSyskey"].toString();
-        _value["answerId"] = "0";
-        _value["remark"] = "";
-        _value["desc"] = "";
-        _value["instruction"] = loopData["QuestionDescription"];
-        if (loopData["Comment"] == null) {
-          _value["t4"] = "";
-        } else {
-          _value["t4"] = loopData["Comment"];
-        }
-        _value["t5"] = "";
-        _value["n8"] = "0";
-        if (loopData["Flag"] == null) {
-          _value["n9"] = "0";
-        } else {
-          _value["n9"] = loopData["Flag"];
-        }
-        if (loopData["ApprovedFlag"] == null) {
-          _value["n10"] = "0";
-        } else {
-          _value["n10"] = loopData["ApprovedFlag"];
-        }
-        if (loopPrimary["images"].length > 0) {
-          var datalist = [];
-          for (var x = 0; x < loopPrimary["images"].length; x++) {
-            var loopObj = loopPrimary["images"][x];
-
-            var data = {};
-            data["recordStatus"] = 1;
-            if(loopObj["type"] == "online"){
-              final imgBase64Str = await networkImageToBase64(this.subUrl + loopObj["image"].toString());
-              data["t1"] = imgBase64Str.toString();
-            }else{
-            data["t1"] = loopObj["base64"].toString();
-            }
-            data["t2"] = loopObj["name"].toString();
-            data["t3"] = "";
-            data["n2"] = "";
-            datalist.add(data);
+            _value["svr9DataList"] = datalist;
           }
-          _value["svr9DataList"] = datalist;
           questionAndAnswer.add(_value);
-        } else {
-          var datalist = [];
+          // singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
+        } else if (loopData["TypeDesc"] == "Attach Photograph") {
+          var _value = {};
+          _value["id"] = loopData["QuestionShopSyskey"];
+          _value["questionTypeId"] = loopData["TypeSK"].toString();
+          _value["questionNatureId"] = _question["sectionSyskey"].toString();
+          _value["questionId"] = loopData["QuestionSyskey"].toString();
+          _value["answerId"] = "0";
+          _value["remark"] = "";
+          _value["desc"] = "";
+          _value["instruction"] = loopData["QuestionDescription"];
+          if (loopData["Comment"] == null) {
+            _value["t4"] = "";
+          } else {
+            _value["t4"] = loopData["Comment"];
+          }
+          _value["t5"] = "";
+          _value["n8"] = "0";
+          if (loopData["Flag"] == null) {
+            _value["n9"] = "0";
+          } else {
+            _value["n9"] = loopData["Flag"];
+          }
+          if (loopData["ApprovedFlag"] == null) {
+            _value["n10"] = "0";
+          } else {
+            _value["n10"] = loopData["ApprovedFlag"];
+          }
+          if (loopPrimary["images"].length > 0) {
+            var datalist = [];
+            for (var x = 0; x < loopPrimary["images"].length; x++) {
+              var loopObj = loopPrimary["images"][x];
+
+              var data = {};
+              data["recordStatus"] = 1;
+              if (loopObj["type"] == "online") {
+                final imgBase64Str = await networkImageToBase64(
+                    this.subUrl + loopObj["image"].toString());
+                data["t1"] = imgBase64Str.toString();
+              } else {
+                data["t1"] = loopObj["base64"].toString();
+              }
+              data["t2"] = loopObj["name"].toString();
+              data["t3"] = "";
+              data["n2"] = "";
+              datalist.add(data);
+            }
+            _value["svr9DataList"] = datalist;
+            questionAndAnswer.add(_value);
+          } else {
+            var datalist = [];
 //          if (this.saveCondition == 1) {
 //            var data = {};
 //            data["recordStatus"] = 1;
@@ -344,82 +345,82 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 //          } else {
 //            datalist = [];
 //          }
-          _value["svr9DataList"] = datalist;
-          questionAndAnswer.add(_value);
-        }
-      } else if (loopData["TypeDesc"] == "Multiple Choice") {
-        for (var ss = 0; ss < this.newQuestionarray.length; ss++) {
-          if (this.newQuestionarray[ss]["questionSyskey"].toString() ==
-              loopData["QuestionSyskey"].toString()) {
-            var _value = {};
-            _value["id"] = loopData["QuestionShopSyskey"];
-            _value["questionTypeId"] = loopData["TypeSK"].toString();
-            _value["questionNatureId"] = _question["sectionSyskey"].toString();
-            _value["questionId"] = loopData["QuestionSyskey"].toString();
-            _value["answerId"] =
-                this.newQuestionarray[ss]["answerSyskey"].toString();
-            _value["remark"] = "";
-            _value["desc"] = this.newQuestionarray[ss]["answerDesc"].toString();
-            _value["instruction"] = loopData["QuestionDescription"];
-            if (loopData["Comment"] == null) {
-              _value["t4"] = "";
-            } else {
-              _value["t4"] = loopData["Comment"];
-            }
-            _value["t5"] = "";
-            _value["n8"] = "0";
-            if (loopData["Flag"] == null) {
-              _value["n9"] = "0";
-            } else {
-              _value["n9"] = loopData["Flag"];
-            }
-            if (loopData["ApprovedFlag"] == null) {
-              _value["n10"] = "0";
-            } else {
-              _value["n10"] = loopData["ApprovedFlag"];
-            }
-            _value["svr9DataList"] = [];
+            _value["svr9DataList"] = datalist;
             questionAndAnswer.add(_value);
+          }
+        } else if (loopData["TypeDesc"] == "Multiple Choice") {
+          for (var ss = 0; ss < this.newQuestionarray.length; ss++) {
+            if (this.newQuestionarray[ss]["questionSyskey"].toString() ==
+                loopData["QuestionSyskey"].toString()) {
+              var _value = {};
+              _value["id"] = loopData["QuestionShopSyskey"];
+              _value["questionTypeId"] = loopData["TypeSK"].toString();
+              _value["questionNatureId"] =
+                  _question["sectionSyskey"].toString();
+              _value["questionId"] = loopData["QuestionSyskey"].toString();
+              _value["answerId"] =
+                  this.newQuestionarray[ss]["answerSyskey"].toString();
+              _value["remark"] = "";
+              _value["desc"] =
+                  this.newQuestionarray[ss]["answerDesc"].toString();
+              _value["instruction"] = loopData["QuestionDescription"];
+              if (loopData["Comment"] == null) {
+                _value["t4"] = "";
+              } else {
+                _value["t4"] = loopData["Comment"];
+              }
+              _value["t5"] = "";
+              _value["n8"] = "0";
+              if (loopData["Flag"] == null) {
+                _value["n9"] = "0";
+              } else {
+                _value["n9"] = loopData["Flag"];
+              }
+              if (loopData["ApprovedFlag"] == null) {
+                _value["n10"] = "0";
+              } else {
+                _value["n10"] = loopData["ApprovedFlag"];
+              }
+              _value["svr9DataList"] = [];
+              questionAndAnswer.add(_value);
+            }
           }
         }
       }
-    }
-    _allData["quesAndAns"] = questionAndAnswer;
+      _allData["quesAndAns"] = questionAndAnswer;
 
 //    setState(() {
 //      _consoleLable = _allData.toString();
 //      hideLoadingDialog();
 //    });
 
-    this.onlineSerives.createStore(_allData).then((reslut) => {
-          hideLoadingDialog(),
-          if (reslut["status"] == true)
-            {
-              ShowToast("Saved successfully."),
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => OutsideInsideNeighborhood(
-                      this.widget.isNeighborhood,
-                      this.widget.isOutside,
-                      this.widget.isInside,
-                      this.widget.isStoreOperater,
-                      this.widget.storeName,
-                      this.widget.storeNumber,
-                      this.widget.address,
-                      this.widget.regOrAss,
-                      this.widget.passData,
-                      this.widget.allsection,
-                      this.widget.header),
-                ),
-              )
-            }
-          else
-            {}
-        });
+      this.onlineSerives.createStore(_allData).then((reslut) => {
+            hideLoadingDialog(),
+            if (reslut["status"] == true)
+              {
+                ShowToast("Saved successfully."),
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => OutsideInsideNeighborhood(
+                        this.widget.isNeighborhood,
+                        this.widget.isOutside,
+                        this.widget.isInside,
+                        this.widget.isStoreOperater,
+                        this.widget.storeName,
+                        this.widget.storeNumber,
+                        this.widget.address,
+                        this.widget.regOrAss,
+                        this.widget.passData,
+                        this.widget.allsection,
+                        this.widget.header),
+                  ),
+                )
+              }
+            else
+              {}
+          });
     }
   }
-
- 
 
   void newImageName() {
     var nowdate = DateTime.now();
@@ -437,19 +438,18 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   Future getImageFromCamera(var syskey, var images) async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
-      if(image != null){
-         if (image.path == '') {
-      } else {
-        newImageName();
-        var datas = {};
-        datas["image"] = image;
-        datas["name"] = imageName;
-        datas["type"] = "file";
-        imageFileList(syskey, imageName, image, datas);
-        images.add(datas);
+      if (image != null) {
+        if (image.path == '') {
+        } else {
+          newImageName();
+          var datas = {};
+          datas["image"] = image;
+          datas["name"] = imageName;
+          datas["type"] = "file";
+          imageFileList(syskey, imageName, image, datas);
+          images.add(datas);
+        }
       }
-      }
-     
     });
   }
 
@@ -471,8 +471,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       });
     }
   }
-
-  
 
   Future<void> imageFileList(
       var syskey, var imageName, var imageFileList, var datasobj) async {
@@ -533,7 +531,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget attachPhotograph(data, _imageslist) {
-    
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     var images = [];
@@ -638,8 +635,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               scrollDirection: Axis.vertical,
               crossAxisCount: 3,
               children: List.generate(_imageslist.length, (index) {
-                return storeImage(
-                    _imageslist[index], index, _imageslist);
+                return storeImage(_imageslist[index], index, _imageslist);
               }),
             ),
           ),
@@ -964,15 +960,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   var subUrl;
 
-
-Future<String> networkImageToBase64(String imageUrl) async {
+  Future<String> networkImageToBase64(String imageUrl) async {
     http.Response response = await http.get(imageUrl);
     final bytes = response?.bodyBytes;
     return (bytes != null ? base64Encode(bytes) : null);
-}
+  }
+
   @override
   void initState() {
-   
     super.initState();
 //    if(){} for questionNature
     var _pssOject;
@@ -1135,7 +1130,6 @@ Future<String> networkImageToBase64(String imageUrl) async {
               }),
             })
         .catchError((err) => {});
-
   }
 
   Future<void> showMessageAlert(String message) async {
@@ -1185,6 +1179,7 @@ Future<String> networkImageToBase64(String imageUrl) async {
   }
 
   Widget _allWidget(var data, var questionIndex, var primarydata) {
+    print("singlequestion>>"+data.toString());
     if (primarydata["images"] == null) {
       primarydata["images"] = [];
     }
@@ -1212,6 +1207,414 @@ Future<String> networkImageToBase64(String imageUrl) async {
 //           data["radioData"], data["radio"], questionIndex);
 //     }
     return _widget;
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  String datePicker;
+  DateTime selectedDate = DateTime.now();
+  Widget dateTimePicker() {
+    var t1 = "NO.10";
+    var t2 = "Header OF Date TIme Picker";
+    TextEditingController _textController = new TextEditingController();
+    _textController.text = selectedDate.toString();
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: CustomIcons.dropDownHeader,
+            child: ListTile(
+              title: InkWell(
+                onTap: () {},
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      t1,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    if (t1 != null && t2 != null)
+                      Text(
+                        " :",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                      child: Text(
+                        t2,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+              color: Colors.grey[200],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    // child: Container(
+                    //   child: InkWell(
+                    //     onTap: (){
+                    //       _selectDate(context);
+                    //     },
+                    //   ),
+                    // ),
+                    child: TextField(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      controller: _textController,
+                      decoration: InputDecoration(
+                        focusColor: Colors.black,
+                        prefixIcon: Icon(
+                          Icons.question_answer,
+                          color: CustomIcons.iconColor,
+                        ),
+                        hintText: 'Answer',
+                        hintStyle: TextStyle(fontSize: 18, height: 1.5),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ))
+        ],
+      ),
+    );
+  }
+   String choice;
+String _radioValue;
+  void radioButtonChanges(String value) {
+    setState(() {
+      _radioValue = value;
+      switch (value) {
+        case 'one':
+          choice = value;
+          break;
+        case 'two':
+          choice = value;
+          break;
+        case 'three':
+          choice = value;
+          break;
+        default:
+          choice = null;
+      }
+      debugPrint(choice); //Debug the choice in console
+    });
+  }
+  var rating;
+  Widget ratingWidget() {
+    var t1 = "NO.11";
+    var t2 = "Rating Question???";
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: CustomIcons.dropDownHeader,
+            child: ListTile(
+              title: InkWell(
+                onTap: () {},
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      t1,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    if (t1 != null && t2 != null)
+                      Text(
+                        " :",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                      child: Text(
+                        t2,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+            color: Colors.grey[200],
+            height: 50.0,
+           child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+             
+              Container(
+               width: 100.0,
+                child:  RadioListTile(
+               groupValue: rating,
+                title: Text("1"),
+                value: "One",
+                onChanged: (aaa) {
+                   setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+              Container(
+               width: 100.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("2"),
+                value: "Two",
+                onChanged: (aaa) {
+                   setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+              Container(
+               width: 100.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("3"),
+                value: "Three",
+                onChanged: (aaa) {
+                   setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+              Container(
+               width: 100.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("4"),
+                value: "Four",
+                onChanged: (aaa) {
+                  setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+               Container(
+               width: 100.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("5"),
+                value: "Five",
+                onChanged: (aaa) {
+                  setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+               Container(
+               width: 100.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("6"),
+                value: "Six",
+                onChanged: (aaa) {
+                  setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+               Container(
+               width: 100.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("7"),
+                value: "Seven",
+                onChanged: (aaa) {
+                  setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+               Container(
+               width: 100.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("8"),
+                value: "Eight",
+                onChanged: (aaa) {
+                  setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+               Container(
+               width: 100.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("9"),
+                value: "Nine",
+                onChanged: (aaa) {
+                  setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+               Container(
+               width: 110.0,
+                child:  RadioListTile(
+                groupValue: rating,
+                title: Text("10"),
+                value: "Ten",
+                onChanged: (aaa) {
+                  setState(() {
+                    rating = aaa;
+                  });
+                },
+              ),
+              ),
+            ],
+        ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget fromToWidget() {
+    var t1 = "NO.10";
+    var t2 = "Header of from to widget";
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: CustomIcons.dropDownHeader,
+            child: ListTile(
+              title: InkWell(
+                onTap: () {},
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      t1,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    if (t1 != null && t2 != null)
+                      Text(
+                        " :",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                      child: Text(
+                        t2,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+              color: Colors.grey[200],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    // child: Container(
+                    //   child: InkWell(
+                    //     onTap: (){
+                    //       _selectDate(context);
+                    //     },
+                    //   ),
+                    // ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          child: Container(
+                            margin: EdgeInsets.only(right: 1,),
+                                                      child: TextField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                focusColor: Colors.black,
+                                prefixIcon: Icon(
+                                  Icons.question_answer,
+                                  color: CustomIcons.iconColor,
+                                ),
+                                hintText: 'From',
+                                hintStyle: TextStyle(fontSize: 18, height: 1.5),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 1,),
+                                                      child: TextField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                focusColor: Colors.black,
+                                prefixIcon: Icon(
+                                  Icons.question_answer,
+                                  color: CustomIcons.iconColor,
+                                ),
+                                hintText: 'To',
+                                hintStyle: TextStyle(fontSize: 18, height: 1.5),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ))
+        ],
+      ),
+    );
   }
 
   @override
@@ -1287,6 +1690,9 @@ Future<String> networkImageToBase64(String imageUrl) async {
                     ),
                   ),
                 ),
+                dateTimePicker(),
+                fromToWidget(),
+                ratingWidget(),
                 if (_status)
                   if (questions.length > 0)
                     for (var i = 0; i < questions.length; i++)

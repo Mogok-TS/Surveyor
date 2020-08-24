@@ -46,11 +46,25 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   var allItem = 0;
   var answerItem = 0;
   var continueStatus = false;
+  BoxDecoration flagDecoration(var flag) {
+    if (flag == "1") {
+      return BoxDecoration(
+    border: Border.all(
+      color: CustomIcons.appbarColor,
+    ),
+     borderRadius: BorderRadius.circular(5.0),
+  );
+    } else {
+      return BoxDecoration();
+    }
+  }
 
   Widget sectionList(var passSection, var item) {
     return Container(
       child: Card(
         child: Container(
+      decoration: flagDecoration(item["flag"]),
+
           child: Column(
             children: <Widget>[
               ListTile(
@@ -164,8 +178,13 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
               totalCount = 0,
               answeredCount = 0,
               sinpleData["desc"] = sections[i]["sectionDescription"],
+              sinpleData["flag"] = "0",
               for (var ii = 0; ii < data.length; ii++)
                 {
+                  if (data[ii]["Flag"] == "1")
+                    {
+                      sinpleData["flag"] = "1",
+                    },
                   if (data[ii]["SectionDesc"] ==
                       sections[i]["sectionDescription"])
                     {
@@ -180,7 +199,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             },
                           print("fill-->" + answeredCount.toString()),
                         }
-
                       else if (data[ii]["TypeDesc"] == "Attach Photograph")
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
@@ -220,7 +238,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
               sinpleData["answered"] = answeredCount,
               sinpleData["total"] = totalCount,
               sinpleData["remain"] = totalCount - answeredCount,
-
               setState(() => {
                     headerItems.add(sinpleData),
                   }),
@@ -236,7 +253,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   }
 
   clickComplete() {
-    var param = {"RespHdrSyskey":this.headerShopSyskey.toString()};
+    var param = {"RespHdrSyskey": this.headerShopSyskey.toString()};
     this.onlineSerives.saveComplete(param).then((value) => {
           if (value == true)
             {
