@@ -66,10 +66,29 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
     );
   }
-
+  _showDialog(var data){
+    showDialog(context: context, child:
+    new AlertDialog(
+      title: new Text("My Super title"),
+      content: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.store,color: CustomIcons.iconColor,),
+                  Text("Shwe Myint Moe(MMM Sai)")
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    )
+);
+  }
   Widget buildAssignItem(String storeName, String phone, String address, data) {
-//    this.performType = data["status"];
-//    this.performTypearray = this.performType["performType"];
+
     var param;
     var shopData = [data];
     print("99-->  ${shopData}");
@@ -132,6 +151,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                   color: Colors.white,
                                   shape: buttonShape(),
                                   onPressed: () {
+                                  //  _showDialog(data);
                                     getGPSstatus().then((status) => {
                                       print("$status"),
                                       if (status == true)

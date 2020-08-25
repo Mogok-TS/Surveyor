@@ -530,19 +530,19 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-
   BoxDecoration flagDecoration(var flag) {
     if (flag == "1") {
       return BoxDecoration(
-    border: Border.all(
-      color: CustomIcons.appbarColor,
-    ),
-     borderRadius: BorderRadius.circular(0.0),
-  );
+        border: Border.all(
+          color: CustomIcons.appbarColor,
+        ),
+        borderRadius: BorderRadius.circular(0.0),
+      );
     } else {
       return BoxDecoration();
     }
   }
+
   Widget attachPhotograph(data, _imageslist) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
@@ -659,7 +659,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget multipleChoice(var t1, var t2, var data, var questionIndex,var singleQuestion) {
+  Widget multipleChoice(
+      var t1, var t2, var data, var questionIndex, var singleQuestion) {
     return Container(
       decoration: flagDecoration(singleQuestion["Flag"]),
       margin: EdgeInsets.all(10),
@@ -716,7 +717,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     var t2 = data["QuestionDescription"];
     return Container(
       decoration: flagDecoration(data["Flag"]),
-
       margin: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
@@ -795,10 +795,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       decoration: flagDecoration(data["Flag"]),
       margin: EdgeInsets.all(10),
       child: Column(
-        
         children: <Widget>[
           Container(
-            
             color: CustomIcons.dropDownHeader,
             child: ListTile(
               title: InkWell(
@@ -1118,7 +1116,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                           _data["radioDatas"] = radioData;
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    } else {
+                    }
+                     else {
+                      _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
                     }
@@ -1199,7 +1199,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget _allWidget(var data, var questionIndex, var primarydata) {
-    print("singlequestion>>"+data.toString());
+    print("singlequestion>>" + data.toString());
     if (primarydata["images"] == null) {
       primarydata["images"] = [];
     }
@@ -1214,8 +1214,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     } else if (data["TypeDesc"] == "Multiple Choice") {
       var t1 = data["QuestionCode"];
       var t2 = data["QuestionDescription"];
-      _widget =
-          multipleChoice(t1, t2, primarydata["radioDatas"], questionIndex,data);
+      _widget = multipleChoice(
+          t1, t2, primarydata["radioDatas"], questionIndex, data);
+    } else if (data["TypeDesc"] == "Date/Time Range") {
+      _widget = dateTimePicker(data);
+    } else if (data["TypeDesc"] == "Number Range") {
+      _widget = fromToWidget(data);
+    } else if (data["TypeDesc"] == "Rating 0-10") {
+      _widget = ratingWidget(data);
     } else {
       _widget = Container(
         margin: EdgeInsets.only(bottom: 20),
@@ -1240,9 +1246,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   String datePicker;
   DateTime selectedDate = DateTime.now();
-  Widget dateTimePicker() {
-    var t1 = "NO.10";
-    var t2 = "Header OF Date TIme Picker";
+  Widget dateTimePicker(var data) {
+    var t1 = data["QuestionCode"];
+    var t2 = data["QuestionDescription"];
     TextEditingController _textController = new TextEditingController();
     _textController.text = selectedDate.toString();
     return Container(
@@ -1289,7 +1295,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                   
                     child: TextField(
                       onTap: () {
                         _selectDate(context);
@@ -1315,8 +1320,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       ),
     );
   }
-   String choice;
-String _radioValue;
+
+  String choice;
+  String _radioValue;
   void radioButtonChanges(String value) {
     setState(() {
       _radioValue = value;
@@ -1336,10 +1342,11 @@ String _radioValue;
       debugPrint(choice); //Debug the choice in console
     });
   }
+
   var rating;
-  Widget ratingWidget() {
-    var t1 = "NO.11";
-    var t2 = "Rating Question???";
+  Widget ratingWidget(var data) {
+    var t1 = data["QuestionCode"];
+    var t2 = data["QuestionDescription"];
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -1379,151 +1386,150 @@ String _radioValue;
           Container(
             color: Colors.grey[200],
             height: 50.0,
-           child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-             
-              Container(
-               width: 100.0,
-                child:  RadioListTile(
-               groupValue: rating,
-                title: Text("1"),
-                value: "One",
-                onChanged: (aaa) {
-                   setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-              Container(
-               width: 100.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("2"),
-                value: "Two",
-                onChanged: (aaa) {
-                   setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-              Container(
-               width: 100.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("3"),
-                value: "Three",
-                onChanged: (aaa) {
-                   setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-              Container(
-               width: 100.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("4"),
-                value: "Four",
-                onChanged: (aaa) {
-                  setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-               Container(
-               width: 100.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("5"),
-                value: "Five",
-                onChanged: (aaa) {
-                  setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-               Container(
-               width: 100.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("6"),
-                value: "Six",
-                onChanged: (aaa) {
-                  setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-               Container(
-               width: 100.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("7"),
-                value: "Seven",
-                onChanged: (aaa) {
-                  setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-               Container(
-               width: 100.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("8"),
-                value: "Eight",
-                onChanged: (aaa) {
-                  setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-               Container(
-               width: 100.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("9"),
-                value: "Nine",
-                onChanged: (aaa) {
-                  setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-               Container(
-               width: 110.0,
-                child:  RadioListTile(
-                groupValue: rating,
-                title: Text("10"),
-                value: "Ten",
-                onChanged: (aaa) {
-                  setState(() {
-                    rating = aaa;
-                  });
-                },
-              ),
-              ),
-            ],
-        ),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("1"),
+                    value: "One",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("2"),
+                    value: "Two",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("3"),
+                    value: "Three",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("4"),
+                    value: "Four",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("5"),
+                    value: "Five",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("6"),
+                    value: "Six",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("7"),
+                    value: "Seven",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("8"),
+                    value: "Eight",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("9"),
+                    value: "Nine",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 110.0,
+                  child: RadioListTile(
+                    groupValue: rating,
+                    title: Text("10"),
+                    value: "Ten",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),
     );
   }
 
-  Widget fromToWidget() {
-    var t1 = "NO.10";
-    var t2 = "Header of from to widget";
+  Widget fromToWidget(var data) {
+    var t1 = data["QuestionCode"];
+    var t2 = data["QuestionDescription"];
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -1568,14 +1574,15 @@ String _radioValue;
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                   
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Flexible(
                           child: Container(
-                            margin: EdgeInsets.only(right: 1,),
-                                                      child: TextField(
+                            margin: EdgeInsets.only(
+                              right: 1,
+                            ),
+                            child: TextField(
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 focusColor: Colors.black,
@@ -1594,8 +1601,10 @@ String _radioValue;
                         ),
                         Flexible(
                           child: Container(
-                            margin: EdgeInsets.only(left: 1,),
-                                                      child: TextField(
+                            margin: EdgeInsets.only(
+                              left: 1,
+                            ),
+                            child: TextField(
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 focusColor: Colors.black,
@@ -1695,9 +1704,6 @@ String _radioValue;
                     ),
                   ),
                 ),
-                // dateTimePicker(),
-                // fromToWidget(),
-                // ratingWidget(),
                 if (_status)
                   if (questions.length > 0)
                     for (var i = 0; i < questions.length; i++)
