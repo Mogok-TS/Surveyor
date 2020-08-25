@@ -306,7 +306,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Center(
                         child: new Text(
-                          "Check In",
+                          "Check Out",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,

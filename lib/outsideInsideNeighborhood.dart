@@ -49,11 +49,11 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   BoxDecoration flagDecoration(var flag) {
     if (flag == "1") {
       return BoxDecoration(
-    border: Border.all(
-      color: CustomIcons.appbarColor,
-    ),
-     borderRadius: BorderRadius.circular(5.0),
-  );
+        border: Border.all(
+          color: CustomIcons.appbarColor,
+        ),
+        borderRadius: BorderRadius.circular(5.0),
+      );
     } else {
       return BoxDecoration();
     }
@@ -63,8 +63,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     return Container(
       child: Card(
         child: Container(
-      decoration: flagDecoration(item["flag"]),
-
+          decoration: flagDecoration(item["flag"]),
           child: Column(
             children: <Widget>[
               ListTile(
@@ -200,7 +199,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             },
                           print("fill-->" + answeredCount.toString()),
                         }
-                        else if (data[ii]["TypeDesc"] == "Date/Time Range")
+                      else if (data[ii]["TypeDesc"] == "Date/Time Range")
                         {
                           if (data[ii]["AnswerDesc"] != "")
                             {
@@ -209,7 +208,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             },
                           print("fill-->" + answeredCount.toString()),
                         }
-                        else if (data[ii]["TypeDesc"] == "Rating 0-10")
+                      else if (data[ii]["TypeDesc"] == "Rating 0-10")
                         {
                           if (data[ii]["AnswerDesc"] != "")
                             {
@@ -218,7 +217,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             },
                           print("fill-->" + answeredCount.toString()),
                         }
-                        else if (data[ii]["TypeDesc"] == "Number Range")
+                      else if (data[ii]["TypeDesc"] == "Number Range")
                         {
                           if (data[ii]["AnswerDesc"] != "")
                             {
@@ -227,7 +226,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             },
                           print("fill-->" + answeredCount.toString()),
                         }
-
                       else if (data[ii]["TypeDesc"] == "Attach Photograph")
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)

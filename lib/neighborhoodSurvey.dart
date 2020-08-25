@@ -697,6 +697,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       ],
                     ),
                   ),
+                  
                 ],
               )),
           Container(
@@ -735,7 +736,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               }),
             ),
           ),
-          Container(),
+          _commentWidget(data["Flag"], data),
         ],
       ),
     );
@@ -788,10 +789,33 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[buildRadio(data, questionIndex)],
                 // children: <Widget>[buildRadio(data, questionIndex)],
-              ))
+              )),
+              _commentWidget(singleQuestion["Flag"], singleQuestion),
         ],
       ),
     );
+  }
+  Widget _commentWidget(var flag,var data){
+    if(flag.toString() == "1"){
+      return Container(
+        color: Colors.grey[200],
+                    padding: EdgeInsets.all(12),
+                    height: 10 * 24.0,
+                    child: TextField(
+                      enabled: false,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10),
+                        hintText:
+                            data["Comment"].toString(),
+                        fillColor: Colors.grey[300],
+                        filled: true,
+                      ),
+                    ),
+                  );
+    }else{
+      return Container();
+    }
   }
 
   Widget checkBox(var data, var datas) {
@@ -862,7 +886,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       ],
                     ),
                 ],
-              ))
+              )),
+               _commentWidget(data["Flag"], data),
         ],
       ),
     );
@@ -940,7 +965,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     ),
                   ),
                 ],
-              ))
+              )),
+               _commentWidget(data["Flag"], data),
         ],
       ),
     );
@@ -1345,6 +1371,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   Widget dateTimePicker(var data) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
+    
     TextEditingController _textController = new TextEditingController();
     if (data["AnswerDesc"] == "") {
       _textController.text = selectedDate.toString();
@@ -1353,7 +1380,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _textController.text = data["AnswerDesc"];
     }
     return Container(
-      padding: EdgeInsets.all(10),
+      decoration: flagDecoration(data["Flag"]),
+      margin: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Container(
@@ -1416,7 +1444,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     ),
                   ),
                 ],
-              ))
+              )),
+              _commentWidget(data["Flag"], data),
         ],
       ),
     );
@@ -1449,7 +1478,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
-      padding: EdgeInsets.all(10),
+      decoration: flagDecoration(data["Flag"]),
+      margin: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Container(
@@ -1635,7 +1665,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 ),
               ],
             ),
-          )
+          ),
+          _commentWidget(data["Flag"], data),
         ],
       ),
     );
@@ -1649,7 +1680,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
-      padding: EdgeInsets.all(10),
+      decoration: flagDecoration(data["Flag"]),
+      margin: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Container(
@@ -1745,7 +1777,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     ),
                   ),
                 ],
-              ))
+              )),
+              _commentWidget(data["Flag"], data),
         ],
       ),
     );
