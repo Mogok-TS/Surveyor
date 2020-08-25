@@ -582,6 +582,7 @@ class OnlineSerives {
     var response = await http
         .get(this.url, headers: this.headersWithKey)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    print("100-> ${response.body}");
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {

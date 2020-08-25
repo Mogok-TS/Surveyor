@@ -137,13 +137,17 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   _getData() {
     var routeData = this.storage.getItem('Routebyuser');
     var category = this.storage.getItem("Category");
-    var answer = category["answer"];
+    print("103--> " + category.toString());
+    var answer = category[0]["answer"];
+    print("101--> " + answer.toString());
     var categories = [];
     var passData;
     var svrHdrSk = [];
     var surDetail = [];
-    for(var q = 0; q < answer.length; q++){
-      categories.add(answer[q]["category"]);
+    if(answer.length > 0){
+      for(var q = 0; q < answer.length; q++){
+        categories.add(answer[q]["category"]);
+      }
     }
     if(this.widget.regOrAss ==  "assign"){
       passData = this.widget.passData;
