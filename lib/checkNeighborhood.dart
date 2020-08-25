@@ -295,6 +295,48 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                       ),
                     ),
                   ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 300,
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      child: Center(
+                        child: new Text(
+                          "Check In",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 15),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 300,
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      child: Center(
+                        child: new Text(
+                          "Complete",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 15),
+                        ),
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),
