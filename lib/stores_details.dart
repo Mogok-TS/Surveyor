@@ -714,6 +714,23 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             ),
                           ),
                         );
+                        _state = "-";
+                        _stateList = ["-"];
+                        _districtList = [
+                          "-",
+                        ];
+                        _district = "-";
+                        _townShip = "-";
+                        _townShipList = ["-"];
+                        _townOrVillagetract = "-";
+                        _town = "-";
+                        _townList = ['-'];
+                        _ward = "-";
+                        _wardList = ['-'];
+                        _villageTract = "-";
+                        _villageTractList = ["-"];
+                        _village = "-";
+                        _villageList = ["-"];
                       },
                       child: Row(
                         children: <Widget>[

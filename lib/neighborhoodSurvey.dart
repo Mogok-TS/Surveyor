@@ -530,12 +530,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
+
+  BoxDecoration flagDecoration(var flag) {
+    if (flag == "1") {
+      return BoxDecoration(
+    border: Border.all(
+      color: CustomIcons.appbarColor,
+    ),
+     borderRadius: BorderRadius.circular(0.0),
+  );
+    } else {
+      return BoxDecoration();
+    }
+  }
   Widget attachPhotograph(data, _imageslist) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     var images = [];
     return Container(
-      padding: EdgeInsets.all(10),
+      decoration: flagDecoration(data["Flag"]),
+      margin: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Container(
@@ -645,9 +659,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget multipleChoice(var t1, var t2, var data, var questionIndex) {
+  Widget multipleChoice(var t1, var t2, var data, var questionIndex,var singleQuestion) {
     return Container(
-      padding: EdgeInsets.all(10),
+      decoration: flagDecoration(singleQuestion["Flag"]),
+      margin: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Container(
@@ -700,7 +715,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
-      padding: EdgeInsets.all(10),
+      decoration: flagDecoration(data["Flag"]),
+
+      margin: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Container(
@@ -775,10 +792,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     TextEditingController _textController = new TextEditingController();
     _textController.text = data["AnswerDesc"];
     return Container(
-      padding: EdgeInsets.all(10),
+      decoration: flagDecoration(data["Flag"]),
+      margin: EdgeInsets.all(10),
       child: Column(
+        
         children: <Widget>[
           Container(
+            
             color: CustomIcons.dropDownHeader,
             child: ListTile(
               title: InkWell(
@@ -1195,7 +1215,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       var t1 = data["QuestionCode"];
       var t2 = data["QuestionDescription"];
       _widget =
-          multipleChoice(t1, t2, primarydata["radioDatas"], questionIndex);
+          multipleChoice(t1, t2, primarydata["radioDatas"], questionIndex,data);
     } else {
       _widget = Container(
         margin: EdgeInsets.only(bottom: 20),
@@ -1269,13 +1289,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                    // child: Container(
-                    //   child: InkWell(
-                    //     onTap: (){
-                    //       _selectDate(context);
-                    //     },
-                    //   ),
-                    // ),
+                   
                     child: TextField(
                       onTap: () {
                         _selectDate(context);
@@ -1554,13 +1568,7 @@ String _radioValue;
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                    // child: Container(
-                    //   child: InkWell(
-                    //     onTap: (){
-                    //       _selectDate(context);
-                    //     },
-                    //   ),
-                    // ),
+                   
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
