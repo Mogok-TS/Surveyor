@@ -217,7 +217,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "0";
+            _value["n10"] = "2";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -244,7 +244,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "0";
+            _value["n10"] = "2";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -307,7 +307,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "0";
+            _value["n10"] = "2";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -377,7 +377,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 _value["n9"] = loopData["Flag"];
               }
               if (loopData["ApprovedFlag"] == null) {
-                _value["n10"] = "0";
+                _value["n10"] = "2";
               } else {
                 _value["n10"] = loopData["ApprovedFlag"];
               }
