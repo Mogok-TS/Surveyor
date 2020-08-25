@@ -183,6 +183,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                 {
                   if (data[ii]["Flag"] == "1")
                     {
+                      sinpleData["flag"] = "",
                       sinpleData["flag"] = "1",
                     },
                   if (data[ii]["SectionDesc"] ==
@@ -199,6 +200,34 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                             },
                           print("fill-->" + answeredCount.toString()),
                         }
+                        else if (data[ii]["TypeDesc"] == "Date/Time Range")
+                        {
+                          if (data[ii]["AnswerDesc"] != "")
+                            {
+                              answeredCount++,
+                              answerItem++,
+                            },
+                          print("fill-->" + answeredCount.toString()),
+                        }
+                        else if (data[ii]["TypeDesc"] == "Rating 0-10")
+                        {
+                          if (data[ii]["AnswerDesc"] != "")
+                            {
+                              answeredCount++,
+                              answerItem++,
+                            },
+                          print("fill-->" + answeredCount.toString()),
+                        }
+                        else if (data[ii]["TypeDesc"] == "Number Range")
+                        {
+                          if (data[ii]["AnswerDesc"] != "")
+                            {
+                              answeredCount++,
+                              answerItem++,
+                            },
+                          print("fill-->" + answeredCount.toString()),
+                        }
+
                       else if (data[ii]["TypeDesc"] == "Attach Photograph")
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
@@ -227,7 +256,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                           print("000-->" + answeredCount.toString()),
                         },
                     },
-                  print("12--->" + data[ii]["HeaderShopSyskey"].toString()),
                   if (data[ii]["HeaderShopSyskey"].toString() != "")
                     {
                       headerShopSyskey = "",

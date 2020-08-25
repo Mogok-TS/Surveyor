@@ -1330,12 +1330,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   Future<void> _selectDate(BuildContext context, var data) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
+        initialDate: data,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != data)
       setState(() {
         data = picked;
+        print("date>>"+picked.toString());
       });
   }
 
