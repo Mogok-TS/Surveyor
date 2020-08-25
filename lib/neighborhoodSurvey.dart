@@ -108,7 +108,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     if (checkPHoto == "have") {
       ShowToast("Please answer  the photo questions at least one");
     } else {
-
       showLoading();
       var _question = this.widget.question;
       var pssOject = this.widget.passData[0];
@@ -131,7 +130,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _allData["street"] = pssOject["street"];
         _allData["t12"] = "";
         var _syskey = this.widget.headershopKey;
-       
+
         _allData["svrHdrData"] = {
           "syskey": _syskey,
           "n1": "0",
@@ -219,9 +218,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        }else if(loopData["TypeDesc"] == "Date/Time Range"){
+        } else if (loopData["TypeDesc"] == "Date/Time Range") {
           var _value = {};
-           _value["id"] = loopData["QuestionShopSyskey"];
+          _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -248,10 +247,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        } 
-        else if(loopData["TypeDesc"] == "Rating 0-10"){
+        } else if (loopData["TypeDesc"] == "Rating 0-10") {
           var _value = {};
-           _value["id"] = loopData["QuestionShopSyskey"];
+          _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -278,10 +276,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        }
-        else if(loopData["TypeDesc"] == "Number Range"){
+        } else if (loopData["TypeDesc"] == "Number Range") {
           var _value = {};
-           _value["id"] = loopData["QuestionShopSyskey"];
+          _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
@@ -308,9 +305,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        }
-        
-         else if (loopData["TypeDesc"] == "Checkbox") {
+        } else if (loopData["TypeDesc"] == "Checkbox") {
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
@@ -476,10 +471,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       }
       _allData["quesAndAns"] = questionAndAnswer;
 
-  //  setState(() {
-  //    _consoleLable = _allData.toString();
-  //    hideLoadingDialog();
-  //  });
+      // setState(() {
+      //   _consoleLable = _allData.toString();
+      //   hideLoadingDialog();
+      // });
 
       this.onlineSerives.createStore(_allData).then((reslut) => {
             hideLoadingDialog(),
@@ -1203,25 +1198,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                           _data["radioDatas"] = radioData;
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    }
-                    else if(questions[ss]["TypeDesc"] == "Date/Time Range"){
+                    } else if (questions[ss]["TypeDesc"] == "Date/Time Range") {
                       _data["from"] = "";
                       _data["from"] = "";
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    }
-                    else if(questions[ss]["TypeDesc"] == "Number Range"){
+                    } else if (questions[ss]["TypeDesc"] == "Number Range") {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    }
-                    else if(questions[ss]["TypeDesc"] == "Rating 0-10"){
+                    } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    }
-                     else {
+                    } else {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
@@ -1336,7 +1327,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     return _widget;
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context, var data) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -1344,21 +1335,20 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {
-        selectedDate = picked;
+        data = picked;
       });
   }
 
   String datePicker;
   DateTime selectedDate = DateTime.now();
   Widget dateTimePicker(var data) {
-
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     TextEditingController _textController = new TextEditingController();
-    if(data["AnswerDesc"] == ""){
-    _textController.text = selectedDate.toString();
-    data["AnswerDesc"] = selectedDate.toString();
-    }else{
+    if (data["AnswerDesc"] == "") {
+      _textController.text = selectedDate.toString();
+      data["AnswerDesc"] = selectedDate.toString();
+    } else {
       _textController.text = data["AnswerDesc"];
     }
     return Container(
@@ -1407,7 +1397,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                     child: TextField(
                       onTap: () {
-                        _selectDate(context);
+                        _selectDate(context, data["AnswerDesc"]);
                       },
                       controller: _textController,
                       decoration: InputDecoration(
@@ -1453,9 +1443,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     });
   }
 
-  var rating = "One";
+  var rating = "0";
   Widget ratingWidget(var data) {
-    
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
@@ -1504,8 +1493,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   width: 100.0,
                   child: RadioListTile(
                     groupValue: rating,
+                    title: Text("0"),
+                    value: "0",
+                    onChanged: (aaa) {
+                      setState(() {
+                        rating = aaa;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100.0,
+                  child: RadioListTile(
+                    groupValue: rating,
                     title: Text("1"),
-                    value: "One",
+                    value: "1",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1518,7 +1520,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("2"),
-                    value: "Two",
+                    value: "2",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1531,7 +1533,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("3"),
-                    value: "Three",
+                    value: "3",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1544,7 +1546,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("4"),
-                    value: "Four",
+                    value: "4",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1557,7 +1559,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("5"),
-                    value: "Five",
+                    value: "5",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1570,7 +1572,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("6"),
-                    value: "Six",
+                    value: "6",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1583,7 +1585,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("7"),
-                    value: "Seven",
+                    value: "7",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1596,7 +1598,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("8"),
-                    value: "Eight",
+                    value: "e",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1609,7 +1611,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("9"),
-                    value: "Nine",
+                    value: "9",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1622,7 +1624,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: RadioListTile(
                     groupValue: rating,
                     title: Text("10"),
-                    value: "Ten",
+                    value: "10",
                     onChanged: (aaa) {
                       setState(() {
                         rating = aaa;
@@ -1695,22 +1697,19 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.only(
-                              right: 1,
+                              right: 2,
                             ),
                             child: TextField(
                               controller: _fromController,
                               onChanged: (val) {
-                        data["AnswerDesc"] = _fromController.text;
-                      },
+                                data["AnswerDesc"] = _fromController.text;
+                              },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
+                                labelText: 'From',
+                                labelStyle: TextStyle(
+                                    color: Colors.black54, fontSize: 18),
                                 focusColor: Colors.black,
-                                prefixIcon: Icon(
-                                  Icons.question_answer,
-                                  color: CustomIcons.iconColor,
-                                ),
-                                hintText: 'From',
-                                hintStyle: TextStyle(fontSize: 18, height: 1.5),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -1721,23 +1720,19 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.only(
-                              left: 1,
+                              left: 2,
                             ),
                             child: TextField(
-                              
                               controller: _toController,
                               onChanged: (val) {
-                        data["AnswerDesc2"] = _toController.text;
-                      },
+                                data["AnswerDesc2"] = _toController.text;
+                              },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
+                                labelText: 'To',
+                                labelStyle: TextStyle(
+                                    color: Colors.black54, fontSize: 18),
                                 focusColor: Colors.black,
-                                prefixIcon: Icon(
-                                  Icons.question_answer,
-                                  color: CustomIcons.iconColor,
-                                ),
-                                hintText: 'To',
-                                hintStyle: TextStyle(fontSize: 18, height: 1.5),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
