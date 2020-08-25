@@ -108,7 +108,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     if (checkPHoto == "have") {
       ShowToast("Please answer  the photo questions at least one");
     } else {
-//    ShowToast(saveCondition);
+
       showLoading();
       var _question = this.widget.question;
       var pssOject = this.widget.passData[0];
@@ -131,11 +131,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _allData["street"] = pssOject["street"];
         _allData["t12"] = "";
         var _syskey = this.widget.headershopKey;
-        // if (this._checkSaveorupdate == "update") {
-        //   _syskey = this.questions[0]["HeaderShopSyskey"].toString();
-        // } else {
-        //   _syskey = "";
-        // }
+       
         _allData["svrHdrData"] = {
           "syskey": _syskey,
           "n1": "0",
@@ -223,7 +219,98 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        } else if (loopData["TypeDesc"] == "Checkbox") {
+        }else if(loopData["TypeDesc"] == "Date/Time Range"){
+          var _value = {};
+           _value["id"] = loopData["QuestionShopSyskey"];
+          _value["questionTypeId"] = loopData["TypeSK"].toString();
+          _value["questionNatureId"] = _question["sectionSyskey"].toString();
+          _value["questionId"] = loopData["QuestionSyskey"].toString();
+          _value["answerId"] = "0";
+          _value["remark"] = loopData["AnswerDesc"];
+          _value["desc"] = "";
+          _value["instruction"] = loopData["QuestionDescription"];
+          if (loopData["Comment"] == null) {
+            _value["t4"] = "";
+          } else {
+            _value["t4"] = loopData["Comment"];
+          }
+          _value["t5"] = "";
+          _value["n8"] = "0";
+          if (loopData["Flag"] == null) {
+            _value["n9"] = "0";
+          } else {
+            _value["n9"] = loopData["Flag"];
+          }
+          if (loopData["ApprovedFlag"] == null) {
+            _value["n10"] = "2";
+          } else {
+            _value["n10"] = loopData["ApprovedFlag"];
+          }
+          _value["svr9DataList"] = [];
+          questionAndAnswer.add(_value);
+        } 
+        else if(loopData["TypeDesc"] == "Rating 0-10"){
+          var _value = {};
+           _value["id"] = loopData["QuestionShopSyskey"];
+          _value["questionTypeId"] = loopData["TypeSK"].toString();
+          _value["questionNatureId"] = _question["sectionSyskey"].toString();
+          _value["questionId"] = loopData["QuestionSyskey"].toString();
+          _value["answerId"] = "0";
+          _value["remark"] = rating;
+          _value["desc"] = "";
+          _value["instruction"] = loopData["QuestionDescription"];
+          if (loopData["Comment"] == null) {
+            _value["t4"] = "";
+          } else {
+            _value["t4"] = loopData["Comment"];
+          }
+          _value["t5"] = "";
+          _value["n8"] = "0";
+          if (loopData["Flag"] == null) {
+            _value["n9"] = "0";
+          } else {
+            _value["n9"] = loopData["Flag"];
+          }
+          if (loopData["ApprovedFlag"] == null) {
+            _value["n10"] = "2";
+          } else {
+            _value["n10"] = loopData["ApprovedFlag"];
+          }
+          _value["svr9DataList"] = [];
+          questionAndAnswer.add(_value);
+        }
+        else if(loopData["TypeDesc"] == "Number Range"){
+          var _value = {};
+           _value["id"] = loopData["QuestionShopSyskey"];
+          _value["questionTypeId"] = loopData["TypeSK"].toString();
+          _value["questionNatureId"] = _question["sectionSyskey"].toString();
+          _value["questionId"] = loopData["QuestionSyskey"].toString();
+          _value["answerId"] = "0";
+          _value["remark"] = loopData["AnswerDesc"];
+          _value["desc"] = "";
+          _value["instruction"] = loopData["QuestionDescription"];
+          if (loopData["Comment"] == null) {
+            _value["t4"] = "";
+          } else {
+            _value["t4"] = loopData["Comment"];
+          }
+          _value["t5"] = loopData["AnswerDesc2"];
+          _value["n8"] = "0";
+          if (loopData["Flag"] == null) {
+            _value["n9"] = "0";
+          } else {
+            _value["n9"] = loopData["Flag"];
+          }
+          if (loopData["ApprovedFlag"] == null) {
+            _value["n10"] = "2";
+          } else {
+            _value["n10"] = loopData["ApprovedFlag"];
+          }
+          _value["svr9DataList"] = [];
+          questionAndAnswer.add(_value);
+        }
+        
+         else if (loopData["TypeDesc"] == "Checkbox") {
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
@@ -389,10 +476,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       }
       _allData["quesAndAns"] = questionAndAnswer;
 
-//    setState(() {
-//      _consoleLable = _allData.toString();
-//      hideLoadingDialog();
-//    });
+  //  setState(() {
+  //    _consoleLable = _allData.toString();
+  //    hideLoadingDialog();
+  //  });
 
       this.onlineSerives.createStore(_allData).then((reslut) => {
             hideLoadingDialog(),
@@ -1117,6 +1204,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["checkDatas"] = [];
                       _data["images"] = [];
                     }
+                    else if(questions[ss]["TypeDesc"] == "Date/Time Range"){
+                      _data["from"] = "";
+                      _data["from"] = "";
+                      _data["radioDatas"] = [];
+                      _data["checkDatas"] = [];
+                      _data["images"] = [];
+                    }
+                    else if(questions[ss]["TypeDesc"] == "Number Range"){
+                      _data["radioDatas"] = [];
+                      _data["checkDatas"] = [];
+                      _data["images"] = [];
+                    }
+                    else if(questions[ss]["TypeDesc"] == "Rating 0-10"){
+                      _data["radioDatas"] = [];
+                      _data["checkDatas"] = [];
+                      _data["images"] = [];
+                    }
                      else {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
@@ -1247,10 +1351,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   String datePicker;
   DateTime selectedDate = DateTime.now();
   Widget dateTimePicker(var data) {
+
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     TextEditingController _textController = new TextEditingController();
+    if(data["AnswerDesc"] == ""){
     _textController.text = selectedDate.toString();
+    data["AnswerDesc"] = selectedDate.toString();
+    }else{
+      _textController.text = data["AnswerDesc"];
+    }
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -1303,10 +1413,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       decoration: InputDecoration(
                         focusColor: Colors.black,
                         prefixIcon: Icon(
-                          Icons.question_answer,
+                          Icons.date_range,
                           color: CustomIcons.iconColor,
                         ),
-                        hintText: 'Answer',
+                        hintText: 'Date Time',
                         hintStyle: TextStyle(fontSize: 18, height: 1.5),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -1343,8 +1453,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     });
   }
 
-  var rating;
+  var rating = "One";
   Widget ratingWidget(var data) {
+    
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
@@ -1528,6 +1639,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget fromToWidget(var data) {
+    TextEditingController _fromController = new TextEditingController();
+    _fromController.text = data["AnswerDesc"];
+    TextEditingController _toController = new TextEditingController();
+    _toController.text = data["AnswerDesc2"];
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
@@ -1583,6 +1698,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               right: 1,
                             ),
                             child: TextField(
+                              controller: _fromController,
+                              onChanged: (val) {
+                        data["AnswerDesc"] = _fromController.text;
+                      },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 focusColor: Colors.black,
@@ -1605,6 +1724,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               left: 1,
                             ),
                             child: TextField(
+                              
+                              controller: _toController,
+                              onChanged: (val) {
+                        data["AnswerDesc2"] = _toController.text;
+                      },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 focusColor: Colors.black,
