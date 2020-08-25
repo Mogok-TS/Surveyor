@@ -288,7 +288,7 @@ class OnlineSerives {
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
                 _bojArray["AnswerSyskey"] = dataList[ii]["AnswerSyskey"];
               }
-            }else if(dataList[ii]["TypeSK"].toString() == "4"){
+            }else if(dataList[ii]["TypeSK"].toString() == "4" || dataList[ii]["TypeSK"].toString() == "5" || dataList[ii]["TypeSK"].toString() == "7"){
               _bojArray["AnswerSyskey"] = "";
               if(dataList[ii]["AnswerDesc"] == "" || dataList[ii]["AnswerDesc"] == null){
                 _bojArray["HeaderShopSyskey"] = "";
