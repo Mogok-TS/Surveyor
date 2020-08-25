@@ -300,6 +300,28 @@ class OnlineSerives {
                 _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
               }
+            }else if(dataList[ii]["TypeSK"].toString() == "6"){
+              if(dataList[ii]["AnswerDesc"] == "" || dataList[ii]["AnswerDesc"] == null ){
+                _bojArray["HeaderShopSyskey"] = "";
+                _bojArray["AnswerShopPhoto"] = [];
+                _bojArray["AnswerDesc"] = "";
+              }else{
+                checkSaveorupdate = "update";
+                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
+                _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
+              }
+
+              if(dataList[ii]["AnswerDesc2"] == "" || dataList[ii]["AnswerDesc2"] == null ){
+                _bojArray["HeaderShopSyskey"] = "";
+                _bojArray["AnswerShopPhoto"] = [];
+                _bojArray["AnswerDesc2"] = "";
+              }else{
+                checkSaveorupdate = "update";
+                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
+                _bojArray["AnswerDesc2"] = dataList[ii]["AnswerDesc2"];
+              }
             }
             _bojArray["TypeSK"] = dataList[ii]["TypeSK"];
             _bojArray["TypeDesc"] = dataList[ii]["TypeDesc"];
