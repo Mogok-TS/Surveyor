@@ -95,6 +95,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   _clickDoneAssignStore() async {
     var checkPHoto = "sinple";
     for (var i = 0; i < this.questions.length; i++) {
+      
       var loopdata = questions[i];
       var loopPrimary = _primaryData[i];
       if (loopdata["TypeDesc"] == "Attach Photograph") {
@@ -184,7 +185,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       var questionAndAnswer = [];
 
       for (var i = 0; i < this.questions.length; i++) {
+
         var loopData = this.questions[i];
+         print("app>>"+loopData["ApprovedFlag"].toString());
         var loopPrimary = {};
         loopPrimary = this._primaryData[i];
         var singleQueAndAns = {};
@@ -199,19 +202,19 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["remark"] = loopData["AnswerDesc"];
           _value["desc"] = "";
           _value["instruction"] = loopData["QuestionDescription"];
-          if (loopData["Comment"] == null) {
+          if (loopData["Comment"] == "") {
             _value["t4"] = "";
           } else {
             _value["t4"] = loopData["Comment"];
           }
           _value["t5"] = "";
           _value["n8"] = "0";
-          if (loopData["Flag"] == null) {
+          if (loopData["Flag"] == "") {
             _value["n9"] = "0";
           } else {
             _value["n9"] = loopData["Flag"];
           }
-          if (loopData["ApprovedFlag"] == null) {
+          if (loopData["ApprovedFlag"] == "" || loopData["ApprovedFlag"] == null) {
             _value["n10"] = "2";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
