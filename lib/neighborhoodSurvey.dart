@@ -644,21 +644,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      t1,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    if (t1 != null && t2 != null)
-                      Text(
-                        " :",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    SizedBox(
-                      width: 10,
-                    ),
+//                    Text(
+//                      t1,
+//                      style: TextStyle(color: Colors.black),
+//                    ),
+//                    if (t1 != null && t2 != null)
+//                      Text(
+//                        " :",
+//                        style: TextStyle(color: Colors.black),
+//                      ),
+//                    SizedBox(
+//                      width: 10,
+//                    ),
                     Flexible(
                       child: Text(
-                        t2,
+                        t1 + " : " + t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -759,21 +759,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      t1,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    if (t1 != null && t2 != null)
-                      Text(
-                        " :",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    SizedBox(
-                      width: 10,
-                    ),
+//                    Text(
+//                      t1,
+//                      style: TextStyle(color: Colors.black),
+//                    ),
+//                    if (t1 != null && t2 != null)
+//                      Text(
+//                        " :",
+//                        style: TextStyle(color: Colors.black),
+//                      ),
+//                    SizedBox(
+//                      width: 10,
+//                    ),
                     Flexible(
                       child: Text(
-                        t2,
+                        t1 + " : " + t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -836,21 +836,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      t1,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    if (t1 != null && t2 != null)
-                      Text(
-                        " :",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    SizedBox(
-                      width: 10,
-                    ),
+//                    Text(
+//                      t1,
+//                      style: TextStyle(color: Colors.black),
+//                    ),
+//                    if (t1 != null && t2 != null)
+//                      Text(
+//                        " :",
+//                        style: TextStyle(color: Colors.black),
+//                      ),
+//                    SizedBox(
+//                      width: 10,
+//                    ),
                     Flexible(
                       child: Text(
-                        t2,
+                        t1 + " : " + t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -913,21 +913,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      t1,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    if (t1 != null && t2 != null)
-                      Text(
-                        " :",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    SizedBox(
-                      width: 10,
-                    ),
+//                    Text(
+//                      t1,
+//                      style: TextStyle(color: Colors.black),
+//                    ),
+//                    if (t1 != null && t2 != null)
+//                      Text(
+//                        " :",
+//                        style: TextStyle(color: Colors.black),
+//                      ),
+//                    SizedBox(
+//                      width: 10,
+//                    ),
                     Flexible(
                       child: Text(
-                        t2,
+                        t1 + " : " + t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -1394,21 +1394,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      t1,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    if (t1 != null && t2 != null)
-                      Text(
-                        " :",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    SizedBox(
-                      width: 10,
-                    ),
+//                    Text(
+//                      t1,
+//                      style: TextStyle(color: Colors.black),
+//                    ),
+//                    if (t1 != null && t2 != null)
+//                      Text(
+//                        " :",
+//                        style: TextStyle(color: Colors.black),
+//                      ),
+//                    SizedBox(
+//                      width: 10,
+//                    ),
                     Flexible(
                       child: Text(
-                        t2,
+                        t1 + " : " +t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -1492,21 +1492,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      t1,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    if (t1 != null && t2 != null)
-                      Text(
-                        " :",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    SizedBox(
-                      width: 10,
-                    ),
+//                    Text(
+//                      t1,
+//                      style: TextStyle(color: Colors.black),
+//                    ),
+//                    if (t1 != null && t2 != null)
+//                      Text(
+//                        " :",
+//                        style: TextStyle(color: Colors.black),
+//                      ),
+//                    SizedBox(
+//                      width: 10,
+//                    ),
                     Flexible(
                       child: Text(
-                        t2,
+                        t1 +  " : " + t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -1694,21 +1694,21 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      t1,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    if (t1 != null && t2 != null)
-                      Text(
-                        " :",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    SizedBox(
-                      width: 10,
-                    ),
+//                    Text(
+//                      t1,
+//                      style: TextStyle(color: Colors.black),
+//                    ),
+//                    if (t1 != null && t2 != null)
+//                      Text(
+//                        " :",
+//                        style: TextStyle(color: Colors.black),
+//                      ),
+//                    SizedBox(
+//                      width: 10,
+//                    ),
                     Flexible(
                       child: Text(
-                        t2,
+                        t1 + " : " + t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),

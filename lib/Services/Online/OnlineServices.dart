@@ -610,7 +610,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-//          this.storage.setItem("Routebyuser", data["list"]);
+          this.storage.setItem("Routebyuser", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;
@@ -645,7 +645,6 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-//          this.storage.setItem("Routebyuser", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;
