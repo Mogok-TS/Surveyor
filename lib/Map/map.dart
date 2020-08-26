@@ -218,10 +218,14 @@ class MapSampleState extends State<GmapS> {
 
                 final Marker marker = Marker(
                     markerId: markerId,
+                    onTap: () {
+
+                      print("Lati == ${addressList[i]["lati"]} / Long == ${addressList[i]["long"]}");
+                    },
                     position:
                         LatLng(addressList[i]["lati"], addressList[i]["long"]),
                     infoWindow: InfoWindow(
-                        title: addressList[i]["Name"], snippet: "Shop Name"),
+                        title: addressList[i]["Name"]),
                     icon: BitmapDescriptor.fromBytes(markerIcon));
 
                 for (var v = 0; v < polygonArray.length; v++) {
@@ -260,8 +264,8 @@ class MapSampleState extends State<GmapS> {
                       points: latlng,
                       geodesic: true,
                       strokeColor: Colors.red.withOpacity(0.6),
-                      strokeWidth: 5,
-                      fillColor: Colors.redAccent.withOpacity(0.1),
+                      strokeWidth: 2,
+                      fillColor: Colors.redAccent.withOpacity(0.3),
                       visible: true));
                 }
 
@@ -291,7 +295,7 @@ class MapSampleState extends State<GmapS> {
                     position:
                         LatLng(storeregi[i]["lati"], storeregi[i]["long"]),
                     infoWindow: InfoWindow(
-                        title: storeregi[i]["name"], snippet: "Shop Name"),
+                        title: storeregi[i]["name"]),
                     icon: BitmapDescriptor.fromBytes(markerIcon));
 
                 setState(() {
@@ -425,70 +429,70 @@ class MapSampleState extends State<GmapS> {
           padding: const EdgeInsets.all(20),
           child: GestureDetector(
             onTap: () {
-              // _getLocation().then((value) {
-              //   setState(() {
-              //     if (value == null) {
-              //       print(value);
-              //     } else {
-              //       _getAddress(value).then((val) async {
-              //         print(value.latitude);
-              //         print(value.longitude);
+              _getLocation().then((value) {
+                setState(() {
+                  if (value == null) {
+                    print(value);
+                  } else {
+                    _getAddress(value).then((val) async {
+                      print(value.latitude);
+                      print(value.longitude);
 
-              //         for (var a = 0; a < data.length; a++) {
-              //           List<LatLng> latlng = List();
-              //           setState(() {
-              //             latlng = [];
-              //           });
-              //           List list1 = data
-              //               .where((element) =>
-              //           element["properties"]["TS_PCODE"].toString() ==
-              //               data[a]["properties"]["TS_PCODE"].toString())
-              //               .toList();
+                      for (var a = 0; a < data.length; a++) {
+                        List<LatLng> latlng = List();
+                        setState(() {
+                          latlng = [];
+                        });
+                        List list1 = data
+                            .where((element) =>
+                        element["properties"]["TS_PCODE"].toString() ==
+                            data[a]["properties"]["TS_PCODE"].toString())
+                            .toList();
 
-              //           for (var b = 0; b < list1.length; b++) {
-              //             List list2 = list1[b]["geometry"]["coordinates"];
-              //             for (var c = 0; c < list2.length; c++) {
-              //               for (var d = 0; d < list2[c].length; d++) {
-              //                 for (var e = 0; e < list2[c][d].length; e++) {
-              //                   double lati =
-              //                   double.parse(list2[c][d][e][1].toString());
-              //                   double long =
-              //                   double.parse(list2[c][d][e][0].toString());
-              //                   LatLng location = LatLng(lati, long);
-              //                   latlng.add(location);
-              //                 }
-              //               }
-              //             }
-              //           }
+                        for (var b = 0; b < list1.length; b++) {
+                          List list2 = list1[b]["geometry"]["coordinates"];
+                          for (var c = 0; c < list2.length; c++) {
+                            for (var d = 0; d < list2[c].length; d++) {
+                              for (var e = 0; e < list2[c][d].length; e++) {
+                                double lati =
+                                double.parse(list2[c][d][e][1].toString());
+                                double long =
+                                double.parse(list2[c][d][e][0].toString());
+                                LatLng location = LatLng(lati, long);
+                                latlng.add(location);
+                              }
+                            }
+                          }
+                        }
 
-              //           LatLng currentLocation =
-              //           LatLng(value.latitude, value.longitude);
+                        LatLng currentLocation =
+                        LatLng(value.latitude, value.longitude);
 
-              //           _checkIfValidMarker(currentLocation, latlng,
-              //               data[a]["properties"]["TS"].toString());
-              //         }
-              //       });
-              //     }
-              //   });
-              // });
-
-              getGPSstatus().then((status) => {
-                    print("$status"),
-                    if (status == true)
-                      {
-                        this.storage.setItem("Maplatlong", this._latLong),
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => StoresDetailsScreen(
-                                this.widget.passLength,
-                                this.widget.updateStatus,
-                                this.widget.regass),
-                          ),
-                        ),
+                        _checkIfValidMarker(currentLocation, latlng,
+                            data[a]["properties"]["TS_PCODE"].toString());
                       }
-                    else
-                      {ShowToast("Please open GPS")}
-                  });
+                    });
+                  }
+                });
+              });
+
+              // getGPSstatus().then((status) => {
+              //       print("$status"),
+              //       if (status == true)
+              //         {
+              //           this.storage.setItem("Maplatlong", this._latLong),
+              //           Navigator.of(context).pushReplacement(
+              //             MaterialPageRoute(
+              //               builder: (context) => StoresDetailsScreen(
+              //                   this.widget.passLength,
+              //                   this.widget.updateStatus,
+              //                   this.widget.regass),
+              //             ),
+              //           ),
+              //         }
+              //       else
+              //         {ShowToast("Please open GPS")}
+              //     });
             },
             child: Image.asset(
               "assets/location.png",
@@ -501,7 +505,7 @@ class MapSampleState extends State<GmapS> {
     );
   }
 
-  bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices, String townName) {
+  bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices, String townCode) {
     int intersectCount = 0;
     for (int j = 0; j < vertices.length - 1; j++) {
       if (rayCastIntersect(tap, vertices[j], vertices[j + 1])) {
@@ -509,8 +513,8 @@ class MapSampleState extends State<GmapS> {
       }
     }
 
-    if ("${(intersectCount % 2) == 1}" == "true") {
-      print("${(intersectCount % 2) == 1}   $townName");
+    if ("${(intersectCount % 2) == 1}" == "true") {      
+      print("${(intersectCount % 2) == 1}   $townCode");
     }
 
     return ((intersectCount % 2) == 1); // odd = inside, even = outside;
