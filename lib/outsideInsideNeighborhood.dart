@@ -1,9 +1,7 @@
-import 'dart:collection';
 
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/checkNeighborhood.dart';
 import 'package:Surveyor/neighborhoodSurvey.dart';
-import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
@@ -147,7 +145,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   }
 
   var headerShopSyskey = "";
-
+  var flag;
   @override
   void initState() {
     var _pssOject;
@@ -169,25 +167,29 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     var totalCount;
     var answeredCount;
     var sections = this.widget.header["sections"];
+    var flag = false;
     this.onlineSerives.getQuestions(param).then((value) => {
           data = value["data"],
           for (var i = 0; i < sections.length; i++)
             {
+              flag = false,
               sinpleData = {},
               totalCount = 0,
               answeredCount = 0,
               sinpleData["desc"] = sections[i]["sectionDescription"],
-              sinpleData["flag"] = "0",
+              
               for (var ii = 0; ii < data.length; ii++)
                 {
-                  if (data[ii]["Flag"] == "1")
-                    {
-                      sinpleData["flag"] = "",
-                      sinpleData["flag"] = "1",
-                    },
+
+                  
+                  
                   if (data[ii]["SectionDesc"] ==
                       sections[i]["sectionDescription"])
                     {
+                      if(data[ii]["Flag"].toString() ==  "1"){
+                     sinpleData["flag"] = "1",
+                      },
+
                       this.allItem++,
                       totalCount++,
                       if (data[ii]["TypeDesc"] == "Fill in the Blank")
@@ -261,13 +263,14 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                           data[ii]["HeaderShopSyskey"].toString(),
                     }
                 },
+               
               sinpleData["answered"] = answeredCount,
               sinpleData["total"] = totalCount,
               sinpleData["remain"] = totalCount - answeredCount,
               setState(() => {
                     headerItems.add(sinpleData),
                   }),
-              print("--> ${headerItems.toString()}")
+              print("123--> ${headerItems.toString()}")
             },
           setState(() => {
                 if (allItem == answerItem)
