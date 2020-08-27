@@ -1901,7 +1901,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     if ("${(intersectCount % 2) == 1}" == "true") {
       this.townshipMimucode = townCode;
       print("townshipCode -->" + this.townshipMimucode);
-      this.stateCode = this.townshipMimucode.toString().substring(0, 5);
+      this.stateCode = this.townshipMimucode.toString().substring(0, 6);
       print("stateCode -->" + this.stateCode);
       print("${(intersectCount % 2) == 1}   $townCode");
     }
