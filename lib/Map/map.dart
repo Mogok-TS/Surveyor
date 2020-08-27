@@ -213,7 +213,7 @@ class MapSampleState extends State<GmapS> {
               }
               for (var i = 0; i < addressList.length; i++) {
                 final Uint8List markerIcon =
-                    await getBytesFromAsset('assets/placeholder2.png', 50);
+                    await getBytesFromAsset('assets/placeholder2.png', 30);
                 final MarkerId markerId = MarkerId("id is $i");
 
                 final Marker marker = Marker(
@@ -265,7 +265,7 @@ class MapSampleState extends State<GmapS> {
                       geodesic: true,
                       strokeColor: Colors.red.withOpacity(0.6),
                       strokeWidth: 2,
-                      fillColor: Colors.redAccent.withOpacity(0.3),
+                      // fillColor: Colors.redAccent.withOpacity(0.3),
                       visible: true));
                 }
 
@@ -318,7 +318,7 @@ class MapSampleState extends State<GmapS> {
   @override
   void initState() {
     super.initState();
-    // localJsonData();
+    localJsonData();
     data = widget.data;
     locationFromServer();
     toUserLocation();

@@ -445,10 +445,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               _value["questionId"] = loopData["QuestionSyskey"].toString();
               _value["answerId"] =
                   this.newQuestionarray[ss]["answerSyskey"].toString();
-              _value["remark"] = "";
-              _value["desc"] =
-                  this.newQuestionarray[ss]["answerDesc"].toString();
-              _value["instruction"] = loopData["QuestionDescription"];
+              _value["remark"] =  this.newQuestionarray[ss]["answerDesc"].toString();
+              _value["desc"] =loopData["QuestionDescription"];
+              _value["instruction"] = "";
               if (loopData["Comment"] == null) {
                 _value["t4"] = "";
               } else {

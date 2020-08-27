@@ -691,6 +691,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                     "childData": _childArray
                                   });
                                 }
+                                print("02->" + storeRegwithHeader.toString());
                                 print("-0->" + commonAssignwithName.toString());
                                 for (var t = 0;
                                     t < commonAssignwithName.length;
