@@ -43,6 +43,7 @@ class MapSampleState extends State<GmapS> {
   static CameraPosition _kGooglePlex;
   var _latLong;
   List data;
+  var check = 0;
 
   List polygonArray = [];
 
@@ -268,7 +269,7 @@ class MapSampleState extends State<GmapS> {
                       geodesic: true,
                       strokeColor: Colors.red.withOpacity(0.6),
                       strokeWidth: 2,
-                      // fillColor: Colors.redAccent.withOpacity(0.3),
+                       fillColor: Colors.redAccent.withOpacity(0.3),
                       visible: true));
                 }
 
@@ -374,7 +375,7 @@ class MapSampleState extends State<GmapS> {
           children: <Widget>[
             GoogleMap(
               zoomControlsEnabled: false,
-              mapType: MapType.normal,
+              mapType: check == 0 ? MapType.normal : MapType.satellite,
               initialCameraPosition: _kGooglePlex,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
@@ -427,6 +428,14 @@ class MapSampleState extends State<GmapS> {
                 ),
               ),
             ),
+            Positioned(
+              top: 10,
+              right: 20,
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: selectPopup(),
+              ),
+            ),
           ],
         ),
         floatingActionButton: Padding(
@@ -461,6 +470,39 @@ class MapSampleState extends State<GmapS> {
       ),
     );
   }
+
+  Widget selectPopup() => PopupMenuButton<int>(
+    itemBuilder: (context) => [
+      PopupMenuItem(
+        value: 1,
+        child: Text("Default"),
+      ),
+      PopupMenuItem(
+        value: 2,
+        child: Text("Satellite"),
+      ),
+    ],
+    initialValue: 0,
+    onCanceled: () {
+      print("You have canceled the menu.");
+    },
+    onSelected: (value) {
+      print(value);
+      if (value == 2) {
+        setState(() {
+          check = 1;
+        });
+      } else {
+        setState(() {
+          check = 0;
+        });
+      }
+    },
+    icon: Icon(
+      Icons.layers,
+      color: Colors.black,
+    ),
+  );
 
   bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices, String townCode) {
     int intersectCount = 0;
