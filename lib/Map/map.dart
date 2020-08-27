@@ -219,8 +219,11 @@ class MapSampleState extends State<GmapS> {
                 final Marker marker = Marker(
                     markerId: markerId,
                     onTap: () {
-
                       print("Lati == ${addressList[i]["lati"]} / Long == ${addressList[i]["long"]}");
+                      this._latLong = {
+                        "lat": addressList[i]["lati"],
+                        "long": addressList[i]["long"]
+                      };
                     },
                     position:
                         LatLng(addressList[i]["lati"], addressList[i]["long"]),
