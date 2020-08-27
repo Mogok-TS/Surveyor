@@ -54,12 +54,12 @@ class MapSampleState extends State<GmapS> {
   }
 
   void toUserLocation() {
-    _getLocation().then((value) {
-      setState(() {
+    _getLocation().then((value) async {
+//      setState(() {
         if (value == null) {
           print(value);
         } else {
-          _getAddress(value).then((val) async {
+//          _getAddress(value).then((val) async {
             if (value.latitude != null && value.longitude != null) {
               print("000--->" + this.widget.regass);
               if (this.widget.regass == "newStore" ||
@@ -131,13 +131,13 @@ class MapSampleState extends State<GmapS> {
                 markers[markerId] = marker;
               });
             } else {
-              print(val);
+//              print(val);
             }
-          }).catchError((error) {
-            print(error);
-          });
+//          }).catchError((error) {
+//            print(error);
+//          });
         }
-      });
+//      });
     }).catchError((error) {
       print(error);
     });
@@ -192,12 +192,12 @@ class MapSampleState extends State<GmapS> {
   }
 
   void locationFromServer() {
-    _getLocation().then((value) {
-      setState(() {
+    _getLocation().then((value) async {
+//      setState(() {
         if (value == null) {
           print(value);
         } else {
-          _getAddress(value).then((val) async {
+//          _getAddress(value).then((val) async {
             if (value.latitude != null && value.longitude != null) {
               List addressList = [];
               // print(this.storage.getItem("storeData"));
@@ -306,16 +306,16 @@ class MapSampleState extends State<GmapS> {
                 });
               }
             } else {
-              print(val);
+//              print(val);
             }
-          }).catchError((error) {
-            print(error);
-          });
+//          }).catchError((error) {
+//            print(error);
+//          });
         }
       });
-    }).catchError((error) {
-      print(error);
-    });
+//    }).catchError((error) {
+//      print(error);
+//    });
   }
 
   @override
@@ -382,8 +382,9 @@ class MapSampleState extends State<GmapS> {
               markers: Set<Marker>.of(markers.values),
               polygons: _polygon,
               onTap: (latLong) {
-                print(latLong);
+                print("current" + latLong.toString());
                 createNewMarker(latLong.latitude, latLong.longitude);
+
               },
             ),
             Padding(
@@ -469,7 +470,7 @@ class MapSampleState extends State<GmapS> {
       }
     }
 
-    if ("${(intersectCount % 2) == 1}" == "true") {      
+    if ("${(intersectCount % 2) == 1}" == "true") {
       print("${(intersectCount % 2) == 1}   $townCode");
     }
 
