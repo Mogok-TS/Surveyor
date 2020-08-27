@@ -432,53 +432,6 @@ class MapSampleState extends State<GmapS> {
           padding: const EdgeInsets.all(20),
           child: GestureDetector(
             onTap: () {
-              _getLocation().then((value) {
-                setState(() {
-                  if (value == null) {
-                    print(value);
-                  } else {
-                    _getAddress(value).then((val) async {
-                      print(value.latitude);
-                      print(value.longitude);
-
-                      for (var a = 0; a < data.length; a++) {
-                        List<LatLng> latlng = List();
-                        setState(() {
-                          latlng = [];
-                        });
-                        List list1 = data
-                            .where((element) =>
-                        element["properties"]["TS_PCODE"].toString() ==
-                            data[a]["properties"]["TS_PCODE"].toString())
-                            .toList();
-
-                        for (var b = 0; b < list1.length; b++) {
-                          List list2 = list1[b]["geometry"]["coordinates"];
-                          for (var c = 0; c < list2.length; c++) {
-                            for (var d = 0; d < list2[c].length; d++) {
-                              for (var e = 0; e < list2[c][d].length; e++) {
-                                double lati =
-                                double.parse(list2[c][d][e][1].toString());
-                                double long =
-                                double.parse(list2[c][d][e][0].toString());
-                                LatLng location = LatLng(lati, long);
-                                latlng.add(location);
-                              }
-                            }
-                          }
-                        }
-
-                        LatLng currentLocation =
-                        LatLng(value.latitude, value.longitude);
-
-                        _checkIfValidMarker(currentLocation, latlng,
-                            data[a]["properties"]["TS_PCODE"].toString());
-                      }
-                    });
-                  }
-                });
-              });
-
               // getGPSstatus().then((status) => {
               //       print("$status"),
               //       if (status == true)
