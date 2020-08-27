@@ -247,7 +247,6 @@ class MapSampleState extends State<GmapS> {
 
                   for (var b = 0; b < list1.length; b++) {
                     List list2 = list1[b]["geometry"]["coordinates"];
-
                     print(list2);
                     for (var c = 0; c < list2.length; c++) {
                       for (var d = 0; d < list2[c].length; d++) {
