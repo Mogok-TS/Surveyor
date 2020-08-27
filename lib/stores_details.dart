@@ -151,10 +151,10 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           _getUpdateData();
         }
         print("shopSyskey--> $shopSyskey");
-        localJsonData();
       }
       getCurrentLocation().then((k) {
         print({"$k"});
+        localJsonData();
         if (this.widget.regOrAss == "Map") {
           var _latLong = this.storage.getItem("Maplatlong");
           print("--->" + _latLong.toString());

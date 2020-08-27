@@ -200,8 +200,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
           _value["remark"] = loopData["AnswerDesc"];
-          _value["desc"] = "";
-          _value["instruction"] = loopData["QuestionDescription"];
+          _value["desc"] = loopData["QuestionDescription"]; //QuestionDescription
+          _value["instruction"] = "";
           if (loopData["Comment"] == "") {
             _value["t4"] = "";
           } else {
@@ -229,8 +229,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
           _value["remark"] = loopData["AnswerDesc"];
-          _value["desc"] = "";
-          _value["instruction"] = loopData["QuestionDescription"];
+          _value["desc"] = loopData["QuestionDescription"];
+          _value["instruction"] = "";
           if (loopData["Comment"] == null) {
             _value["t4"] = "";
           } else {
@@ -258,8 +258,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
           _value["remark"] = rating;
-          _value["desc"] = "";
-          _value["instruction"] = loopData["QuestionDescription"];
+          _value["desc"] = loopData["QuestionDescription"];
+          _value["instruction"] = "";
           if (loopData["Comment"] == null) {
             _value["t4"] = "";
           } else {
@@ -287,8 +287,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
           _value["remark"] = loopData["AnswerDesc"];
-          _value["desc"] = "";
-          _value["instruction"] = loopData["QuestionDescription"];
+          _value["desc"] = loopData["QuestionDescription"];
+          _value["instruction"] = "";
           if (loopData["Comment"] == null) {
             _value["t4"] = "";
           } else {
@@ -314,8 +314,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionTypeId"] = loopData["TypeSK"].toString();
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
-          _value["remark"] = "";
-          _value["instruction"] = loopData["QuestionDescription"];
+          _value["remark"] = loopData["QuestionDescription"];
+          _value["instruction"] = "";
           if (loopData["Comment"] == null) {
             _value["t4"] = "";
           } else {
@@ -377,8 +377,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
           _value["remark"] = "";
-          _value["desc"] = "";
-          _value["instruction"] = loopData["QuestionDescription"];
+          _value["desc"] = loopData["QuestionDescription"];
+          _value["instruction"] = "";
           if (loopData["Comment"] == null) {
             _value["t4"] = "";
           } else {

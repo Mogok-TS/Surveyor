@@ -13,13 +13,12 @@ import 'package:localstorage/localstorage.dart';
 
 import 'Map/map.dart';
 import 'Services/GeneralUse/TodayDate.dart';
+import 'Services/GeneralUse/CommonArray.dart';
 import 'assets/custom_icons_icons.dart';
 import 'stores_details.dart';
 import 'widgets/mainmenuwidgets.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
-import 'package:http/http.dart' as http;
 
 class StoreScreen extends StatefulWidget {
   @override
@@ -31,6 +30,8 @@ class _StoreScreenState extends State<StoreScreen> {
   var storeData;
   var assignStores = [];
   var storeRegistration = [];
+  var _assignShop = [];
+  var _storeShop = [];
   var count = "0";
   var _status;
   bool showAssignStore = false;
@@ -45,6 +46,7 @@ class _StoreScreenState extends State<StoreScreen> {
       side: BorderSide(color: CustomIcons.dropDownHeader),
     );
   }
+
   RoundedRectangleBorder alertButtonShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(5.0),
@@ -72,214 +74,244 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
     );
   }
-  _showDialog(var data){
+
+  _showDialog(var data) {
     var shopData = [data];
     var param;
-    showDialog(context: context, child:
-    new AlertDialog(
-      title: new Text("Check In"),
-      content: new SingleChildScrollView(
+    showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Check In"),
+          content: new SingleChildScrollView(
             child: new ListBody(
-            children: <Widget>[
+              children: <Widget>[
                 Container(
-                  child: Row(children: <Widget>[
-                    Icon(Icons.store,color: CustomIcons.iconColor,size: 35,),
-                    SizedBox(width: 10,),
-                    Expanded(child: Text(data["shopname"]+"("+data["shopnamemm"]+")"),)
-                  ],),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.store,
+                        color: CustomIcons.iconColor,
+                        size: 35,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Text(
+                            data["shopname"] + "(" + data["shopnamemm"] + ")"),
+                      )
+                    ],
+                  ),
                 ),
                 Container(
-                  child: Row(children: <Widget>[
-                    Expanded(
-                              child: Container(
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  shape: alertButtonShape(),
-                                  onPressed: () {
-                                    Navigator.of(context, rootNavigator: true).pop();
-                                  },
-                                  child: Center(
-                                    child: Column(
-                                      children: <Widget>[
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          child: RaisedButton(
+                            color: Colors.white,
+                            shape: alertButtonShape(),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).pop();
+                            },
+                            child: Center(
+                              child: Column(
+                                children: <Widget>[
 //                                        buildStatusText(this.performTypearray)
-                                        Text("Cancel")
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                  Text("Cancel")
+                                ],
                               ),
                             ),
-                            SizedBox(width: 10,),
-                            Expanded(
-                              child: Container(
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  shape: alertButtonShape(),
-                                  onPressed: () {
-                                     getGPSstatus().then((status) => {
-                                      print("$status"),
-                                      if (status == true)
-                                        {
-                                          param = {
-                                            "shopsyskey": shopData[0]
-                                            ["shopsyskey"]
-                                          },
-                                          this
-                                              .onlineSerives
-                                              .getCategory(param)
-                                              .then((value) => {
-                                            print("98->" +
-                                                value.toString()),
-                                            if (value == true)
-                                              {
-                                              Navigator.of(context, rootNavigator: true).pop(),
-                                                Navigator.of(
-                                                    context)
-                                                    .pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        StoresDetailsScreen(
-                                                            shopData,
-                                                            false,
-                                                            "assign"),
-                                                  ),
-                                                ),
-                                              }
-                                            else
-                                              {
-                                                hideLoadingDialog,
-                                              },
-                                          }),
-                                        }
-                                      else
-                                        {ShowToast("Please open GPS")}
-                                    });
-                                  },
-                                  child: Center(
-                                    child: Column(
-                                      children: <Widget>[
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: RaisedButton(
+                            color: Colors.white,
+                            shape: alertButtonShape(),
+                            onPressed: () {
+                              getGPSstatus().then((status) => {
+                                    print("$status"),
+                                    if (status == true)
+                                      {
+                                        param = {
+                                          "shopsyskey": shopData[0]
+                                              ["shopsyskey"]
+                                        },
+                                        this
+                                            .onlineSerives
+                                            .getCategory(param)
+                                            .then((value) => {
+                                                  print("98->" +
+                                                      value.toString()),
+                                                  if (value == true)
+                                                    {
+                                                      Navigator.of(context,
+                                                              rootNavigator:
+                                                                  true)
+                                                          .pop(),
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StoresDetailsScreen(
+                                                                  shopData,
+                                                                  false,
+                                                                  "assign"),
+                                                        ),
+                                                      ),
+                                                    }
+                                                  else
+                                                    {
+                                                      hideLoadingDialog,
+                                                    },
+                                                }),
+                                      }
+                                    else
+                                      {ShowToast("Please open GPS")}
+                                  });
+                            },
+                            child: Center(
+                              child: Column(
+                                children: <Widget>[
 //                                        buildStatusText(this.performTypearray)
-                                        Text("Next")
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                  Text("Next")
+                                ],
                               ),
                             ),
-                  ],),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-            ],
+              ],
             ),
-    
-    ),
-    )
-);
+          ),
+        ));
   }
 
-  _showDialog2(var data){
+  _showDialog2(var data) {
     var shopData = [data];
     var param;
-    showDialog(context: context, child:
-    new AlertDialog(
-      title: new Text("Check In"),
-      content: new SingleChildScrollView(
+    showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Check In"),
+          content: new SingleChildScrollView(
             child: new ListBody(
-            children: <Widget>[
+              children: <Widget>[
                 Container(
-                  child: Row(children: <Widget>[
-                    Icon(Icons.store,color: CustomIcons.iconColor,size: 35,),
-                    SizedBox(width: 10,),
-                    Expanded(child: Text(data["shopname"]+"("+data["shopnamemm"]+")"),)
-                  ],),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.store,
+                        color: CustomIcons.iconColor,
+                        size: 35,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Text(
+                            data["shopname"] + "(" + data["shopnamemm"] + ")"),
+                      )
+                    ],
+                  ),
                 ),
                 Container(
-                  child: Row(children: <Widget>[
-                    Expanded(
-                              child: Container(
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  shape: alertButtonShape(),
-                                  onPressed: () {
-                                    Navigator.of(context, rootNavigator: true).pop();
-                                  },
-                                  child: Center(
-                                    child: Column(
-                                      children: <Widget>[
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          child: RaisedButton(
+                            color: Colors.white,
+                            shape: alertButtonShape(),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).pop();
+                            },
+                            child: Center(
+                              child: Column(
+                                children: <Widget>[
 //                                        buildStatusText(this.performTypearray)
-                                        Text("Cancel")
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                  Text("Cancel")
+                                ],
                               ),
                             ),
-                            SizedBox(width: 10,),
-                            Expanded(
-                              child: Container(
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  shape: alertButtonShape(),
-                                  onPressed: () {
-                                     getGPSstatus().then((status) => {
-                                      print("$status"),
-                                      if (status == true)
-                                        {
-                                          param = {
-                                            "shopsyskey": shopData[0]
-                                            ["shopsyskey"]
-                                          },
-                                          this
-                                              .onlineSerives
-                                              .getCategory(param)
-                                              .then((value) => {
-                                            print("98->" +
-                                                value.toString()),
-                                            if (value == true)
-                                              {
-                                                Navigator.of(
-                                                    context)
-                                                    .pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        StoresDetailsScreen(
-                                                            shopData,
-                                                            false,
-                                                            "assign"),
-                                                  ),
-                                                ),
-                                              }
-                                            else
-                                              {
-                                                hideLoadingDialog,
-                                              },
-                                          }),
-                                        }
-                                      else
-                                        {ShowToast("Please open GPS")}
-                                    });
-                                  },
-                                  child: Center(
-                                    child: Column(
-                                      children: <Widget>[
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: RaisedButton(
+                            color: Colors.white,
+                            shape: alertButtonShape(),
+                            onPressed: () {
+                              getGPSstatus().then((status) => {
+                                    print("$status"),
+                                    if (status == true)
+                                      {
+                                        param = {
+                                          "shopsyskey": shopData[0]
+                                              ["shopsyskey"]
+                                        },
+                                        this
+                                            .onlineSerives
+                                            .getCategory(param)
+                                            .then((value) => {
+                                                  print("98->" +
+                                                      value.toString()),
+                                                  if (value == true)
+                                                    {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StoresDetailsScreen(
+                                                                  shopData,
+                                                                  false,
+                                                                  "assign"),
+                                                        ),
+                                                      ),
+                                                    }
+                                                  else
+                                                    {
+                                                      hideLoadingDialog,
+                                                    },
+                                                }),
+                                      }
+                                    else
+                                      {ShowToast("Please open GPS")}
+                                  });
+                            },
+                            child: Center(
+                              child: Column(
+                                children: <Widget>[
 //                                        buildStatusText(this.performTypearray)
-                                        Text("Next")
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                  Text("Next")
+                                ],
                               ),
                             ),
-                  ],),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-            ],
+              ],
             ),
-    
-    ),
-    )
-);
+          ),
+        ));
   }
+
   Widget buildAssignItem(String storeName, String phone, String address, data) {
-
     var param;
     var shopData = [data];
     print("99-->  ${shopData}");
@@ -343,43 +375,43 @@ class _StoreScreenState extends State<StoreScreen> {
                                   shape: buttonShape(),
                                   onPressed: () {
 //                                    _showDialog(data);
-                                     getGPSstatus().then((status) => {
-                                       print("$status"),
-                                       if (status == true)
-                                         {
-                                           param = {
-                                             "shopsyskey": shopData[0]
-                                             ["shopsyskey"]
-                                           },
-                                           this
-                                               .onlineSerives
-                                               .getCategory(param)
-                                               .then((value) => {
-                                             print("98->" +
-                                                 value.toString()),
-                                             if (value == true)
-                                               {
-                                                 Navigator.of(
-                                                     context)
-                                                     .pushReplacement(
-                                                   MaterialPageRoute(
-                                                     builder: (context) =>
-                                                         StoresDetailsScreen(
-                                                             shopData,
-                                                             false,
-                                                             "assign"),
-                                                   ),
-                                                 ),
-                                               }
-                                             else
-                                               {
-                                                 hideLoadingDialog,
-                                               },
-                                           }),
-                                         }
-                                       else
-                                         {ShowToast("Please open GPS")}
-                                     });
+                                    getGPSstatus().then((status) => {
+                                          print("$status"),
+                                          if (status == true)
+                                            {
+                                              param = {
+                                                "shopsyskey": shopData[0]
+                                                    ["shopsyskey"]
+                                              },
+                                              this
+                                                  .onlineSerives
+                                                  .getCategory(param)
+                                                  .then((value) => {
+                                                        print("98->" +
+                                                            value.toString()),
+                                                        if (value == true)
+                                                          {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    StoresDetailsScreen(
+                                                                        shopData,
+                                                                        false,
+                                                                        "assign"),
+                                                              ),
+                                                            ),
+                                                          }
+                                                        else
+                                                          {
+                                                            hideLoadingDialog,
+                                                          },
+                                                      }),
+                                            }
+                                          else
+                                            {ShowToast("Please open GPS")}
+                                        });
                                   },
                                   child: Center(
                                     child: Text(
@@ -466,43 +498,43 @@ class _StoreScreenState extends State<StoreScreen> {
                                   shape: buttonShape(),
                                   onPressed: () {
                                     getGPSstatus().then((status) => {
-                                      print("$status"),
-                                      if (status == true)
-                                        {
-                                          params = {
-                                            "shopsyskey": data["id"]
-                                          },
-                                          this
-                                              .onlineSerives
-                                              .getCategory(params)
-                                              .then((value) => {
-                                            if (value == true)
-                                              {
-                                                print("33->" +
-                                                    data.toString()),
-                                                Navigator.of(
-                                                    context)
-                                                    .pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        StoresDetailsScreen(
-                                                            [data],
-                                                            false,
-                                                            "register"),
-                                                  ),
-                                                ),
-                                              }
-                                            else
-                                              {
-                                                hideLoadingDialog(),
-                                              }
-                                          }),
-                                        }
-                                      else
-                                        {
-                                          {ShowToast("Please open GPS")}
-                                        }
-                                    });
+                                          print("$status"),
+                                          if (status == true)
+                                            {
+                                              params = {
+                                                "shopsyskey": data["id"]
+                                              },
+                                              this
+                                                  .onlineSerives
+                                                  .getCategory(params)
+                                                  .then((value) => {
+                                                        if (value == true)
+                                                          {
+                                                            print("33->" +
+                                                                data.toString()),
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    StoresDetailsScreen(
+                                                                        [data],
+                                                                        false,
+                                                                        "register"),
+                                                              ),
+                                                            ),
+                                                          }
+                                                        else
+                                                          {
+                                                            hideLoadingDialog(),
+                                                          }
+                                                      }),
+                                            }
+                                          else
+                                            {
+                                              {ShowToast("Please open GPS")}
+                                            }
+                                        });
                                   },
                                   child: Center(
                                     child: Text(
@@ -535,6 +567,15 @@ class _StoreScreenState extends State<StoreScreen> {
       "date": ""
     };
     var loginData, newParam;
+    var commonAssign = [];
+    var commonAssignwithName = [];
+    var commonStorereg = [];
+    var commonStoreregwithName = [];
+    var paramforTownshipName;
+    var assignData = {};
+    var storeRegwithHeader = [];
+    var assignstorewithHeader = [];
+    var _childArray = [];
     loginData = this.storage.getItem("loginData");
     newParam = {"usersyskey": loginData["syskey"].toString()};
     shopParam["spsyskey"] = loginData["syskey"];
@@ -548,38 +589,147 @@ class _StoreScreenState extends State<StoreScreen> {
           .onlineSerives
           .getStores(shopParam)
           .then((result) => {
-        if (result == true)
-          {
-            this.onlineSerives.getsvrShoplist(newParam).then((res) => {
-              if (res == true)
-                {
+                if (result == true)
+                  {
+                    this.onlineSerives.getsvrShoplist(newParam).then((res) => {
+                          if (res == true)
+                            {
 //                      this.storeData = this.storage.getItem("storeData"),
-                  this.storeRegistration =
-                      this.storage.getItem("storeReg"),
-                  print("${storeRegistration}"),
-                  this.assignStores =
-                      this.storage.getItem("storeData"),
-                  print("${this.assignStores}"),
-                  setState(() {
-                    this.count =
-                        this.assignStores.length.toString();
-                  }),
-                  hideLoadingDialog(),
-                }
-              else
-                {
-                  this.assignStores = [],
-                  hideLoadingDialog(),
-                }
-            }),
-          }
-        else
-          {
-            this.storeRegistration = [],
-            this.assignStores = [],
-            hideLoadingDialog()
-          }
-      })
+                              this.storeRegistration =
+                                  this.storage.getItem("storeReg"),
+                              print("${storeRegistration}"),
+                              commonStorereg = getCommonshop(
+                                  this.storeRegistration, "storeReg"),
+                              print("--3-->" + commonStorereg.toString()),
+                              for (var qp = 0; qp < commonStorereg.length; qp++)
+                                {
+                                  paramforTownshipName = {
+                                    "id": commonStorereg[qp]["townshipid"],
+                                    "code": "",
+                                    "description": "",
+                                    "parentid": "",
+                                    "n2": ""
+                                  },
+                                  this
+                                      .onlineSerives
+                                      .getTownship(paramforTownshipName)
+                                      .then((returnData) => {
+                                            if (returnData["status"] == true)
+                                              {
+                                                assignData =
+                                                    returnData["data"][0],
+                                                commonStoreregwithName.add({
+                                                  "townshipid":
+                                                      assignData["id"],
+                                                  "townshipName":
+                                                      assignData["description"]
+                                                }),
+                                              }
+                                          }),
+                                },
+                              this.assignStores =
+                                  this.storage.getItem("storeData"),
+                              print("${this.assignStores}"),
+                              commonAssign = getCommonshop(
+                                  this.assignStores, "assignStore"),
+                              print("--4-->" + commonAssign.toString()),
+                              for (var qp = 0; qp < commonAssign.length; qp++)
+                                {
+                                  paramforTownshipName = {
+                                    "id": commonAssign[qp]["townshipid"],
+                                    "code": "",
+                                    "description": "",
+                                    "parentid": "",
+                                    "n2": ""
+                                  },
+                                  this
+                                      .onlineSerives
+                                      .getTownship(paramforTownshipName)
+                                      .then((returnData) => {
+                                            print("as-->" +
+                                                returnData.toString()),
+                                            if (returnData["status"] == true)
+                                              {
+                                                assignData =
+                                                    returnData["data"][0],
+                                                commonAssignwithName.add({
+                                                  "townshipid":
+                                                      assignData["id"],
+                                                  "townshipName":
+                                                      assignData["description"]
+                                                }),
+                                              }
+                                          }),
+                                },
+                              setState(() {
+                                this.count =
+                                    this.assignStores.length.toString();
+                              }),
+                              Future.delayed(const Duration(seconds: 3), () {
+                                print(
+                                    "-1->" + commonStoreregwithName.toString());
+                                for (var t = 0;
+                                    t < commonStoreregwithName.length;
+                                    t++) {
+                                  _childArray = [];
+                                  for (var r = 0;
+                                      r < this.storeRegistration.length;
+                                      r++) {
+                                    if (commonStoreregwithName[t]
+                                            ["townshipid"] ==
+                                        this.storeRegistration[r]
+                                            ["townshipId"]) {
+                                      _childArray
+                                          .add(this.storeRegistration[r]);
+                                    }
+                                  }
+                                  storeRegwithHeader.add({
+                                    "townshipid": commonStoreregwithName[t]
+                                        ["townshipid"],
+                                    "townshipname": commonStoreregwithName[t]
+                                        ["townshipName"],
+                                    "childData": _childArray
+                                  });
+                                }
+                                print("-0->" + commonAssignwithName.toString());
+                                for (var t = 0;
+                                    t < commonAssignwithName.length;
+                                    t++) {
+                                  _childArray = [];
+                                  for (var r = 0;
+                                      r < this.assignStores.length;
+                                      r++) {
+                                    if (commonAssignwithName[t]["townshipid"] ==
+                                        this.assignStores[r]["townshipid"]) {
+                                      _childArray.add(this.assignStores[r]);
+                                    }
+                                  }
+                                  assignstorewithHeader.add({
+                                    "townshipid": commonAssignwithName[t]
+                                        ["townshipid"],
+                                    "townshipname": commonAssignwithName[t]
+                                        ["townshipName"],
+                                    "childData": _childArray
+                                  });
+                                }
+                                print("01->" + assignstorewithHeader.toString());
+                                hideLoadingDialog();
+                              }),
+                            }
+                          else
+                            {
+                              this.assignStores = [],
+                              hideLoadingDialog(),
+                            }
+                        }),
+                  }
+                else
+                  {
+                    this.storeRegistration = [],
+                    this.assignStores = [],
+                    hideLoadingDialog()
+                  }
+              })
           .catchError((onError) => {hideLoadingDialog()});
     });
   }
@@ -608,49 +758,49 @@ class _StoreScreenState extends State<StoreScreen> {
                   icon: Icon(Icons.map),
                   onPressed: () {
                     getGPSstatus().then((status) => {
-                      print("$status"),
-                      if (status == true)
-                        {
-                          showLoading(),
-                          _getLocation().then((value) {
-                            setState(() {
-                              if (value == null) {
-                                print(value);
-                              } else {
-                                _getAddress(value).then((val) async {
-                                  if (value.latitude != null &&
-                                      value.longitude != null) {
-                                    localJsonData().then((val) {
-                                      print(value);
-                                      hideLoadingDialog();
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) => GmapS(
-                                            lati: value.latitude,
-                                            long: value.longitude,
-                                            regass: 'Map',
-                                            passLength: [],
-                                            updateStatus: false,
-                                            data: data,
-                                          ),
-                                        ),
-                                      );
-                                    });
+                          print("$status"),
+                          if (status == true)
+                            {
+                              showLoading(),
+                              _getLocation().then((value) {
+                                setState(() {
+                                  if (value == null) {
+                                    print(value);
                                   } else {
-                                    print(val);
+                                    _getAddress(value).then((val) async {
+                                      if (value.latitude != null &&
+                                          value.longitude != null) {
+                                        localJsonData().then((val) {
+                                          print(value);
+                                          hideLoadingDialog();
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                              builder: (context) => GmapS(
+                                                lati: value.latitude,
+                                                long: value.longitude,
+                                                regass: 'Map',
+                                                passLength: [],
+                                                updateStatus: false,
+                                                data: data,
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                      } else {
+                                        print(val);
+                                      }
+                                    }).catchError((error) {
+                                      print(error);
+                                    });
                                   }
-                                }).catchError((error) {
-                                  print(error);
                                 });
-                              }
-                            });
-                          }).catchError((error) {
-                            print(error);
-                          }),
-                        }
-                      else
-                        {ShowToast("Please open GPS")}
-                    });
+                              }).catchError((error) {
+                                print(error);
+                              }),
+                            }
+                          else
+                            {ShowToast("Please open GPS")}
+                        });
                   },
                 )
               ],
@@ -720,63 +870,63 @@ class _StoreScreenState extends State<StoreScreen> {
                         Container(
                             child: showAssignStore == true
                                 ? Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                this.assignStores.length == 0
-                                    ? Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Container(
-                                        height: 50,
-                                        color: Colors.grey[200],
-                                        child: Center(
-                                          child: Text(
-                                            "No Data",
-                                            textAlign:
-                                            TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.black,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      this.assignStores.length == 0
+                                          ? Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Container(
+                                                    height: 50,
+                                                    color: Colors.grey[200],
+                                                    child: Center(
+                                                      child: Text(
+                                                        "No Data",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          : Column(
+                                              children: <Widget>[
+                                                for (var i = 0;
+                                                    i <
+                                                        this
+                                                            .assignStores
+                                                            .length;
+                                                    i++)
+                                                  buildAssignItem(
+                                                      this
+                                                              .assignStores[i]
+                                                                  ["shopname"]
+                                                              .toString() +
+                                                          "( " +
+                                                          this
+                                                              .assignStores[i]
+                                                                  ["shopnamemm"]
+                                                              .toString() +
+                                                          " )",
+                                                      this
+                                                          .assignStores[i]
+                                                              ["phoneno"]
+                                                          .toString(),
+                                                      this
+                                                          .assignStores[i]
+                                                              ["address"]
+                                                          .toString(),
+                                                      this.assignStores[i])
+                                              ],
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                                    : Column(
-                                  children: <Widget>[
-                                    for (var i = 0;
-                                    i <
-                                        this
-                                            .assignStores
-                                            .length;
-                                    i++)
-                                      buildAssignItem(
-                                          this
-                                              .assignStores[i]
-                                          ["shopname"]
-                                              .toString() +
-                                              "( " +
-                                              this
-                                                  .assignStores[i]
-                                              ["shopnamemm"]
-                                                  .toString() +
-                                              " )",
-                                          this
-                                              .assignStores[i]
-                                          ["phoneno"]
-                                              .toString(),
-                                          this
-                                              .assignStores[i]
-                                          ["address"]
-                                              .toString(),
-                                          this.assignStores[i])
-                                  ],
-                                ),
-                              ],
-                            )
+                                    ],
+                                  )
                                 : new Container())
                       ],
                     ),
@@ -832,63 +982,63 @@ class _StoreScreenState extends State<StoreScreen> {
                         Container(
                             child: showRegisterStore == true
                                 ? Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                this.storeRegistration.length == 0
-                                    ? Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Container(
-                                        height: 50,
-                                        color: Colors.grey[200],
-                                        child: Center(
-                                          child: Text(
-                                            "No Data",
-                                            textAlign:
-                                            TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.black,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      this.storeRegistration.length == 0
+                                          ? Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Container(
+                                                    height: 50,
+                                                    color: Colors.grey[200],
+                                                    child: Center(
+                                                      child: Text(
+                                                        "No Data",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          : Column(
+                                              children: <Widget>[
+                                                for (var i = 0;
+                                                    i <
+                                                        this
+                                                            .storeRegistration
+                                                            .length;
+                                                    i++)
+                                                  buildRegisterItem(
+                                                      this
+                                                              .storeRegistration[
+                                                                  i]["name"]
+                                                              .toString() +
+                                                          "( " +
+                                                          this
+                                                              .storeRegistration[
+                                                                  i]["mmName"]
+                                                              .toString() +
+                                                          " )",
+                                                      this
+                                                          .storeRegistration[i]
+                                                              ["phoneNumber"]
+                                                          .toString(),
+                                                      this
+                                                          .storeRegistration[i]
+                                                              ["address"]
+                                                          .toString(),
+                                                      this.storeRegistration[i])
+                                              ],
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                                    : Column(
-                                  children: <Widget>[
-                                    for (var i = 0;
-                                    i <
-                                        this
-                                            .storeRegistration
-                                            .length;
-                                    i++)
-                                      buildRegisterItem(
-                                          this
-                                              .storeRegistration[
-                                          i]["name"]
-                                              .toString() +
-                                              "( " +
-                                              this
-                                                  .storeRegistration[
-                                              i]["mmName"]
-                                                  .toString() +
-                                              " )",
-                                          this
-                                              .storeRegistration[i]
-                                          ["phoneNumber"]
-                                              .toString(),
-                                          this
-                                              .storeRegistration[i]
-                                          ["address"]
-                                              .toString(),
-                                          this.storeRegistration[i])
-                                  ],
-                                ),
-                              ],
-                            )
+                                    ],
+                                  )
                                 : new Container())
                       ],
                     ),
@@ -905,20 +1055,20 @@ class _StoreScreenState extends State<StoreScreen> {
                             shape: buttonShape(),
                             onPressed: () {
                               getGPSstatus().then((status) => {
-                                print("$status"),
-                                if (status == true)
-                                  {
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            StoresDetailsScreen(
-                                                [], false, "newStore"),
-                                      ),
-                                    ),
-                                  }
-                                else
-                                  {ShowToast("Please open GPS")}
-                              });
+                                    print("$status"),
+                                    if (status == true)
+                                      {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                StoresDetailsScreen(
+                                                    [], false, "newStore"),
+                                          ),
+                                        ),
+                                      }
+                                    else
+                                      {ShowToast("Please open GPS")}
+                                  });
                             },
                             child: Row(
                               children: <Widget>[
