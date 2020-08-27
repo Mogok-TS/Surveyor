@@ -132,6 +132,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                 value.toString()),
                                             if (value == true)
                                               {
+                                              Navigator.of(context, rootNavigator: true).pop(),
                                                 Navigator.of(
                                                     context)
                                                     .pushReplacement(
@@ -341,44 +342,44 @@ class _StoreScreenState extends State<StoreScreen> {
                                   color: Colors.white,
                                   shape: buttonShape(),
                                   onPressed: () {
-                                    _showDialog(data);
-                                    // getGPSstatus().then((status) => {
-                                    //   print("$status"),
-                                    //   if (status == true)
-                                    //     {
-                                    //       param = {
-                                    //         "shopsyskey": shopData[0]
-                                    //         ["shopsyskey"]
-                                    //       },
-                                    //       this
-                                    //           .onlineSerives
-                                    //           .getCategory(param)
-                                    //           .then((value) => {
-                                    //         print("98->" +
-                                    //             value.toString()),
-                                    //         if (value == true)
-                                    //           {
-                                    //             Navigator.of(
-                                    //                 context)
-                                    //                 .pushReplacement(
-                                    //               MaterialPageRoute(
-                                    //                 builder: (context) =>
-                                    //                     StoresDetailsScreen(
-                                    //                         shopData,
-                                    //                         false,
-                                    //                         "assign"),
-                                    //               ),
-                                    //             ),
-                                    //           }
-                                    //         else
-                                    //           {
-                                    //             hideLoadingDialog,
-                                    //           },
-                                    //       }),
-                                    //     }
-                                    //   else
-                                    //     {ShowToast("Please open GPS")}
-                                    // });
+//                                    _showDialog(data);
+                                     getGPSstatus().then((status) => {
+                                       print("$status"),
+                                       if (status == true)
+                                         {
+                                           param = {
+                                             "shopsyskey": shopData[0]
+                                             ["shopsyskey"]
+                                           },
+                                           this
+                                               .onlineSerives
+                                               .getCategory(param)
+                                               .then((value) => {
+                                             print("98->" +
+                                                 value.toString()),
+                                             if (value == true)
+                                               {
+                                                 Navigator.of(
+                                                     context)
+                                                     .pushReplacement(
+                                                   MaterialPageRoute(
+                                                     builder: (context) =>
+                                                         StoresDetailsScreen(
+                                                             shopData,
+                                                             false,
+                                                             "assign"),
+                                                   ),
+                                                 ),
+                                               }
+                                             else
+                                               {
+                                                 hideLoadingDialog,
+                                               },
+                                           }),
+                                         }
+                                       else
+                                         {ShowToast("Please open GPS")}
+                                     });
                                   },
                                   child: Center(
                                     child: Text(
