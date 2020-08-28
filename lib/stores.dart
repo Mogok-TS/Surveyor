@@ -965,12 +965,12 @@ class _StoreScreenState extends State<StoreScreen> {
                           if (status == true)
                             {
                               showLoading(),
-                              _getLocation().then((value) {
-                                setState(() {
+                              _getLocation().then((value) async {
+//                                setState(() {
                                   if (value == null) {
                                     print(value);
                                   } else {
-                                    _getAddress(value).then((val) async {
+//                                    _getAddress(value).then((val) async {
                                       if (value.latitude != null &&
                                           value.longitude != null) {
                                         localJsonData().then((val) {
@@ -990,13 +990,13 @@ class _StoreScreenState extends State<StoreScreen> {
                                           );
                                         });
                                       } else {
-                                        print(val);
+                                        print(value);
                                       }
-                                    }).catchError((error) {
-                                      print(error);
-                                    });
+//                                    }).catchError((error) {
+//                                      print(error);
+//                                    });
                                   }
-                                });
+//                                });
                               }).catchError((error) {
                                 print(error);
                               }),

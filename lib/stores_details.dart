@@ -155,66 +155,68 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       getCurrentLocation().then((k) {
         print({"$k"});
         localJsonData();
-        if (this.widget.regOrAss == "Map") {
-          var _latLong = this.storage.getItem("Maplatlong");
-          print("--->" + _latLong.toString());
-          latitude = _latLong["lat"];
-          longitude = _latLong["long"];
-        } else if (this.widget.regOrAss == "newStore") {
-          latitude = k.latitude;
-          longitude = k.longitude;
-        }
+        Future.delayed(const Duration(milliseconds: 600), () {
+          if (this.widget.regOrAss == "Map") {
+            var _latLong = this.storage.getItem("Maplatlong");
+            print("--->" + _latLong.toString());
+            latitude = _latLong["lat"];
+            longitude = _latLong["long"];
+          } else if (this.widget.regOrAss == "newStore") {
+            latitude = k.latitude;
+            longitude = k.longitude;
+          }
 
-        googlePlusparam = {"lat": latitude, "lng": longitude};
-        this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
-              (result) => {
-            if (result["status"] == true)
-              {
-                print("12-->" + mpaArray.toString()),
-                for (var a = 0; a < mpaArray.length; a++)
-                  {
-                    latlng = List(),
-                    setState(() {
-                      latlng = [];
-                    }),
+          googlePlusparam = {"lat": latitude, "lng": longitude};
+          this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
+                (result) => {
+              if (result["status"] == true)
+                {
+                  print("12-->" + mpaArray.toString()),
+                  for (var a = 0; a < mpaArray.length; a++)
+                    {
+                      latlng = List(),
+                      setState(() {
+                        latlng = [];
+                      }),
 
-                    list1 = mpaArray
-                        .where((element) =>
-                    element["properties"]["TS_PCODE"].toString() ==
-                        mpaArray[a]["properties"]["TS_PCODE"].toString())
-                        .toList(),
-                    print("123-->" + list1.toString()),
-                    for (var b = 0; b < list1.length; b++) {
-                      list2 = list1[b]["geometry"]["coordinates"],
-                      print("43-->" + list2.toString()),
-                      for (var c = 0; c < list2.length; c++) {
-                        for (var d = 0; d < list2[c].length; d++) {
-                          for (var e = 0; e < list2[c][d].length; e++) {
-                            lati =
-                                double.parse(list2[c][d][e][1].toString()),
-                            long =
-                                double.parse(list2[c][d][e][0].toString()),
-                            location = LatLng(lati, long),
-                            latlng.add(location),
+                      list1 = mpaArray
+                          .where((element) =>
+                      element["properties"]["TS_PCODE"].toString() ==
+                          mpaArray[a]["properties"]["TS_PCODE"].toString())
+                          .toList(),
+                      print("123-->" + list1.toString()),
+                      for (var b = 0; b < list1.length; b++) {
+                        list2 = list1[b]["geometry"]["coordinates"],
+                        print("43-->" + list2.toString()),
+                        for (var c = 0; c < list2.length; c++) {
+                          for (var d = 0; d < list2[c].length; d++) {
+                            for (var e = 0; e < list2[c][d].length; e++) {
+                              lati =
+                                  double.parse(list2[c][d][e][1].toString()),
+                              long =
+                                  double.parse(list2[c][d][e][0].toString()),
+                              location = LatLng(lati, long),
+                              latlng.add(location),
+                            }
                           }
                         }
-                      }
+                      },
+                      curLocation = LatLng(latitude, longitude),
+                      _checkIfValidMarker(curLocation, latlng,
+                          mpaArray[a]["properties"]["TS_PCODE"].toString()),
                     },
-                    curLocation = LatLng(latitude, longitude),
-                    _checkIfValidMarker(curLocation, latlng,
-                        mpaArray[a]["properties"]["TS_PCODE"].toString()),
-                  },
-                setState(() {
-                  this.plusCode = "${result["data"]["plusCode"]}";
-                  hideLoadingDialog();
-                }),
-              }
-            else
-              {
-                hideLoadingDialog(),
-              }
-          },
-        );
+                  setState(() {
+                    this.plusCode = "${result["data"]["plusCode"]}";
+                    hideLoadingDialog();
+                  }),
+                }
+              else
+                {
+                  hideLoadingDialog(),
+                }
+            },
+          );
+        });
       });
     });
   }
