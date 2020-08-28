@@ -75,6 +75,197 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
+  Widget assignStoreWidget(var data){
+    print(">>>"+data.toString());
+    return  Container(
+                margin: EdgeInsets.all(5),
+      
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          color: CustomIcons.dropDownHeader,
+                          child: ListTile(
+                            title: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  data["show"] = !data["show"];
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    data["townshipname"].toString(),
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  
+                                ],
+                              ),
+                            ),
+                             trailing: Wrap(
+                              spacing: 12, // space between two icons
+                              children: <Widget>[
+                                // icon-1
+                                IconButton(
+                                  color: Colors.black,
+                                  icon: data["show"] == true
+                                      ? Icon(Icons.keyboard_arrow_down)
+                                      : Icon(Icons.chevron_right),
+                                  onPressed: () {
+                                    setState(() {
+                                      data["show"] = !data["show"];
+                                    });
+                                  },
+                                ) // icon-2
+                              ],
+                            ),
+                            onTap: () {
+                              setState(() {
+                                data["show"] = !data["show"];
+                              });
+                            },
+                            
+                          ),
+                        ),
+                        Container(
+                            child: data["show"] == true
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                           Column(
+                                              children: <Widget>[
+                                                for (var i = 0;
+                                                    i <
+                                                        data["childData"].length;
+                                                    i++)
+                                                  buildAssignItem(
+                                                      data["childData"][i]
+                                                                  ["shopname"]
+                                                              .toString() +
+                                                          "( " +
+                                                          data["childData"][i]
+                                                                  ["shopnamemm"]
+                                                              .toString() +
+                                                          " )",
+                                                      data["childData"][i]
+                                                              ["phoneno"]
+                                                          .toString(),
+                                                      data["childData"][i]
+                                                              ["address"]
+                                                          .toString(),
+                                                      data["childData"][i])
+                                              ],
+                                            ),
+                                    ],
+                                  )
+                                : new Container())
+                      ],
+                    ),
+                  );
+  }
+  Widget storeRegWIdget(var data){
+   return Container(
+                    margin: EdgeInsets.all(5),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          color: CustomIcons.dropDownHeader,
+                          child: ListTile(
+                            title: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  data["show"] = !data["show"];
+                                });
+                              },
+                              child: Text(
+                                data["townshipname"],
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                data["show"] = !data["show"];
+                              });
+                            },
+                            trailing: Wrap(
+                              spacing: 12, // space between two icons
+                              children: <Widget>[
+                                // icon-1
+                                IconButton(
+                                  color: Colors.black,
+                                  icon: data["show"] == true
+                                      ? Icon(Icons.keyboard_arrow_down)
+                                      : Icon(Icons.chevron_right),
+                                  onPressed: () {
+                                    setState(() {
+                                      data["show"] = !data["show"];
+                                    });
+                                  },
+                                ) // icon-2
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                            child: data["show"] == true
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      this.storeRegistration.length == 0
+                                          ? Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Container(
+                                                    height: 50,
+                                                    color: Colors.grey[200],
+                                                    child: Center(
+                                                      child: Text(
+                                                        "No Data",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          : Column(
+                                              children: <Widget>[
+                                                for (var i = 0;
+                                                    i <
+                                                       data["childData"]
+                                                            .length;
+                                                    i++)
+                                                  buildRegisterItem(
+                                                      data["childData"][
+                                                                  i]["name"]
+                                                              .toString() +
+                                                          "( " +
+                                                          data["childData"][i]["mmName"]
+                                                              .toString() +
+                                                          " )",
+                                                      data["childData"][i]
+                                                              ["phoneNumber"]
+                                                          .toString(),
+                                                      data["childData"][i]
+                                                              ["address"]
+                                                          .toString(),
+                                                      data["childData"][i])
+                                              ],
+                                            ),
+                                    ],
+                                  )
+                                : new Container())
+                      ],
+                    ),
+                  );
+  }
   _showDialog(var data) {
     var shopData = [data];
     var param;
@@ -556,7 +747,8 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
     );
   }
-
+  var assignStoreData = [];
+  var storeRegisterData = [];
   @override
   void initState() {
     super.initState();
@@ -622,7 +814,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                   "townshipid":
                                                       assignData["id"],
                                                   "townshipName":
-                                                      assignData["description"]
+                                                      assignData["description"],
+                                                  "show":false,
                                                 }),
                                               }
                                           }),
@@ -656,7 +849,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                   "townshipid":
                                                       assignData["id"],
                                                   "townshipName":
-                                                      assignData["description"]
+                                                      assignData["description"],
+                                                      "show":false,
                                                 }),
                                               }
                                           }),
@@ -688,10 +882,12 @@ class _StoreScreenState extends State<StoreScreen> {
                                         ["townshipid"],
                                     "townshipname": commonStoreregwithName[t]
                                         ["townshipName"],
+                                        "show":false,
                                     "childData": _childArray
                                   });
                                 }
                                 print("02->" + storeRegwithHeader.toString());
+                                
                                 print("-0->" + commonAssignwithName.toString());
                                 for (var t = 0;
                                     t < commonAssignwithName.length;
@@ -710,10 +906,16 @@ class _StoreScreenState extends State<StoreScreen> {
                                         ["townshipid"],
                                     "townshipname": commonAssignwithName[t]
                                         ["townshipName"],
+                                        "show":false,
                                     "childData": _childArray
                                   });
                                 }
                                 print("01->" + assignstorewithHeader.toString());
+                                 setState(() {
+                                this.assignStoreData = assignstorewithHeader;
+                                this.storeRegisterData = storeRegwithHeader;
+                                print("assignStoreData345u435i34u5o34u558324957324890573284905783295789230475892347598320457893204");
+                                 });
                                 hideLoadingDialog();
                               }),
                             }
@@ -869,13 +1071,15 @@ class _StoreScreenState extends State<StoreScreen> {
                           ),
                         ),
                         Container(
+      color: Colors.grey[300],
+                          
                             child: showAssignStore == true
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
-                                      this.assignStores.length == 0
+                                      this.assignStoreData.length == 0
                                           ? Row(
                                               children: <Widget>[
                                                 Expanded(
@@ -901,29 +1105,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                                 for (var i = 0;
                                                     i <
                                                         this
-                                                            .assignStores
+                                                            .assignStoreData
                                                             .length;
                                                     i++)
-                                                  buildAssignItem(
-                                                      this
-                                                              .assignStores[i]
-                                                                  ["shopname"]
-                                                              .toString() +
-                                                          "( " +
-                                                          this
-                                                              .assignStores[i]
-                                                                  ["shopnamemm"]
-                                                              .toString() +
-                                                          " )",
-                                                      this
-                                                          .assignStores[i]
-                                                              ["phoneno"]
-                                                          .toString(),
-                                                      this
-                                                          .assignStores[i]
-                                                              ["address"]
-                                                          .toString(),
-                                                      this.assignStores[i])
+                                                    assignStoreWidget(assignStoreData[i]),
                                               ],
                                             ),
                                     ],
@@ -981,6 +1166,7 @@ class _StoreScreenState extends State<StoreScreen> {
                           ),
                         ),
                         Container(
+                          color: Colors.grey[300],
                             child: showRegisterStore == true
                                 ? Column(
                                     crossAxisAlignment:
@@ -1013,29 +1199,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                                 for (var i = 0;
                                                     i <
                                                         this
-                                                            .storeRegistration
+                                                            .storeRegisterData
                                                             .length;
                                                     i++)
-                                                  buildRegisterItem(
-                                                      this
-                                                              .storeRegistration[
-                                                                  i]["name"]
-                                                              .toString() +
-                                                          "( " +
-                                                          this
-                                                              .storeRegistration[
-                                                                  i]["mmName"]
-                                                              .toString() +
-                                                          " )",
-                                                      this
-                                                          .storeRegistration[i]
-                                                              ["phoneNumber"]
-                                                          .toString(),
-                                                      this
-                                                          .storeRegistration[i]
-                                                              ["address"]
-                                                          .toString(),
-                                                      this.storeRegistration[i])
+                                                  storeRegWIdget(storeRegisterData[i])
                                               ],
                                             ),
                                     ],
