@@ -269,13 +269,16 @@ class OnlineSerives {
                 }
                 _bojArray["AnswerShopPhoto"] = [];
                 _bojArray["AnswerDesc"] = "";
+                _bojArray["Instruction"] = "";
               }else{
                 checkSaveorupdate = "update";
+                _bojArray["Instruction"] = dataList[ii]["Instruction"];
                 _bojArray["HeaderShopSyskey"] = dataList[ii]["HeaderShopSyskey"];
                 _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
               }
             }else if(dataList[ii]["TypeSK"].toString() == "2"){
+              _bojArray["Instruction"] = "";
               if(dataList[ii]["AnswerSyskey"] == "" || dataList[ii]["AnswerSyskey"] == null){
                 _bojArray["HeaderShopSyskey"] = "";
                 _bojArray["AnswerShopPhoto"] = [];
@@ -290,6 +293,7 @@ class OnlineSerives {
               }
             }else if(dataList[ii]["TypeSK"].toString() == "4" || dataList[ii]["TypeSK"].toString() == "5" || dataList[ii]["TypeSK"].toString() == "7"){
               _bojArray["AnswerSyskey"] = "";
+              _bojArray["Instruction"] = "";
               if(dataList[ii]["AnswerDesc"] == "" || dataList[ii]["AnswerDesc"] == null){
                 _bojArray["HeaderShopSyskey"] = "";
                 _bojArray["AnswerShopPhoto"] = [];
@@ -301,6 +305,8 @@ class OnlineSerives {
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
               }
             }else if(dataList[ii]["TypeSK"].toString() == "6"){
+              _bojArray["Instruction"] = "";
+              _bojArray["AnswerSyskey"] = "";
               if(dataList[ii]["AnswerDesc"] == "" || dataList[ii]["AnswerDesc"] == null ){
                 _bojArray["HeaderShopSyskey"] = "";
                 _bojArray["AnswerShopPhoto"] = [];
@@ -312,7 +318,7 @@ class OnlineSerives {
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
               }
 
-              if(dataList[ii]["AnswerDesc2"] == "" || dataList[ii]["AnswerDesc2"] == null ){
+              if(dataList[ii]["AnswerDesc2"] == "" || dataList[ii]["AnswerDesc2"] == null || dataList[ii]["TypeSK"].toString() == "8" ){
                 _bojArray["HeaderShopSyskey"] = "";
                 _bojArray["AnswerShopPhoto"] = [];
                 _bojArray["AnswerDesc2"] = "";
