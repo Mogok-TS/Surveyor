@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter_material_pickers/helpers/show_date_picker.dart';
+import 'package:flutter_material_pickers/helpers/show_time_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
@@ -643,18 +645,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-//                    Text(
-//                      t1,
-//                      style: TextStyle(color: Colors.black),
-//                    ),
-//                    if (t1 != null && t2 != null)
-//                      Text(
-//                        " :",
-//                        style: TextStyle(color: Colors.black),
-//                      ),
-//                    SizedBox(
-//                      width: 10,
-//                    ),
                     Flexible(
                       child: Text(
                         t1 + " : " + t2,
@@ -692,7 +682,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                         SizedBox(width: 5),
                         Expanded(
                           child: Text(
-                            "Demo Pic or text",
+                            data["Instruction"],
                             style: TextStyle(color: CustomIcons.appbarColor),
                           ),
                         ),
@@ -1345,7 +1335,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _widget = fromToWidget(data);
     } else if (data["TypeDesc"] == "Rating 0-10") {
       _widget = ratingWidget(data);
-    } else {
+    } else if(data["TypeDesc"] == "Time Range"){
+      _widget = timeRangeWidget(data);
+    }
+    else {
       _widget = Container(
         margin: EdgeInsets.only(bottom: 20),
         child: Text(data.toString()),
@@ -1370,6 +1363,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     } else {
       _textController.text = data["AnswerDesc"];
     }
+    DateTime nowDate = DateTime.parse(data["AnswerDesc"]);
     return Container(
       decoration: flagDecoration(data["Flag"]),
       margin: EdgeInsets.all(10),
@@ -1405,9 +1399,19 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                     child: TextField(
                       onTap: () {
-                        
+                        showMaterialDatePicker(
+                  context: context,
+                  selectedDate: nowDate,
+                  onChanged: (value) => setState(() {
+                    nowDate = value;
+                    data["AnswerDesc"] = value.toString();
+                  }
+                    ),
+                  
+                );
                       },
                       controller: _textController,
+                      readOnly: true,
                       decoration: InputDecoration(
                         focusColor: Colors.black,
                         prefixIcon: Icon(
@@ -1670,18 +1674,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-//                    Text(
-//                      t1,
-//                      style: TextStyle(color: Colors.black),
-//                    ),
-//                    if (t1 != null && t2 != null)
-//                      Text(
-//                        " :",
-//                        style: TextStyle(color: Colors.black),
-//                      ),
-//                    SizedBox(
-//                      width: 10,
-//                    ),
+
                     Flexible(
                       child: Text(
                         t1 + " : " + t2,
@@ -1740,6 +1733,118 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                 data["AnswerDesc2"] = _toController.text;
                               },
                               keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'To',
+                                labelStyle: TextStyle(
+                                    color: Colors.black54, fontSize: 18),
+                                focusColor: Colors.black,
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+              _commentWidget(data["Flag"], data),
+        ],
+      ),
+    );
+  }
+
+   Widget timeRangeWidget(var data) {
+    // var fromTime = TimeOfDay.now();
+
+    TextEditingController _fromController = new TextEditingController();
+    if(data["AnswerDesc"] == ""){
+      // data["AnswerDesc"] = fromTime.toString();
+    }
+    _fromController.text = data["AnswerDesc"];
+    
+    TextEditingController _toController = new TextEditingController();
+    _toController.text = data["AnswerDesc2"];
+    var t1 = data["QuestionCode"];
+    var t2 = data["QuestionDescription"]+">>>timerangewidget";
+    return Container(
+      decoration: flagDecoration(data["Flag"]),
+      margin: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: CustomIcons.dropDownHeader,
+            child: ListTile(
+              title: InkWell(
+                onTap: () {},
+                child: Row(
+                  children: <Widget>[
+
+                    Flexible(
+                      child: Text(
+                        t1 + " : " + t2,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+              color: Colors.grey[200],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              right: 2,
+                            ),
+                            child: TextField(
+                              controller: _fromController,
+                              onChanged: (val) {
+                                data["AnswerDesc"] = _fromController.text;
+//                                 showMaterialTimePicker(
+//   context: context,
+//   // selectedTime: fromTime,
+//   onChanged: (value) {
+//     print("time>>"+value.toString());
+//   },
+// );
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'From',
+                                labelStyle: TextStyle(
+                                    color: Colors.black54, fontSize: 18),
+                                focusColor: Colors.black,
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: 2,
+                            ),
+                            child: TextField(
+                              controller: _toController,
+                              onChanged: (val) {
+                                data["AnswerDesc2"] = _toController.text;
+                              },
                               decoration: InputDecoration(
                                 labelText: 'To',
                                 labelStyle: TextStyle(
