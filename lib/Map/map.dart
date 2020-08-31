@@ -441,23 +441,23 @@ class MapSampleState extends State<GmapS> {
           padding: const EdgeInsets.all(20),
           child: GestureDetector(
             onTap: () {
-              // getGPSstatus().then((status) => {
-              //       print("$status"),
-              //       if (status == true)
-              //         {
-              //           this.storage.setItem("Maplatlong", this._latLong),
-              //           Navigator.of(context).pushReplacement(
-              //             MaterialPageRoute(
-              //               builder: (context) => StoresDetailsScreen(
-              //                   this.widget.passLength,
-              //                   this.widget.updateStatus,
-              //                   this.widget.regass),
-              //             ),
-              //           ),
-              //         }
-              //       else
-              //         {ShowToast("Please open GPS")}
-              //     });
+               getGPSstatus().then((status) => {
+                     print("$status"),
+                     if (status == true)
+                       {
+                         this.storage.setItem("Maplatlong", this._latLong),
+                         Navigator.of(context).pushReplacement(
+                           MaterialPageRoute(
+                             builder: (context) => StoresDetailsScreen(
+                                 this.widget.passLength,
+                                 this.widget.updateStatus,
+                                 this.widget.regass),
+                           ),
+                         ),
+                       }
+                     else
+                       {ShowToast("Please open GPS")}
+                   });
             },
             child: Image.asset(
               "assets/location.png",

@@ -76,17 +76,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   LatLng curLocation;
   var townshipMimucode, stateCode;
 
-  Future<void> localJsonData() async {
-    var jsonText = await rootBundle.loadString("assets/township.json");
-//    setState(() {
-      mpaArray = json.decode(jsonText);
-//    });
-  }
+
 
   @override
   void initState() {
     super.initState();
-
+    this.mpaArray = this.storage.getItem("mapArray");
+    print("map--->" + this.mpaArray.length.toString());
     setState(() {
       Future.delayed(const Duration(milliseconds: 500), () {
         showLoading();
@@ -154,7 +150,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       }
       getCurrentLocation().then((k) {
         print({"$k"});
-        localJsonData();
         Future.delayed(const Duration(milliseconds: 600), () {
           if (this.widget.regOrAss == "Map") {
             var _latLong = this.storage.getItem("Maplatlong");
@@ -171,7 +166,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 (result) => {
               if (result["status"] == true)
                 {
-                  print("12-->" + mpaArray.toString()),
+//                  print("12-->" + mpaArray.toString()),
                   for (var a = 0; a < mpaArray.length; a++)
                     {
                       latlng = List(),
@@ -184,10 +179,10 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       element["properties"]["TS_PCODE"].toString() ==
                           mpaArray[a]["properties"]["TS_PCODE"].toString())
                           .toList(),
-                      print("123-->" + list1.toString()),
+//                      print("123-->" + list1.toString()),
                       for (var b = 0; b < list1.length; b++) {
                         list2 = list1[b]["geometry"]["coordinates"],
-                        print("43-->" + list2.toString()),
+//                        print("43-->" + list2.toString()),
                         for (var c = 0; c < list2.length; c++) {
                           for (var d = 0; d < list2[c].length; d++) {
                             for (var e = 0; e < list2[c][d].length; e++) {

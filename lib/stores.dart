@@ -775,8 +775,11 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["usertype"] = loginData["userType"];
     shopParam["date"] = getTodayDate();
     print("${shopParam}");
+
     Future.delayed(const Duration(milliseconds: 500), () {
-      showLoading();
+//      setState(() {
+        showLoading();
+//      });
       this
           .onlineSerives
           .getStores(shopParam)
@@ -859,7 +862,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 this.count =
                                     this.assignStores.length.toString();
                               }),
-                              Future.delayed(const Duration(seconds: 3), () {
+                              Future.delayed(const Duration(seconds: 4), () {
                                 print(
                                     "-1->" + commonStoreregwithName.toString());
                                 for (var t = 0;
@@ -911,12 +914,17 @@ class _StoreScreenState extends State<StoreScreen> {
                                   });
                                 }
                                 print("01->" + assignstorewithHeader.toString());
-                                 setState(() {
-                                this.assignStoreData = assignstorewithHeader;
-                                this.storeRegisterData = storeRegwithHeader;
-                                print("assignStoreData345u435i34u5o34u558324957324890573284905783295789230475892347598320457893204");
-                                 });
-                                hideLoadingDialog();
+//                                Future.delayed(const Duration(seconds: 5), () {
+//
+//                                });
+                                setState(() {
+                                  this.assignStoreData = assignstorewithHeader;
+                                  this.storeRegisterData = storeRegwithHeader;
+                                  if(this.assignStoreData.length > 0 || this.storeRegisterData.length > 0){
+                                    hideLoadingDialog();
+                                  }
+                                  print("1233113");
+                                });
                               }),
                             }
                           else

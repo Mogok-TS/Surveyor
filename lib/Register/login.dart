@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:Surveyor/Services/GeneralUse/PhoneNumber.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:Surveyor/assets/custom_icons_icons.dart';
 import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
+import 'package:flutter/services.dart';
 import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:geolocator/geolocator.dart';
@@ -30,6 +33,14 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
   bool isBackButtonActivated = false;
   String latitude;
   String longitude;
+  var mpaArray = [];
+
+  Future<void> localJsonData() async {
+    var jsonText = await rootBundle.loadString("assets/township.json");
+    mpaArray = json.decode(jsonText);
+    print("map->" + mpaArray.length.toString());
+    this.storage.setItem("mapArray", mpaArray);
+  }
 
   @override
   void initState() {
@@ -38,6 +49,10 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     latitude = "";
     longitude = "";
+    this.mpaArray = this.storage.getItem("mapArray");
+    if (this.mpaArray == null || this.mpaArray.length == 0) {
+      localJsonData();
+    }
     getCurrentLocation().then((k) {
       latitude = k.latitude.toString();
       longitude = k.longitude.toString();
@@ -61,8 +76,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                 Container(
                   margin: EdgeInsets.only(right: 5.0, top: 10.0),
                   child: PopupMenuButton(
-                    itemBuilder: (context) =>
-                    <PopupMenuEntry<String>>[
+                    itemBuilder: (context) => <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
                         enabled: false,
                         child: Center(
@@ -77,7 +91,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.11'),
+                        child: Text('Version 1.0.12'),
                       ),
                     ],
                     child: Icon(
@@ -226,67 +240,100 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                           .onlineSerives
                           .loginData(param)
                           .then((data) => {
-                      _loginData = this.storage.getItem("loginData"),
-                      if (data == true)
-                      {
-                          this
-                              .onlineSerives
-                              .getSurveyorroutebyuser(
-                          _loginData["syskey"])
-                          .then((returnVal) => {
-                      if(returnVal["status"] == true){
-                          if(returnVal["data"].length > 0)
-                      {
-                        returnData = returnVal["data"],
-                    for(var ss = 0; ss < returnData.length; ss++){
-                    getMimuparam = {
-                    "id":returnData[ss]["regionId"].toString(),
-                    "code":"",
-                    "description":"",
-                    "parentid":"",
-                    "n2":""
-                    },
-                    print("regionID ---> " + getMimuparam.toString()),
-                    this.onlineSerives.getTownship(getMimuparam).then((townReturn) => {
-                      print("s->" + townReturn.toString()),
-                    if(townReturn["status"] == true){
-                    if(townReturn["data"].length > 0){
-                      checkIndex = ss,
-                      mimuCodearray.add({"code": townReturn["data"][0]["code"]}),
-                      if(returnData.length == mimuCodearray.length){
-                        print("11--->" + mimuCodearray.toString()),
-                        this.storage.setItem("RouteMimu", mimuCodearray),
-                        hideLoadingDialog(),
-                        Navigator.of(context)
-                            .pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                StoreScreen(),
-                          ),
-                        )
-                      }
+                                _loginData = this.storage.getItem("loginData"),
+                                if (data == true)
+                                  {
+                                    if (this.mpaArray == null ||
+                                        this.mpaArray.length == 0)
+                                      {
+                                        localJsonData(),
+                                      },
+                                    this
+                                        .onlineSerives
+                                        .getSurveyorroutebyuser(
+                                            _loginData["syskey"])
+                                        .then((returnVal) => {
+                                              if (returnVal["status"] == true)
+                                                {
+                                                  if (returnVal["data"].length >
+                                                      0)
+                                                    {
+                                                      returnData =
+                                                          returnVal["data"],
+                                                      for (var ss = 0;
+                                                          ss <
+                                                              returnData.length;
+                                                          ss++)
+                                                        {
+                                                          getMimuparam = {
+                                                            "id": returnData[ss]
+                                                                    ["regionId"]
+                                                                .toString(),
+                                                            "code": "",
+                                                            "description": "",
+                                                            "parentid": "",
+                                                            "n2": ""
+                                                          },
+                                                          print("regionID ---> " +
+                                                              getMimuparam
+                                                                  .toString()),
+                                                          this
+                                                              .onlineSerives
+                                                              .getTownship(
+                                                                  getMimuparam)
+                                                              .then(
+                                                                  (townReturn) =>
+                                                                      {
+                                                                        print("s->" +
+                                                                            townReturn.toString()),
+                                                                        if (townReturn["status"] ==
+                                                                            true)
+                                                                          {
+                                                                            if (townReturn["data"].length >
+                                                                                0)
+                                                                              {
+                                                                                checkIndex = ss,
+                                                                                mimuCodearray.add({
+                                                                                  "code": townReturn["data"][0]["code"]
+                                                                                }),
+                                                                                if (returnData.length == mimuCodearray.length)
+                                                                                  {
+                                                                                    print("11--->" + mimuCodearray.toString()),
+                                                                                    this.storage.setItem("RouteMimu", mimuCodearray),
+                                                                                    hideLoadingDialog(),
+                                                                                    Navigator.of(context).pushReplacement(
+                                                                                      MaterialPageRoute(
+                                                                                        builder: (context) => StoreScreen(),
+                                                                                      ),
+                                                                                    )
+                                                                                  }
+                                                                              }
+                                                                          }
+                                                                        else
+                                                                          {
+                                                                            hideLoadingDialog(),
+                                                                          }
+                                                                      }),
+                                                        }
+                                                    }
+                                                  else
+                                                    {
+                                                      hideLoadingDialog(),
+                                                    }
+                                                }
+                                              else
+                                                {
+                                                  hideLoadingDialog(),
+                                                }
+                                            }),
+                                  }
+                                else
+                                  {
+                                    hideLoadingDialog(),
+                                  }
+                              })
+                          .catchError((err) => {hideLoadingDialog()});
                     }
-                    }else{
-                      hideLoadingDialog(),
-                    }
-                    }),
-                    }
-
-                    }else{
-                            hideLoadingDialog(),
-                          }
-                    }else{
-                        hideLoadingDialog(),
-                      }
-                    }),
-                    }
-                    else
-                    {
-                    hideLoadingDialog(),
-                    }
-                    })
-                        .catchError((err) => {hideLoadingDialog()});
-                  }
                   },
                   textColor: CustomIcons.buttonText,
                 ),
@@ -299,7 +346,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                     Text(
                       "Don't have an account?",
                       style:
-                      TextStyle(color: CustomIcons.iconColor, fontSize: 15),
+                          TextStyle(color: CustomIcons.iconColor, fontSize: 15),
                     ),
                     SizedBox(
                       width: 5,

@@ -38,11 +38,11 @@ class OnlineSerives {
   void URL() {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
-      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-//      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+//      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
       this
           .storage
-          .setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
+          .setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
 
@@ -571,6 +571,153 @@ class OnlineSerives {
   }
 
   Future getHeaderList(params) async {
+    var testData = [
+      {
+        "headerSyskey": "1",
+        "headerCode": "",
+        "headerDescription": "New Store Registration",
+        "t3": "20200101",
+        "t4": "20201231",
+        "t5": "",
+        "status": 1,
+        "n2": 1,
+        "n3": "0",
+        "sections": [
+          {
+            "questions": [
+              {
+                "questionDescription": "Neighborhood Type",
+                "questionSyskey": "2007261736169400018"
+              },
+              {
+                "questionDescription": "Store Type",
+                "questionSyskey": "2007261737373700022"
+              },
+              {
+                "questionDescription": "Road Access Type",
+                "questionSyskey": "2007261738472600026"
+              },
+              {
+                "questionDescription": "Building Material Type",
+                "questionSyskey": "2007261740291000030"
+              },
+              {
+                "questionDescription": "Building Type",
+                "questionSyskey": "2007271813568900006"
+              },
+              {
+                "questionDescription": "Building Size",
+                "questionSyskey": "2007271814326800007"
+              },
+              {
+                "questionDescription": "Store outlet of occupation(s) of patrons",
+                "questionSyskey": "2007271827442300008"
+              },
+              {
+                "questionDescription": "Store outlet of average income of patrons",
+                "questionSyskey": "2007271829526300009"
+              },
+              {
+                "questionDescription": "Store outlet of frequency of passerbys",
+                "questionSyskey": "2007271830243000010"
+              }
+            ],
+            "sectionSyskey": "1",
+            "sectionDescription": "Neighborhood Survey"
+          },
+          {
+            "questions": [
+              {
+                "questionDescription": "Operation date and time",
+                "questionSyskey": "2007270617116200035"
+              },
+              {
+                "questionDescription": "NRC number",
+                "questionSyskey": "2007270623216600040"
+              },
+              {
+                "questionDescription": "Date of Birth",
+                "questionSyskey": "2007270624116400041"
+              },
+              {
+                "questionDescription": "Number of workers",
+                "questionSyskey": "2007270654306100042"
+              },
+              {
+                "questionDescription": "Working Days",
+                "questionSyskey": "2008231838016000014"
+              },
+              {
+                "questionDescription": "Day Off",
+                "questionSyskey": "2008231846391800018"
+              }
+            ],
+            "sectionSyskey": "4",
+            "sectionDescription": "Store Operator Information"
+          },
+          {
+            "questions": [
+              {
+                "questionDescription": "Take a photo store sign board",
+                "questionSyskey": "2007271803224200002"
+              },
+              {
+                "questionDescription": "Take a photo the whole of store",
+                "questionSyskey": "2007271809254900004"
+              },
+              {
+                "questionDescription": "Date/Time range",
+                "questionSyskey": "2008250311010200002"
+              }
+            ],
+            "sectionSyskey": "2",
+            "sectionDescription": "Outside of Store"
+          },
+          {
+            "questions": [
+              {
+                "questionDescription": "Store Type(On premise/Off premise)",
+                "questionSyskey": "2007270536087300029"
+              },
+              {
+                "questionDescription": "Store Type(Modern trade /Traditional trade)",
+                "questionSyskey": "2007270537288800031"
+              },
+              {
+                "questionDescription": "Display material type",
+                "questionSyskey": "2007270538561800033"
+              },
+              {
+                "questionDescription": "ဘယ် လို Categories အမျိုးအစားရောင်းသလဲ?",
+                "questionSyskey": "2008210929492800711"
+              },
+              {
+                "questionDescription": "ဘယ် လို Categories အမျိုးအစားရောင်းသလဲ?",
+                "questionSyskey": "2008230717342200002"
+              },
+              {
+                "questionDescription": "Store type (On premise/Off premise)",
+                "questionSyskey": "2008231808586700002"
+              },
+              {
+                "questionDescription": "Store type (Modern trade/ Traditional trade)",
+                "questionSyskey": "2008231811138200005"
+              },
+              {
+                "questionDescription": "Add Brand",
+                "questionSyskey": "2008231821459500008"
+              },
+              {
+                "questionDescription": "Number Range",
+                "questionSyskey": "2008250312115000003"
+              }
+            ],
+            "sectionSyskey": "3",
+            "sectionDescription": "Inside of Store"
+          }
+        ]
+      }
+    ];
     this.mainData();
     this.url = this.url + "surveyor/allSurveyorHeaderList";
     var body = json.encode(params);
@@ -598,7 +745,7 @@ class OnlineSerives {
     }
     var param = {
       "status":this.status,
-      "data":data["list"]
+      "data": data["list"] //testData
     };
     return param;
   }
