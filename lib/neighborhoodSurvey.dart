@@ -475,10 +475,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       }
       _allData["quesAndAns"] = questionAndAnswer;
 
-      // setState(() {
-      //   _consoleLable = _allData.toString();
-      //   hideLoadingDialog();
-      // });
+//       setState(() {
+//         _consoleLable = _allData.toString();
+//         hideLoadingDialog();
+//       });
 
       this.onlineSerives.createStore(_allData).then((reslut) => {
             hideLoadingDialog(),
