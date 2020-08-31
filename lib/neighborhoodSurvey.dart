@@ -311,7 +311,38 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        } else if (loopData["TypeDesc"] == "Checkbox") {
+        }
+        else if (loopData["TypeDesc"] == "Time Range") {
+          var _value = {};
+          _value["id"] = loopData["QuestionShopSyskey"];
+          _value["questionTypeId"] = loopData["TypeSK"].toString();
+          _value["questionNatureId"] = _question["sectionSyskey"].toString();
+          _value["questionId"] = loopData["QuestionSyskey"].toString();
+          _value["answerId"] = "0";
+          _value["remark"] = loopData["AnswerDesc"];
+          _value["desc"] = loopData["QuestionDescription"];
+          _value["instruction"] = loopData["Instruction"];
+          if (loopData["Comment"] == null) {
+            _value["t4"] = "";
+          } else {
+            _value["t4"] = loopData["Comment"];
+          }
+          _value["t5"] = loopData["AnswerDesc2"];
+          _value["n8"] = "0";
+          if (loopData["Flag"] == null) {
+            _value["n9"] = "0";
+          } else {
+            _value["n9"] = loopData["Flag"];
+          }
+          if (loopData["ApprovedFlag"] == null) {
+            _value["n10"] = "2";
+          } else {
+            _value["n10"] = loopData["ApprovedFlag"];
+          }
+          _value["svr9DataList"] = [];
+          questionAndAnswer.add(_value);
+        }
+         else if (loopData["TypeDesc"] == "Checkbox") {
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
@@ -1227,7 +1258,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
+                    }
+                    else if (questions[ss]["TypeDesc"] == "Time Range") {
+                      _data["radioDatas"] = [];
+                      _data["checkDatas"] = [];
+                      _data["images"] = [];
+                    } 
+                    else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
