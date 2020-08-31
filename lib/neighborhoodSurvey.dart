@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_material_pickers/helpers/show_date_picker.dart';
 import 'package:flutter_material_pickers/helpers/show_time_picker.dart';
 import 'package:http/http.dart' as http;
@@ -97,7 +98,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   _clickDoneAssignStore() async {
     var checkPHoto = "sinple";
     for (var i = 0; i < this.questions.length; i++) {
-      
       var loopdata = questions[i];
       var loopPrimary = _primaryData[i];
       if (loopdata["TypeDesc"] == "Attach Photograph") {
@@ -187,9 +187,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       var questionAndAnswer = [];
 
       for (var i = 0; i < this.questions.length; i++) {
-
         var loopData = this.questions[i];
-         print("app>>"+loopData["ApprovedFlag"].toString());
+        print("app>>" + loopData["ApprovedFlag"].toString());
         var loopPrimary = {};
         loopPrimary = this._primaryData[i];
         var singleQueAndAns = {};
@@ -202,7 +201,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
           _value["remark"] = loopData["AnswerDesc"];
-          _value["desc"] = loopData["QuestionDescription"]; //QuestionDescription
+          _value["desc"] =
+              loopData["QuestionDescription"]; //QuestionDescription
           _value["instruction"] = loopData["Instruction"];
           if (loopData["Comment"] == "") {
             _value["t4"] = "";
@@ -216,7 +216,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           } else {
             _value["n9"] = loopData["Flag"];
           }
-          if (loopData["ApprovedFlag"] == "" || loopData["ApprovedFlag"] == null) {
+          if (loopData["ApprovedFlag"] == "" ||
+              loopData["ApprovedFlag"] == null) {
             _value["n10"] = "2";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
@@ -310,7 +311,38 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        } else if (loopData["TypeDesc"] == "Checkbox") {
+        }
+        else if (loopData["TypeDesc"] == "Time Range") {
+          var _value = {};
+          _value["id"] = loopData["QuestionShopSyskey"];
+          _value["questionTypeId"] = loopData["TypeSK"].toString();
+          _value["questionNatureId"] = _question["sectionSyskey"].toString();
+          _value["questionId"] = loopData["QuestionSyskey"].toString();
+          _value["answerId"] = "0";
+          _value["remark"] = loopData["AnswerDesc"];
+          _value["desc"] = loopData["QuestionDescription"];
+          _value["instruction"] = loopData["Instruction"];
+          if (loopData["Comment"] == null) {
+            _value["t4"] = "";
+          } else {
+            _value["t4"] = loopData["Comment"];
+          }
+          _value["t5"] = loopData["AnswerDesc2"];
+          _value["n8"] = "0";
+          if (loopData["Flag"] == null) {
+            _value["n9"] = "0";
+          } else {
+            _value["n9"] = loopData["Flag"];
+          }
+          if (loopData["ApprovedFlag"] == null) {
+            _value["n10"] = "2";
+          } else {
+            _value["n10"] = loopData["ApprovedFlag"];
+          }
+          _value["svr9DataList"] = [];
+          questionAndAnswer.add(_value);
+        }
+         else if (loopData["TypeDesc"] == "Checkbox") {
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
@@ -447,8 +479,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               _value["questionId"] = loopData["QuestionSyskey"].toString();
               _value["answerId"] =
                   this.newQuestionarray[ss]["answerSyskey"].toString();
-              _value["remark"] =  this.newQuestionarray[ss]["answerDesc"].toString();
-              _value["desc"] =loopData["QuestionDescription"];
+              _value["remark"] =
+                  this.newQuestionarray[ss]["answerDesc"].toString();
+              _value["desc"] = loopData["QuestionDescription"];
               _value["instruction"] = loopData["Instruction"];
               if (loopData["Comment"] == null) {
                 _value["t4"] = "";
@@ -689,7 +722,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       ],
                     ),
                   ),
-                  
                 ],
               )),
           Container(
@@ -782,30 +814,30 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 children: <Widget>[buildRadio(data, questionIndex)],
                 // children: <Widget>[buildRadio(data, questionIndex)],
               )),
-              _commentWidget(singleQuestion["Flag"], singleQuestion),
+          _commentWidget(singleQuestion["Flag"], singleQuestion),
         ],
       ),
     );
   }
-  Widget _commentWidget(var flag,var data){
-    if(flag.toString() == "1"){
+
+  Widget _commentWidget(var flag, var data) {
+    if (flag.toString() == "1") {
       return Container(
         color: Colors.grey[200],
-                    padding: EdgeInsets.all(12),
-                    height: 10 * 24.0,
-                    child: TextField(
-                      enabled: false,
-                      maxLines: 10,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(10),
-                        hintText:
-                            data["Comment"].toString(),
-                        fillColor: Colors.grey[300],
-                        filled: true,
-                      ),
-                    ),
-                  );
-    }else{
+        padding: EdgeInsets.all(12),
+        height: 10 * 24.0,
+        child: TextField(
+          enabled: false,
+          maxLines: 10,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(10),
+            hintText: data["Comment"].toString(),
+            fillColor: Colors.grey[300],
+            filled: true,
+          ),
+        ),
+      );
+    } else {
       return Container();
     }
   }
@@ -879,7 +911,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     ),
                 ],
               )),
-               _commentWidget(data["Flag"], data),
+          _commentWidget(data["Flag"], data),
         ],
       ),
     );
@@ -958,7 +990,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   ),
                 ],
               )),
-               _commentWidget(data["Flag"], data),
+          _commentWidget(data["Flag"], data),
         ],
       ),
     );
@@ -1226,7 +1258,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
+                    }
+                    else if (questions[ss]["TypeDesc"] == "Time Range") {
+                      _data["radioDatas"] = [];
+                      _data["checkDatas"] = [];
+                      _data["images"] = [];
+                    } 
+                    else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
@@ -1335,10 +1373,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _widget = fromToWidget(data);
     } else if (data["TypeDesc"] == "Rating 0-10") {
       _widget = ratingWidget(data);
-    } else if(data["TypeDesc"] == "Time Range"){
+    } else if (data["TypeDesc"] == "Time Range") {
       _widget = timeRangeWidget(data);
-    }
-    else {
+    } else {
       _widget = Container(
         margin: EdgeInsets.only(bottom: 20),
         child: Text(data.toString()),
@@ -1348,14 +1385,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     return _widget;
   }
 
-
-
   String datePicker;
   DateTime selectedDate = DateTime.now();
   Widget dateTimePicker(var data) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
-    
+
     TextEditingController _textController = new TextEditingController();
     if (data["AnswerDesc"] == "") {
       _textController.text = selectedDate.toString();
@@ -1378,7 +1413,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   children: <Widget>[
                     Flexible(
                       child: Text(
-                        t1 + " : " +t2,
+                        t1 + " : " + t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -1400,15 +1435,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     child: TextField(
                       onTap: () {
                         showMaterialDatePicker(
-                  context: context,
-                  selectedDate: nowDate,
-                  onChanged: (value) => setState(() {
-                    nowDate = value;
-                    data["AnswerDesc"] = value.toString();
-                  }
-                    ),
-                  
-                );
+                          context: context,
+                          selectedDate: nowDate,
+                          onChanged: (value) => setState(() {
+                            nowDate = value;
+                            data["AnswerDesc"] = value.toString();
+                          }),
+                        );
                       },
                       controller: _textController,
                       readOnly: true,
@@ -1428,7 +1461,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   ),
                 ],
               )),
-              _commentWidget(data["Flag"], data),
+          _commentWidget(data["Flag"], data),
         ],
       ),
     );
@@ -1486,7 +1519,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 //                    ),
                     Flexible(
                       child: Text(
-                        t1 +  " : " + t2,
+                        t1 + " : " + t2,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -1674,7 +1707,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-
                     Flexible(
                       child: Text(
                         t1 + " : " + t2,
@@ -1750,25 +1782,22 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   ),
                 ],
               )),
-              _commentWidget(data["Flag"], data),
+          _commentWidget(data["Flag"], data),
         ],
       ),
     );
   }
 
-   Widget timeRangeWidget(var data) {
+  Widget timeRangeWidget(var data) {
     // var fromTime = TimeOfDay.now();
 
     TextEditingController _fromController = new TextEditingController();
-    if(data["AnswerDesc"] == ""){
-      // data["AnswerDesc"] = fromTime.toString();
-    }
     _fromController.text = data["AnswerDesc"];
-    
+
     TextEditingController _toController = new TextEditingController();
     _toController.text = data["AnswerDesc2"];
     var t1 = data["QuestionCode"];
-    var t2 = data["QuestionDescription"]+">>>timerangewidget";
+    var t2 = data["QuestionDescription"] + ">>>timerangewidget";
     return Container(
       decoration: flagDecoration(data["Flag"]),
       margin: EdgeInsets.all(10),
@@ -1781,7 +1810,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-
                     Flexible(
                       child: Text(
                         t1 + " : " + t2,
@@ -1812,16 +1840,34 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               right: 2,
                             ),
                             child: TextField(
+                              readOnly: true,
                               controller: _fromController,
                               onChanged: (val) {
                                 data["AnswerDesc"] = _fromController.text;
-//                                 showMaterialTimePicker(
-//   context: context,
-//   // selectedTime: fromTime,
-//   onChanged: (value) {
-//     print("time>>"+value.toString());
-//   },
-// );
+                              },
+                              onTap: () {
+                                DatePicker.showTime12hPicker(context,
+                                    showTitleActions: true, onChanged: (date) {
+                                  print('change $date in time zone ' +
+                                      date.timeZoneOffset.inHours.toString());
+                                }, onConfirm: (date) {
+                                  print(
+                                      'confirm ---------------------------- $date');
+                                  var selected = date.toString();
+                                  var timeonly = selected.substring(11,16);
+                                  // var hour = timeonly.substring(0,2);
+                                  // if(int.parse(hour) < 12){
+
+                                  // }
+                                  // var finalTime;
+                                  // print("hour"+timeonly.substring(0,2));
+                                  print(
+                                      'substring ---------------------------- $timeonly');
+                                      setState(() {
+                                        data["AnswerDesc"] = timeonly;
+                                        _fromController.text = timeonly;
+                                      });
+                                }, currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
                                 labelText: 'From',
@@ -1845,6 +1891,30 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               onChanged: (val) {
                                 data["AnswerDesc2"] = _toController.text;
                               },
+                              onTap: (){
+                                DatePicker.showTime12hPicker(context,
+                                    showTitleActions: true, onChanged: (date) {
+                                  print('change $date in time zone ' +
+                                      date.timeZoneOffset.inHours.toString());
+                                }, onConfirm: (date) {
+                                  print(
+                                      'confirm ---------------------------- $date');
+                                  var selected = date.toString();
+                                  var timeonly = selected.substring(11,16);
+                                  // var hour = timeonly.substring(0,2);
+                                  // if(int.parse(hour) < 12){
+
+                                  // }
+                                  // var finalTime;
+                                  // print("hour"+timeonly.substring(0,2));
+                                  print(
+                                      'substring ---------------------------- $timeonly');
+                                      setState(() {
+                                        data["AnswerDesc2"] = timeonly;
+                                        _fromController.text = timeonly;
+                                      });
+                                }, currentTime: DateTime.now());
+                              },
                               decoration: InputDecoration(
                                 labelText: 'To',
                                 labelStyle: TextStyle(
@@ -1862,7 +1932,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   ),
                 ],
               )),
-              _commentWidget(data["Flag"], data),
+          _commentWidget(data["Flag"], data),
         ],
       ),
     );

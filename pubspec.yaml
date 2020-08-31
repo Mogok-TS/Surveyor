@@ -39,7 +39,7 @@ dependencies:
   flutter_image_compress: ^0.6.8
   file_picker: any
   flutter_material_pickers: ^1.7.3
-
+  flutter_datetime_picker: ^1.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
