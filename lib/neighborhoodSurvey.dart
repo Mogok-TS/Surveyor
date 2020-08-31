@@ -16,7 +16,7 @@ import 'Services/Loading/LoadingServices.dart';
 import 'assets/custom_icons_icons.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-
+import 'package:intl/intl.dart';
 // ignore: must_be_immutable
 class NeighborhoodSurveyScreen extends StatefulWidget {
   final bool isNeighborhood;
@@ -1387,7 +1387,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   String datePicker;
   DateTime selectedDate = DateTime.now();
-  Widget dateTimePicker(var data) {
+ Widget dateTimePicker(var data) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
 
@@ -1439,7 +1439,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                           selectedDate: nowDate,
                           onChanged: (value) => setState(() {
                             nowDate = value;
-                            data["AnswerDesc"] = value.toString();
+                            var selected = value.toString();
+                            var dateonly  = selected.substring(0,10);
+                            
+                            print("selecteddate>>"+dateonly.toString());
+                            data["AnswerDesc"] = dateonly.toString();
                           }),
                         );
                       },
@@ -1451,7 +1455,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                           Icons.date_range,
                           color: CustomIcons.iconColor,
                         ),
-                        hintText: 'Date Time',
+                        hintText: 'Date',
                         hintStyle: TextStyle(fontSize: 18, height: 1.5),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -1788,7 +1792,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget timeRangeWidget(var data) {
+ Widget timeRangeWidget(var data) {
     // var fromTime = TimeOfDay.now();
 
     TextEditingController _fromController = new TextEditingController();
@@ -1851,26 +1855,36 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                   print('change $date in time zone ' +
                                       date.timeZoneOffset.inHours.toString());
                                 }, onConfirm: (date) {
-                                  print(
-                                      'confirm ---------------------------- $date');
                                   var selected = date.toString();
                                   var timeonly = selected.substring(11,16);
-                                  // var hour = timeonly.substring(0,2);
-                                  // if(int.parse(hour) < 12){
-
-                                  // }
-                                  // var finalTime;
-                                  // print("hour"+timeonly.substring(0,2));
-                                  print(
-                                      'substring ---------------------------- $timeonly');
+                                  var hour = timeonly.substring(0,2);
+                                  var minute = timeonly.substring(3,5);
+                                  var finalTime;
+                                  if(int.parse(hour) < 12){
+                                    int finalHour = int.parse(hour);
+                                    finalTime = finalHour.toString() + ":" + minute +" AM";
+                                  }else if(int.parse(hour) > 12){
+                                    int finalHour = int.parse(hour) - 12;
+                                    finalTime  = finalHour.toString() + ":" + minute + " PM";
+                                  }else if(int.parse(hour) == 12 && int.parse(minute) >0 ){
+                                    int finalHour = int.parse(hour);
+                                    finalTime = finalHour.toString() + ":" + minute + " PM";
+                                  }else{
+                                    int finalHour = int.parse(hour);
+                                    finalTime = finalHour.toString() +  ":" + minute +" AM";
+                                  }
                                       setState(() {
-                                        data["AnswerDesc"] = timeonly;
-                                        _fromController.text = timeonly;
+                                        data["AnswerDesc"] = finalTime;
+                                        _fromController.text = finalTime;
                                       });
-                                }, currentTime: DateTime.now());
+                                      DateTime now = DateTime.now();
+String formattedDate = DateFormat('dd/MM/yyyy').format(now);
+print("formatted date"+formattedDate);
+                                },
+                                 currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
-                                labelText: 'From',
+                                labelText: 'Start Time',
                                 labelStyle: TextStyle(
                                     color: Colors.black54, fontSize: 18),
                                 focusColor: Colors.black,
@@ -1887,6 +1901,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               left: 2,
                             ),
                             child: TextField(
+                              readOnly: true,
                               controller: _toController,
                               onChanged: (val) {
                                 data["AnswerDesc2"] = _toController.text;
@@ -1897,26 +1912,37 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                   print('change $date in time zone ' +
                                       date.timeZoneOffset.inHours.toString());
                                 }, onConfirm: (date) {
-                                  print(
-                                      'confirm ---------------------------- $date');
+                                 
                                   var selected = date.toString();
                                   var timeonly = selected.substring(11,16);
-                                  // var hour = timeonly.substring(0,2);
-                                  // if(int.parse(hour) < 12){
-
-                                  // }
-                                  // var finalTime;
-                                  // print("hour"+timeonly.substring(0,2));
+                                  var hour = timeonly.substring(0,2);
+                                  var minute = timeonly.substring(3,5);
+                                  var finalTime;
+                                  if(int.parse(hour) < 12){
+                                    int finalHour = int.parse(hour);
+                                    finalTime = finalHour.toString() + ":" + minute +" AM";
+                                  }else if(int.parse(hour) > 12){
+                                    int finalHour = int.parse(hour) - 12;
+                                    finalTime  = finalHour.toString() + ":" + minute + " PM";
+                                  }else if(int.parse(hour) == 12 && int.parse(minute) >0 ){
+                                    int finalHour = int.parse(hour);
+                                    finalTime = finalHour.toString() + ":" + minute + " PM";
+                                  }else{
+                                    int finalHour = int.parse(hour);
+                                    finalTime = finalHour.toString() + ":" + minute +" AM";
+                                  }
+                                  print("finaltimee>>>>>"+finalTime.toString());
+                                  print("hour"+timeonly.substring(0,2));
                                   print(
                                       'substring ---------------------------- $timeonly');
                                       setState(() {
-                                        data["AnswerDesc2"] = timeonly;
-                                        _fromController.text = timeonly;
+                                        data["AnswerDesc2"] = finalTime;
+                                        _fromController.text = finalTime;
                                       });
                                 }, currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
-                                labelText: 'To',
+                                labelText: 'End Time',
                                 labelStyle: TextStyle(
                                     color: Colors.black54, fontSize: 18),
                                 focusColor: Colors.black,
