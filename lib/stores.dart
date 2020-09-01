@@ -78,6 +78,7 @@ class _StoreScreenState extends State<StoreScreen> {
   Widget assignStoreWidget(var data){
     print(">>>"+data.toString());
     return  Container(
+      
                 margin: EdgeInsets.all(5),
       
                     child: Column(
@@ -164,8 +165,21 @@ class _StoreScreenState extends State<StoreScreen> {
                     ),
                   );
   }
+   BoxDecoration flagDecoration(var check) {
+    if (check == "0") {
+      return BoxDecoration(
+        border: Border.all(
+          color: CustomIcons.appbarColor,
+        ),
+        borderRadius: BorderRadius.circular(0.0),
+      );
+    } else {
+      return BoxDecoration();
+    }
+  }
   Widget storeRegWIdget(var data){
    return Container(
+    
                     margin: EdgeInsets.all(5),
                     child: Column(
                       children: <Widget>[
@@ -510,6 +524,7 @@ class _StoreScreenState extends State<StoreScreen> {
       color: Colors.grey[200],
       child: Card(
         child: Container(
+          // decoration: flagDecoration("0"),
           child: Column(
             children: <Widget>[
               ListTile(
@@ -629,10 +644,11 @@ class _StoreScreenState extends State<StoreScreen> {
       String storeName, String phone, String address, data) {
     var params;
     return Container(
-      color: Colors.grey[200],
+       color: Colors.grey[200],
       padding: EdgeInsets.all(1),
       child: Card(
         child: Container(
+          // decoration: flagDecoration("0"),
           padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
           child: Column(
             children: <Widget>[
