@@ -577,7 +577,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png', 'jpeg'],
     );
-    for (var i = 0; i < files.length; i++) {
+    if(files != null){
+       for (var i = 0; i < files.length; i++) {
       setState(() {
         newImageName();
         var datas = {};
@@ -588,6 +589,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         images.add(datas);
         // images.add(files[i]);
       });
+    }
     }
   }
 
@@ -1249,8 +1251,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["checkDatas"] = [];
                       _data["images"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Date") {
-                      _data["from"] = "";
-                      _data["from"] = "";
+                      print("desc --->> ---"+questions[ss]["AnswerDesc"]);
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];

@@ -166,7 +166,7 @@ class _StoreScreenState extends State<StoreScreen> {
                   );
   }
    BoxDecoration flagDecoration(var check) {
-    if (check == "0") {
+    if (check != "0" && check != "0.0") {
       return BoxDecoration(
         border: Border.all(
           color: CustomIcons.appbarColor,
@@ -524,7 +524,7 @@ class _StoreScreenState extends State<StoreScreen> {
       color: Colors.grey[200],
       child: Card(
         child: Container(
-          // decoration: flagDecoration("0"),
+           decoration: flagDecoration(data["FlagCount"].toString()),
           child: Column(
             children: <Widget>[
               ListTile(
@@ -648,7 +648,7 @@ class _StoreScreenState extends State<StoreScreen> {
       padding: EdgeInsets.all(1),
       child: Card(
         child: Container(
-          // decoration: flagDecoration("0"),
+           decoration: flagDecoration(data["FlagCount"].toString()),
           padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
           child: Column(
             children: <Widget>[
