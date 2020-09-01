@@ -75,97 +75,83 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget assignStoreWidget(var data){
-    print(">>>"+data.toString());
-    return  Container(
-      
-                margin: EdgeInsets.all(5),
-      
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          color: CustomIcons.dropDownHeader,
-                          child: ListTile(
-                            title: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  data["show"] = !data["show"];
-                                });
-                              },
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    data["townshipname"].toString(),
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  
-                                ],
-                              ),
-                            ),
-                             trailing: Wrap(
-                              spacing: 12, // space between two icons
-                              children: <Widget>[
-                                // icon-1
-                                IconButton(
-                                  color: Colors.black,
-                                  icon: data["show"] == true
-                                      ? Icon(Icons.keyboard_arrow_down)
-                                      : Icon(Icons.chevron_right),
-                                  onPressed: () {
-                                    setState(() {
-                                      data["show"] = !data["show"];
-                                    });
-                                  },
-                                ) // icon-2
-                              ],
-                            ),
-                            onTap: () {
-                              setState(() {
-                                data["show"] = !data["show"];
-                              });
-                            },
-                            
-                          ),
-                        ),
-                        Container(
-                            child: data["show"] == true
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                           Column(
-                                              children: <Widget>[
-                                                for (var i = 0;
-                                                    i <
-                                                        data["childData"].length;
-                                                    i++)
-                                                  buildAssignItem(
-                                                      data["childData"][i]
-                                                                  ["shopname"]
-                                                              .toString() +
-                                                          "( " +
-                                                          data["childData"][i]
-                                                                  ["shopnamemm"]
-                                                              .toString() +
-                                                          " )",
-                                                      data["childData"][i]
-                                                              ["phoneno"]
-                                                          .toString(),
-                                                      data["childData"][i]
-                                                              ["address"]
-                                                          .toString(),
-                                                      data["childData"][i])
-                                              ],
-                                            ),
-                                    ],
-                                  )
-                                : new Container())
-                      ],
+  Widget assignStoreWidget(var data) {
+    print(">>>" + data.toString());
+    return Container(
+      margin: EdgeInsets.all(5),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: CustomIcons.dropDownHeader,
+            child: ListTile(
+              title: InkWell(
+                onTap: () {
+                  setState(() {
+                    data["show"] = !data["show"];
+                  });
+                },
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      data["townshipname"].toString(),
+                      style: TextStyle(color: Colors.black),
                     ),
-                  );
+                  ],
+                ),
+              ),
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: <Widget>[
+                  // icon-1
+                  IconButton(
+                    color: Colors.black,
+                    icon: data["show"] == true
+                        ? Icon(Icons.keyboard_arrow_down)
+                        : Icon(Icons.chevron_right),
+                    onPressed: () {
+                      setState(() {
+                        data["show"] = !data["show"];
+                      });
+                    },
+                  ) // icon-2
+                ],
+              ),
+              onTap: () {
+                setState(() {
+                  data["show"] = !data["show"];
+                });
+              },
+            ),
+          ),
+          Container(
+              child: data["show"] == true
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            for (var i = 0; i < data["childData"].length; i++)
+                              buildAssignItem(
+                                  data["childData"][i]["shopname"].toString() +
+                                      "( " +
+                                      data["childData"][i]["shopnamemm"]
+                                          .toString() +
+                                      " )",
+                                  data["childData"][i]["phoneno"].toString(),
+                                  data["childData"][i]["address"].toString(),
+                                  data["childData"][i])
+                          ],
+                        ),
+                      ],
+                    )
+                  : new Container())
+        ],
+      ),
+    );
   }
-   BoxDecoration flagDecoration(var check) {
+
+  BoxDecoration flagDecoration(var check) {
     if (check != "0" && check != "0.0") {
       return BoxDecoration(
         border: Border.all(
@@ -177,109 +163,103 @@ class _StoreScreenState extends State<StoreScreen> {
       return BoxDecoration();
     }
   }
-  Widget storeRegWIdget(var data){
-   return Container(
-    
-                    margin: EdgeInsets.all(5),
-                    child: Column(
+
+  Widget storeRegWIdget(var data) {
+    return Container(
+      margin: EdgeInsets.all(5),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: CustomIcons.dropDownHeader,
+            child: ListTile(
+              title: InkWell(
+                onTap: () {
+                  setState(() {
+                    data["show"] = !data["show"];
+                  });
+                },
+                child: Text(
+                  data["townshipname"],
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              onTap: () {
+                setState(() {
+                  data["show"] = !data["show"];
+                });
+              },
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: <Widget>[
+                  // icon-1
+                  IconButton(
+                    color: Colors.black,
+                    icon: data["show"] == true
+                        ? Icon(Icons.keyboard_arrow_down)
+                        : Icon(Icons.chevron_right),
+                    onPressed: () {
+                      setState(() {
+                        data["show"] = !data["show"];
+                      });
+                    },
+                  ) // icon-2
+                ],
+              ),
+            ),
+          ),
+          Container(
+              child: data["show"] == true
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-                          color: CustomIcons.dropDownHeader,
-                          child: ListTile(
-                            title: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  data["show"] = !data["show"];
-                                });
-                              },
-                              child: Text(
-                                data["townshipname"],
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                data["show"] = !data["show"];
-                              });
-                            },
-                            trailing: Wrap(
-                              spacing: 12, // space between two icons
-                              children: <Widget>[
-                                // icon-1
-                                IconButton(
-                                  color: Colors.black,
-                                  icon: data["show"] == true
-                                      ? Icon(Icons.keyboard_arrow_down)
-                                      : Icon(Icons.chevron_right),
-                                  onPressed: () {
-                                    setState(() {
-                                      data["show"] = !data["show"];
-                                    });
-                                  },
-                                ) // icon-2
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                            child: data["show"] == true
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      this.storeRegistration.length == 0
-                                          ? Row(
-                                              children: <Widget>[
-                                                Expanded(
-                                                  child: Container(
-                                                    height: 50,
-                                                    color: Colors.grey[200],
-                                                    child: Center(
-                                                      child: Text(
-                                                        "No Data",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          : Column(
-                                              children: <Widget>[
-                                                for (var i = 0;
-                                                    i <
-                                                       data["childData"]
-                                                            .length;
-                                                    i++)
-                                                  buildRegisterItem(
-                                                      data["childData"][
-                                                                  i]["name"]
-                                                              .toString() +
-                                                          "( " +
-                                                          data["childData"][i]["mmName"]
-                                                              .toString() +
-                                                          " )",
-                                                      data["childData"][i]
-                                                              ["phoneNumber"]
-                                                          .toString(),
-                                                      data["childData"][i]
-                                                              ["address"]
-                                                          .toString(),
-                                                      data["childData"][i])
-                                              ],
-                                            ),
-                                    ],
+                        this.storeRegistration.length == 0
+                            ? Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      color: Colors.grey[200],
+                                      child: Center(
+                                        child: Text(
+                                          "No Data",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   )
-                                : new Container())
+                                ],
+                              )
+                            : Column(
+                                children: <Widget>[
+                                  for (var i = 0;
+                                      i < data["childData"].length;
+                                      i++)
+                                    buildRegisterItem(
+                                        data["childData"][i]["name"]
+                                                .toString() +
+                                            "( " +
+                                            data["childData"][i]["mmName"]
+                                                .toString() +
+                                            " )",
+                                        data["childData"][i]["phoneNumber"]
+                                            .toString(),
+                                        data["childData"][i]["address"]
+                                            .toString(),
+                                        data["childData"][i])
+                                ],
+                              ),
                       ],
-                    ),
-                  );
+                    )
+                  : new Container())
+        ],
+      ),
+    );
   }
+
   _showDialog(var data) {
     var shopData = [data];
     var param;
@@ -366,7 +346,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                               StoresDetailsScreen(
                                                                   shopData,
                                                                   false,
-                                                                  "assign"),
+                                                                  "assign",
+                                                                  "null"),
                                                         ),
                                                       ),
                                                     }
@@ -482,7 +463,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                               StoresDetailsScreen(
                                                                   shopData,
                                                                   false,
-                                                                  "assign"),
+                                                                  "assign",
+                                                                  "null"),
                                                         ),
                                                       ),
                                                     }
@@ -524,7 +506,7 @@ class _StoreScreenState extends State<StoreScreen> {
       color: Colors.grey[200],
       child: Card(
         child: Container(
-           decoration: flagDecoration(data["FlagCount"].toString()),
+          decoration: flagDecoration(data["FlagCount"].toString()),
           child: Column(
             children: <Widget>[
               ListTile(
@@ -605,7 +587,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                     StoresDetailsScreen(
                                                                         shopData,
                                                                         false,
-                                                                        "assign"),
+                                                                        "assign",
+                                                                        "null"),
                                                               ),
                                                             ),
                                                           }
@@ -644,11 +627,11 @@ class _StoreScreenState extends State<StoreScreen> {
       String storeName, String phone, String address, data) {
     var params;
     return Container(
-       color: Colors.grey[200],
+      color: Colors.grey[200],
       padding: EdgeInsets.all(1),
       child: Card(
         child: Container(
-           decoration: flagDecoration(data["FlagCount"].toString()),
+          decoration: flagDecoration(data["FlagCount"].toString()),
           padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
           child: Column(
             children: <Widget>[
@@ -727,7 +710,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                     StoresDetailsScreen(
                                                                         [data],
                                                                         false,
-                                                                        "register"),
+                                                                        "register",
+                                                                        "null"),
                                                               ),
                                                             ),
                                                           }
@@ -763,6 +747,7 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
     );
   }
+
   var assignStoreData = [];
   var storeRegisterData = [];
   @override
@@ -794,7 +779,7 @@ class _StoreScreenState extends State<StoreScreen> {
 
     Future.delayed(const Duration(milliseconds: 500), () {
 //      setState(() {
-        showLoading();
+      showLoading();
 //      });
       this
           .onlineSerives
@@ -834,7 +819,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                       assignData["id"],
                                                   "townshipName":
                                                       assignData["description"],
-                                                  "show":false,
+                                                  "show": false,
                                                 }),
                                               }
                                           }),
@@ -869,7 +854,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                       assignData["id"],
                                                   "townshipName":
                                                       assignData["description"],
-                                                      "show":false,
+                                                  "show": false,
                                                 }),
                                               }
                                           }),
@@ -901,12 +886,12 @@ class _StoreScreenState extends State<StoreScreen> {
                                         ["townshipid"],
                                     "townshipname": commonStoreregwithName[t]
                                         ["townshipName"],
-                                        "show":false,
+                                    "show": false,
                                     "childData": _childArray
                                   });
                                 }
                                 print("02->" + storeRegwithHeader.toString());
-                                
+
                                 print("-0->" + commonAssignwithName.toString());
                                 for (var t = 0;
                                     t < commonAssignwithName.length;
@@ -925,18 +910,20 @@ class _StoreScreenState extends State<StoreScreen> {
                                         ["townshipid"],
                                     "townshipname": commonAssignwithName[t]
                                         ["townshipName"],
-                                        "show":false,
+                                    "show": false,
                                     "childData": _childArray
                                   });
                                 }
-                                print("01->" + assignstorewithHeader.toString());
+                                print(
+                                    "01->" + assignstorewithHeader.toString());
 //                                Future.delayed(const Duration(seconds: 5), () {
 //
 //                                });
                                 setState(() {
                                   this.assignStoreData = assignstorewithHeader;
                                   this.storeRegisterData = storeRegwithHeader;
-                                  if(this.assignStoreData.length > 0 || this.storeRegisterData.length > 0){
+                                  if (this.assignStoreData.length > 0 ||
+                                      this.storeRegisterData.length > 0) {
                                     hideLoadingDialog();
                                   }
                                   print("1233113");
@@ -991,35 +978,36 @@ class _StoreScreenState extends State<StoreScreen> {
                               showLoading(),
                               _getLocation().then((value) async {
 //                                setState(() {
-                                  if (value == null) {
-                                    print(value);
-                                  } else {
+                                if (value == null) {
+                                  print(value);
+                                } else {
 //                                    _getAddress(value).then((val) async {
-                                      if (value.latitude != null &&
-                                          value.longitude != null) {
-                                        localJsonData().then((val) {
-                                          print(value);
-                                          hideLoadingDialog();
-                                          Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                              builder: (context) => GmapS(
-                                                lati: value.latitude,
-                                                long: value.longitude,
-                                                regass: 'Map',
-                                                passLength: [],
-                                                updateStatus: false,
-                                                data: data,
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                      } else {
-                                        print(value);
-                                      }
+                                  if (value.latitude != null &&
+                                      value.longitude != null) {
+                                    localJsonData().then((val) {
+                                      print(value);
+                                      hideLoadingDialog();
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) => GmapS(
+                                            lati: value.latitude,
+                                            long: value.longitude,
+                                            regass: 'Map',
+                                            passLength: null,
+                                            updateStatus: false,
+                                            data: data,
+                                            shopkey: null,
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                  } else {
+                                    print(value);
+                                  }
 //                                    }).catchError((error) {
 //                                      print(error);
 //                                    });
-                                  }
+                                }
 //                                });
                               }).catchError((error) {
                                 print(error);
@@ -1095,8 +1083,7 @@ class _StoreScreenState extends State<StoreScreen> {
                           ),
                         ),
                         Container(
-      color: Colors.grey[300],
-                          
+                            color: Colors.grey[300],
                             child: showAssignStore == true
                                 ? Column(
                                     crossAxisAlignment:
@@ -1132,7 +1119,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                             .assignStoreData
                                                             .length;
                                                     i++)
-                                                    assignStoreWidget(assignStoreData[i]),
+                                                  assignStoreWidget(
+                                                      assignStoreData[i]),
                                               ],
                                             ),
                                     ],
@@ -1190,7 +1178,7 @@ class _StoreScreenState extends State<StoreScreen> {
                           ),
                         ),
                         Container(
-                          color: Colors.grey[300],
+                            color: Colors.grey[300],
                             child: showRegisterStore == true
                                 ? Column(
                                     crossAxisAlignment:
@@ -1226,7 +1214,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                             .storeRegisterData
                                                             .length;
                                                     i++)
-                                                  storeRegWIdget(storeRegisterData[i])
+                                                  storeRegWIdget(
+                                                      storeRegisterData[i])
                                               ],
                                             ),
                                     ],
@@ -1253,8 +1242,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                StoresDetailsScreen(
-                                                    [], false, "newStore"),
+                                                StoresDetailsScreen([], false,
+                                                    "newStore", "null"),
                                           ),
                                         ),
                                       }

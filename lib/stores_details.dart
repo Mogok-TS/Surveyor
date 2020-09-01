@@ -25,10 +25,11 @@ import 'checkNeighborhood.dart';
 import 'Map/map.dart';
 
 class StoresDetailsScreen extends StatefulWidget {
-  final String regOrAss;
-  var passData, updateStatuspass;
+  var regOrAss;
+  var passData, updateStatuspass, coordiante;
 
-  StoresDetailsScreen(this.passData, this.updateStatuspass, this.regOrAss);
+  StoresDetailsScreen(
+      this.passData, this.updateStatuspass, this.regOrAss, this.coordiante);
 
   @override
   _StoresDetailsScreenState createState() => _StoresDetailsScreenState();
@@ -75,8 +76,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   LatLng location;
   LatLng curLocation;
   var townshipMimucode, stateCode;
-
-
 
   @override
   void initState() {
@@ -145,6 +144,42 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           this.latitude = this.updateDataarray[0]["locationData"]["latitude"];
           this.longitude = this.updateDataarray[0]["locationData"]["longitude"];
           _getUpdateData();
+        } else if (this.widget.regOrAss == "newStoreMap") {
+          for (var i = 0; i < this.widget.coordiante.length; i++) {
+            latitude = this.widget.coordiante[i]["lat"];
+            longitude = this.widget.coordiante[i]["long"];
+          }
+        } else if (this.widget.regOrAss == "assignStore") {
+          this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
+          this.shopName.text = this.updateDataarray[0]["shopname"].toString();
+          this.shopNamemm.text =
+              this.updateDataarray[0]["shopnamemm"].toString();
+          this.shopPhoneNo.text = this.updateDataarray[0]["phoneno"].toString();
+          this.ownerName.text =
+              this.updateDataarray[0]["personname"].toString();
+          this.ownerPhoneNo.text =
+              this.updateDataarray[0]["personph"].toString();
+          this.street.text = this.updateDataarray[0]["street"].toString();
+          this.allAddress = this.updateDataarray[0]["address"].toString();
+          this._stateId = this.updateDataarray[0]["stateid"].toString();
+          this._districtId = this.updateDataarray[0]["districtid"].toString();
+          this._townShipId = this.updateDataarray[0]["townshipid"].toString();
+          this.townVillageTractId =
+              this.updateDataarray[0]["townid"].toString();
+          this.wardVillageId = this.updateDataarray[0]["wardid"].toString();
+          print(this.widget.updateStatuspass);
+          if (this.widget.updateStatuspass == true) {
+            print("Nice");
+            this.latitude = double.parse(this.updateDataarray[0]["lat"]);
+            this.longitude = double.parse(this.updateDataarray[0]["long"]);
+          } else if (this.widget.updateStatuspass == false) {
+            for (var i = 0; i < this.widget.coordiante.length; i++) {
+              print("Helo");
+              // latitude = this.widget.coordiante[i]["lat"];
+              // longitude = this.widget.coordiante[i]["long"];
+            }
+          }
+          _getUpdateData();
         }
         print("shopSyskey--> $shopSyskey");
       }
@@ -164,53 +199,61 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           googlePlusparam = {"lat": latitude, "lng": longitude};
           this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
                 (result) => {
-              if (result["status"] == true)
-                {
-//                  print("12-->" + mpaArray.toString()),
-                  for (var a = 0; a < mpaArray.length; a++)
+                  if (result["status"] == true)
                     {
-                      latlng = List(),
-                      setState(() {
-                        latlng = [];
-                      }),
+//                  print("12-->" + mpaArray.toString()),
+                      for (var a = 0; a < mpaArray.length; a++)
+                        {
+                          latlng = List(),
+                          setState(() {
+                            latlng = [];
+                          }),
 
-                      list1 = mpaArray
-                          .where((element) =>
-                      element["properties"]["TS_PCODE"].toString() ==
-                          mpaArray[a]["properties"]["TS_PCODE"].toString())
-                          .toList(),
+                          list1 = mpaArray
+                              .where((element) =>
+                                  element["properties"]["TS_PCODE"]
+                                      .toString() ==
+                                  mpaArray[a]["properties"]["TS_PCODE"]
+                                      .toString())
+                              .toList(),
 //                      print("123-->" + list1.toString()),
-                      for (var b = 0; b < list1.length; b++) {
-                        list2 = list1[b]["geometry"]["coordinates"],
+                          for (var b = 0; b < list1.length; b++)
+                            {
+                              list2 = list1[b]["geometry"]["coordinates"],
 //                        print("43-->" + list2.toString()),
-                        for (var c = 0; c < list2.length; c++) {
-                          for (var d = 0; d < list2[c].length; d++) {
-                            for (var e = 0; e < list2[c][d].length; e++) {
-                              lati =
-                                  double.parse(list2[c][d][e][1].toString()),
-                              long =
-                                  double.parse(list2[c][d][e][0].toString()),
-                              location = LatLng(lati, long),
-                              latlng.add(location),
-                            }
-                          }
-                        }
-                      },
-                      curLocation = LatLng(latitude, longitude),
-                      _checkIfValidMarker(curLocation, latlng,
-                          mpaArray[a]["properties"]["TS_PCODE"].toString()),
-                    },
-                  setState(() {
-                    this.plusCode = "${result["data"]["plusCode"]}";
-                    hideLoadingDialog();
-                  }),
-                }
-              else
-                {
-                  hideLoadingDialog(),
-                }
-            },
-          );
+                              for (var c = 0; c < list2.length; c++)
+                                {
+                                  for (var d = 0; d < list2[c].length; d++)
+                                    {
+                                      for (var e = 0;
+                                          e < list2[c][d].length;
+                                          e++)
+                                        {
+                                          lati = double.parse(
+                                              list2[c][d][e][1].toString()),
+                                          long = double.parse(
+                                              list2[c][d][e][0].toString()),
+                                          location = LatLng(lati, long),
+                                          latlng.add(location),
+                                        }
+                                    }
+                                }
+                            },
+                          curLocation = LatLng(latitude, longitude),
+                          _checkIfValidMarker(curLocation, latlng,
+                              mpaArray[a]["properties"]["TS_PCODE"].toString()),
+                        },
+                      setState(() {
+                        this.plusCode = "${result["data"]["plusCode"]}";
+                        hideLoadingDialog();
+                      }),
+                    }
+                  else
+                    {
+                      hideLoadingDialog(),
+                    }
+                },
+              );
         });
       });
     });
@@ -229,7 +272,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           for (var i = 0; i < stateObject.length; i++)
             {
               if (this.widget.regOrAss == "assign" ||
-                  this.widget.regOrAss == "register")
+                  this.widget.regOrAss == "register" ||
+                  this.widget.regOrAss == "assignStore")
                 {
                   if (this._stateId == stateObject[i]['id'])
                     {
@@ -260,7 +304,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             {
               _districtList.add(districtObject[i]["description"]),
               if (this.widget.regOrAss == "assign" ||
-                  this.widget.regOrAss == "register")
+                  this.widget.regOrAss == "register" ||
+                  this.widget.regOrAss == "assignStore")
                 {
                   if (this._districtId == districtObject[i]['id'])
                     {
@@ -290,7 +335,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             {
               _townShipList.add(townShipObject[i]['description']),
               if (this.widget.regOrAss == "assign" ||
-                  this.widget.regOrAss == "register")
+                  this.widget.regOrAss == "register" ||
+                  this.widget.regOrAss == "assignStore")
                 {
                   if (this._townShipId == townShipObject[i]['id'])
                     {
@@ -322,7 +368,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             for (var i = 0; i < this.townData.length; i++)
               {
                 if (this.widget.regOrAss == "assign" ||
-                    this.widget.regOrAss == "register")
+                    this.widget.regOrAss == "register" ||
+                    this.widget.regOrAss == "assignStore")
                   {
                     if (this.townVillageTractId == this.townData[i]['id'])
                       {
@@ -389,7 +436,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               {
                 _wardList.add(wardData[i]["description"]),
                 if (this.widget.regOrAss == "assign" ||
-                    this.widget.regOrAss == "register")
+                    this.widget.regOrAss == "register" ||
+                    this.widget.regOrAss == "assignStore")
                   {
                     if (this.wardVillageId == wardData[i]['id'])
                       {
@@ -422,7 +470,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             {
               _villageList.add(_villageData[i]['description']),
               if (this.widget.regOrAss == "assign" ||
-                  this.widget.regOrAss == "register")
+                  this.widget.regOrAss == "register" ||
+                  this.widget.regOrAss == "assignStore")
                 {
                   if (this.wardVillageId == _villageData[i]['id'])
                     {
@@ -761,6 +810,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               passLength: this.widget.passData,
                               updateStatus: this.widget.updateStatuspass,
                               data: null,
+                              shopkey: this.shopSyskey,
                             ),
                           ),
                         );
