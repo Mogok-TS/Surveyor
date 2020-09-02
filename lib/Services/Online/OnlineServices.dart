@@ -38,11 +38,12 @@ class OnlineSerives {
   void URL() {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
-      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+      this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
+//      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
 //      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
       this
           .storage
-          .setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
+          .setItem('URL', "http://52.255.142.115:8084/madbrepository/");
     }
   }
 
@@ -830,6 +831,39 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
           this.storage.setItem("Category", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+//    var param = {
+//      "status":this.status,
+//      "data":data["list"]
+//    };
+    return this.status;
+  }
+
+  Future getRegion(params) async {
+    this.mainData();
+    this.url = this.url + "shop/get-region";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+          this.storage.setItem("Region", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;
