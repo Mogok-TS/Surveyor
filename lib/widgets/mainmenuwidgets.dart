@@ -1,3 +1,5 @@
+import 'package:Surveyor/Profile/profile.dart';
+import 'package:Surveyor/assets/custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:Surveyor/Register/login.dart';
 import 'package:localstorage/localstorage.dart';
@@ -7,16 +9,17 @@ class MainMenuWidget extends StatelessWidget {
   Widget buildListTile(String title, IconData icon, Function tabHandler) {
     return Card(
       elevation: 5,
+      color: CustomIcons.appbarColor,
       child: ListTile(
         leading: Icon(
           icon,
           size: 26,
-          color: Colors.blue,
+          color: Colors.white,
         ),
         title: Text(
           title,
           style: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         onTap: () {
           tabHandler();
@@ -29,33 +32,79 @@ class MainMenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.only(top: 27),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              height: 25,
-            ),
-
-            SizedBox(
-              height: 5,
-            ),
-            // buildListTile('Setting', Icons.settings, () {}),
-            // buildListTile('Pravicy', Icons.security, () {}),
-            // buildListTile('Notifications', Icons.notifications, () {}),
-            // buildListTile('Useful Links', Icons.stars, () {}),
-            // buildListTile('Report An Issue', Icons.bug_report, () {}),
-            buildListTile('Log Out', Icons.input, () {
-              this.storage.deleteItem("Surveyor");
-              this.storage.deleteItem("storeData");
-              this.storage.deleteItem("storeReg");
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => Login(),
+            Container(
+              color: CustomIcons.appbarColor,
+              width: 305,
+              height: 200,
+              child: Center(
+                child: Image(
+                  image: AssetImage('assets/logo.png'),
+                  height: 80,
                 ),
-              );
-            }),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1, color: Colors.black26),
+                ),
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => Profile(),
+                    ),
+                  );
+                },
+                child: ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text("Profile"),
+                  trailing: Icon(Icons.chevron_right),
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1, color: Colors.black26),
+                ),
+              ),
+              child: ListTile(
+                leading: Icon(Icons.shopping_basket),
+                title: Text("Order List"),
+                trailing: Icon(Icons.chevron_right),
+              ),
+            ),
+            Container(
+              child: Align(
+                heightFactor: 8.5,
+                alignment: Alignment.bottomCenter,
+                child: // buildListTile('Setting', Icons.settings, () {}),
+                    // buildListTile('Pravicy', Icons.security, () {}),
+                    // buildListTile('Notifications', Icons.notifications, () {}),
+                    // buildListTile('Useful Links', Icons.stars, () {}),
+                    // buildListTile('Report An Issue', Icons.bug_report, () {}),
+
+                    buildListTile(
+                  'Log Out',
+                  Icons.input,
+                  () {
+                    this.storage.deleteItem("Surveyor");
+                    this.storage.deleteItem("storeData");
+                    this.storage.deleteItem("storeReg");
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => Login(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),
