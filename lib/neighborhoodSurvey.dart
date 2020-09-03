@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_material_pickers/helpers/show_date_picker.dart';
-import 'package:flutter_material_pickers/helpers/show_time_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
@@ -16,7 +15,7 @@ import 'Services/Loading/LoadingServices.dart';
 import 'assets/custom_icons_icons.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:intl/intl.dart';
+
 // ignore: must_be_immutable
 class NeighborhoodSurveyScreen extends StatefulWidget {
   final bool isNeighborhood;
@@ -311,8 +310,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        }
-        else if (loopData["TypeDesc"] == "Time Range") {
+        } else if (loopData["TypeDesc"] == "Time Range") {
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
@@ -341,8 +339,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           _value["svr9DataList"] = [];
           questionAndAnswer.add(_value);
-        }
-         else if (loopData["TypeDesc"] == "Checkbox") {
+        } else if (loopData["TypeDesc"] == "Checkbox") {
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
@@ -577,19 +574,19 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png', 'jpeg'],
     );
-    if(files != null){
-       for (var i = 0; i < files.length; i++) {
-      setState(() {
-        newImageName();
-        var datas = {};
-        datas["image"] = files[i];
-        datas["name"] = imageName;
-        datas["type"] = "file";
-        imageFileList(syskey, imageName, files[i], datas);
-        images.add(datas);
-        // images.add(files[i]);
-      });
-    }
+    if (files != null) {
+      for (var i = 0; i < files.length; i++) {
+        setState(() {
+          newImageName();
+          var datas = {};
+          datas["image"] = files[i];
+          datas["name"] = imageName;
+          datas["type"] = "file";
+          imageFileList(syskey, imageName, files[i], datas);
+          images.add(datas);
+          // images.add(files[i]);
+        });
+      }
     }
   }
 
@@ -1251,7 +1248,25 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["checkDatas"] = [];
                       _data["images"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Date") {
-                      print("desc --->> ---"+questions[ss]["AnswerDesc"]);
+                      print("desc --->> ---" + questions[ss]["AnswerDesc"]);
+                      if (questions[ss]["AnswerDesc"] != "") {
+                        String fulldate = questions[ss]["AnswerDesc"];
+                        String year = fulldate.substring(0, 4);
+                        String month = fulldate.substring(4, 6);
+                        String day = fulldate.substring(6, 8);
+                        _data["servicedate"] = questions[ss]["AnswerDesc"];
+                        _data["dateFormat"] = year + "-" + month + "-" + day;
+                        _data["showDate"] = day + "/" + month + "/" + year;
+                      } else {
+                        DateTime selectedDate = DateTime.now();
+                         String fulldate = selectedDate.toString();
+                        String day = fulldate.substring(8,10);
+                        String month = fulldate.substring(5,7);
+                        String year = fulldate.substring(0,4);
+                        _data["servicedate"] = year + month + day;
+                        _data["dateFormat"] = year + "-" + month + "-" + day;
+                        _data["showDate"] = day + "/" + month + "/" + year;
+                      }
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
@@ -1259,13 +1274,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    }
-                    else if (questions[ss]["TypeDesc"] == "Time Range") {
+                    } else if (questions[ss]["TypeDesc"] == "Time Range") {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
-                    } 
-                    else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
+                    } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
@@ -1369,7 +1382,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       _widget = multipleChoice(
           t1, t2, primarydata["radioDatas"], questionIndex, data);
     } else if (data["TypeDesc"] == "Date") {
-      _widget = dateTimePicker(data);
+      _widget = dateTimePicker(data, primarydata);
     } else if (data["TypeDesc"] == "Number Range") {
       _widget = fromToWidget(data);
     } else if (data["TypeDesc"] == "Rating 0-10") {
@@ -1388,18 +1401,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   String datePicker;
   DateTime selectedDate = DateTime.now();
- Widget dateTimePicker(var data) {
+  Widget dateTimePicker(var data, var primaryData) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
-
     TextEditingController _textController = new TextEditingController();
-    if (data["AnswerDesc"] == "") {
-      _textController.text = selectedDate.toString();
-      data["AnswerDesc"] = selectedDate.toString();
-    } else {
-      _textController.text = data["AnswerDesc"];
-    }
-    DateTime nowDate = DateTime.parse(data["AnswerDesc"]);
+    _textController.text = primaryData["showDate"];
+
+      DateTime nowDate = DateTime.parse(primaryData["dateFormat"]);
+    //  DateTime nowDate;
     return Container(
       decoration: flagDecoration(data["Flag"]),
       margin: EdgeInsets.all(10),
@@ -1436,19 +1445,27 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     child: TextField(
                       onTap: () {
                         showMaterialDatePicker(
+                          
                           context: context,
                           selectedDate: nowDate,
+                          
                           onChanged: (value) => setState(() {
                             nowDate = value;
                             var selected = value.toString();
-                            var dateonly  = selected.substring(0,10);
-                            
-                            print("selecteddate>>"+dateonly.toString());
-                            data["AnswerDesc"] = dateonly.toString();
+                            var dateonly = selected.substring(0, 10);
+                            print("selecteddate>>" + dateonly.toString());
+                            String day = dateonly.substring(8,10);
+                            String month = dateonly.substring(5,7);
+                            String year = dateonly.substring(0,4);
+                            primaryData["servicedate"] =year + month+day;
+                            primaryData["dateFormat"] = year + "-"+ month + "-" + day;
+                            primaryData["showDate"] = day + '/' + month + '/' + year;
+                             data["AnswerDesc"] = year + month+day;
                           }),
+                          
                         );
                       },
-                      controller: _textController,
+                       controller: _textController,
                       readOnly: true,
                       decoration: InputDecoration(
                         focusColor: Colors.black,
@@ -1793,7 +1810,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
- Widget timeRangeWidget(var data) {
+  Widget timeRangeWidget(var data) {
     // var fromTime = TimeOfDay.now();
 
     TextEditingController _fromController = new TextEditingController();
@@ -1857,32 +1874,41 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                       date.timeZoneOffset.inHours.toString());
                                 }, onConfirm: (date) {
                                   var selected = date.toString();
-                                  var timeonly = selected.substring(11,16);
-                                  var hour = timeonly.substring(0,2);
-                                  var minute = timeonly.substring(3,5);
+                                  var timeonly = selected.substring(11, 16);
+                                  var hour = timeonly.substring(0, 2);
+                                  var minute = timeonly.substring(3, 5);
                                   var finalTime;
-                                  if(int.parse(hour) < 12){
+                                  if (int.parse(hour) < 12) {
                                     int finalHour = int.parse(hour);
-                                    finalTime = finalHour.toString() + ":" + minute +" AM";
-                                  }else if(int.parse(hour) > 12){
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " AM";
+                                  } else if (int.parse(hour) > 12) {
                                     int finalHour = int.parse(hour) - 12;
-                                    finalTime  = finalHour.toString() + ":" + minute + " PM";
-                                  }else if(int.parse(hour) == 12 && int.parse(minute) >0 ){
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " PM";
+                                  } else if (int.parse(hour) == 12 &&
+                                      int.parse(minute) > 0) {
                                     int finalHour = int.parse(hour);
-                                    finalTime = finalHour.toString() + ":" + minute + " PM";
-                                  }else{
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " PM";
+                                  } else {
                                     int finalHour = int.parse(hour);
-                                    finalTime = finalHour.toString() +  ":" + minute +" AM";
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " AM";
                                   }
-                                      setState(() {
-                                        data["AnswerDesc"] = finalTime;
-                                        _fromController.text = finalTime;
-                                      });
-                                      DateTime now = DateTime.now();
-String formattedDate = DateFormat('dd/MM/yyyy').format(now);
-print("formatted date"+formattedDate);
-                                },
-                                 currentTime: DateTime.now());
+                                  setState(() {
+                                    data["AnswerDesc"] = finalTime;
+                                    _fromController.text = finalTime;
+                                  });
+                                }, currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
                                 labelText: 'Start Time',
@@ -1907,39 +1933,52 @@ print("formatted date"+formattedDate);
                               onChanged: (val) {
                                 data["AnswerDesc2"] = _toController.text;
                               },
-                              onTap: (){
+                              onTap: () {
                                 DatePicker.showTime12hPicker(context,
                                     showTitleActions: true, onChanged: (date) {
                                   print('change $date in time zone ' +
                                       date.timeZoneOffset.inHours.toString());
                                 }, onConfirm: (date) {
-                                 
                                   var selected = date.toString();
-                                  var timeonly = selected.substring(11,16);
-                                  var hour = timeonly.substring(0,2);
-                                  var minute = timeonly.substring(3,5);
+                                  var timeonly = selected.substring(11, 16);
+                                  var hour = timeonly.substring(0, 2);
+                                  var minute = timeonly.substring(3, 5);
                                   var finalTime;
-                                  if(int.parse(hour) < 12){
+                                  if (int.parse(hour) < 12) {
                                     int finalHour = int.parse(hour);
-                                    finalTime = finalHour.toString() + ":" + minute +" AM";
-                                  }else if(int.parse(hour) > 12){
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " AM";
+                                  } else if (int.parse(hour) > 12) {
                                     int finalHour = int.parse(hour) - 12;
-                                    finalTime  = finalHour.toString() + ":" + minute + " PM";
-                                  }else if(int.parse(hour) == 12 && int.parse(minute) >0 ){
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " PM";
+                                  } else if (int.parse(hour) == 12 &&
+                                      int.parse(minute) > 0) {
                                     int finalHour = int.parse(hour);
-                                    finalTime = finalHour.toString() + ":" + minute + " PM";
-                                  }else{
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " PM";
+                                  } else {
                                     int finalHour = int.parse(hour);
-                                    finalTime = finalHour.toString() + ":" + minute +" AM";
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " AM";
                                   }
-                                  print("finaltimee>>>>>"+finalTime.toString());
-                                  print("hour"+timeonly.substring(0,2));
+                                  print(
+                                      "finaltimee>>>>>" + finalTime.toString());
+                                  print("hour" + timeonly.substring(0, 2));
                                   print(
                                       'substring ---------------------------- $timeonly');
-                                      setState(() {
-                                        data["AnswerDesc2"] = finalTime;
-                                        _fromController.text = finalTime;
-                                      });
+                                  setState(() {
+                                    data["AnswerDesc2"] = finalTime;
+                                    _fromController.text = finalTime;
+                                  });
                                 }, currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
