@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:io' as io;
 import 'package:Surveyor/Map/map.dart';
-import 'package:Surveyor/assets/circle_icons.dart';
 import 'package:Surveyor/assets/location_icons.dart';
 import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
@@ -24,6 +22,7 @@ import 'assets/custom_icons_icons.dart';
 import 'checkNeighborhood.dart';
 import 'Map/map.dart';
 
+// ignore: must_be_immutable
 class StoresDetailsScreen extends StatefulWidget {
   var regOrAss;
   var passData, updateStatuspass, coordiante;
@@ -167,16 +166,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           this.townVillageTractId =
               this.updateDataarray[0]["townid"].toString();
           this.wardVillageId = this.updateDataarray[0]["wardid"].toString();
-          print(this.widget.updateStatuspass);
           if (this.widget.updateStatuspass == true) {
-            print("Nice");
             this.latitude = double.parse(this.updateDataarray[0]["lat"]);
             this.longitude = double.parse(this.updateDataarray[0]["long"]);
           } else if (this.widget.updateStatuspass == false) {
             for (var i = 0; i < this.widget.coordiante.length; i++) {
-              print("Helo");
-              // latitude = this.widget.coordiante[i]["lat"];
-              // longitude = this.widget.coordiante[i]["long"];
+              latitude = this.widget.coordiante[i]["lat"];
+              longitude = this.widget.coordiante[i]["long"];
             }
           }
           _getUpdateData();
@@ -809,7 +805,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               regass: this.widget.regOrAss,
                               passLength: this.widget.passData,
                               updateStatus: this.widget.updateStatuspass,
-                              data: null,
+                              data: this.shopSyskey,
                               shopkey: this.shopSyskey,
                             ),
                           ),

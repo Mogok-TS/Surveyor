@@ -996,7 +996,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                             passLength: null,
                                             updateStatus: false,
                                             data: data,
-                                            shopkey: null,
+                                            shopkey: value,
                                           ),
                                         ),
                                       );

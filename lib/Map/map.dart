@@ -44,6 +44,7 @@ class MapSampleState extends State<GmapS> {
   GoogleMapController googleMapController;
   final Set<Polygon> _polygon = {};
   static CameraPosition _kGooglePlex;
+  var closeCod;
   var _latLong;
   List data;
   var check = 0;
@@ -227,6 +228,7 @@ class MapSampleState extends State<GmapS> {
                     "lat": addressList[i]["lati"],
                     "long": addressList[i]["long"],
                   };
+                  print(this._latLong);
                 },
                 position:
                     LatLng(addressList[i]["lati"], addressList[i]["long"]),
@@ -326,6 +328,7 @@ class MapSampleState extends State<GmapS> {
       target: LatLng(widget.lati, widget.long),
       zoom: 10.0,
     );
+    this.closeCod = {"lat": this.widget.lati, "long": this.widget.long};
   }
 
   @override
@@ -353,13 +356,15 @@ class MapSampleState extends State<GmapS> {
                     ),
                   );
                 } else {
+                  print(this.closeCod);
+                  print("Nice to meet you");
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => StoresDetailsScreen(
                           this.widget.passLength,
                           this.widget.updateStatus,
                           this.widget.regass,
-                          this.widget.updateStatus),
+                          [this.closeCod]),
                     ),
                   );
                 }
@@ -384,7 +389,12 @@ class MapSampleState extends State<GmapS> {
                   "lat": double.parse("${latLong.latitude}"),
                   "long": double.parse("${latLong.longitude}"),
                 });
-                print(this.curLatLong.toString());
+                this._latLong = {
+                  "tranid": null,
+                  "lat": null,
+                  "long": null,
+                };
+                print("Current" + this.curLatLong.toString());
                 createNewMarker(latLong.latitude, latLong.longitude);
               },
             ),
@@ -442,15 +452,26 @@ class MapSampleState extends State<GmapS> {
           padding: const EdgeInsets.all(20),
           child: GestureDetector(
             onTap: () {
-              print(this.widget.regass);
               if (this.widget.regass == "Map") {
                 if (this._latLong["tranid"] == null) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => StoresDetailsScreen(
-                          curLatLong, true, "newStoreMap", curLatLong),
-                    ),
-                  );
+                  if (this._latLong["lat"] != null && this.curLatLong == null) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => StoresDetailsScreen(
+                            [this._latLong],
+                            true,
+                            "newStoreMap",
+                            [this._latLong]),
+                      ),
+                    );
+                  } else if (this.curLatLong != null) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => StoresDetailsScreen(
+                            curLatLong, true, "newStoreMap", curLatLong),
+                      ),
+                    );
+                  }
                 } else if (this._latLong["tranid"] != null) {
                   var storeList = this.storage.getItem("storeData");
                   for (var i = 0; i < storeList.length; i++) {
@@ -465,41 +486,94 @@ class MapSampleState extends State<GmapS> {
                   }
                 }
               } else {
-                if (this.widget.shopkey == null) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => StoresDetailsScreen(
-                          curLatLong, true, "newStoreMap", curLatLong),
-                    ),
-                  );
+                print(this.widget.shopkey);
+                print(this._latLong["tranid"]);
+                print(this.widget.passLength);
+                print(this.curLatLong);
+                print(this._latLong);
+                print("Hello");
+                if (this.curLatLong == null) {
+                  if (this._latLong["lat"] == null && this.curLatLong != null ||
+                      this._latLong["lat"] != null && this.curLatLong == null) {
+                    print("Nice & Bill");
+                    print(this.closeCod);
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => StoresDetailsScreen(
+                            [this.closeCod],
+                            true,
+                            "newStoreMap",
+                            [this.closeCod]),
+                      ),
+                    );
+                  }
                 } else {
-                  for (var i = 0; i < this.widget.passLength.length; i++) {
-                    if (this.widget.passLength[i]["lat"].toString() ==
-                        this._latLong["lat"].toString()) {
+                  if (this._latLong["tranid"] == null) {
+                    if (this.widget.shopkey == null) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => StoresDetailsScreen(
-                              [this.widget.passLength[i]],
-                              false,
-                              "assignStore",
-                              curLatLong),
+                              curLatLong, true, "newStoreMap", curLatLong),
                         ),
                       );
-                    } else if (this.widget.passLength[i]["lat"].toString() !=
-                        this._latLong["lat"].toString()) {
-                      var storeList = this.storage.getItem("storeData");
-                      for (var i = 0; i < storeList.length; i++) {
-                        if (this._latLong["tranid"] == storeList[i]["tranid"]) {
+                    } else {
+                      for (var i = 0; i < this.widget.passLength.length; i++) {
+                        print(this.widget.passLength[i]["shopsyskey"]);
+                        print("dkjfjdks;");
+                        if (this.widget.passLength[i]["tranid"].toString() ==
+                                this._latLong["tranid"].toString() ||
+                            this
+                                    .widget
+                                    .passLength[i]["shopsyskey"]
+                                    .toString() ==
+                                this.widget.shopkey) {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => StoresDetailsScreen(
-                                  [storeList[i]],
-                                  true,
+                                  [this.widget.passLength[i]],
+                                  false,
                                   "assignStore",
                                   curLatLong),
                             ),
                           );
+                        } else if (this
+                                .widget
+                                .passLength[i]["tranid"]
+                                .toString() !=
+                            this._latLong["tranid"].toString()) {
+                          var storeList = this.storage.getItem("storeData");
+                          for (var i = 0; i < storeList.length; i++) {
+                            print(storeList[i]["tranid"]);
+                            if (this._latLong["tranid"] ==
+                                storeList[i]["tranid"]) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => StoresDetailsScreen(
+                                      [storeList[i]],
+                                      true,
+                                      "assignStore",
+                                      curLatLong),
+                                ),
+                              );
+                            }
+                          }
                         }
+                      }
+                    }
+                  } else {
+                    var storeList = this.storage.getItem("storeData");
+                    for (var i = 0; i < storeList.length; i++) {
+                      print(storeList[i]["tranid"]);
+                      if (this._latLong["tranid"] == storeList[i]["tranid"]) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => StoresDetailsScreen(
+                                [storeList[i]],
+                                true,
+                                "assignStore",
+                                curLatLong),
+                          ),
+                        );
                       }
                     }
                   }
