@@ -492,7 +492,9 @@ class MapSampleState extends State<GmapS> {
                 print(this.curLatLong);
                 print(this._latLong);
                 print("Hello");
-                if (this.curLatLong == null) {
+                if (this.curLatLong == null &&
+                    this._latLong["tranid"] == null &&
+                    this.widget.shopkey == null) {
                   if (this._latLong["lat"] == null && this.curLatLong != null ||
                       this._latLong["lat"] != null && this.curLatLong == null) {
                     print("Nice & Bill");
@@ -518,8 +520,6 @@ class MapSampleState extends State<GmapS> {
                       );
                     } else {
                       for (var i = 0; i < this.widget.passLength.length; i++) {
-                        print(this.widget.passLength[i]["shopsyskey"]);
-                        print("dkjfjdks;");
                         if (this.widget.passLength[i]["tranid"].toString() ==
                                 this._latLong["tranid"].toString() ||
                             this
@@ -527,15 +527,31 @@ class MapSampleState extends State<GmapS> {
                                     .passLength[i]["shopsyskey"]
                                     .toString() ==
                                 this.widget.shopkey) {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => StoresDetailsScreen(
+                          print(this.widget.passLength[i]["shopsyskey"]);
+                          print("dkjfjdks;");
+                          print(this.widget.passLength[i]);
+                          if (this.curLatLong == null) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => StoresDetailsScreen(
                                   [this.widget.passLength[i]],
                                   false,
                                   "assignStore",
-                                  curLatLong),
-                            ),
-                          );
+                                  [this.closeCod],
+                                ),
+                              ),
+                            );
+                          } else {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => StoresDetailsScreen(
+                                    [this.widget.passLength[i]],
+                                    false,
+                                    "assignStore",
+                                    this.curLatLong),
+                              ),
+                            );
+                          }
                         } else if (this
                                 .widget
                                 .passLength[i]["tranid"]
@@ -543,7 +559,6 @@ class MapSampleState extends State<GmapS> {
                             this._latLong["tranid"].toString()) {
                           var storeList = this.storage.getItem("storeData");
                           for (var i = 0; i < storeList.length; i++) {
-                            print(storeList[i]["tranid"]);
                             if (this._latLong["tranid"] ==
                                 storeList[i]["tranid"]) {
                               Navigator.of(context).pushReplacement(

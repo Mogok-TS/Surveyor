@@ -32,77 +32,76 @@ class MainMenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        margin: EdgeInsets.only(top: 27),
         child: Column(
           children: <Widget>[
-            Container(
-              color: CustomIcons.appbarColor,
-              width: 305,
-              height: 200,
-              child: Center(
-                child: Image(
-                  image: AssetImage('assets/logo.png'),
-                  height: 80,
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1, color: Colors.black26),
-                ),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => Profile(),
+            Expanded(
+                child: Column(
+              children: <Widget>[
+                Container(
+                  color: CustomIcons.appbarColor,
+                  width: 305,
+                  height: 200,
+                  child: Center(
+                    child: Image(
+                      image: AssetImage('assets/logo.png'),
+                      height: 80,
                     ),
-                  );
-                },
-                child: ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text("Profile"),
-                  trailing: Icon(Icons.chevron_right),
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1, color: Colors.black26),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 1, color: Colors.black26),
+                    ),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => Profile(),
+                        ),
+                      );
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.person),
+                      title: Text("Profile"),
+                      trailing: Icon(Icons.chevron_right),
+                    ),
+                  ),
                 ),
-              ),
-              child: ListTile(
-                leading: Icon(Icons.shopping_basket),
-                title: Text("Order List"),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
-            Container(
-              child: Align(
-                heightFactor: 8.5,
-                alignment: Alignment.bottomCenter,
-                child: // buildListTile('Setting', Icons.settings, () {}),
-                    // buildListTile('Pravicy', Icons.security, () {}),
-                    // buildListTile('Notifications', Icons.notifications, () {}),
-                    // buildListTile('Useful Links', Icons.stars, () {}),
-                    // buildListTile('Report An Issue', Icons.bug_report, () {}),
-
-                    buildListTile(
-                  'Log Out',
-                  Icons.input,
-                  () {
-                    this.storage.deleteItem("Surveyor");
-                    this.storage.deleteItem("storeData");
-                    this.storage.deleteItem("storeReg");
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => Login(),
-                      ),
-                    );
-                  },
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 1, color: Colors.black26),
+                    ),
+                  ),
+                  child: ListTile(
+                    leading: Icon(Icons.shopping_basket),
+                    title: Text("Order List"),
+                    trailing: Icon(Icons.chevron_right),
+                  ),
                 ),
+              ],
+            )),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  buildListTile(
+                    'Logs Out',
+                    Icons.input,
+                    () {
+                      this.storage.deleteItem("Surveyor");
+                      this.storage.deleteItem("storeData");
+                      this.storage.deleteItem("storeReg");
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => Login(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             )
           ],

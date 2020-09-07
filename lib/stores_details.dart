@@ -81,178 +81,206 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     super.initState();
     this.mpaArray = this.storage.getItem("mapArray");
     print("map--->" + this.mpaArray.length.toString());
-    setState(() {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        showLoading();
-      });
-      _getState();
-      print("??>> ${this.widget.passData}");
-      this.storeRegistration = this.widget.passData;
-      if (this.storeRegistration.length == 0) {
-        this.updateStatus = this.widget.updateStatuspass;
-        if (this.updateStatus == true) {
-          this.updateDataarray = this.createRegistration;
-        }
-      } else {
-        this.updateDataarray = this.storeRegistration;
-      }
-      if (this.updateDataarray.length == 0) {
-        this.updateStatus = false;
-      } else {
-        this.updateStatus = true;
-        if (this.widget.regOrAss == "assign") {
-          this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
-          this.shopName.text = this.updateDataarray[0]["shopname"].toString();
-          this.shopNamemm.text =
-              this.updateDataarray[0]["shopnamemm"].toString();
-          this.shopPhoneNo.text = this.updateDataarray[0]["phoneno"].toString();
-          this.ownerName.text =
-              this.updateDataarray[0]["personname"].toString();
-          this.ownerPhoneNo.text =
-              this.updateDataarray[0]["personph"].toString();
-          this.street.text = this.updateDataarray[0]["street"].toString();
-          this.allAddress = this.updateDataarray[0]["address"].toString();
-          this._stateId = this.updateDataarray[0]["stateid"].toString();
-          this._districtId = this.updateDataarray[0]["districtid"].toString();
-          this._townShipId = this.updateDataarray[0]["townshipid"].toString();
-          this.townVillageTractId =
-              this.updateDataarray[0]["townid"].toString();
-          this.wardVillageId = this.updateDataarray[0]["wardid"].toString();
-          this.latitude = double.parse(this.updateDataarray[0]["lat"]);
-          this.longitude = double.parse(this.updateDataarray[0]["long"]);
-          _getUpdateData();
-        } else if (this.widget.regOrAss == "register") {
-          this.updateStatus = true;
-          this.shopSyskey = this.updateDataarray[0]["id"].toString();
-          this.shopName.text = this.updateDataarray[0]["name"].toString();
-          this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
-          this.shopPhoneNo.text =
-              this.updateDataarray[0]["phoneNumber"].toString();
-          this.ownerName.text =
-              this.updateDataarray[0]["personName"].toString();
-          this.ownerPhoneNo.text =
-              this.updateDataarray[0]["personPhoneNumber"].toString();
-          this.street.text = this.updateDataarray[0]["street"].toString();
-          this.allAddress = this.updateDataarray[0]["address"].toString();
-          this._stateId = this.updateDataarray[0]["stateId"].toString();
-          this._districtId = this.updateDataarray[0]["districtId"].toString();
-          this._townShipId = this.updateDataarray[0]["townshipId"].toString();
-          this.townVillageTractId =
-              this.updateDataarray[0]['townId'].toString();
-          this.wardVillageId = this.updateDataarray[0]["wardId"].toString();
-          this.latitude = this.updateDataarray[0]["locationData"]["latitude"];
-          this.longitude = this.updateDataarray[0]["locationData"]["longitude"];
-          _getUpdateData();
-        } else if (this.widget.regOrAss == "newStoreMap") {
-          for (var i = 0; i < this.widget.coordiante.length; i++) {
-            latitude = this.widget.coordiante[i]["lat"];
-            longitude = this.widget.coordiante[i]["long"];
+    setState(
+      () {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          showLoading();
+        });
+        _state = "-";
+        _stateList = ["-"];
+        _districtList = [
+          "-",
+        ];
+        _district = "-";
+        _townShip = "-";
+        _townShipList = ["-"];
+        _townOrVillagetract = "-";
+        n2Code = "0";
+        _town = "-";
+        _townList = ['-'];
+        _ward = "-";
+        _wardList = ['-'];
+        _villageTract = "-";
+        _villageTractList = ["-"];
+        _village = "-";
+        _villageList = ["-"];
+        _getState();
+        print("??>> ${this.widget.passData}");
+        this.storeRegistration = this.widget.passData;
+        if (this.storeRegistration.length == 0) {
+          this.updateStatus = this.widget.updateStatuspass;
+          if (this.updateStatus == true) {
+            this.updateDataarray = this.createRegistration;
           }
-        } else if (this.widget.regOrAss == "assignStore") {
-          this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
-          this.shopName.text = this.updateDataarray[0]["shopname"].toString();
-          this.shopNamemm.text =
-              this.updateDataarray[0]["shopnamemm"].toString();
-          this.shopPhoneNo.text = this.updateDataarray[0]["phoneno"].toString();
-          this.ownerName.text =
-              this.updateDataarray[0]["personname"].toString();
-          this.ownerPhoneNo.text =
-              this.updateDataarray[0]["personph"].toString();
-          this.street.text = this.updateDataarray[0]["street"].toString();
-          this.allAddress = this.updateDataarray[0]["address"].toString();
-          this._stateId = this.updateDataarray[0]["stateid"].toString();
-          this._districtId = this.updateDataarray[0]["districtid"].toString();
-          this._townShipId = this.updateDataarray[0]["townshipid"].toString();
-          this.townVillageTractId =
-              this.updateDataarray[0]["townid"].toString();
-          this.wardVillageId = this.updateDataarray[0]["wardid"].toString();
-          if (this.widget.updateStatuspass == true) {
+        } else {
+          this.updateDataarray = this.storeRegistration;
+        }
+        if (this.updateDataarray.length == 0) {
+          this.updateStatus = false;
+        } else {
+          this.updateStatus = true;
+          if (this.widget.regOrAss == "assign") {
+            this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
+            this.shopName.text = this.updateDataarray[0]["shopname"].toString();
+            this.shopNamemm.text =
+                this.updateDataarray[0]["shopnamemm"].toString();
+            this.shopPhoneNo.text =
+                this.updateDataarray[0]["phoneno"].toString();
+            this.ownerName.text =
+                this.updateDataarray[0]["personname"].toString();
+            this.ownerPhoneNo.text =
+                this.updateDataarray[0]["personph"].toString();
+            this.street.text = this.updateDataarray[0]["street"].toString();
+            this.allAddress = this.updateDataarray[0]["address"].toString();
+            this._stateId = this.updateDataarray[0]["stateid"].toString();
+            this._districtId = this.updateDataarray[0]["districtid"].toString();
+            this._townShipId = this.updateDataarray[0]["townshipid"].toString();
+            this.townVillageTractId =
+                this.updateDataarray[0]["townid"].toString();
+            this.wardVillageId = this.updateDataarray[0]["wardid"].toString();
             this.latitude = double.parse(this.updateDataarray[0]["lat"]);
             this.longitude = double.parse(this.updateDataarray[0]["long"]);
-          } else if (this.widget.updateStatuspass == false) {
+            _getUpdateData();
+          } else if (this.widget.regOrAss == "register") {
+            this.updateStatus = true;
+            this.shopSyskey = this.updateDataarray[0]["id"].toString();
+            this.shopName.text = this.updateDataarray[0]["name"].toString();
+            this.shopNamemm.text = this.updateDataarray[0]["mmName"].toString();
+            this.shopPhoneNo.text =
+                this.updateDataarray[0]["phoneNumber"].toString();
+            this.ownerName.text =
+                this.updateDataarray[0]["personName"].toString();
+            this.ownerPhoneNo.text =
+                this.updateDataarray[0]["personPhoneNumber"].toString();
+            this.street.text = this.updateDataarray[0]["street"].toString();
+            this.allAddress = this.updateDataarray[0]["address"].toString();
+            this._stateId = this.updateDataarray[0]["stateId"].toString();
+            this._districtId = this.updateDataarray[0]["districtId"].toString();
+            this._townShipId = this.updateDataarray[0]["townshipId"].toString();
+            this.townVillageTractId =
+                this.updateDataarray[0]['townId'].toString();
+            this.wardVillageId = this.updateDataarray[0]["wardId"].toString();
+            this.latitude = this.updateDataarray[0]["locationData"]["latitude"];
+            this.longitude =
+                this.updateDataarray[0]["locationData"]["longitude"];
+            _getUpdateData();
+          } else if (this.widget.regOrAss == "newStoreMap") {
             for (var i = 0; i < this.widget.coordiante.length; i++) {
               latitude = this.widget.coordiante[i]["lat"];
               longitude = this.widget.coordiante[i]["long"];
             }
+          } else if (this.widget.regOrAss == "assignStore") {
+            this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
+            this.shopName.text = this.updateDataarray[0]["shopname"].toString();
+            this.shopNamemm.text =
+                this.updateDataarray[0]["shopnamemm"].toString();
+            this.shopPhoneNo.text =
+                this.updateDataarray[0]["phoneno"].toString();
+            this.ownerName.text =
+                this.updateDataarray[0]["personname"].toString();
+            this.ownerPhoneNo.text =
+                this.updateDataarray[0]["personph"].toString();
+            this.street.text = this.updateDataarray[0]["street"].toString();
+            this.allAddress = this.updateDataarray[0]["address"].toString();
+            this._stateId = this.updateDataarray[0]["stateid"].toString();
+            this._districtId = this.updateDataarray[0]["districtid"].toString();
+            this._townShipId = this.updateDataarray[0]["townshipid"].toString();
+            this.townVillageTractId =
+                this.updateDataarray[0]["townid"].toString();
+            this.wardVillageId = this.updateDataarray[0]["wardid"].toString();
+            if (this.widget.updateStatuspass == true) {
+              this.latitude = double.parse(this.updateDataarray[0]["lat"]);
+              this.longitude = double.parse(this.updateDataarray[0]["long"]);
+            } else if (this.widget.updateStatuspass == false) {
+              for (var i = 0; i < this.widget.coordiante.length; i++) {
+                latitude = this.widget.coordiante[i]["lat"];
+                longitude = this.widget.coordiante[i]["long"];
+              }
+            }
+            _getUpdateData();
           }
-          _getUpdateData();
+          print("shopSyskey--> $shopSyskey");
         }
-        print("shopSyskey--> $shopSyskey");
-      }
-      getCurrentLocation().then((k) {
-        print({"$k"});
-        Future.delayed(const Duration(milliseconds: 600), () {
-          if (this.widget.regOrAss == "Map") {
-            var _latLong = this.storage.getItem("Maplatlong");
-            print("--->" + _latLong.toString());
-            latitude = _latLong["lat"];
-            longitude = _latLong["long"];
-          } else if (this.widget.regOrAss == "newStore") {
-            latitude = k.latitude;
-            longitude = k.longitude;
-          }
+        getCurrentLocation().then(
+          (k) {
+            print({"$k"});
+            Future.delayed(const Duration(milliseconds: 600), () {
+              if (this.widget.regOrAss == "Map") {
+                var _latLong = this.storage.getItem("Maplatlong");
+                print("--->" + _latLong.toString());
+                latitude = _latLong["lat"];
+                longitude = _latLong["long"];
+              } else if (this.widget.regOrAss == "newStore") {
+                latitude = k.latitude;
+                longitude = k.longitude;
+              }
 
-          googlePlusparam = {"lat": latitude, "lng": longitude};
-          this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
-                (result) => {
-                  if (result["status"] == true)
-                    {
-//                  print("12-->" + mpaArray.toString()),
-                      for (var a = 0; a < mpaArray.length; a++)
+              googlePlusparam = {"lat": latitude, "lng": longitude};
+              this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
+                    (result) => {
+                      if (result["status"] == true)
                         {
-                          latlng = List(),
-                          setState(() {
-                            latlng = [];
-                          }),
-
-                          list1 = mpaArray
-                              .where((element) =>
-                                  element["properties"]["TS_PCODE"]
-                                      .toString() ==
-                                  mpaArray[a]["properties"]["TS_PCODE"]
-                                      .toString())
-                              .toList(),
-//                      print("123-->" + list1.toString()),
-                          for (var b = 0; b < list1.length; b++)
+//                  print("12-->" + mpaArray.toString()),
+                          for (var a = 0; a < mpaArray.length; a++)
                             {
-                              list2 = list1[b]["geometry"]["coordinates"],
-//                        print("43-->" + list2.toString()),
-                              for (var c = 0; c < list2.length; c++)
+                              latlng = List(),
+                              setState(() {
+                                latlng = [];
+                              }),
+
+                              list1 = mpaArray
+                                  .where((element) =>
+                                      element["properties"]["TS_PCODE"]
+                                          .toString() ==
+                                      mpaArray[a]["properties"]["TS_PCODE"]
+                                          .toString())
+                                  .toList(),
+//                      print("123-->" + list1.toString()),
+                              for (var b = 0; b < list1.length; b++)
                                 {
-                                  for (var d = 0; d < list2[c].length; d++)
+                                  list2 = list1[b]["geometry"]["coordinates"],
+//                        print("43-->" + list2.toString()),
+                                  for (var c = 0; c < list2.length; c++)
                                     {
-                                      for (var e = 0;
-                                          e < list2[c][d].length;
-                                          e++)
+                                      for (var d = 0; d < list2[c].length; d++)
                                         {
-                                          lati = double.parse(
-                                              list2[c][d][e][1].toString()),
-                                          long = double.parse(
-                                              list2[c][d][e][0].toString()),
-                                          location = LatLng(lati, long),
-                                          latlng.add(location),
+                                          for (var e = 0;
+                                              e < list2[c][d].length;
+                                              e++)
+                                            {
+                                              lati = double.parse(
+                                                  list2[c][d][e][1].toString()),
+                                              long = double.parse(
+                                                  list2[c][d][e][0].toString()),
+                                              location = LatLng(lati, long),
+                                              latlng.add(location),
+                                            }
                                         }
                                     }
-                                }
+                                },
+                              curLocation = LatLng(latitude, longitude),
+                              _checkIfValidMarker(
+                                  curLocation,
+                                  latlng,
+                                  mpaArray[a]["properties"]["TS_PCODE"]
+                                      .toString()),
                             },
-                          curLocation = LatLng(latitude, longitude),
-                          _checkIfValidMarker(curLocation, latlng,
-                              mpaArray[a]["properties"]["TS_PCODE"].toString()),
-                        },
-                      setState(() {
-                        this.plusCode = "${result["data"]["plusCode"]}";
-                        hideLoadingDialog();
-                      }),
-                    }
-                  else
-                    {
-                      hideLoadingDialog(),
-                    }
-                },
-              );
-        });
-      });
-    });
+                          setState(() {
+                            this.plusCode = "${result["data"]["plusCode"]}";
+                            hideLoadingDialog();
+                          }),
+                        }
+                      else
+                        {
+                          hideLoadingDialog(),
+                        }
+                    },
+                  );
+            });
+          },
+        );
+      },
+    );
   }
 
   _getUpdateData() {
@@ -805,7 +833,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               regass: this.widget.regOrAss,
                               passLength: this.widget.passData,
                               updateStatus: this.widget.updateStatuspass,
-                              data: this.shopSyskey,
+                              data: this.widget.passData,
                               shopkey: this.shopSyskey,
                             ),
                           ),
@@ -1947,6 +1975,16 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       this.stateCode = this.townshipMimucode.toString().substring(0, 6);
       print("stateCode -->" + this.stateCode);
       print("${(intersectCount % 2) == 1}   $townCode");
+      var params = {"statecode": this.stateCode};
+      onlineSerives.getRegion(params).then(
+            (value) => {
+              if (value == true)
+                {
+                  print("-->>>>>>>>>>>>_-----------" +
+                      this.storage.getItem("Region").toString()),
+                }
+            },
+          );
     }
 
     return ((intersectCount % 2) == 1); // odd = inside, even = outside;
