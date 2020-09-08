@@ -76,7 +76,7 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget assignStoreWidget(var data) {
-    print(">>>" + data.toString());
+    print("@@--->"+ data.toString());
     return Container(
       margin: EdgeInsets.all(5),
       child: Column(
@@ -499,7 +499,6 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget buildAssignItem(String storeName, String phone, String address, data) {
-    var param;
     var shopData = [data];
     print("99-->  ${shopData}");
     return Container(
@@ -562,45 +561,45 @@ class _StoreScreenState extends State<StoreScreen> {
                                   color: Colors.white,
                                   shape: buttonShape(),
                                   onPressed: () {
-//                                    _showDialog(data);
-                                    getGPSstatus().then((status) => {
-                                          print("$status"),
-                                          if (status == true)
-                                            {
-                                              param = {
-                                                "shopsyskey": shopData[0]
-                                                    ["shopsyskey"]
-                                              },
-                                              this
-                                                  .onlineSerives
-                                                  .getCategory(param)
-                                                  .then((value) => {
-                                                        print("98->" +
-                                                            value.toString()),
-                                                        if (value == true)
-                                                          {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
-                                                              MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    StoresDetailsScreen(
-                                                                        shopData,
-                                                                        false,
-                                                                        "assign",
-                                                                        "null"),
-                                                              ),
-                                                            ),
-                                                          }
-                                                        else
-                                                          {
-                                                            hideLoadingDialog,
-                                                          },
-                                                      }),
-                                            }
-                                          else
-                                            {ShowToast("Please open GPS")}
-                                        });
+                                   _showDialog(data);
+                                    // getGPSstatus().then((status) => {
+                                    //       print("$status"),
+                                    //       if (status == true)
+                                    //         {
+                                    //           param = {
+                                    //             "shopsyskey": shopData[0]
+                                    //                 ["shopsyskey"]
+                                    //           },
+                                    //           this
+                                    //               .onlineSerives
+                                    //               .getCategory(param)
+                                    //               .then((value) => {
+                                    //                     print("98->" +
+                                    //                         value.toString()),
+                                    //                     if (value == true)
+                                    //                       {
+                                    //                         Navigator.of(
+                                    //                                 context)
+                                    //                             .pushReplacement(
+                                    //                           MaterialPageRoute(
+                                    //                             builder: (context) =>
+                                    //                                 StoresDetailsScreen(
+                                    //                                     shopData,
+                                    //                                     false,
+                                    //                                     "assign",
+                                    //                                     "null"),
+                                    //                           ),
+                                    //                         ),
+                                    //                       }
+                                    //                     else
+                                    //                       {
+                                    //                         hideLoadingDialog,
+                                    //                       },
+                                    //                   }),
+                                    //         }
+                                    //       else
+                                    //         {ShowToast("Please open GPS")}
+                                    //     });
                                   },
                                   child: Center(
                                     child: Text(
@@ -747,7 +746,203 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
     );
   }
-
+  var datalist = [
+    {
+      "id": "2009050541542600002",
+      "recordStatus": 1,
+      "saveStatus": 1,
+      "toDate": "20200905",
+      "fromDate": "20200901",
+      "regionId": "2004241203562700068",
+      "userDetail": [
+        {
+          "id": "2009050541565500007",
+          "recordStatus": 1,
+          "saveStatus": 1,
+          "date": "20200905",
+          "parentId": "2009050541542600002",
+          "userId": "2007300654381400029"
+        }
+      ],
+      "surDetail": [
+        {
+          "id": "2009050541565600008",
+          "recordStatus": 1,
+          "saveStatus": 1,
+          "parentId": "2009050541542600002",
+          "surveyId": "2009050522567300002",
+          "flagStore": false,
+          "existingStore": false,
+          "newStore": false
+        },
+        {
+          "id": "2009050541577500009",
+          "recordStatus": 1,
+          "saveStatus": 1,
+          "parentId": "2009050541542600002",
+          "surveyId": "2007300654381400027",
+          "flagStore": false,
+          "existingStore": false,
+          "newStore": false
+        }
+      ],
+      "existingStore": [
+        {
+          "tranid": "2008251409061800002",
+          "address": "သရက်တောလမ်း,Tha Yet Taw (South) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "isFlagStore": 0,
+          "regionsyskey": "2009050541542600002",
+          "shopnamemm": "ပလက်စ်ကုတ်တက်စ်",
+          "personph": "+959123456789",
+          "stateid": "2",
+          "pluscode": "7M8RQ4PH+58",
+          "shopsyskey": "2008251409062300003",
+          "townid": "2004241237194900113",
+          "wardid": "2004241650513600233",
+          "long": "96.12832",
+          "phoneno": "+959987654321",
+          "shopcode": "457288354484",
+          "districtid": "8",
+          "street": "သရက်တောလမ်း",
+          "shopname": "Plus Code Test",
+          "mimu": "",
+          "FlagCount": 0,
+          "townshipid": "2004241203562700068",
+          "lat": "16.785425",
+          "email": "",
+          "personname": "ပလက်စ်ကုတ်"
+        }
+      ],
+      "flagStore": [
+        {
+          "tranid": "2009030423162000180",
+          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "isFlagStore": 1,
+          "regionsyskey": "2009050541542600002",
+          "shopnamemm": "Test",
+          "personph": "",
+          "stateid": "2",
+          "pluscode": "7M8RR4FG+VR",
+          "shopsyskey": "2009030423165600181",
+          "townid": "2004241237194900113",
+          "wardid": "2004241648288400224",
+          "long": "96.12708",
+          "phoneno": "+95966666666",
+          "shopcode": "899914631872",
+          "districtid": "8",
+          "street": "12 test",
+          "shopname": "Test",
+          "mimu": "",
+          "FlagCount": 0,
+          "townshipid": "2004241203562700068",
+          "lat": "16.824665",
+          "email": "",
+          "personname": "QC"
+        },
+        {
+          "tranid": "2009030423162000180",
+          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "isFlagStore": 1,
+          "regionsyskey": "2009050541542600002",
+          "shopnamemm": "Test",
+          "personph": "",
+          "stateid": "2",
+          "pluscode": "7M8RR4FG+VR",
+          "shopsyskey": "2009030423165600181",
+          "townid": "2004241237194900113",
+          "wardid": "2004241648288400224",
+          "long": "96.12708",
+          "phoneno": "+95966666666",
+          "shopcode": "899914631872",
+          "districtid": "8",
+          "street": "12 test",
+          "shopname": "Test",
+          "mimu": "",
+          "FlagCount": 0,
+          "townshipid": "2004241203562700068",
+          "lat": "16.824665",
+          "email": "",
+          "personname": "QC"
+        },
+        {
+          "tranid": "2009030423162000180",
+          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "isFlagStore": 1,
+          "regionsyskey": "2009050541542600002",
+          "shopnamemm": "Test",
+          "personph": "",
+          "stateid": "2",
+          "pluscode": "7M8RR4FG+VR",
+          "shopsyskey": "2009030423165600181",
+          "townid": "2004241237194900113",
+          "wardid": "2004241648288400224",
+          "long": "96.12708",
+          "phoneno": "+95966666666",
+          "shopcode": "899914631872",
+          "districtid": "8",
+          "street": "12 test",
+          "shopname": "Test",
+          "mimu": "",
+          "FlagCount": 0,
+          "townshipid": "2004241203562700068",
+          "lat": "16.824665",
+          "email": "",
+          "personname": "QC"
+        },
+        {
+          "tranid": "2009030423162000180",
+          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "isFlagStore": 1,
+          "regionsyskey": "2009050541542600002",
+          "shopnamemm": "Test",
+          "personph": "",
+          "stateid": "2",
+          "pluscode": "7M8RR4FG+VR",
+          "shopsyskey": "2009030423165600181",
+          "townid": "2004241237194900113",
+          "wardid": "2004241648288400224",
+          "long": "96.12708",
+          "phoneno": "+95966666666",
+          "shopcode": "899914631872",
+          "districtid": "8",
+          "street": "12 test",
+          "shopname": "Test",
+          "mimu": "",
+          "FlagCount": 0,
+          "townshipid": "2004241203562700068",
+          "lat": "16.824665",
+          "email": "",
+          "personname": "QC"
+        },
+        {
+          "tranid": "2009030423162000180",
+          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "isFlagStore": 1,
+          "regionsyskey": "2009050541542600002",
+          "shopnamemm": "Test",
+          "personph": "",
+          "stateid": "2",
+          "pluscode": "7M8RR4FG+VR",
+          "shopsyskey": "2009030423165600181",
+          "townid": "2004241237194900113",
+          "wardid": "2004241648288400224",
+          "long": "96.12708",
+          "phoneno": "+95966666666",
+          "shopcode": "899914631872",
+          "districtid": "8",
+          "street": "12 test",
+          "shopname": "Test",
+          "mimu": "",
+          "FlagCount": 0,
+          "townshipid": "2004241203562700068",
+          "lat": "16.824665",
+          "email": "",
+          "personname": "QC"
+        }
+      ],
+      "newStore": false
+    }
+  ];
   var assignStoreData = [];
   var storeRegisterData = [];
   @override
@@ -760,13 +955,13 @@ class _StoreScreenState extends State<StoreScreen> {
       "date": ""
     };
     var loginData, newParam;
-    var commonAssign = [];
-    var commonAssignwithName = [];
     var commonStorereg = [];
     var commonStoreregwithName = [];
     var paramforTownshipName;
     var assignData = {};
+    var childDataCollect = [];
     var storeRegwithHeader = [];
+    var objAssign = {};
     var assignstorewithHeader = [];
     var _childArray = [];
     loginData = this.storage.getItem("loginData");
@@ -775,12 +970,8 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["teamsyskey"] = loginData["teamSyskey"];
     shopParam["usertype"] = loginData["userType"];
     shopParam["date"] = getTodayDate();
-    print("${shopParam}");
-
     Future.delayed(const Duration(milliseconds: 500), () {
-//      setState(() {
       showLoading();
-//      });
       this
           .onlineSerives
           .getStores(shopParam)
@@ -793,10 +984,8 @@ class _StoreScreenState extends State<StoreScreen> {
 //                      this.storeData = this.storage.getItem("storeData"),
                               this.storeRegistration =
                                   this.storage.getItem("storeReg"),
-                              print("${storeRegistration}"),
                               commonStorereg = getCommonshop(
                                   this.storeRegistration, "storeReg"),
-                              print("--3-->" + commonStorereg.toString()),
                               for (var qp = 0; qp < commonStorereg.length; qp++)
                                 {
                                   paramforTownshipName = {
@@ -824,48 +1013,65 @@ class _StoreScreenState extends State<StoreScreen> {
                                               }
                                           }),
                                 },
-                              this.assignStores =
+                                print("hello data"),
+                                this.assignStores =
                                   this.storage.getItem("storeData"),
-                              print("${this.assignStores}"),
-                              commonAssign = getCommonshop(
-                                  this.assignStores, "assignStore"),
-                              print("--4-->" + commonAssign.toString()),
-                              for (var qp = 0; qp < commonAssign.length; qp++)
-                                {
-                                  paramforTownshipName = {
-                                    "id": commonAssign[qp]["townshipid"],
+                                  for (var i = 0; i < assignStores.length; i++) {
+                                    print("data-->"+assignStores[i].toString()),
+                                    objAssign = {},
+                                     objAssign["townshipid"] = "nop",
+                                     objAssign["townshipname"]  = "Mogok",
+                                     objAssign["show"] = false,
+                                    childDataCollect = [],
+                                     paramforTownshipName = {
+                                    "id": assignStores[i]["regionId"].toString(),
                                     "code": "",
                                     "description": "",
                                     "parentid": "",
                                     "n2": ""
                                   },
+                                  
                                   this
                                       .onlineSerives
                                       .getTownship(paramforTownshipName)
                                       .then((returnData) => {
-                                            print("as-->" +
-                                                returnData.toString()),
                                             if (returnData["status"] == true)
                                               {
-                                                assignData =
-                                                    returnData["data"][0],
-                                                commonAssignwithName.add({
-                                                  "townshipid":
-                                                      assignData["id"],
-                                                  "townshipName":
-                                                      assignData["description"],
-                                                  "show": false,
-                                                }),
+                                        print("firstdatawork"),
+                                                objAssign["townshipid"] = returnData["data"][0]["id"].toString(),
+                                                objAssign["townshipName"]  = returnData["data"][0]["description"].toString(),
+                                                objAssign["show"] = false,
+                                              }else{
+                                                 objAssign["townshipid"] = "nop",
+                                                objAssign["townshipName"]  = "nop",
+                                                objAssign["show"] = false,
                                               }
                                           }),
-                                },
+                                    // print("existingStore-->"+assignStores[i]["existingStore"].toString()),
+
+                                    if(assignStores[i]["existingStore"].length>0){
+                                      for(var ii = 0;ii<assignStores[i]["existingStore"].length;ii++){
+                                        childDataCollect.add(assignStores[i]["existingStore"][ii])
+                                      }
+                                    },
+                                    if(assignStores[i]["flagStore"].length>0){
+                                      for(var ii = 0;ii<assignStores[i]["flagStore"].length;ii++){
+                                        childDataCollect.add(assignStores[i]["flagStore"][ii]),
+                                        // objAssign["childData"].add(assignStores[i]["flagStore"][ii]),
+                                      }
+                                    },
+                                    objAssign["childData"] = childDataCollect,
+                                    assignstorewithHeader.add(objAssign),
+                                    print("data-->"+ objAssign.toString()),
+                                  },
+
+                              
                               setState(() {
                                 this.count =
                                     this.assignStores.length.toString();
                               }),
                               Future.delayed(const Duration(seconds: 4), () {
-                                print(
-                                    "-1->" + commonStoreregwithName.toString());
+                               
                                 for (var t = 0;
                                     t < commonStoreregwithName.length;
                                     t++) {
@@ -890,43 +1096,22 @@ class _StoreScreenState extends State<StoreScreen> {
                                     "childData": _childArray
                                   });
                                 }
-                                print("02->" + storeRegwithHeader.toString());
-
-                                print("-0->" + commonAssignwithName.toString());
-                                for (var t = 0;
-                                    t < commonAssignwithName.length;
-                                    t++) {
-                                  _childArray = [];
-                                  for (var r = 0;
-                                      r < this.assignStores.length;
-                                      r++) {
-                                    if (commonAssignwithName[t]["townshipid"] ==
-                                        this.assignStores[r]["townshipid"]) {
-                                      _childArray.add(this.assignStores[r]);
-                                    }
-                                  }
-                                  assignstorewithHeader.add({
-                                    "townshipid": commonAssignwithName[t]
-                                        ["townshipid"],
-                                    "townshipname": commonAssignwithName[t]
-                                        ["townshipName"],
-                                    "show": false,
-                                    "childData": _childArray
-                                  });
-                                }
-                                print(
-                                    "01->" + assignstorewithHeader.toString());
+                               
+                               
+                              
 //                                Future.delayed(const Duration(seconds: 5), () {
 //
 //                                });
                                 setState(() {
+                                  print("--->>>_----"+ assignstorewithHeader[0].toString());
+  print("--->>>_----"+ assignstorewithHeader[1].toString());
+  print("--->>>_----"+ assignstorewithHeader[2].toString());
                                   this.assignStoreData = assignstorewithHeader;
                                   this.storeRegisterData = storeRegwithHeader;
                                   if (this.assignStoreData.length > 0 ||
                                       this.storeRegisterData.length > 0) {
                                     hideLoadingDialog();
                                   }
-                                  print("1233113");
                                 });
                               }),
                             }
@@ -972,20 +1157,18 @@ class _StoreScreenState extends State<StoreScreen> {
                   icon: Icon(Icons.map),
                   onPressed: () {
                     getGPSstatus().then((status) => {
-                          print("$status"),
+                          
                           if (status == true)
                             {
                               showLoading(),
                               _getLocation().then((value) async {
 //                                setState(() {
                                 if (value == null) {
-                                  print(value);
                                 } else {
 //                                    _getAddress(value).then((val) async {
                                   if (value.latitude != null &&
                                       value.longitude != null) {
                                     localJsonData().then((val) {
-                                      print(value);
                                       hideLoadingDialog();
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
@@ -1002,7 +1185,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                       );
                                     });
                                   } else {
-                                    print(value);
                                   }
 //                                    }).catchError((error) {
 //                                      print(error);
@@ -1010,7 +1192,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                 }
 //                                });
                               }).catchError((error) {
-                                print(error);
                               }),
                             }
                           else
@@ -1236,7 +1417,6 @@ class _StoreScreenState extends State<StoreScreen> {
                             shape: buttonShape(),
                             onPressed: () {
                               getGPSstatus().then((status) => {
-                                    print("$status"),
                                     if (status == true)
                                       {
                                         Navigator.of(context).pushReplacement(
