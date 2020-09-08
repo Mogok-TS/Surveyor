@@ -76,9 +76,9 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget assignStoreWidget(var data) {
-    print("@@--->"+ data.toString());
     return Container(
-      margin: EdgeInsets.all(5),
+      // margin: EdgeInsets.all(5),
+      margin: EdgeInsets.only(top: 5,bottom: 10,left:5,right:5),
       child: Column(
         children: <Widget>[
           Container(
@@ -93,7 +93,7 @@ class _StoreScreenState extends State<StoreScreen> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      data["townshipname"].toString(),
+                      data["regionName"].toString(),
                       style: TextStyle(color: Colors.black),
                     ),
                   ],
@@ -125,25 +125,201 @@ class _StoreScreenState extends State<StoreScreen> {
           ),
           Container(
               child: data["show"] == true
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      color: Colors.grey[300],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            color: CustomIcons.dropDownHeader,
+                            child: ListTile(
+                              title: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    data["existItem"] = !data["existItem"];
+                                  });
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "Existing Store",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              trailing: Wrap(
+                                spacing: 12, // space between two icons
+                                children: <Widget>[
+                                  // icon-1
+                                  IconButton(
+                                    color: Colors.black,
+                                    icon: data["existItem"] == true
+                                        ? Icon(Icons.keyboard_arrow_down)
+                                        : Icon(Icons.chevron_right),
+                                    onPressed: () {
+                                      setState(() {
+                                        // data["show"] = !data["show"];
+                                      });
+                                    },
+                                  ) // icon-2
+                                ],
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  data["existItem"] = !data["existItem"];
+                                });
+                              },
+                            ),
+                          ),
+                          if (data["existItem"] == true)
+                            if (data["existingStore"].length == 0 &&
+                                data["existItem"] == true)
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      color: Colors.grey[200],
+                                      child: Center(
+                                        child: Text(
+                                          "No Data",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                          if (data["existingStore"].length > 0 &&
+                              data["existItem"] == true)
+                            for (var ii = 0;
+                                ii < data["existingStore"].length;
+                                ii++)
+                              buildAssignItem(data["existingStore"][ii]),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            color: CustomIcons.dropDownHeader,
+                            child: ListTile(
+                              title: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    data["flagItem"] = !data["flagItem"];
+                                  });
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "Flag Store",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              trailing: Wrap(
+                                spacing: 12, // space between two icons
+                                children: <Widget>[
+                                  // icon-1
+                                  IconButton(
+                                    color: Colors.black,
+                                    icon: data["flagItem"] == true
+                                        ? Icon(Icons.keyboard_arrow_down)
+                                        : Icon(Icons.chevron_right),
+                                    onPressed: () {
+                                      setState(() {
+                                        // data["show"] = !data["show"];
+                                      });
+                                    },
+                                  ) // icon-2
+                                ],
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  data["flagItem"] = !data["flagItem"];
+                                });
+                              },
+                            ),
+                          ),
+                          if (data["flagItem"] == true)
+                            if (data["flagStore"].length == 0 &&
+                                data["flagItem"] == true)
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      color: Colors.grey[200],
+                                      child: Center(
+                                        child: Text(
+                                          "No Data",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                          if (data["flagStore"].length > 0 &&
+                              data["flagItem"] == true)
+                            for (var ii = 0;
+                                ii < data["flagStore"].length;
+                                ii++)
+                              buildAssignItem(data["flagStore"][ii]),
+                              Container(
+                    child: Row(
                       children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            for (var i = 0; i < data["childData"].length; i++)
-                              buildAssignItem(
-                                  data["childData"][i]["shopname"].toString() +
-                                      "( " +
-                                      data["childData"][i]["shopnamemm"]
-                                          .toString() +
-                                      " )",
-                                  data["childData"][i]["phoneno"].toString(),
-                                  data["childData"][i]["address"].toString(),
-                                  data["childData"][i])
-                          ],
+                        Expanded(
+                          child: Container(),
                         ),
+                        Expanded(
+                          child: RaisedButton(
+                            color: Colors.white,
+                            shape: buttonShape(),
+                            onPressed: () {
+                              getGPSstatus().then((status) => {
+                                    if (status == true)
+                                      {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                StoresDetailsScreen([], false,
+                                                    "newStore", "null"),
+                                          ),
+                                        ),
+                                      }
+                                    else
+                                      {ShowToast("Please open GPS")}
+                                  });
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.add_box,
+                                  color: Colors.black,
+                                ),
+                                Text(" Add New Store",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ))
+                              ],
+                            ),
+                          ),
+                        )
                       ],
+                    ),
+                  )
+                        ],
+                      ),
                     )
                   : new Container())
         ],
@@ -498,7 +674,7 @@ class _StoreScreenState extends State<StoreScreen> {
         ));
   }
 
-  Widget buildAssignItem(String storeName, String phone, String address, data) {
+  Widget buildAssignItem(data) {
     var shopData = [data];
     print("99-->  ${shopData}");
     return Container(
@@ -510,7 +686,7 @@ class _StoreScreenState extends State<StoreScreen> {
             children: <Widget>[
               ListTile(
                   title: Text(
-                    storeName,
+                    data["shopname"] + " ( " + data["shopnamemm"] + " )",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                     ),
@@ -522,7 +698,7 @@ class _StoreScreenState extends State<StoreScreen> {
                         margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
                       ),
                       Text(
-                        phone,
+                        data["phoneno"],
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           height: 1.0,
@@ -532,7 +708,7 @@ class _StoreScreenState extends State<StoreScreen> {
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                       ),
                       Text(
-                        address,
+                        data["address"],
                         style: TextStyle(height: 1.3),
                       ),
                       Container(
@@ -561,7 +737,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                   color: Colors.white,
                                   shape: buttonShape(),
                                   onPressed: () {
-                                   _showDialog(data);
+                                    _showDialog(data);
                                     // getGPSstatus().then((status) => {
                                     //       print("$status"),
                                     //       if (status == true)
@@ -746,6 +922,7 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
     );
   }
+
   var datalist = [
     {
       "id": "2009050541542600002",
@@ -789,7 +966,8 @@ class _StoreScreenState extends State<StoreScreen> {
       "existingStore": [
         {
           "tranid": "2008251409061800002",
-          "address": "သရက်တောလမ်း,Tha Yet Taw (South) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "address":
+              "သရက်တောလမ်း,Tha Yet Taw (South) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
           "isFlagStore": 0,
           "regionsyskey": "2009050541542600002",
           "shopnamemm": "ပလက်စ်ကုတ်တက်စ်",
@@ -816,7 +994,8 @@ class _StoreScreenState extends State<StoreScreen> {
       "flagStore": [
         {
           "tranid": "2009030423162000180",
-          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "address":
+              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
           "isFlagStore": 1,
           "regionsyskey": "2009050541542600002",
           "shopnamemm": "Test",
@@ -841,7 +1020,8 @@ class _StoreScreenState extends State<StoreScreen> {
         },
         {
           "tranid": "2009030423162000180",
-          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "address":
+              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
           "isFlagStore": 1,
           "regionsyskey": "2009050541542600002",
           "shopnamemm": "Test",
@@ -866,7 +1046,8 @@ class _StoreScreenState extends State<StoreScreen> {
         },
         {
           "tranid": "2009030423162000180",
-          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "address":
+              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
           "isFlagStore": 1,
           "regionsyskey": "2009050541542600002",
           "shopnamemm": "Test",
@@ -891,7 +1072,8 @@ class _StoreScreenState extends State<StoreScreen> {
         },
         {
           "tranid": "2009030423162000180",
-          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "address":
+              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
           "isFlagStore": 1,
           "regionsyskey": "2009050541542600002",
           "shopnamemm": "Test",
@@ -916,7 +1098,8 @@ class _StoreScreenState extends State<StoreScreen> {
         },
         {
           "tranid": "2009030423162000180",
-          "address": "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
+          "address":
+              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
           "isFlagStore": 1,
           "regionsyskey": "2009050541542600002",
           "shopnamemm": "Test",
@@ -943,8 +1126,40 @@ class _StoreScreenState extends State<StoreScreen> {
       "newStore": false
     }
   ];
-  var assignStoreData = [];
-  var storeRegisterData = [];
+  var allData = [];
+  allDataFunction() {
+    allData = [];
+    var storeDatas = this.storage.getItem("storeData");
+    print(".." + storeDatas.toString());
+    for (var i = 0; i < storeDatas.length; i++) {
+      var objData = {};
+      var townShipData = {};
+      objData["show"] = false;
+      objData["regionId"] = storeDatas[i]["regionId"].toString();
+      objData["regionName"] = storeDatas[i]["regionId"].toString();
+      objData["existingStore"] = storeDatas[i]["existingStore"];
+      objData["existItem"] = false;
+      objData["flagStore"] = storeDatas[i]["flagStore"];
+      objData["flagItem"] = false;
+      var paramforTownshipName = {
+        "id": storeDatas[i]["regionId"].toString(),
+        "code": "",
+        "description": "",
+        "parentid": "",
+        "n2": ""
+      };
+
+      this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
+            townShipData = value["data"][0],
+            print(">>--" + value.toString()),
+          });
+      setState(() {
+        allData.add(objData);
+      });
+    }
+    print("after>>" + allData.toString());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -955,15 +1170,7 @@ class _StoreScreenState extends State<StoreScreen> {
       "date": ""
     };
     var loginData, newParam;
-    var commonStorereg = [];
-    var commonStoreregwithName = [];
-    var paramforTownshipName;
-    var assignData = {};
-    var childDataCollect = [];
-    var storeRegwithHeader = [];
-    var objAssign = {};
-    var assignstorewithHeader = [];
-    var _childArray = [];
+
     loginData = this.storage.getItem("loginData");
     newParam = {"usersyskey": loginData["syskey"].toString()};
     shopParam["spsyskey"] = loginData["syskey"];
@@ -981,138 +1188,16 @@ class _StoreScreenState extends State<StoreScreen> {
                     this.onlineSerives.getsvrShoplist(newParam).then((res) => {
                           if (res == true)
                             {
-//                      this.storeData = this.storage.getItem("storeData"),
-                              this.storeRegistration =
-                                  this.storage.getItem("storeReg"),
-                              commonStorereg = getCommonshop(
-                                  this.storeRegistration, "storeReg"),
-                              for (var qp = 0; qp < commonStorereg.length; qp++)
-                                {
-                                  paramforTownshipName = {
-                                    "id": commonStorereg[qp]["townshipid"],
-                                    "code": "",
-                                    "description": "",
-                                    "parentid": "",
-                                    "n2": ""
-                                  },
-                                  this
-                                      .onlineSerives
-                                      .getTownship(paramforTownshipName)
-                                      .then((returnData) => {
-                                            if (returnData["status"] == true)
-                                              {
-                                                assignData =
-                                                    returnData["data"][0],
-                                                commonStoreregwithName.add({
-                                                  "townshipid":
-                                                      assignData["id"],
-                                                  "townshipName":
-                                                      assignData["description"],
-                                                  "show": false,
-                                                }),
-                                              }
-                                          }),
-                                },
-                                print("hello data"),
-                                this.assignStores =
+                              print("hello data"),
+                              this.assignStores =
                                   this.storage.getItem("storeData"),
-                                  for (var i = 0; i < assignStores.length; i++) {
-                                    print("data-->"+assignStores[i].toString()),
-                                    objAssign = {},
-                                     objAssign["townshipid"] = "nop",
-                                     objAssign["townshipname"]  = "Mogok",
-                                     objAssign["show"] = false,
-                                    childDataCollect = [],
-                                     paramforTownshipName = {
-                                    "id": assignStores[i]["regionId"].toString(),
-                                    "code": "",
-                                    "description": "",
-                                    "parentid": "",
-                                    "n2": ""
-                                  },
-                                  
-                                  this
-                                      .onlineSerives
-                                      .getTownship(paramforTownshipName)
-                                      .then((returnData) => {
-                                            if (returnData["status"] == true)
-                                              {
-                                        print("firstdatawork"),
-                                                objAssign["townshipid"] = returnData["data"][0]["id"].toString(),
-                                                objAssign["townshipName"]  = returnData["data"][0]["description"].toString(),
-                                                objAssign["show"] = false,
-                                              }else{
-                                                 objAssign["townshipid"] = "nop",
-                                                objAssign["townshipName"]  = "nop",
-                                                objAssign["show"] = false,
-                                              }
-                                          }),
-                                    // print("existingStore-->"+assignStores[i]["existingStore"].toString()),
-
-                                    if(assignStores[i]["existingStore"].length>0){
-                                      for(var ii = 0;ii<assignStores[i]["existingStore"].length;ii++){
-                                        childDataCollect.add(assignStores[i]["existingStore"][ii])
-                                      }
-                                    },
-                                    if(assignStores[i]["flagStore"].length>0){
-                                      for(var ii = 0;ii<assignStores[i]["flagStore"].length;ii++){
-                                        childDataCollect.add(assignStores[i]["flagStore"][ii]),
-                                        // objAssign["childData"].add(assignStores[i]["flagStore"][ii]),
-                                      }
-                                    },
-                                    objAssign["childData"] = childDataCollect,
-                                    assignstorewithHeader.add(objAssign),
-                                    print("data-->"+ objAssign.toString()),
-                                  },
-
-                              
                               setState(() {
                                 this.count =
                                     this.assignStores.length.toString();
                               }),
-                              Future.delayed(const Duration(seconds: 4), () {
-                               
-                                for (var t = 0;
-                                    t < commonStoreregwithName.length;
-                                    t++) {
-                                  _childArray = [];
-                                  for (var r = 0;
-                                      r < this.storeRegistration.length;
-                                      r++) {
-                                    if (commonStoreregwithName[t]
-                                            ["townshipid"] ==
-                                        this.storeRegistration[r]
-                                            ["townshipId"]) {
-                                      _childArray
-                                          .add(this.storeRegistration[r]);
-                                    }
-                                  }
-                                  storeRegwithHeader.add({
-                                    "townshipid": commonStoreregwithName[t]
-                                        ["townshipid"],
-                                    "townshipname": commonStoreregwithName[t]
-                                        ["townshipName"],
-                                    "show": false,
-                                    "childData": _childArray
-                                  });
-                                }
-                               
-                               
-                              
-//                                Future.delayed(const Duration(seconds: 5), () {
-//
-//                                });
-                                setState(() {
-                                  print("--->>>_----"+ assignstorewithHeader[0].toString());
-  print("--->>>_----"+ assignstorewithHeader[1].toString());
-  print("--->>>_----"+ assignstorewithHeader[2].toString());
-                                  this.assignStoreData = assignstorewithHeader;
-                                  this.storeRegisterData = storeRegwithHeader;
-                                  if (this.assignStoreData.length > 0 ||
-                                      this.storeRegisterData.length > 0) {
-                                    hideLoadingDialog();
-                                  }
-                                });
+                              allDataFunction(),
+                              setState(() {
+                                hideLoadingDialog();
                               }),
                             }
                           else
@@ -1157,7 +1242,6 @@ class _StoreScreenState extends State<StoreScreen> {
                   icon: Icon(Icons.map),
                   onPressed: () {
                     getGPSstatus().then((status) => {
-                          
                           if (status == true)
                             {
                               showLoading(),
@@ -1184,15 +1268,13 @@ class _StoreScreenState extends State<StoreScreen> {
                                         ),
                                       );
                                     });
-                                  } else {
-                                  }
+                                  } else {}
 //                                    }).catchError((error) {
 //                                      print(error);
 //                                    });
                                 }
 //                                });
-                              }).catchError((error) {
-                              }),
+                              }).catchError((error) {}),
                             }
                           else
                             {ShowToast("Please open GPS")}
@@ -1203,110 +1285,27 @@ class _StoreScreenState extends State<StoreScreen> {
             ),
             body: SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(5),
                 child: Column(children: <Widget>[
                   Container(
                     child: Column(
                       children: <Widget>[
                         Container(
-                          color: CustomIcons.dropDownHeader,
-                          child: ListTile(
-                            title: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  showAssignStore = !showAssignStore;
-                                });
-                              },
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    "Assign Stores",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "0/" + this.count,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                showAssignStore = !showAssignStore;
-                              });
-                            },
-                            trailing: Wrap(
-                              spacing: 12, // space between two icons
-                              children: <Widget>[
-                                IconButton(
-                                  color: Colors.black,
-                                  icon: Icon(Icons.sort),
-                                  onPressed: () {},
-                                ), // icon-1
-                                IconButton(
-                                  color: Colors.black,
-                                  icon: showAssignStore == true
-                                      ? Icon(Icons.keyboard_arrow_down)
-                                      : Icon(Icons.chevron_right),
-                                  onPressed: () {
-                                    setState(() {
-                                      showAssignStore = !showAssignStore;
-                                    });
-                                  },
-                                ) // icon-2
-                              ],
-                            ),
+                          // color: CustomIcons.iconColor,
+                          child: Column(
+                            children: <Widget>[
+                              if (allData.length > 0)
+                                for (var i = 0; i < allData.length; i++)
+                                  assignStoreWidget(allData[i]),
+                              // RaisedButton(
+                              //   onPressed: () {
+                              //     allDataFunction();
+                              //   },
+                              //   child: Text("text data"),
+                              // )
+                            ],
                           ),
                         ),
-                        Container(
-                            color: Colors.grey[300],
-                            child: showAssignStore == true
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      this.assignStoreData.length == 0
-                                          ? Row(
-                                              children: <Widget>[
-                                                Expanded(
-                                                  child: Container(
-                                                    height: 50,
-                                                    color: Colors.grey[200],
-                                                    child: Center(
-                                                      child: Text(
-                                                        "No Data",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          : Column(
-                                              children: <Widget>[
-                                                for (var i = 0;
-                                                    i <
-                                                        this
-                                                            .assignStoreData
-                                                            .length;
-                                                    i++)
-                                                  assignStoreWidget(
-                                                      assignStoreData[i]),
-                                              ],
-                                            ),
-                                    ],
-                                  )
-                                : new Container())
                       ],
                     ),
                   ),
@@ -1317,137 +1316,54 @@ class _StoreScreenState extends State<StoreScreen> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          color: CustomIcons.dropDownHeader,
-                          child: ListTile(
-                            title: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  showRegisterStore = !showRegisterStore;
-                                });
-                              },
-                              child: Text(
-                                "Store Registration",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                showRegisterStore = !showRegisterStore;
-                              });
-                            },
-                            trailing: Wrap(
-                              spacing: 12, // space between two icons
-                              children: <Widget>[
-                                IconButton(
-                                  color: Colors.black,
-                                  icon: Icon(Icons.sort),
-                                  onPressed: () {},
-                                ), // icon-1
-                                IconButton(
-                                  color: Colors.black,
-                                  icon: showRegisterStore == true
-                                      ? Icon(Icons.keyboard_arrow_down)
-                                      : Icon(Icons.chevron_right),
-                                  onPressed: () {
-                                    setState(() {
-                                      showRegisterStore = !showRegisterStore;
-                                    });
-                                  },
-                                ) // icon-2
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                            color: Colors.grey[300],
-                            child: showRegisterStore == true
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      this.storeRegistration.length == 0
-                                          ? Row(
-                                              children: <Widget>[
-                                                Expanded(
-                                                  child: Container(
-                                                    height: 50,
-                                                    color: Colors.grey[200],
-                                                    child: Center(
-                                                      child: Text(
-                                                        "No Data",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          : Column(
-                                              children: <Widget>[
-                                                for (var i = 0;
-                                                    i <
-                                                        this
-                                                            .storeRegisterData
-                                                            .length;
-                                                    i++)
-                                                  storeRegWIdget(
-                                                      storeRegisterData[i])
-                                              ],
-                                            ),
-                                    ],
-                                  )
-                                : new Container())
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(),
-                        ),
-                        Expanded(
-                          child: RaisedButton(
-                            color: Colors.white,
-                            shape: buttonShape(),
-                            onPressed: () {
-                              getGPSstatus().then((status) => {
-                                    if (status == true)
-                                      {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                StoresDetailsScreen([], false,
-                                                    "newStore", "null"),
-                                          ),
-                                        ),
-                                      }
-                                    else
-                                      {ShowToast("Please open GPS")}
-                                  });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.add_box,
-                                  color: Colors.black,
-                                ),
-                                Text(" Add New Store",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ))
-                              ],
-                            ),
-                          ),
+                          color: Colors.grey[300],
                         )
                       ],
                     ),
-                  )
+                  ),
+                  // Container(
+                  //   child: Row(
+                  //     children: <Widget>[
+                  //       Expanded(
+                  //         child: Container(),
+                  //       ),
+                  //       Expanded(
+                  //         child: RaisedButton(
+                  //           color: Colors.white,
+                  //           shape: buttonShape(),
+                  //           onPressed: () {
+                  //             getGPSstatus().then((status) => {
+                  //                   if (status == true)
+                  //                     {
+                  //                       Navigator.of(context).pushReplacement(
+                  //                         MaterialPageRoute(
+                  //                           builder: (context) =>
+                  //                               StoresDetailsScreen([], false,
+                  //                                   "newStore", "null"),
+                  //                         ),
+                  //                       ),
+                  //                     }
+                  //                   else
+                  //                     {ShowToast("Please open GPS")}
+                  //                 });
+                  //           },
+                  //           child: Row(
+                  //             children: <Widget>[
+                  //               Icon(
+                  //                 Icons.add_box,
+                  //                 color: Colors.black,
+                  //               ),
+                  //               Text(" Add New Store",
+                  //                   style: TextStyle(
+                  //                     color: Colors.black,
+                  //                   ))
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // )
                 ]),
               ),
             )),
