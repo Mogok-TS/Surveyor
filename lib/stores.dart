@@ -1151,11 +1151,12 @@ class _StoreScreenState extends State<StoreScreen> {
 
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
             townShipData = value["data"][0],
-            print(">>--" + value.toString()),
+            objData["regionName"] = value["data"][0]["description"],
+             setState(() {
+              allData.add(objData);
+             }),
           });
-      setState(() {
-        allData.add(objData);
-      });
+     
     }
     print("after>>" + allData.toString());
   }
