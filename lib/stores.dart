@@ -162,6 +162,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                     onPressed: () {
                                       setState(() {
                                         // data["show"] = !data["show"];
+                                        data["existItem"] = !data["existItem"];
                                       });
                                     },
                                   ) // icon-2
@@ -235,6 +236,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                     onPressed: () {
                                       setState(() {
                                         // data["show"] = !data["show"];
+                                        data["flagItem"] = !data["flagItem"];
                                       });
                                     },
                                   ) // icon-2
