@@ -144,34 +144,29 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
     var passData;
     var svrHdrSk = [];
     var surDetail = [];
-    if(answer.length > 0){
-      for(var q = 0; q < answer.length; q++){
+    if (answer.length > 0) {
+      for (var q = 0; q < answer.length; q++) {
         categories.add(answer[q]["category"]);
       }
     }
-    if(this.widget.regOrAss ==  "assign"){
+    if (this.widget.regOrAss == "assign") {
       passData = this.widget.passData;
       print("1-->" + this.widget.passData.toString());
-      for(var i = 0; i < routeData.length; i++){
-        if(routeData[i]["regionId"].toString() == passData[0]["regionsyskey"].toString()){
+      for (var i = 0; i < routeData.length; i++) {
+        if (routeData[i]["regionId"].toString() ==
+            passData[0]["regionsyskey"].toString()) {
           surDetail = routeData[i]["surDetail"];
         }
       }
-      
-      if(surDetail.length == 0 ){
-        
-      }else{
-        for(var ss = 0; ss < surDetail.length; ss++){
+
+      if (surDetail.length == 0) {
+      } else {
+        for (var ss = 0; ss < surDetail.length; ss++) {
           svrHdrSk.add(surDetail[ss]["surveyId"]);
         }
       }
-    }else{
-
-    }
-    var params = {
-      "svrHdrSK": svrHdrSk,
-      "CategorySK": categories
-    };
+    } else {}
+    var params = {"svrHdrSK": svrHdrSk, "CategorySK": categories};
     print("allSurveyor-->" + params.toString());
     this
         .onlineSerives
@@ -298,8 +293,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: Container(
                       height: 40,
                       width: 300,
@@ -310,7 +304,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Colors.white54,
                               fontSize: 15),
                         ),
                       ),
@@ -319,8 +313,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: Container(
                       height: 40,
                       width: 300,
@@ -331,7 +324,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Colors.white54,
                               fontSize: 15),
                         ),
                       ),

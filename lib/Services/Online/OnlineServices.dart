@@ -41,9 +41,7 @@ class OnlineSerives {
       this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
 //      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
 //      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
-      this
-          .storage
-          .setItem('URL', "http://52.255.142.115:8084/madbrepository/");
+      this.storage.setItem('URL', "http://52.255.142.115:8084/madbrepository/");
     }
   }
 
@@ -241,7 +239,7 @@ class OnlineSerives {
           this.status = true;
           var _bojArray = {};
           var dataList = data["list"];
-          for(var ii = 0; ii < dataList.length; ii++){
+          for (var ii = 0; ii < dataList.length; ii++) {
             var _data = dataList[ii];
             _bojArray["SectionSK"] = dataList[ii]["SectionSK"];
             _bojArray["HeaderSyskey"] = dataList[ii]["HeaderSyskey"];
@@ -249,82 +247,98 @@ class OnlineSerives {
             _bojArray["QuestionSyskey"] = dataList[ii]["QuestionSyskey"];
             _bojArray["SectionDesc"] = dataList[ii]["SectionDesc"];
             _bojArray["Platform"] = dataList[ii]["Platform"];
-            _bojArray["QuestionShopSyskey"] = dataList[ii]["QuestionShopSyskey"];
-            if(dataList[ii]["Flag"] == null){
+            _bojArray["QuestionShopSyskey"] =
+                dataList[ii]["QuestionShopSyskey"];
+            if (dataList[ii]["Flag"] == null) {
               _bojArray["Flag"] = 0;
-            }else{
+            } else {
               _bojArray["Flag"] = dataList[ii]["Flag"];
             }
-            if(dataList[ii]["Comment"] == null){
+            if (dataList[ii]["Comment"] == null) {
               _bojArray["Comment"] = "";
-            }else{
+            } else {
               _bojArray["Comment"] = dataList[ii]["Comment"];
             }
-            if(dataList[ii]["TypeSK"].toString() == "1" || dataList[ii]["TypeSK"].toString() == "3"){
+            if (dataList[ii]["TypeSK"].toString() == "1" ||
+                dataList[ii]["TypeSK"].toString() == "3") {
               _bojArray["AnswerSyskey"] = "";
               _bojArray["Instruction"] = dataList[ii]["Instruction"];
-              if(dataList[ii]["AnswerShopPhoto"] == null || dataList[ii]["AnswerShopPhoto"].length == 0){
-                if(dataList[ii]["HeaderShopSyskey"] != null){
-                  _bojArray["HeaderShopSyskey"] = dataList[ii]["HeaderShopSyskey"];
-                }else{
+              if (dataList[ii]["AnswerShopPhoto"] == null ||
+                  dataList[ii]["AnswerShopPhoto"].length == 0) {
+                if (dataList[ii]["HeaderShopSyskey"] != null) {
+                  _bojArray["HeaderShopSyskey"] =
+                      dataList[ii]["HeaderShopSyskey"];
+                } else {
                   _bojArray["HeaderShopSyskey"] = "";
                 }
                 _bojArray["AnswerShopPhoto"] = [];
                 _bojArray["AnswerDesc"] = "";
-              }else{
+              } else {
                 checkSaveorupdate = "update";
-                _bojArray["HeaderShopSyskey"] = dataList[ii]["HeaderShopSyskey"];
+                _bojArray["HeaderShopSyskey"] =
+                    dataList[ii]["HeaderShopSyskey"];
                 _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
               }
-            }else if(dataList[ii]["TypeSK"].toString() == "2"){
+            } else if (dataList[ii]["TypeSK"].toString() == "2") {
               _bojArray["Instruction"] = "";
-              if(dataList[ii]["AnswerSyskey"] == "" || dataList[ii]["AnswerSyskey"] == null){
+              if (dataList[ii]["AnswerSyskey"] == "" ||
+                  dataList[ii]["AnswerSyskey"] == null) {
                 _bojArray["HeaderShopSyskey"] = "";
                 _bojArray["AnswerShopPhoto"] = [];
                 _bojArray["AnswerDesc"] = "";
                 _bojArray["AnswerSyskey"] = "";
-              }else{
+              } else {
                 checkSaveorupdate = "update";
-                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["HeaderShopSyskey"] =
+                    dataList[ii]["HeaderShopSyskey"];
                 _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
                 _bojArray["AnswerSyskey"] = dataList[ii]["AnswerSyskey"];
               }
-            }else if(dataList[ii]["TypeSK"].toString() == "4" || dataList[ii]["TypeSK"].toString() == "5" || dataList[ii]["TypeSK"].toString() == "7"){
+            } else if (dataList[ii]["TypeSK"].toString() == "4" ||
+                dataList[ii]["TypeSK"].toString() == "5" ||
+                dataList[ii]["TypeSK"].toString() == "7") {
               _bojArray["AnswerSyskey"] = "";
               _bojArray["Instruction"] = "";
-              if(dataList[ii]["AnswerDesc"] == "" || dataList[ii]["AnswerDesc"] == null){
+              if (dataList[ii]["AnswerDesc"] == "" ||
+                  dataList[ii]["AnswerDesc"] == null) {
                 _bojArray["HeaderShopSyskey"] = "";
                 _bojArray["AnswerShopPhoto"] = [];
                 _bojArray["AnswerDesc"] = "";
-              }else{
+              } else {
                 checkSaveorupdate = "update";
-                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["HeaderShopSyskey"] =
+                    dataList[ii]["HeaderShopSyskey"];
                 _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
               }
-            }else if(dataList[ii]["TypeSK"].toString() == "6"){
+            } else if (dataList[ii]["TypeSK"].toString() == "6") {
               _bojArray["Instruction"] = "";
               _bojArray["AnswerSyskey"] = "";
-              if(dataList[ii]["AnswerDesc"] == "" || dataList[ii]["AnswerDesc"] == null ){
+              if (dataList[ii]["AnswerDesc"] == "" ||
+                  dataList[ii]["AnswerDesc"] == null) {
                 _bojArray["HeaderShopSyskey"] = "";
                 _bojArray["AnswerShopPhoto"] = [];
                 _bojArray["AnswerDesc"] = "";
-              }else{
+              } else {
                 checkSaveorupdate = "update";
-                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["HeaderShopSyskey"] =
+                    dataList[ii]["HeaderShopSyskey"];
                 _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
                 _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
               }
 
-              if(dataList[ii]["AnswerDesc2"] == "" || dataList[ii]["AnswerDesc2"] == null || dataList[ii]["TypeSK"].toString() == "8" ){
+              if (dataList[ii]["AnswerDesc2"] == "" ||
+                  dataList[ii]["AnswerDesc2"] == null ||
+                  dataList[ii]["TypeSK"].toString() == "8") {
                 _bojArray["HeaderShopSyskey"] = "";
                 _bojArray["AnswerShopPhoto"] = [];
                 _bojArray["AnswerDesc2"] = "";
-              }else{
+              } else {
                 checkSaveorupdate = "update";
-                _bojArray["HeaderShopSyskey"] =dataList[ii]["HeaderShopSyskey"];
+                _bojArray["HeaderShopSyskey"] =
+                    dataList[ii]["HeaderShopSyskey"];
                 _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
                 _bojArray["AnswerDesc2"] = dataList[ii]["AnswerDesc2"];
               }
@@ -333,7 +347,8 @@ class OnlineSerives {
             _bojArray["TypeDesc"] = dataList[ii]["TypeDesc"];
             _bojArray["answers"] = dataList[ii]["answers"];
             _bojArray["HeaderDescription"] = dataList[ii]["HeaderDescription"];
-            _bojArray["QuestionDescription"] = dataList[ii]["QuestionDescription"];
+            _bojArray["QuestionDescription"] =
+                dataList[ii]["QuestionDescription"];
             _array.add(json.encode(_bojArray));
           }
 
@@ -423,13 +438,9 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var param = {
-      "status":this.status,
-      "data":data["list"]
-    };
+    var param = {"status": this.status, "data": data["list"]};
     return param;
   }
-
 
   Future getDistrict(params) async {
     this.mainData();
@@ -457,10 +468,7 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var param = {
-      "status":this.status,
-      "data":data["list"]
-    };
+    var param = {"status": this.status, "data": data["list"]};
     return param;
   }
 
@@ -491,10 +499,7 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var param = {
-      "status":this.status,
-      "data":data["list"]
-    };
+    var param = {"status": this.status, "data": data["list"]};
     return param;
   }
 
@@ -512,10 +517,9 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
 //          this.storage.setItem("State", data["list"]);
-        }else if(data["status"] == "nodata" ){
+        } else if (data["status"] == "nodata") {
           this.status = false;
-        }
-        else {
+        } else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -527,10 +531,7 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var param = {
-      "status":this.status,
-      "data":data["list"]
-    };
+    var param = {"status": this.status, "data": data["list"]};
     return param;
   }
 
@@ -548,10 +549,9 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
 //          this.storage.setItem("State", data["list"]);
-        } else if(data["status"] == "nodata"){
+        } else if (data["status"] == "nodata") {
           this.status = true;
-        }
-        else {
+        } else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -563,10 +563,7 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var param = {
-      "status":this.status,
-      "data":data["list"]
-    };
+    var param = {"status": this.status, "data": data["list"]};
     return param;
   }
 
@@ -610,11 +607,13 @@ class OnlineSerives {
                 "questionSyskey": "2007271814326800007"
               },
               {
-                "questionDescription": "Store outlet of occupation(s) of patrons",
+                "questionDescription":
+                    "Store outlet of occupation(s) of patrons",
                 "questionSyskey": "2007271827442300008"
               },
               {
-                "questionDescription": "Store outlet of average income of patrons",
+                "questionDescription":
+                    "Store outlet of average income of patrons",
                 "questionSyskey": "2007271829526300009"
               },
               {
@@ -680,7 +679,8 @@ class OnlineSerives {
                 "questionSyskey": "2007270536087300029"
               },
               {
-                "questionDescription": "Store Type(Modern trade /Traditional trade)",
+                "questionDescription":
+                    "Store Type(Modern trade /Traditional trade)",
                 "questionSyskey": "2007270537288800031"
               },
               {
@@ -688,11 +688,13 @@ class OnlineSerives {
                 "questionSyskey": "2007270538561800033"
               },
               {
-                "questionDescription": "ဘယ် လို Categories အမျိုးအစားရောင်းသလဲ?",
+                "questionDescription":
+                    "ဘယ် လို Categories အမျိုးအစားရောင်းသလဲ?",
                 "questionSyskey": "2008210929492800711"
               },
               {
-                "questionDescription": "ဘယ် လို Categories အမျိုးအစားရောင်းသလဲ?",
+                "questionDescription":
+                    "ဘယ် လို Categories အမျိုးအစားရောင်းသလဲ?",
                 "questionSyskey": "2008230717342200002"
               },
               {
@@ -700,7 +702,8 @@ class OnlineSerives {
                 "questionSyskey": "2008231808586700002"
               },
               {
-                "questionDescription": "Store type (Modern trade/ Traditional trade)",
+                "questionDescription":
+                    "Store type (Modern trade/ Traditional trade)",
                 "questionSyskey": "2008231811138200005"
               },
               {
@@ -744,7 +747,7 @@ class OnlineSerives {
       this.status = false;
     }
     var param = {
-      "status":this.status,
+      "status": this.status,
       "data": data["list"] //testData
     };
     return param;
@@ -776,10 +779,7 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var param = {
-      "status":this.status,
-      "data":data["list"]
-    };
+    var param = {"status": this.status, "data": data["list"]};
     return param;
   }
 
@@ -791,8 +791,8 @@ class OnlineSerives {
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
-        print("2345-->" + this.url.toString());
-        print("sss--> ${response.body}");
+    print("2345-->" + this.url.toString());
+    print("sss--> ${response.body}");
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -881,5 +881,37 @@ class OnlineSerives {
 //      "data":data["list"]
 //    };
     return this.status;
+  }
+
+  Future getSurveyor(params) async {
+    print("Nucejkdl" + params.toString());
+    this.mainData();
+    this.url = this.url + "route/checkin";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    if (response != null) {
+      data = json.decode(response.body);
+      print({"Helooo+$data"});
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+          this.storage.setItem("getSurveyor", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    var param = {"status": this.status, "data": data["list"]};
+    return param;
   }
 }

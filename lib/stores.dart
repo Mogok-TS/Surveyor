@@ -17,6 +17,7 @@ import 'Services/GeneralUse/CommonArray.dart';
 import 'assets/custom_icons_icons.dart';
 import 'stores_details.dart';
 import 'widgets/mainmenuwidgets.dart';
+import 'package:intl/intl.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -54,6 +55,20 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
+  List<String> _chooseList = ["CHECKIN", "STORECLOSED"];
+  var _checkInType;
+
+  var rating = "";
+  TextEditingController reason = new TextEditingController();
+  var _reasonText;
+  List<String> _storeClosed = ["PERMANENT_CLOSE", "TEMPORARY_CLOSE"];
+  var _selectType;
+  var _checkClosed;
+
+  static final DateTime now = DateTime.now();
+  static final DateFormat formatter = DateFormat('dd/MM/yyyy-h:m a');
+  final String formatted = formatter.format(now);
+
   Widget buildStatusText(array) {
     var status;
     Color textColor;
@@ -78,7 +93,7 @@ class _StoreScreenState extends State<StoreScreen> {
   Widget assignStoreWidget(var data) {
     return Container(
       // margin: EdgeInsets.all(5),
-      margin: EdgeInsets.only(top: 5,bottom: 10,left:5,right:5),
+      margin: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
       child: Column(
         children: <Widget>[
           Container(
@@ -277,49 +292,52 @@ class _StoreScreenState extends State<StoreScreen> {
                                 ii < data["flagStore"].length;
                                 ii++)
                               buildAssignItem(data["flagStore"][ii]),
-                              Container(
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(),
-                        ),
-                        Expanded(
-                          child: RaisedButton(
-                            color: Colors.white,
-                            shape: buttonShape(),
-                            onPressed: () {
-                              getGPSstatus().then((status) => {
-                                    if (status == true)
-                                      {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                StoresDetailsScreen([], false,
-                                                    "newStore", "null"),
-                                          ),
-                                        ),
-                                      }
-                                    else
-                                      {ShowToast("Please open GPS")}
-                                  });
-                            },
+                          Container(
                             child: Row(
                               children: <Widget>[
-                                Icon(
-                                  Icons.add_box,
-                                  color: Colors.black,
+                                Expanded(
+                                  child: Container(),
                                 ),
-                                Text(" Add New Store",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ))
+                                Expanded(
+                                  child: RaisedButton(
+                                    color: Colors.white,
+                                    shape: buttonShape(),
+                                    onPressed: () {
+                                      getGPSstatus().then((status) => {
+                                            if (status == true)
+                                              {
+                                                Navigator.of(context)
+                                                    .pushReplacement(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        StoresDetailsScreen([],
+                                                            false,
+                                                            "newStore",
+                                                            "null"),
+                                                  ),
+                                                ),
+                                              }
+                                            else
+                                              {ShowToast("Please open GPS")}
+                                          });
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.add_box,
+                                          color: Colors.black,
+                                        ),
+                                        Text(" Add New Store",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ))
+                                      ],
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
+                          )
                         ],
                       ),
                     )
@@ -438,125 +456,350 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  _showDialog(var data) {
+  _showDialog(var data, var curPlace) {
     var shopData = [data];
     var param;
     showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Check In"),
-          content: new SingleChildScrollView(
-            child: new ListBody(
-              children: <Widget>[
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.store,
-                        color: CustomIcons.iconColor,
-                        size: 35,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Text(
-                            data["shopname"] + "(" + data["shopnamemm"] + ")"),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          child: RaisedButton(
-                            color: Colors.white,
-                            shape: alertButtonShape(),
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).pop();
-                            },
-                            child: Center(
-                              child: Column(
-                                children: <Widget>[
-//                                        buildStatusText(this.performTypearray)
-                                  Text("Cancel")
-                                ],
-                              ),
-                            ),
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: new Text("Check In"),
+              content: new SingleChildScrollView(
+                child: new ListBody(
+                  children: <Widget>[
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.store,
+                            color: CustomIcons.iconColor,
+                            size: 27,
                           ),
-                        ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Text(
+                              data["shopname"] + "(" + data["shopnamemm"] + ")",
+                              style: TextStyle(
+                                  fontSize: 15, color: Colors.black54),
+                            ),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        width: 10,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.timelapse,
+                            color: CustomIcons.iconColor,
+                            size: 27,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Text(
+                              "${this.formatted}",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          )
+                        ],
                       ),
-                      Expanded(
-                        child: Container(
-                          child: RaisedButton(
-                            color: Colors.white,
-                            shape: alertButtonShape(),
-                            onPressed: () {
-                              getGPSstatus().then((status) => {
-                                    print("$status"),
-                                    if (status == true)
-                                      {
-                                        param = {
-                                          "shopsyskey": shopData[0]
-                                              ["shopsyskey"]
-                                        },
-                                        this
-                                            .onlineSerives
-                                            .getCategory(param)
-                                            .then((value) => {
-                                                  print("98->" +
-                                                      value.toString()),
-                                                  if (value == true)
-                                                    {
-                                                      Navigator.of(context,
-                                                              rootNavigator:
-                                                                  true)
-                                                          .pop(),
-                                                      Navigator.of(context)
-                                                          .pushReplacement(
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              StoresDetailsScreen(
-                                                                  shopData,
-                                                                  false,
-                                                                  "assign",
-                                                                  "null"),
-                                                        ),
-                                                      ),
-                                                    }
-                                                  else
-                                                    {
-                                                      hideLoadingDialog,
-                                                    },
-                                                }),
-                                      }
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.location_on,
+                            color: CustomIcons.iconColor,
+                            size: 27,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Text(
+                              "${curPlace.latitude}" +
+                                  " " +
+                                  "/" +
+                                  " " +
+                                  "${curPlace.longitude}",
+                              style: TextStyle(color: Colors.red, fontSize: 15),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.select_all,
+                            color: CustomIcons.iconColor,
+                            size: 27,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            child: Container(
+                              width: 250,
+                              child: DropdownButtonFormField<String>(
+                                value: _checkInType,
+                                items: _chooseList
+                                    .map<DropdownMenuItem<String>>((value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                decoration:
+                                    InputDecoration.collapsed(hintText: ''),
+                                hint: Row(
+                                  children: <Widget>[
+                                    Text('Select Type'),
+                                  ],
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _checkInType = value;
+                                    if (_checkInType == "STORECLOSED")
+                                      _checkClosed = "1";
                                     else
-                                      {ShowToast("Please open GPS")}
+                                      _checkClosed = "2";
+                                    _selectType = null;
                                   });
-                            },
-                            child: Center(
-                              child: Column(
-                                children: <Widget>[
-//                                        buildStatusText(this.performTypearray)
-                                  Text("Next")
-                                ],
+                                },
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    if (this._checkClosed == "1")
+                      SizedBox(
+                        height: 10,
+                      ),
+                    if (this._checkClosed == "1")
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.nfc,
+                              color: CustomIcons.iconColor,
+                              size: 27,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              width: 250,
+                              child: Container(
+                                child: DropdownButtonFormField<String>(
+                                  value: _selectType,
+                                  items: _storeClosed
+                                      .map<DropdownMenuItem<String>>((value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  decoration:
+                                      InputDecoration.collapsed(hintText: ''),
+                                  hint: Row(
+                                    children: <Widget>[
+                                      Text('Select Type'),
+                                    ],
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectType = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    if (this._checkClosed == "1")
+                      SizedBox(
+                        height: 10,
+                      ),
+                    if (this._checkClosed == "1")
+                      Container(
+                        height: 10 * 20.0,
+                        child: TextField(
+                          controller: reason,
+                          maxLines: 10,
+                          onChanged: (value) {
+                            this._reasonText = value.toString();
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(10),
+                            hintText: "Reason",
+                            fillColor: Colors.grey[50],
+                            filled: true,
+                          ),
+                        ),
+                      ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.map,
+                            color: CustomIcons.iconColor,
+                            size: 27,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Text(
+                              data["address"],
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Container(
+                              child: RaisedButton(
+                                color: Colors.white,
+                                shape: alertButtonShape(),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                                child: Center(
+                                  child: Column(
+                                    children: <Widget>[
+//                                        buildStatusText(this.performTypearray)
+                                      Text("Cancel")
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Container(
+                              child: RaisedButton(
+                                color: Colors.white,
+                                shape: alertButtonShape(),
+                                onPressed: () {
+                                  var loginUser =
+                                      this.storage.getItem("loginData");
+                                  var params = {
+                                    "lat": "${curPlace.latitude}",
+                                    "lon": "${curPlace.longitude}",
+                                    "address": data["address"],
+                                    "shopsyskey": data["shopsyskey"],
+                                    "usersyskey": loginUser['syskey'],
+                                    if (_checkInType == "CHECKIN")
+                                      "checkInType": _checkInType
+                                    else
+                                      "checkInType": _selectType,
+                                    "register": true,
+                                    "reason": this._reasonText.toString(),
+                                    "task": "INCOMPLETE"
+                                  };
+                                  getGPSstatus().then((status) => {
+                                        print("$status"),
+                                        if (status == true)
+                                          {
+                                            param = {
+                                              "shopsyskey": shopData[0]
+                                                  ["shopsyskey"]
+                                            },
+                                            this
+                                                .onlineSerives
+                                                .getCategory(param)
+                                                .then((value) => {
+                                                      print("98->" +
+                                                          value.toString()),
+                                                      if (value == true)
+                                                        {
+                                                          Navigator.of(context,
+                                                                  rootNavigator:
+                                                                      true)
+                                                              .pop(),
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  StoresDetailsScreen(
+                                                                      shopData,
+                                                                      false,
+                                                                      "assign",
+                                                                      "null"),
+                                                            ),
+                                                          ),
+                                                        }
+                                                      else
+                                                        {
+                                                          hideLoadingDialog,
+                                                        },
+                                                    }),
+                                            this
+                                                .onlineSerives
+                                                .getSurveyor(params)
+                                                .then(
+                                                  (value) => {},
+                                                ),
+                                          }
+                                        else
+                                          {ShowToast("Please open GPS")}
+                                      });
+                                },
+                                child: Center(
+                                  child: Column(
+                                    children: <Widget>[
+//                                        buildStatusText(this.performTypearray)
+                                      Text("Next")
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ));
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   _showDialog2(var data) {
@@ -678,7 +921,7 @@ class _StoreScreenState extends State<StoreScreen> {
 
   Widget buildAssignItem(data) {
     var shopData = [data];
-    print("99-->  ${shopData}");
+    // print("99-->  ${shopData}");
     return Container(
       color: Colors.grey[200],
       child: Card(
@@ -739,45 +982,18 @@ class _StoreScreenState extends State<StoreScreen> {
                                   color: Colors.white,
                                   shape: buttonShape(),
                                   onPressed: () {
-                                    _showDialog(data);
-                                    // getGPSstatus().then((status) => {
-                                    //       print("$status"),
-                                    //       if (status == true)
-                                    //         {
-                                    //           param = {
-                                    //             "shopsyskey": shopData[0]
-                                    //                 ["shopsyskey"]
-                                    //           },
-                                    //           this
-                                    //               .onlineSerives
-                                    //               .getCategory(param)
-                                    //               .then((value) => {
-                                    //                     print("98->" +
-                                    //                         value.toString()),
-                                    //                     if (value == true)
-                                    //                       {
-                                    //                         Navigator.of(
-                                    //                                 context)
-                                    //                             .pushReplacement(
-                                    //                           MaterialPageRoute(
-                                    //                             builder: (context) =>
-                                    //                                 StoresDetailsScreen(
-                                    //                                     shopData,
-                                    //                                     false,
-                                    //                                     "assign",
-                                    //                                     "null"),
-                                    //                           ),
-                                    //                         ),
-                                    //                       }
-                                    //                     else
-                                    //                       {
-                                    //                         hideLoadingDialog,
-                                    //                       },
-                                    //                   }),
-                                    //         }
-                                    //       else
-                                    //         {ShowToast("Please open GPS")}
-                                    //     });
+                                    _getLocation().then(
+                                      (value) => {
+                                        _showDialog(
+                                          data,
+                                          value,
+                                        ),
+                                      },
+                                    );
+                                    _checkInType = null;
+                                    _checkClosed = "2";
+                                    _selectType = null;
+                                    reason = null;
                                   },
                                   child: Center(
                                     child: Text(
@@ -1154,11 +1370,10 @@ class _StoreScreenState extends State<StoreScreen> {
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
             townShipData = value["data"][0],
             objData["regionName"] = value["data"][0]["description"],
-             setState(() {
+            setState(() {
               allData.add(objData);
-             }),
+            }),
           });
-     
     }
     print("after>>" + allData.toString());
   }
@@ -1173,7 +1388,6 @@ class _StoreScreenState extends State<StoreScreen> {
       "date": ""
     };
     var loginData, newParam;
-
     loginData = this.storage.getItem("loginData");
     newParam = {"usersyskey": loginData["syskey"].toString()};
     shopParam["spsyskey"] = loginData["syskey"];

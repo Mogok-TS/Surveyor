@@ -88,7 +88,7 @@ class MainMenuWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   buildListTile(
-                    'Logs Out',
+                    'Log Out',
                     Icons.input,
                     () {
                       this.storage.deleteItem("Surveyor");
