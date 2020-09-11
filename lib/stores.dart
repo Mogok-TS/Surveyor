@@ -111,6 +111,11 @@ class _StoreScreenState extends State<StoreScreen> {
                       data["regionName"].toString(),
                       style: TextStyle(color: Colors.black),
                     ),
+                    SizedBox(width: 10,),
+                    Text(
+                      " 0 / x ",
+                      style: TextStyle(color: Colors.black),
+                    )
                   ],
                 ),
               ),
@@ -292,7 +297,75 @@ class _StoreScreenState extends State<StoreScreen> {
                                 ii < data["flagStore"].length;
                                 ii++)
                               buildAssignItem(data["flagStore"][ii]),
+                          
+                          SizedBox(height: 10,),
+                           Container(
+                            color: CustomIcons.dropDownHeader,
+                            child: ListTile(
+                              title: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    data["storeItem"] = !data["storeItem"];
+                                  });
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "New Store",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              trailing: Wrap(
+                                spacing: 12, // space between two icons
+                                children: <Widget>[
+                                  // icon-1
+                                  IconButton(
+                                    color: Colors.black,
+                                    icon: data["storeItem"] == true
+                                        ? Icon(Icons.keyboard_arrow_down)
+                                        : Icon(Icons.chevron_right),
+                                    onPressed: () {
+                                      setState(() {
+                                        // data["show"] = !data["show"];
+                                        data["storeItem"] = !data["storeItem"];
+                                      });
+                                    },
+                                  ) // icon-2
+                                ],
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  data["storeItem"] = !data["storeItem"];
+                                });
+                              },
+                            ),
+                          ),
+                          if(data["storeItem"] == true)
                           Container(
+                            child: Column(
+                             children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      color: Colors.grey[200],
+                                      child: Center(
+                                        child: Text(
+                                          "No Data",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Container(
                             child: Row(
                               children: <Widget>[
                                 Expanded(
@@ -336,6 +409,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                   ),
                                 )
                               ],
+                            ),
+                          ),
+                             ],
                             ),
                           )
                         ],
@@ -1141,209 +1217,7 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  var datalist = [
-    {
-      "id": "2009050541542600002",
-      "recordStatus": 1,
-      "saveStatus": 1,
-      "toDate": "20200905",
-      "fromDate": "20200901",
-      "regionId": "2004241203562700068",
-      "userDetail": [
-        {
-          "id": "2009050541565500007",
-          "recordStatus": 1,
-          "saveStatus": 1,
-          "date": "20200905",
-          "parentId": "2009050541542600002",
-          "userId": "2007300654381400029"
-        }
-      ],
-      "surDetail": [
-        {
-          "id": "2009050541565600008",
-          "recordStatus": 1,
-          "saveStatus": 1,
-          "parentId": "2009050541542600002",
-          "surveyId": "2009050522567300002",
-          "flagStore": false,
-          "existingStore": false,
-          "newStore": false
-        },
-        {
-          "id": "2009050541577500009",
-          "recordStatus": 1,
-          "saveStatus": 1,
-          "parentId": "2009050541542600002",
-          "surveyId": "2007300654381400027",
-          "flagStore": false,
-          "existingStore": false,
-          "newStore": false
-        }
-      ],
-      "existingStore": [
-        {
-          "tranid": "2008251409061800002",
-          "address":
-              "သရက်တောလမ်း,Tha Yet Taw (South) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
-          "isFlagStore": 0,
-          "regionsyskey": "2009050541542600002",
-          "shopnamemm": "ပလက်စ်ကုတ်တက်စ်",
-          "personph": "+959123456789",
-          "stateid": "2",
-          "pluscode": "7M8RQ4PH+58",
-          "shopsyskey": "2008251409062300003",
-          "townid": "2004241237194900113",
-          "wardid": "2004241650513600233",
-          "long": "96.12832",
-          "phoneno": "+959987654321",
-          "shopcode": "457288354484",
-          "districtid": "8",
-          "street": "သရက်တောလမ်း",
-          "shopname": "Plus Code Test",
-          "mimu": "",
-          "FlagCount": 0,
-          "townshipid": "2004241203562700068",
-          "lat": "16.785425",
-          "email": "",
-          "personname": "ပလက်စ်ကုတ်"
-        }
-      ],
-      "flagStore": [
-        {
-          "tranid": "2009030423162000180",
-          "address":
-              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
-          "isFlagStore": 1,
-          "regionsyskey": "2009050541542600002",
-          "shopnamemm": "Test",
-          "personph": "",
-          "stateid": "2",
-          "pluscode": "7M8RR4FG+VR",
-          "shopsyskey": "2009030423165600181",
-          "townid": "2004241237194900113",
-          "wardid": "2004241648288400224",
-          "long": "96.12708",
-          "phoneno": "+95966666666",
-          "shopcode": "899914631872",
-          "districtid": "8",
-          "street": "12 test",
-          "shopname": "Test",
-          "mimu": "",
-          "FlagCount": 0,
-          "townshipid": "2004241203562700068",
-          "lat": "16.824665",
-          "email": "",
-          "personname": "QC"
-        },
-        {
-          "tranid": "2009030423162000180",
-          "address":
-              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
-          "isFlagStore": 1,
-          "regionsyskey": "2009050541542600002",
-          "shopnamemm": "Test",
-          "personph": "",
-          "stateid": "2",
-          "pluscode": "7M8RR4FG+VR",
-          "shopsyskey": "2009030423165600181",
-          "townid": "2004241237194900113",
-          "wardid": "2004241648288400224",
-          "long": "96.12708",
-          "phoneno": "+95966666666",
-          "shopcode": "899914631872",
-          "districtid": "8",
-          "street": "12 test",
-          "shopname": "Test",
-          "mimu": "",
-          "FlagCount": 0,
-          "townshipid": "2004241203562700068",
-          "lat": "16.824665",
-          "email": "",
-          "personname": "QC"
-        },
-        {
-          "tranid": "2009030423162000180",
-          "address":
-              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
-          "isFlagStore": 1,
-          "regionsyskey": "2009050541542600002",
-          "shopnamemm": "Test",
-          "personph": "",
-          "stateid": "2",
-          "pluscode": "7M8RR4FG+VR",
-          "shopsyskey": "2009030423165600181",
-          "townid": "2004241237194900113",
-          "wardid": "2004241648288400224",
-          "long": "96.12708",
-          "phoneno": "+95966666666",
-          "shopcode": "899914631872",
-          "districtid": "8",
-          "street": "12 test",
-          "shopname": "Test",
-          "mimu": "",
-          "FlagCount": 0,
-          "townshipid": "2004241203562700068",
-          "lat": "16.824665",
-          "email": "",
-          "personname": "QC"
-        },
-        {
-          "tranid": "2009030423162000180",
-          "address":
-              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
-          "isFlagStore": 1,
-          "regionsyskey": "2009050541542600002",
-          "shopnamemm": "Test",
-          "personph": "",
-          "stateid": "2",
-          "pluscode": "7M8RR4FG+VR",
-          "shopsyskey": "2009030423165600181",
-          "townid": "2004241237194900113",
-          "wardid": "2004241648288400224",
-          "long": "96.12708",
-          "phoneno": "+95966666666",
-          "shopcode": "899914631872",
-          "districtid": "8",
-          "street": "12 test",
-          "shopname": "Test",
-          "mimu": "",
-          "FlagCount": 0,
-          "townshipid": "2004241203562700068",
-          "lat": "16.824665",
-          "email": "",
-          "personname": "QC"
-        },
-        {
-          "tranid": "2009030423162000180",
-          "address":
-              "12 test,Ma Gyi Tan (North/East) Ward,Kyeemyindaing,Kyeemyindaing,Yangon (West),ရန်ကုန်တိုင်းဒေသကြီး",
-          "isFlagStore": 1,
-          "regionsyskey": "2009050541542600002",
-          "shopnamemm": "Test",
-          "personph": "",
-          "stateid": "2",
-          "pluscode": "7M8RR4FG+VR",
-          "shopsyskey": "2009030423165600181",
-          "townid": "2004241237194900113",
-          "wardid": "2004241648288400224",
-          "long": "96.12708",
-          "phoneno": "+95966666666",
-          "shopcode": "899914631872",
-          "districtid": "8",
-          "street": "12 test",
-          "shopname": "Test",
-          "mimu": "",
-          "FlagCount": 0,
-          "townshipid": "2004241203562700068",
-          "lat": "16.824665",
-          "email": "",
-          "personname": "QC"
-        }
-      ],
-      "newStore": false
-    }
-  ];
+
   var allData = [];
   allDataFunction() {
     allData = [];
@@ -1351,7 +1225,7 @@ class _StoreScreenState extends State<StoreScreen> {
     print(".." + storeDatas.toString());
     for (var i = 0; i < storeDatas.length; i++) {
       var objData = {};
-      var townShipData = {};
+      // var townShipData = {};
       objData["show"] = false;
       objData["regionId"] = storeDatas[i]["regionId"].toString();
       objData["regionName"] = storeDatas[i]["regionId"].toString();
@@ -1359,6 +1233,8 @@ class _StoreScreenState extends State<StoreScreen> {
       objData["existItem"] = false;
       objData["flagStore"] = storeDatas[i]["flagStore"];
       objData["flagItem"] = false;
+      objData['storeItem'] = false;
+       objData['newStore'] = true;
       var paramforTownshipName = {
         "id": storeDatas[i]["regionId"].toString(),
         "code": "",
@@ -1368,7 +1244,7 @@ class _StoreScreenState extends State<StoreScreen> {
       };
 
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
-            townShipData = value["data"][0],
+            // townShipData = value["data"][0],
             objData["regionName"] = value["data"][0]["description"],
             setState(() {
               allData.add(objData);
