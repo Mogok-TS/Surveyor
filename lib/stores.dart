@@ -112,10 +112,7 @@ class _StoreScreenState extends State<StoreScreen> {
                       style: TextStyle(color: Colors.black),
                     ),
                     SizedBox(width: 10,),
-                    Text(
-                      " 0 / x ",
-                      style: TextStyle(color: Colors.black),
-                    )
+                    
                   ],
                 ),
               ),
@@ -167,6 +164,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                       "Existing Store",
                                       style: TextStyle(color: Colors.black),
                                     ),
+                                    Text(
+                      " 0 / x ",
+                      style: TextStyle(color: Colors.black),
+                    )
                                   ],
                                 ),
                               ),
@@ -241,6 +242,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                       "Flag Store",
                                       style: TextStyle(color: Colors.black),
                                     ),
+                                    Text(
+                      " 0 / x ",
+                      style: TextStyle(color: Colors.black),
+                    )
                                   ],
                                 ),
                               ),
