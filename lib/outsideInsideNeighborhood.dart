@@ -1,4 +1,3 @@
-
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/checkNeighborhood.dart';
 import 'package:Surveyor/neighborhoodSurvey.dart';
@@ -100,14 +99,32 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         margin: EdgeInsets.symmetric(vertical: 20),
                         child: Row(
                           children: <Widget>[
-                            Expanded(
-                              child: _statusButton("Status", item["remain"]),
-                            ),
-                            Expanded(
-                                child: _remainButton(
-                                    item["remain"].toString() +
-                                        " Items remaining",
-                                    item["remain"])),
+                            if (item["total"] > 0)
+                              Expanded(
+                                child: _statusButton("Status", item["remain"]),
+                              ),
+                            if (item["total"] > 0)
+                              Expanded(
+                                  child: _remainButton(
+                                      item["remain"].toString() +
+                                          " Items remaining",
+                                      item["remain"])),
+                            if (item["total"] == 0)
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  color: Colors.grey[200],
+                                  child: Center(
+                                    child: Text(
+                                      "No Data",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
                           ],
                         ),
                       )
@@ -177,19 +194,15 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
               totalCount = 0,
               answeredCount = 0,
               sinpleData["desc"] = sections[i]["sectionDescription"],
-              
               for (var ii = 0; ii < data.length; ii++)
                 {
-
-                  
-                  
                   if (data[ii]["SectionDesc"] ==
                       sections[i]["sectionDescription"])
                     {
-                      if(data[ii]["Flag"].toString() ==  "1"){
-                     sinpleData["flag"] = "1",
-                      },
-
+                      if (data[ii]["Flag"].toString() == "1")
+                        {
+                          sinpleData["flag"] = "1",
+                        },
                       this.allItem++,
                       totalCount++,
                       if (data[ii]["TypeDesc"] == "Fill in the Blank")
@@ -263,7 +276,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                           data[ii]["HeaderShopSyskey"].toString(),
                     }
                 },
-               
               sinpleData["answered"] = answeredCount,
               sinpleData["total"] = totalCount,
               sinpleData["remain"] = totalCount - answeredCount,
