@@ -137,8 +137,9 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
           this.storage.setItem("storeData", data["list"]);
+          print("000-->" + data["list"].toString());
         } else {
-          ShowToast("Server fail.");
+          ShowToast("Server fail..");
           this.status = false;
         }
       } else {
@@ -167,7 +168,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-          this.storage.setItem("storeData", data["data"]);
+          // this.storage.setItem("storeData", data["data"]);
         } else if (data["status"] == "Code Already Existed") {
           ShowToast("Code Already Existed");
           this.status = false;
@@ -474,13 +475,14 @@ class OnlineSerives {
 
   Future getTownship(params) async {
     this.mainData();
+    print("<<<<<<->>>>>> " + params["id"]);
     this.url = this.url + "shop/get-township";
     var body = json.encode(params);
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
-    print("-> ${response.body}");
+    
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {

@@ -1002,6 +1002,27 @@ class _StoreScreenState extends State<StoreScreen> {
 
   Widget buildAssignItem(data) {
     var shopData = [data];
+    var checkStatus;
+    bool start = true;
+    if(data["status"]["currentType"] == ""){
+      checkStatus = "Not Started";
+    }else if(data["status"]["currentType"] == "CHECKIN"){
+      checkStatus = "In Progress";
+    }
+    else if(data["status"]["currentType"] == "CHECKOUT"){
+      checkStatus = "Check Out";
+    }
+    else if(data["status"]["currentType"] == "TEMPCHECKOUT"){
+      checkStatus = "In Progress";
+    }
+    else if(data["status"]["currentType"] == "PERMANENT_CLOSE"){
+      checkStatus = "Permanent Close";
+      start = false;
+    }
+    else if(data["status"]["currentType"] == "TEMPORARY_CLOSE"){
+      checkStatus = "Temporary Close";
+    }
+   
     // print("99-->  ${shopData}");
     return Container(
       color: Colors.grey[200],
@@ -1050,13 +1071,14 @@ class _StoreScreenState extends State<StoreScreen> {
                                     child: Column(
                                       children: <Widget>[
 //                                        buildStatusText(this.performTypearray)
-                                        Text("In Progress")
+                                        Text(checkStatus.toString())
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
                             ),
+                            if(start)
                             Expanded(
                               child: Container(
                                 child: RaisedButton(
@@ -1230,10 +1252,9 @@ class _StoreScreenState extends State<StoreScreen> {
     print(".." + storeDatas.toString());
     for (var i = 0; i < storeDatas.length; i++) {
       var objData = {};
-      // var townShipData = {};
+      print("regionID111>>>>>"+storeDatas[i]["regionId"].toString());
       objData["show"] = false;
       objData["regionId"] = storeDatas[i]["regionId"].toString();
-      objData["regionName"] = storeDatas[i]["regionId"].toString();
       objData["existingStore"] = storeDatas[i]["existingStore"];
       objData["existItem"] = false;
       objData["flagStore"] = storeDatas[i]["flagStore"];
@@ -1247,16 +1268,16 @@ class _StoreScreenState extends State<StoreScreen> {
         "parentid": "",
         "n2": ""
       };
-
+      print("1234-->" + paramforTownshipName.toString());
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
-            // townShipData = value["data"][0],
+        print(paramforTownshipName.toString()),
             objData["regionName"] = value["data"][0]["description"],
             setState(() {
               allData.add(objData);
             }),
           });
+         
     }
-    print("after>>" + allData.toString());
   }
 
   @override
@@ -1283,11 +1304,7 @@ class _StoreScreenState extends State<StoreScreen> {
           .then((result) => {
                 if (result == true)
                   {
-                    this.onlineSerives.getsvrShoplist(newParam).then((res) => {
-                          if (res == true)
-                            {
-                              print("hello data"),
-                              this.assignStores =
+                    this.assignStores =
                                   this.storage.getItem("storeData"),
                               setState(() {
                                 this.count =
@@ -1297,13 +1314,19 @@ class _StoreScreenState extends State<StoreScreen> {
                               setState(() {
                                 hideLoadingDialog();
                               }),
-                            }
-                          else
-                            {
-                              this.assignStores = [],
-                              hideLoadingDialog(),
-                            }
-                        }),
+                    // this.onlineSerives.getsvrShoplist(newParam).then((res) => {
+                    //   print("res-->"+res.toString()),
+                    //       if (res == true)
+                    //         {
+                    //           print("hello data"),
+                              
+                    //         }
+                    //       else
+                    //         {
+                    //           this.assignStores = [],
+                    //           hideLoadingDialog(),
+                    //         }
+                    //     }),
                   }
                 else
                   {
