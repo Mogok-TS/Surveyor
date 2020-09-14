@@ -293,7 +293,27 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      var passValue = this.widget.passData[0];
+                      var loginUser = this.storage.getItem("loginData");
+                      var param = {
+                        "lat": passValue["lat"].toString(),
+                        "lon": passValue["long"].toString(),
+                        "address": passValue["address"].toString(),
+                        "shopsyskey": passValue["shopsyskey"].toString(),
+                        "usersyskey": loginUser['syskey'],
+                        "checkInType": "TEMPCHECKOUT",
+                        "register": true,
+                        "reason": "",
+                        "task": "INCOMPLETE",
+                      };
+                      this.onlineSerives.getSurveyor(param).then((value) => {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => StoreScreen()),
+                            ),
+                          });
+                    },
                     child: Container(
                       height: 40,
                       width: 300,
@@ -303,9 +323,10 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                           "Check Out",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white54,
-                              fontSize: 15),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

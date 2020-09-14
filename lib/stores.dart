@@ -55,13 +55,13 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  List<String> _chooseList = ["CHECKIN", "STORECLOSED"];
+  List<String> _chooseList = ["Check In", "Store Closed"];
   var _checkInType;
 
   var rating = "";
   TextEditingController reason = new TextEditingController();
   var _reasonText;
-  List<String> _storeClosed = ["PERMANENT_CLOSE", "TEMPORARY_CLOSE"];
+  List<String> _storeClosed = ["Permanent Close", "Temporary Close"];
   var _selectType;
   var _checkClosed;
 
@@ -111,8 +111,9 @@ class _StoreScreenState extends State<StoreScreen> {
                       data["regionName"].toString(),
                       style: TextStyle(color: Colors.black),
                     ),
-                    SizedBox(width: 10,),
-                    
+                    SizedBox(
+                      width: 10,
+                    ),
                   ],
                 ),
               ),
@@ -165,9 +166,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     Text(
-                      " 0 / x ",
-                      style: TextStyle(color: Colors.black),
-                    )
+                                      " 0 / x ",
+                                      style: TextStyle(color: Colors.black),
+                                    )
                                   ],
                                 ),
                               ),
@@ -243,9 +244,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     Text(
-                      " 0 / x ",
-                      style: TextStyle(color: Colors.black),
-                    )
+                                      " 0 / x ",
+                                      style: TextStyle(color: Colors.black),
+                                    )
                                   ],
                                 ),
                               ),
@@ -302,9 +303,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                 ii < data["flagStore"].length;
                                 ii++)
                               buildAssignItem(data["flagStore"][ii]),
-                          
-                          SizedBox(height: 10,),
-                           Container(
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
                             color: CustomIcons.dropDownHeader,
                             child: ListTile(
                               title: InkWell(
@@ -347,78 +349,82 @@ class _StoreScreenState extends State<StoreScreen> {
                               },
                             ),
                           ),
-                          if(data["storeItem"] == true)
-                          Container(
-                            child: Column(
-                             children: <Widget>[
-                              Row(
+                          if (data["storeItem"] == true)
+                            Container(
+                              child: Column(
                                 children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      height: 50,
-                                      color: Colors.grey[200],
-                                      child: Center(
-                                        child: Text(
-                                          "No Data",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black,
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Container(
+                                          height: 50,
+                                          color: Colors.grey[200],
+                                          child: Center(
+                                            child: Text(
+                                              "No Data",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Container(
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Expanded(
-                                  child: RaisedButton(
-                                    color: Colors.white,
-                                    shape: buttonShape(),
-                                    onPressed: () {
-                                      getGPSstatus().then((status) => {
-                                            if (status == true)
-                                              {
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        StoresDetailsScreen([],
-                                                            false,
-                                                            "newStore",
-                                                            "null"),
-                                                  ),
-                                                ),
-                                              }
-                                            else
-                                              {ShowToast("Please open GPS")}
-                                          });
-                                    },
+                                      )
+                                    ],
+                                  ),
+                                  Container(
                                     child: Row(
                                       children: <Widget>[
-                                        Icon(
-                                          Icons.add_box,
-                                          color: Colors.black,
+                                        Expanded(
+                                          child: Container(),
                                         ),
-                                        Text(" Add New Store",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                            ))
+                                        Expanded(
+                                          child: RaisedButton(
+                                            color: Colors.white,
+                                            shape: buttonShape(),
+                                            onPressed: () {
+                                              getGPSstatus().then((status) => {
+                                                    if (status == true)
+                                                      {
+                                                        Navigator.of(context)
+                                                            .pushReplacement(
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                StoresDetailsScreen(
+                                                                    [],
+                                                                    false,
+                                                                    "newStore",
+                                                                    "null"),
+                                                          ),
+                                                        ),
+                                                      }
+                                                    else
+                                                      {
+                                                        ShowToast(
+                                                            "Please open GPS")
+                                                      }
+                                                  });
+                                            },
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.add_box,
+                                                  color: Colors.black,
+                                                ),
+                                                Text(" Add New Store",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ))
+                                              ],
+                                            ),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                             ],
-                            ),
-                          )
+                                ],
+                              ),
+                            )
                         ],
                       ),
                     )
@@ -537,9 +543,11 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  _showDialog(var data, var curPlace) {
+  _showDialog(var data) {
     var shopData = [data];
     var param;
+    var params;
+    var loginUser;
     showDialog(
       context: context,
       builder: (context) {
@@ -610,11 +618,7 @@ class _StoreScreenState extends State<StoreScreen> {
                           ),
                           Expanded(
                             child: Text(
-                              "${curPlace.latitude}" +
-                                  " " +
-                                  "/" +
-                                  " " +
-                                  "${curPlace.longitude}",
+                              data["lat"] + " " + "/" + " " + data["lat"],
                               style: TextStyle(color: Colors.red, fontSize: 15),
                             ),
                           )
@@ -637,7 +641,7 @@ class _StoreScreenState extends State<StoreScreen> {
                           ),
                           Container(
                             child: Container(
-                              width: 250,
+                              width: 200,
                               child: DropdownButtonFormField<String>(
                                 value: _checkInType,
                                 items: _chooseList
@@ -657,7 +661,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                 onChanged: (value) {
                                   setState(() {
                                     _checkInType = value;
-                                    if (_checkInType == "STORECLOSED")
+                                    _selectType = null;
+                                    if (_checkInType == "Store Closed" ||
+                                        _checkInType == "STORECLOSED")
                                       _checkClosed = "1";
                                     else
                                       _checkClosed = "2";
@@ -687,7 +693,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               width: 10,
                             ),
                             Container(
-                              width: 250,
+                              width: 200,
                               child: Container(
                                 child: DropdownButtonFormField<String>(
                                   value: _selectType,
@@ -795,69 +801,160 @@ class _StoreScreenState extends State<StoreScreen> {
                                 color: Colors.white,
                                 shape: alertButtonShape(),
                                 onPressed: () {
-                                  var loginUser =
-                                      this.storage.getItem("loginData");
-                                  var params = {
-                                    "lat": "${curPlace.latitude}",
-                                    "lon": "${curPlace.longitude}",
-                                    "address": data["address"],
-                                    "shopsyskey": data["shopsyskey"],
-                                    "usersyskey": loginUser['syskey'],
-                                    if (_checkInType == "CHECKIN")
-                                      "checkInType": _checkInType
-                                    else
-                                      "checkInType": _selectType,
-                                    "register": true,
-                                    "reason": this._reasonText.toString(),
-                                    "task": "INCOMPLETE"
-                                  };
-                                  getGPSstatus().then((status) => {
-                                        print("$status"),
-                                        if (status == true)
-                                          {
-                                            param = {
-                                              "shopsyskey": shopData[0]
-                                                  ["shopsyskey"]
-                                            },
-                                            this
-                                                .onlineSerives
-                                                .getCategory(param)
-                                                .then((value) => {
-                                                      print("98->" +
-                                                          value.toString()),
-                                                      if (value == true)
-                                                        {
-                                                          Navigator.of(context,
-                                                                  rootNavigator:
-                                                                      true)
-                                                              .pop(),
-                                                          Navigator.of(context)
-                                                              .pushReplacement(
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  StoresDetailsScreen(
-                                                                      shopData,
-                                                                      false,
-                                                                      "assign",
-                                                                      "null"),
-                                                            ),
-                                                          ),
-                                                        }
-                                                      else
-                                                        {
-                                                          hideLoadingDialog,
-                                                        },
-                                                    }),
-                                            this
-                                                .onlineSerives
-                                                .getSurveyor(params)
-                                                .then(
-                                                  (value) => {},
-                                                ),
-                                          }
-                                        else
-                                          {ShowToast("Please open GPS")}
-                                      });
+                                  // if (_checkInType == "Check In" ||
+                                  //     _checkInType == "CHECKIN") {
+                                  //   _checkInType = "CHECKIN";
+                                  // } else {
+                                  //   _checkInType = "STORECLOSED";
+                                  //   if (_selectType == "Permanent Close") {
+                                  //     _selectType = "PERMANENT_CLOSE";
+                                  //   } else {
+                                  //     _selectType = "TEMPORARY_CLOSE";
+                                  //   }
+                                  // }
+                                  print(_checkInType);
+                                  print(_selectType);
+                                  print("HELlo");
+
+                                  if (_checkInType == "CHECKIN" ||
+                                      _checkInType == "Check In") {
+                                    loginUser =
+                                        this.storage.getItem("loginData");
+                                    params = {
+                                      "lat": data["lat"],
+                                      "lon": data["long"],
+                                      "address": data["address"],
+                                      "shopsyskey": data["shopsyskey"],
+                                      "usersyskey": loginUser['syskey'],
+                                      if (data["status"]["currentType"] ==
+                                          "CHECKIN")
+                                        "checkInType": "TEMPCHECKOUT"
+                                      else
+                                        "checkInType": "CHECKIN",
+                                      "register": true,
+                                      "reason": this._reasonText.toString(),
+                                      "task": "INCOMPLETE",
+                                    };
+                                    print(">>>" + params.toString());
+                                    this.onlineSerives.getSurveyor(params).then(
+                                          (value) => {
+                                            print(
+                                                "Everybody" + value.toString()),
+                                            if (value["status"] == true)
+                                              {
+                                                param = {
+                                                  "shopsyskey": shopData[0]
+                                                      ["shopsyskey"]
+                                                },
+                                                this
+                                                    .onlineSerives
+                                                    .getCategory(param)
+                                                    .then((value) => {
+                                                          print("98->" +
+                                                              value.toString()),
+                                                          if (value == true)
+                                                            {
+                                                              Navigator.of(
+                                                                      context,
+                                                                      rootNavigator:
+                                                                          true)
+                                                                  .pop(),
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pushReplacement(
+                                                                MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      StoresDetailsScreen(
+                                                                          shopData,
+                                                                          false,
+                                                                          "assign",
+                                                                          "null"),
+                                                                ),
+                                                              ),
+                                                            }
+                                                          else
+                                                            {
+                                                              hideLoadingDialog,
+                                                            },
+                                                        }),
+                                              }
+                                            else
+                                              {
+                                                print("helodee"),
+                                              }
+                                          },
+                                        );
+                                  } else if ((_checkInType == "STORECLOSED" ||
+                                          _checkInType == "Store Closed") &&
+                                      _selectType != null) {
+                                    loginUser =
+                                        this.storage.getItem("loginData");
+                                    params = {
+                                      "lat": data["lat"],
+                                      "lon": data["long"],
+                                      "address": data["address"],
+                                      "shopsyskey": data["shopsyskey"],
+                                      "usersyskey": loginUser['syskey'],
+                                      if (data["status"]["currentType"] ==
+                                          "CHECKIN")
+                                        "checkInType": "TEMPCHECKOUT"
+                                      else
+                                        "checkInType": "CHECKIN",
+                                      "register": true,
+                                      "reason": this._reasonText.toString(),
+                                      "task": "INCOMPLETE",
+                                    };
+                                    this.onlineSerives.getSurveyor(params).then(
+                                          (value) => {
+                                            print(
+                                                "Everybody" + value.toString()),
+                                            if (value["status"] == true)
+                                              {
+                                                param = {
+                                                  "shopsyskey": shopData[0]
+                                                      ["shopsyskey"]
+                                                },
+                                                this
+                                                    .onlineSerives
+                                                    .getCategory(param)
+                                                    .then((value) => {
+                                                          print("98->" +
+                                                              value.toString()),
+                                                          if (value == true)
+                                                            {
+                                                              Navigator.of(
+                                                                      context,
+                                                                      rootNavigator:
+                                                                          true)
+                                                                  .pop(),
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pushReplacement(
+                                                                MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      StoresDetailsScreen(
+                                                                          shopData,
+                                                                          false,
+                                                                          "assign",
+                                                                          "null"),
+                                                                ),
+                                                              ),
+                                                            }
+                                                          else
+                                                            {
+                                                              hideLoadingDialog,
+                                                            },
+                                                        }),
+                                              }
+                                            else
+                                              {
+                                                print("helodee"),
+                                              }
+                                          },
+                                        );
+                                  } else {
+                                    ShowToast("Please Select Type");
+                                  }
                                 },
                                 child: Center(
                                   child: Column(
@@ -1004,25 +1101,21 @@ class _StoreScreenState extends State<StoreScreen> {
     var shopData = [data];
     var checkStatus;
     bool start = true;
-    if(data["status"]["currentType"] == ""){
+    if (data["status"]["currentType"] == "") {
       checkStatus = "Not Started";
-    }else if(data["status"]["currentType"] == "CHECKIN"){
+    } else if (data["status"]["currentType"] == "CHECKIN") {
       checkStatus = "In Progress";
-    }
-    else if(data["status"]["currentType"] == "CHECKOUT"){
+    } else if (data["status"]["currentType"] == "CHECKOUT") {
       checkStatus = "Check Out";
-    }
-    else if(data["status"]["currentType"] == "TEMPCHECKOUT"){
+    } else if (data["status"]["currentType"] == "TEMPCHECKOUT") {
       checkStatus = "In Progress";
-    }
-    else if(data["status"]["currentType"] == "PERMANENT_CLOSE"){
+    } else if (data["status"]["currentType"] == "PERMANENT_CLOSE") {
       checkStatus = "Permanent Close";
       start = false;
-    }
-    else if(data["status"]["currentType"] == "TEMPORARY_CLOSE"){
+    } else if (data["status"]["currentType"] == "TEMPORARY_CLOSE") {
       checkStatus = "Temporary Close";
     }
-   
+
     // print("99-->  ${shopData}");
     return Container(
       color: Colors.grey[200],
@@ -1078,35 +1171,32 @@ class _StoreScreenState extends State<StoreScreen> {
                                 ),
                               ),
                             ),
-                            if(start)
-                            Expanded(
-                              child: Container(
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  shape: buttonShape(),
-                                  onPressed: () {
-                                    _getLocation().then(
-                                      (value) => {
-                                        _showDialog(
-                                          data,
-                                          value,
-                                        ),
-                                      },
-                                    );
-                                    _checkInType = null;
-                                    _checkClosed = "2";
-                                    _selectType = null;
-                                    reason = null;
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      "Start",
-                                      style: TextStyle(),
+                            if (start)
+                              Expanded(
+                                child: Container(
+                                  child: RaisedButton(
+                                    color: Colors.white,
+                                    shape: buttonShape(),
+                                    onPressed: () {
+                                      getGPSstatus().then(
+                                        (status) => {
+                                          _showDialog(data),
+                                          _checkInType = null,
+                                          _checkClosed = "2",
+                                          _selectType = null,
+                                          reason = null,
+                                        },
+                                      );
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        "Start",
+                                        style: TextStyle(),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
                       )
@@ -1244,7 +1334,6 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-
   var allData = [];
   allDataFunction() {
     allData = [];
@@ -1252,7 +1341,7 @@ class _StoreScreenState extends State<StoreScreen> {
     print(".." + storeDatas.toString());
     for (var i = 0; i < storeDatas.length; i++) {
       var objData = {};
-      print("regionID111>>>>>"+storeDatas[i]["regionId"].toString());
+      print("regionID111>>>>>" + storeDatas[i]["regionId"].toString());
       objData["show"] = false;
       objData["regionId"] = storeDatas[i]["regionId"].toString();
       objData["existingStore"] = storeDatas[i]["existingStore"];
@@ -1260,7 +1349,7 @@ class _StoreScreenState extends State<StoreScreen> {
       objData["flagStore"] = storeDatas[i]["flagStore"];
       objData["flagItem"] = false;
       objData['storeItem'] = false;
-       objData['newStore'] = true;
+      objData['newStore'] = true;
       var paramforTownshipName = {
         "id": storeDatas[i]["regionId"].toString(),
         "code": "",
@@ -1270,13 +1359,12 @@ class _StoreScreenState extends State<StoreScreen> {
       };
       print("1234-->" + paramforTownshipName.toString());
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
-        print(paramforTownshipName.toString()),
+            print(paramforTownshipName.toString()),
             objData["regionName"] = value["data"][0]["description"],
             setState(() {
               allData.add(objData);
             }),
           });
-         
     }
   }
 
@@ -1304,22 +1392,20 @@ class _StoreScreenState extends State<StoreScreen> {
           .then((result) => {
                 if (result == true)
                   {
-                    this.assignStores =
-                                  this.storage.getItem("storeData"),
-                              setState(() {
-                                this.count =
-                                    this.assignStores.length.toString();
-                              }),
-                              allDataFunction(),
-                              setState(() {
-                                hideLoadingDialog();
-                              }),
+                    this.assignStores = this.storage.getItem("storeData"),
+                    setState(() {
+                      this.count = this.assignStores.length.toString();
+                    }),
+                    allDataFunction(),
+                    setState(() {
+                      hideLoadingDialog();
+                    }),
                     // this.onlineSerives.getsvrShoplist(newParam).then((res) => {
                     //   print("res-->"+res.toString()),
                     //       if (res == true)
                     //         {
                     //           print("hello data"),
-                              
+
                     //         }
                     //       else
                     //         {
