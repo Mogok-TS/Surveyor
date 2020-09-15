@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:Surveyor/Services/Loading/LoadingServices.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';

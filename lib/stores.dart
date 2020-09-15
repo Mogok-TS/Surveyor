@@ -165,8 +165,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                       "Existing Store",
                                       style: TextStyle(color: Colors.black),
                                     ),
+                                    SizedBox(width: 10,),
                                     Text(
-                                      " 0 / x ",
+                                      "0"+"/"+data["existingStore"].length.toString(),
                                       style: TextStyle(color: Colors.black),
                                     )
                                   ],
@@ -243,8 +244,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                       "Flag Store",
                                       style: TextStyle(color: Colors.black),
                                     ),
+                                    SizedBox(width: 10,),
                                     Text(
-                                      " 0 / x ",
+                                      "0"+"/"+data["flagStore"].length.toString(),
                                       style: TextStyle(color: Colors.black),
                                     )
                                   ],
@@ -1363,6 +1365,9 @@ class _StoreScreenState extends State<StoreScreen> {
             objData["regionName"] = value["data"][0]["description"],
             setState(() {
               allData.add(objData);
+              if(allData.length == storeDatas.length){
+                hideLoadingDialog();
+              }
             }),
           });
     }
@@ -1384,8 +1389,11 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["teamsyskey"] = loginData["teamSyskey"];
     shopParam["usertype"] = loginData["userType"];
     shopParam["date"] = getTodayDate();
-    Future.delayed(const Duration(milliseconds: 500), () {
+    // Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
       showLoading();
+        
+      });
       this
           .onlineSerives
           .getStores(shopParam)
@@ -1397,22 +1405,6 @@ class _StoreScreenState extends State<StoreScreen> {
                       this.count = this.assignStores.length.toString();
                     }),
                     allDataFunction(),
-                    setState(() {
-                      hideLoadingDialog();
-                    }),
-                    // this.onlineSerives.getsvrShoplist(newParam).then((res) => {
-                    //   print("res-->"+res.toString()),
-                    //       if (res == true)
-                    //         {
-                    //           print("hello data"),
-
-                    //         }
-                    //       else
-                    //         {
-                    //           this.assignStores = [],
-                    //           hideLoadingDialog(),
-                    //         }
-                    //     }),
                   }
                 else
                   {
@@ -1422,7 +1414,7 @@ class _StoreScreenState extends State<StoreScreen> {
                   }
               })
           .catchError((onError) => {hideLoadingDialog()});
-    });
+    // });
   }
 
   List data;
@@ -1460,7 +1452,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                   if (value.latitude != null &&
                                       value.longitude != null) {
                                     localJsonData().then((val) {
-                                      hideLoadingDialog();
+                                      // hideLoadingDialog();
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) => GmapS(

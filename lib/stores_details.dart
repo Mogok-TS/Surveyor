@@ -1616,7 +1616,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
+                      setState(() {
                       showLoading();
+                      });
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => StoreScreen(),
