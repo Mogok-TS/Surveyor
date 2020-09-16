@@ -38,7 +38,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   var headerList = [];
 
   Widget _listTileWidget(var passData) {
-   
     var isNeighborhood;
     var isOutside;
     var isInside;
@@ -132,6 +131,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       _getData();
     });
   }
+
   bool complete = true;
   _getData() {
     var routeData = this.storage.getItem('Routebyuser');
@@ -173,14 +173,15 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                         this.headerList = result["data"],
                         hideLoadingDialog(),
                       }),
-                      for(var i =0;i<headerList.length;i++){
-                        if(headerList[i]["status"].toString() =="0.0"){
-                          setState(()=>{
-                          this.complete = false,
-                          }),
+                  for (var i = 0; i < headerList.length; i++)
+                    {
+                      if (headerList[i]["status"].toString() == "0.0")
+                        {
+                          setState(() => {
+                                this.complete = false,
+                              }),
                         }
-                      }
-                      
+                    }
                 }
               else
                 {
@@ -245,9 +246,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 ),
                 // for (var i = 0; i < headerList.length; i++)
                 if (headerList.length > 0)
-                  
                   for (var i = 0; i < headerList.length; i++)
-                    
                     _listTileWidget(headerList[i]),
               ],
             ),
@@ -296,26 +295,26 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      if(complete != true){
+                      if (complete != true) {
                         var passValue = this.widget.passData[0];
-                      var loginUser = this.storage.getItem("loginData");
-                      var param = {
-                        "lat": passValue["lat"].toString(),
-                        "lon": passValue["long"].toString(),
-                        "address": passValue["address"].toString(),
-                        "shopsyskey": passValue["shopsyskey"].toString(),
-                        "usersyskey": loginUser['syskey'],
-                        "checkInType": "TEMPCHECKOUT",
-                        "register": true,
-                        "reason": "",
-                        "task": "INCOMPLETE",
-                      };
-                      this.onlineSerives.getSurveyor(param).then((value) => {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => StoreScreen()),
-                            ),
-                          });
+                        var loginUser = this.storage.getItem("loginData");
+                        var param = {
+                          "lat": passValue["lat"].toString(),
+                          "lon": passValue["long"].toString(),
+                          "address": passValue["address"].toString(),
+                          "shopsyskey": passValue["shopsyskey"].toString(),
+                          "usersyskey": loginUser['syskey'],
+                          "checkInType": "TEMPCHECKOUT",
+                          "register": true,
+                          "reason": "",
+                          "task": "INCOMPLETE",
+                        };
+                        this.onlineSerives.getSurveyor(param).then((value) => {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => StoreScreen()),
+                              ),
+                            });
                       }
                     },
                     child: Container(
@@ -323,23 +322,25 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                       width: 300,
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Center(
-                        child: complete ? Text(
-                          "Check Out",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: Colors.white54,
-                          ), 
-                        ) : Text(
-                          "Check Out",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: complete
+                            ? Text(
+                                "Check Out",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.white54,
+                                ),
+                              )
+                            : Text(
+                                "Check Out",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -347,8 +348,26 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      if(this.complete == true){
-
+                      if (this.complete == true) {
+                        var passValue = this.widget.passData[0];
+                        var loginUser = this.storage.getItem("loginData");
+                        var param = {
+                          "lat": passValue["lat"].toString(),
+                          "lon": passValue["long"].toString(),
+                          "address": passValue["address"].toString(),
+                          "shopsyskey": passValue["shopsyskey"].toString(),
+                          "usersyskey": loginUser['syskey'],
+                          "checkInType": "CHECKOUT",
+                          "register": true,
+                          "reason": "",
+                          "task": "INCOMPLETE",
+                        };
+                        this.onlineSerives.getSurveyor(param).then((value) => {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => StoreScreen()),
+                              ),
+                            });
                       }
                     },
                     child: Container(
@@ -356,21 +375,23 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                       width: 300,
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Center(
-                        child: complete ?  Text(
-                          "Complete",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 15),
-                        ) :  Text(
-                          "Complete",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white54,
-                              fontSize: 15),
-                        ),
+                        child: complete
+                            ? Text(
+                                "Complete",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 15),
+                              )
+                            : Text(
+                                "Complete",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white54,
+                                    fontSize: 15),
+                              ),
                       ),
                     ),
                   ),
