@@ -38,7 +38,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   var headerList = [];
 
   Widget _listTileWidget(var passData) {
-    print("${passData}");
+   
     var isNeighborhood;
     var isOutside;
     var isInside;
@@ -69,7 +69,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       child: Card(
         child: ListTile(
           onTap: () {
-            print("oo>>" + section.toString());
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                   builder: (context) => OutsideInsideNeighborhood(
@@ -133,13 +132,11 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       _getData();
     });
   }
-
+  bool complete = true;
   _getData() {
     var routeData = this.storage.getItem('Routebyuser');
     var category = this.storage.getItem("Category");
-    print("103--> " + category.toString());
     var answer = category[0]["answer"];
-    print("101--> " + answer.toString());
     var categories = [];
     var passData;
     var svrHdrSk = [];
@@ -151,7 +148,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
     }
     if (this.widget.regOrAss == "assign") {
       passData = this.widget.passData;
-      print("1-->" + this.widget.passData.toString());
       for (var i = 0; i < routeData.length; i++) {
         if (routeData[i]["regionId"].toString() ==
             passData[0]["regionsyskey"].toString()) {
@@ -167,19 +163,24 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       }
     } else {}
     var params = {"svrHdrSK": svrHdrSk, "CategorySK": categories};
-    print("allSurveyor-->" + params.toString());
     this
         .onlineSerives
         .getHeaderList(params)
         .then((result) => {
-//              print(">>>>" + result.toString()),
               if (result["status"] == true)
                 {
                   setState(() => {
                         this.headerList = result["data"],
-                        print("${this.headerList.length}"),
                         hideLoadingDialog(),
                       }),
+                      for(var i =0;i<headerList.length;i++){
+                        if(headerList[i]["status"].toString() =="0.0"){
+                          setState(()=>{
+                          this.complete = false,
+                          }),
+                        }
+                      }
+                      
                 }
               else
                 {
@@ -244,7 +245,9 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 ),
                 // for (var i = 0; i < headerList.length; i++)
                 if (headerList.length > 0)
+                  
                   for (var i = 0; i < headerList.length; i++)
+                    
                     _listTileWidget(headerList[i]),
               ],
             ),
@@ -258,7 +261,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                   child: InkWell(
                     onTap: () {
                       getGPSstatus().then((status) => {
-                            print("$status"),
                             if (status == true)
                               {
                                 Navigator.of(context).pushReplacement(
@@ -294,7 +296,8 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      var passValue = this.widget.passData[0];
+                      if(complete != true){
+                        var passValue = this.widget.passData[0];
                       var loginUser = this.storage.getItem("loginData");
                       var param = {
                         "lat": passValue["lat"].toString(),
@@ -313,13 +316,22 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                                   builder: (context) => StoreScreen()),
                             ),
                           });
+                      }
                     },
                     child: Container(
                       height: 40,
                       width: 300,
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Center(
-                        child: new Text(
+                        child: complete ? Text(
+                          "Check Out",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.white54,
+                          ), 
+                        ) : Text(
                           "Check Out",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -334,13 +346,24 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      if(this.complete == true){
+
+                      }
+                    },
                     child: Container(
                       height: 40,
                       width: 300,
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Center(
-                        child: new Text(
+                        child: complete ?  Text(
+                          "Complete",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 15),
+                        ) :  Text(
                           "Complete",
                           textAlign: TextAlign.center,
                           style: TextStyle(

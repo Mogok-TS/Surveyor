@@ -171,6 +171,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     } else {
       _pssOject = this.widget.passData[0]["id"];
     }
+    print("status>>"+ this.widget.header["status"]);
     super.initState();
     var param = {
       "HeaderShopSyskey": "",
@@ -179,6 +180,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
       "HeaderSyskey": this.widget.header["headerSyskey"].toString(),
       "ShopSyskey": _pssOject.toString(),
     };
+
     var data;
     var sinpleData = {};
     var totalCount;
@@ -212,7 +214,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               answeredCount++,
                               answerItem++,
                             },
-                          print("fill-->" + answeredCount.toString()),
                         }
                       else if (data[ii]["TypeDesc"] == "Date/Time Range")
                         {
@@ -221,7 +222,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               answeredCount++,
                               answerItem++,
                             },
-                          print("fill-->" + answeredCount.toString()),
                         }
                       else if (data[ii]["TypeDesc"] == "Rating 0-10")
                         {
@@ -230,7 +230,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               answeredCount++,
                               answerItem++,
                             },
-                          print("fill-->" + answeredCount.toString()),
                         }
                       else if (data[ii]["TypeDesc"] == "Number Range")
                         {
@@ -239,7 +238,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               answeredCount++,
                               answerItem++,
                             },
-                          print("fill-->" + answeredCount.toString()),
                         }
                       else if (data[ii]["TypeDesc"] == "Attach Photograph")
                         {
@@ -248,7 +246,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               answeredCount++,
                               answerItem++,
                             },
-                          print("photo-->" + answeredCount.toString()),
                         }
                       else if (data[ii]["TypeDesc"] == "Checkbox")
                         {
@@ -257,7 +254,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               answeredCount++,
                               answerItem++,
                             },
-                          print("check-->" + answeredCount.toString()),
                         }
                       else if (data[ii]["TypeDesc"] == "Multiple Choice")
                         {
@@ -266,7 +262,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               answeredCount++,
                               answerItem++,
                             },
-                          print("000-->" + answeredCount.toString()),
                         },
                     },
                   if (data[ii]["HeaderShopSyskey"].toString() != "")
@@ -282,7 +277,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
               setState(() => {
                     headerItems.add(sinpleData),
                   }),
-              print("123--> ${headerItems.toString()}")
             },
           setState(() => {
                 if (allItem == answerItem)
