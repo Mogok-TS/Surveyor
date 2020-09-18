@@ -150,54 +150,62 @@ class _StoreScreenState extends State<StoreScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Container(
-                            color: CustomIcons.dropDownHeader,
-                            child: ListTile(
-                              title: InkWell(
+                          if (data["existingStore"].length > 0)
+                            Container(
+                              color: CustomIcons.dropDownHeader,
+                              child: ListTile(
+                                title: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      data["existItem"] = !data["existItem"];
+                                    });
+                                  },
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "Existing Store",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "0" +
+                                            "/" +
+                                            data["existingStore"]
+                                                .length
+                                                .toString(),
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                trailing: Wrap(
+                                  spacing: 12, // space between two icons
+                                  children: <Widget>[
+                                    // icon-1
+                                    IconButton(
+                                      color: Colors.black,
+                                      icon: data["existItem"] == true
+                                          ? Icon(Icons.keyboard_arrow_down)
+                                          : Icon(Icons.chevron_right),
+                                      onPressed: () {
+                                        setState(() {
+                                          // data["show"] = !data["show"];
+                                          data["existItem"] =
+                                              !data["existItem"];
+                                        });
+                                      },
+                                    ) // icon-2
+                                  ],
+                                ),
                                 onTap: () {
                                   setState(() {
                                     data["existItem"] = !data["existItem"];
                                   });
                                 },
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "Existing Store",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Text(
-                                      "0"+"/"+data["existingStore"].length.toString(),
-                                      style: TextStyle(color: Colors.black),
-                                    )
-                                  ],
-                                ),
                               ),
-                              trailing: Wrap(
-                                spacing: 12, // space between two icons
-                                children: <Widget>[
-                                  // icon-1
-                                  IconButton(
-                                    color: Colors.black,
-                                    icon: data["existItem"] == true
-                                        ? Icon(Icons.keyboard_arrow_down)
-                                        : Icon(Icons.chevron_right),
-                                    onPressed: () {
-                                      setState(() {
-                                        // data["show"] = !data["show"];
-                                        data["existItem"] = !data["existItem"];
-                                      });
-                                    },
-                                  ) // icon-2
-                                ],
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  data["existItem"] = !data["existItem"];
-                                });
-                              },
                             ),
-                          ),
                           if (data["existItem"] == true)
                             if (data["existingStore"].length == 0 &&
                                 data["existItem"] == true)
@@ -226,57 +234,63 @@ class _StoreScreenState extends State<StoreScreen> {
                                 ii < data["existingStore"].length;
                                 ii++)
                               buildAssignItem(data["existingStore"][ii]),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            color: CustomIcons.dropDownHeader,
-                            child: ListTile(
-                              title: InkWell(
+                          if (data["flagStore"].length > 0)
+                            SizedBox(
+                              height: 10,
+                            ),
+                          if (data["flagStore"].length > 0)
+                            Container(
+                              color: CustomIcons.dropDownHeader,
+                              child: ListTile(
+                                title: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      data["flagItem"] = !data["flagItem"];
+                                    });
+                                  },
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "Flag Store",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "0" +
+                                            "/" +
+                                            data["flagStore"].length.toString(),
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                trailing: Wrap(
+                                  spacing: 12, // space between two icons
+                                  children: <Widget>[
+                                    // icon-1
+                                    IconButton(
+                                      color: Colors.black,
+                                      icon: data["flagItem"] == true
+                                          ? Icon(Icons.keyboard_arrow_down)
+                                          : Icon(Icons.chevron_right),
+                                      onPressed: () {
+                                        setState(() {
+                                          // data["show"] = !data["show"];
+                                          data["flagItem"] = !data["flagItem"];
+                                        });
+                                      },
+                                    ) // icon-2
+                                  ],
+                                ),
                                 onTap: () {
                                   setState(() {
                                     data["flagItem"] = !data["flagItem"];
                                   });
                                 },
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "Flag Store",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Text(
-                                      "0"+"/"+data["flagStore"].length.toString(),
-                                      style: TextStyle(color: Colors.black),
-                                    )
-                                  ],
-                                ),
                               ),
-                              trailing: Wrap(
-                                spacing: 12, // space between two icons
-                                children: <Widget>[
-                                  // icon-1
-                                  IconButton(
-                                    color: Colors.black,
-                                    icon: data["flagItem"] == true
-                                        ? Icon(Icons.keyboard_arrow_down)
-                                        : Icon(Icons.chevron_right),
-                                    onPressed: () {
-                                      setState(() {
-                                        // data["show"] = !data["show"];
-                                        data["flagItem"] = !data["flagItem"];
-                                      });
-                                    },
-                                  ) // icon-2
-                                ],
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  data["flagItem"] = !data["flagItem"];
-                                });
-                              },
                             ),
-                          ),
                           if (data["flagItem"] == true)
                             if (data["flagStore"].length == 0 &&
                                 data["flagItem"] == true)
@@ -305,9 +319,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                 ii < data["flagStore"].length;
                                 ii++)
                               buildAssignItem(data["flagStore"][ii]),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          if (data["flagStore"].length > 0)
+                            SizedBox(
+                              height: 10,
+                            ),
                           Container(
                             color: CustomIcons.dropDownHeader,
                             child: ListTile(
@@ -1365,7 +1380,7 @@ class _StoreScreenState extends State<StoreScreen> {
             objData["regionName"] = value["data"][0]["description"],
             setState(() {
               allData.add(objData);
-              if(allData.length == storeDatas.length){
+              if (allData.length == storeDatas.length) {
                 hideLoadingDialog();
               }
             }),
@@ -1390,30 +1405,29 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["usertype"] = loginData["userType"];
     shopParam["date"] = getTodayDate();
     // Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
+    setState(() {
       showLoading();
-        
-      });
-      this
-          .onlineSerives
-          .getStores(shopParam)
-          .then((result) => {
-                if (result == true)
-                  {
-                    this.assignStores = this.storage.getItem("storeData"),
-                    setState(() {
-                      this.count = this.assignStores.length.toString();
-                    }),
-                    allDataFunction(),
-                  }
-                else
-                  {
-                    this.storeRegistration = [],
-                    this.assignStores = [],
-                    hideLoadingDialog()
-                  }
-              })
-          .catchError((onError) => {hideLoadingDialog()});
+    });
+    this
+        .onlineSerives
+        .getStores(shopParam)
+        .then((result) => {
+              if (result == true)
+                {
+                  this.assignStores = this.storage.getItem("storeData"),
+                  setState(() {
+                    this.count = this.assignStores.length.toString();
+                  }),
+                  allDataFunction(),
+                }
+              else
+                {
+                  this.storeRegistration = [],
+                  this.assignStores = [],
+                  hideLoadingDialog()
+                }
+            })
+        .catchError((onError) => {hideLoadingDialog()});
     // });
   }
 
