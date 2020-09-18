@@ -234,7 +234,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 ii < data["existingStore"].length;
                                 ii++)
                               buildAssignItem(data["existingStore"][ii]),
-                          if (data["flagStore"].length > 0)
+                          if (data["existingStore"].length > 0)
                             SizedBox(
                               height: 10,
                             ),
@@ -323,6 +323,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             SizedBox(
                               height: 10,
                             ),
+                           
                           Container(
                             color: CustomIcons.dropDownHeader,
                             child: ListTile(
