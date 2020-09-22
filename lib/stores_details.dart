@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io' as io;
 import 'package:Surveyor/Map/map.dart';
 import 'package:Surveyor/assets/location_icons.dart';
@@ -79,7 +80,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    this.mpaArray = this.storage.getItem("mapArray");
+    localJsonData();
     print("map--->" + this.mpaArray.length.toString());
     setState(
       () {
@@ -281,6 +282,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
         );
       },
     );
+  }
+
+  Future<void> localJsonData() async {
+    var jsonText = await rootBundle.loadString("assets/township.json");
+    setState(() {
+      this.mpaArray =  json.decode(jsonText);
+    });
   }
 
   _getUpdateData() {

@@ -36,10 +36,10 @@ class OnlineSerives {
   void URL() {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
-      this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
+//      this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
 //      this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-//      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
-      this.storage.setItem('URL', "http://52.255.142.115:8084/madbrepository/");
+      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+      this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
 

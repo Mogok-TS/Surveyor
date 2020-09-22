@@ -35,13 +35,6 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
   String longitude;
   var mpaArray = [];
 
-  Future<void> localJsonData() async {
-    var jsonText = await rootBundle.loadString("assets/township.json");
-    mpaArray = json.decode(jsonText);
-    print("map->" + mpaArray.length.toString());
-    this.storage.setItem("mapArray", mpaArray);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -49,10 +42,6 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     latitude = "";
     longitude = "";
-    this.mpaArray = this.storage.getItem("mapArray");
-    if (this.mpaArray == null || this.mpaArray.length == 0) {
-      localJsonData();
-    }
     getCurrentLocation().then((k) {
       latitude = k.latitude.toString();
       longitude = k.longitude.toString();
@@ -91,7 +80,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.14'),
+                        child: Text('Version 1.0.15'),
                       ),
                     ],
                     child: Icon(
@@ -243,11 +232,6 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                                 _loginData = this.storage.getItem("loginData"),
                                 if (data == true)
                                   {
-                                    if (this.mpaArray == null ||
-                                        this.mpaArray.length == 0)
-                                      {
-                                        localJsonData(),
-                                      },
                                     this
                                         .onlineSerives
                                         .getSurveyorroutebyuser(

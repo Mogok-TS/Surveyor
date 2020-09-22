@@ -1405,10 +1405,11 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["teamsyskey"] = loginData["teamSyskey"];
     shopParam["usertype"] = loginData["userType"];
     shopParam["date"] = getTodayDate();
-    // Future.delayed(const Duration(milliseconds: 500), () {
-    setState(() {
+    showLoadingDialog();
+     Future.delayed(const Duration(milliseconds: 500), () {
+//    setState(() {
       showLoading();
-    });
+//    });
     this
         .onlineSerives
         .getStores(shopParam)
@@ -1429,7 +1430,7 @@ class _StoreScreenState extends State<StoreScreen> {
                 }
             })
         .catchError((onError) => {hideLoadingDialog()});
-    // });
+     });
   }
 
   List data;

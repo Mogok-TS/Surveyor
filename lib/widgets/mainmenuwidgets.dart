@@ -91,9 +91,9 @@ class MainMenuWidget extends StatelessWidget {
                     'Log Out',
                     Icons.input,
                     () {
-                      this.storage.deleteItem("Surveyor");
-                      this.storage.deleteItem("storeData");
-                      this.storage.deleteItem("storeReg");
+//                      this.storage.deleteItem("Surveyor");
+//                      this.storage.deleteItem("storeData");
+//                      this.storage.deleteItem("storeReg");
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => Login(),
