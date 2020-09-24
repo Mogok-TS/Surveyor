@@ -218,6 +218,7 @@ class OnlineSerives {
   }
 
   Future getQuestions(params) async {
+    print("prams for get question>>"+ params.toString());
     var returnData = {};
     var _array = [];
     var checkSaveorupdate = "save";

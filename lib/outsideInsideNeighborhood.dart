@@ -42,7 +42,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   var headerItems = [];
   var allItem = 0;
   var answerItem = 0;
-  var continueStatus = false;
+  bool continueStatus = false;
   BoxDecoration flagDecoration(var flag) {
     if (flag == "1") {
       return BoxDecoration(
@@ -165,14 +165,14 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   var flag;
   @override
   void initState() {
+    print("Hello World");
+    super.initState();
     var _pssOject;
     if (this.widget.regOrAss == "assign") {
       _pssOject = this.widget.passData[0]["shopsyskey"];
     } else {
       _pssOject = this.widget.passData[0]["id"];
     }
-    print("status>>"+ this.widget.header["status"]);
-    super.initState();
     var param = {
       "HeaderShopSyskey": "",
       "ShopTransSyskey": "",
@@ -186,7 +186,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     var totalCount;
     var answeredCount;
     var sections = this.widget.header["sections"];
-    var flag = false;
     this.onlineSerives.getQuestions(param).then((value) => {
           data = value["data"],
           for (var i = 0; i < sections.length; i++)
@@ -423,7 +422,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
-                if (this.headerItems.length == this.widget.question.length)
+                if (this.headerItems.length.toString() == this.widget.question.length.toString())
                   for (var x = 0; x < this.widget.question.length; x++)
                     sectionList(this.widget.question[x], this.headerItems[x])
               ],

@@ -1379,6 +1379,9 @@ class _StoreScreenState extends State<StoreScreen> {
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
             print(paramforTownshipName.toString()),
             objData["regionName"] = value["data"][0]["description"],
+            if(objData["regionName"].toString() == "ချမ်းမြသာစည်"){
+              print("regionId=====>>>+++"+storeDatas[i]["regionId"].toString()),
+            },
             setState(() {
               allData.add(objData);
               if (allData.length == storeDatas.length) {
