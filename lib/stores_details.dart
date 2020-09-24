@@ -81,7 +81,6 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   void initState() {
     super.initState();
     localJsonData();
-    print("map--->" + this.mpaArray.length.toString());
     setState(
       () {
         Future.delayed(const Duration(milliseconds: 500), () {
@@ -287,7 +286,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   Future<void> localJsonData() async {
     var jsonText = await rootBundle.loadString("assets/township.json");
     setState(() {
-      this.mpaArray =  json.decode(jsonText);
+      this.mpaArray = json.decode(jsonText);
+      print("map--->" + this.mpaArray.length.toString());
     });
   }
 
@@ -1625,7 +1625,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                   child: InkWell(
                     onTap: () {
                       setState(() {
-                      showLoading();
+                        showLoading();
                       });
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
@@ -1796,6 +1796,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         }
                         if (this.updateStatus == true) {
                           param = {
+                            "saveCondition": "",
                             "id": this.shopSyskey,
                             "active": true,
                             "name": this.shopName.text.toString(),
@@ -1827,6 +1828,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           };
                         } else {
                           param = {
+                            "saveCondition": "1",
                             "active": true,
                             "name": this.shopName.text.toString(),
                             "mmName": this.shopNamemm.text.toString(),
