@@ -391,6 +391,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["remark"] = loopData["QuestionDescription"];
+          _value["desc"] = loopData["QuestionDescription"];
           _value["instruction"] = loopData["Instruction"];
           if (loopData["Comment"] == null) {
             _value["t4"] = "";
@@ -553,32 +554,32 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       }
       _allData["quesAndAns"] = questionAndAnswer;
 
-      setState(() {
-        _consoleLable = _allData.toString();
-        hideLoadingDialog();
-      });
+      // setState(() {
+      //   _consoleLable = _allData.toString();
+      //   hideLoadingDialog();
+      // });
 
       this.onlineSerives.createStore(_allData).then((reslut) => {
             hideLoadingDialog(),
             if (reslut["status"] == true)
               {
-                // ShowToast("Saved successfully."),
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (context) => OutsideInsideNeighborhood(
-                //         this.widget.isNeighborhood,
-                //         this.widget.isOutside,
-                //         this.widget.isInside,
-                //         this.widget.isStoreOperater,
-                //         this.widget.storeName,
-                //         this.widget.storeNumber,
-                //         this.widget.address,
-                //         this.widget.regOrAss,
-                //         this.widget.passData,
-                //         this.widget.allsection,
-                //         this.widget.header),
-                //   ),
-                // )
+                ShowToast("Saved successfully."),
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => OutsideInsideNeighborhood(
+                        this.widget.isNeighborhood,
+                        this.widget.isOutside,
+                        this.widget.isInside,
+                        this.widget.isStoreOperater,
+                        this.widget.storeName,
+                        this.widget.storeNumber,
+                        this.widget.address,
+                        this.widget.regOrAss,
+                        this.widget.passData,
+                        this.widget.allsection,
+                        this.widget.header),
+                  ),
+                )
               }
             else
               {}
