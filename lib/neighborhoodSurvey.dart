@@ -199,7 +199,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
-          _value["remark"] = loopData["AnswerDesc"];
+          _value["remark"] = "";
           _value["desc"] =
               loopData["QuestionDescription"]; //QuestionDescription
           _value["instruction"] = loopData["Instruction"];
@@ -221,7 +221,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
-          _value["svr9DataList"] = [];
+          _value["svr9DataList"] = [
+            {
+              "recordStatus": 1,
+              "t1": "",
+              "t2": "",
+              "t3": loopData["AnswerDesc"],
+              "t4": "",
+              "n2": "",
+            }
+          ];
           questionAndAnswer.add(_value);
         } else if (loopData["TypeDesc"] == "Date") {
           var _value = {};
@@ -230,7 +239,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
-          _value["remark"] = loopData["AnswerDesc"];
+          _value["remark"] = "";
           _value["desc"] = loopData["QuestionDescription"];
           _value["instruction"] = loopData["Instruction"];
           if (loopData["Comment"] == null) {
@@ -250,7 +259,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
-          _value["svr9DataList"] = [];
+          _value["svr9DataList"] = [
+            {
+              "recordStatus": 1,
+              "t1": "",
+              "t2": "",
+              "t3": loopData["AnswerDesc"],
+              "t4": "",
+              "n2": "",
+            }
+          ];
           questionAndAnswer.add(_value);
         } else if (loopData["TypeDesc"] == "Rating 0-10") {
           var _value = {};
@@ -259,7 +277,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
-          _value["remark"] = rating;
+          _value["remark"] = "";
           _value["desc"] = loopData["QuestionDescription"];
           _value["instruction"] = loopData["Instruction"];
           if (loopData["Comment"] == null) {
@@ -279,7 +297,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
-          _value["svr9DataList"] = [];
+          _value["svr9DataList"] = [
+            {
+              "recordStatus": 1,
+              "t1": "",
+              "t2": "",
+              "t3": rating,
+              "t4": "",
+              "n2": "",
+            }
+          ];
           questionAndAnswer.add(_value);
         } else if (loopData["TypeDesc"] == "Number Range") {
           var _value = {};
@@ -288,7 +315,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
-          _value["remark"] = loopData["AnswerDesc"];
+          _value["remark"] = "";
           _value["desc"] = loopData["QuestionDescription"];
           _value["instruction"] = loopData["Instruction"];
           if (loopData["Comment"] == null) {
@@ -296,7 +323,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           } else {
             _value["t4"] = loopData["Comment"];
           }
-          _value["t5"] = loopData["AnswerDesc2"];
+          _value["t5"] = "";
           _value["n8"] = "0";
           if (loopData["Flag"] == null) {
             _value["n9"] = "0";
@@ -308,7 +335,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
-          _value["svr9DataList"] = [];
+          _value["svr9DataList"] = [
+            {
+              "recordStatus": 1,
+              "t1": "",
+              "t2": "",
+              "t3": loopData["AnswerDesc"],
+              "t4": loopData["AnswerDesc2"],
+              "n2": "",
+            }
+          ];
           questionAndAnswer.add(_value);
         } else if (loopData["TypeDesc"] == "Time Range") {
           var _value = {};
@@ -317,7 +353,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
           _value["answerId"] = "0";
-          _value["remark"] = loopData["AnswerDesc"];
+          _value["remark"] = "";
           _value["desc"] = loopData["QuestionDescription"];
           _value["instruction"] = loopData["Instruction"];
           if (loopData["Comment"] == null) {
@@ -325,7 +361,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           } else {
             _value["t4"] = loopData["Comment"];
           }
-          _value["t5"] = loopData["AnswerDesc2"];
+          _value["t5"] = "";
           _value["n8"] = "0";
           if (loopData["Flag"] == null) {
             _value["n9"] = "0";
@@ -337,7 +373,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
-          _value["svr9DataList"] = [];
+          _value["svr9DataList"] = [
+            {
+              "recordStatus": 1,
+              "t1": "",
+              "t2": "",
+              "t3": loopData["AnswerDesc"],
+              "t4": loopData["AnswerDesc2"],
+              "n2": "",
+            }
+          ];
           questionAndAnswer.add(_value);
         } else if (loopData["TypeDesc"] == "Checkbox") {
           var _value = {};
@@ -378,24 +423,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               }
             }
             if (datalist.length == 0) {
-//            var data = {};
-//            data["recordStatus"] = 1;
-//            data["t1"] = "";
-//            data["t2"] = "";
-//            data["t3"] = "";
-//            data["n2"] = "";
-//            datalist.add(data);
+              // var data = {};
+              // data["recordStatus"] = 1;
+              // data["t1"] = "";
+              // data["t2"] = "";
+              // data["t3"] = "";
+              // data["t4"] = "";
+              // data["n2"] = "";
+              // datalist.add(data);
             }
             _value["svr9DataList"] = datalist;
           } else {
             var datalist = [];
-//          var data = {};
-//          data["recordStatus"] = 1;
-//          data["t1"] = "";
-//          data["t2"] = "";
-//          data["t3"] = "";
-//          data["n2"] = "";
-//          datalist.add(data);
+            // var data = {};
+            // data["recordStatus"] = 1;
+            // data["t1"] = "";
+            // data["t2"] = "";
+            // data["t3"] = "";
+            // data["t4"] = "";
+            // data["n2"] = "";
+            // datalist.add(data);
             _value["svr9DataList"] = datalist;
           }
           questionAndAnswer.add(_value);
@@ -443,6 +490,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               }
               data["t2"] = loopObj["name"].toString();
               data["t3"] = "";
+              data["t4"] = "";
               data["n2"] = "";
               datalist.add(data);
             }
@@ -1259,10 +1307,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                         _data["showDate"] = day + "/" + month + "/" + year;
                       } else {
                         DateTime selectedDate = DateTime.now();
-                         String fulldate = selectedDate.toString();
-                        String day = fulldate.substring(8,10);
-                        String month = fulldate.substring(5,7);
-                        String year = fulldate.substring(0,4);
+                        String fulldate = selectedDate.toString();
+                        String day = fulldate.substring(8, 10);
+                        String month = fulldate.substring(5, 7);
+                        String year = fulldate.substring(0, 4);
                         _data["servicedate"] = year + month + day;
                         _data["dateFormat"] = year + "-" + month + "-" + day;
                         _data["showDate"] = day + "/" + month + "/" + year;
@@ -1407,7 +1455,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     TextEditingController _textController = new TextEditingController();
     _textController.text = primaryData["showDate"];
 
-      DateTime nowDate = DateTime.parse(primaryData["dateFormat"]);
+    DateTime nowDate = DateTime.parse(primaryData["dateFormat"]);
     //  DateTime nowDate;
     return Container(
       decoration: flagDecoration(data["Flag"]),
@@ -1445,27 +1493,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     child: TextField(
                       onTap: () {
                         showMaterialDatePicker(
-                          
                           context: context,
                           selectedDate: nowDate,
-                          
                           onChanged: (value) => setState(() {
                             nowDate = value;
                             var selected = value.toString();
                             var dateonly = selected.substring(0, 10);
                             print("selecteddate>>" + dateonly.toString());
-                            String day = dateonly.substring(8,10);
-                            String month = dateonly.substring(5,7);
-                            String year = dateonly.substring(0,4);
-                            primaryData["servicedate"] =year + month+day;
-                            primaryData["dateFormat"] = year + "-"+ month + "-" + day;
-                            primaryData["showDate"] = day + '/' + month + '/' + year;
-                             data["AnswerDesc"] = year + month+day;
+                            String day = dateonly.substring(8, 10);
+                            String month = dateonly.substring(5, 7);
+                            String year = dateonly.substring(0, 4);
+                            primaryData["servicedate"] = year + month + day;
+                            primaryData["dateFormat"] =
+                                year + "-" + month + "-" + day;
+                            primaryData["showDate"] =
+                                day + '/' + month + '/' + year;
+                            data["AnswerDesc"] = year + month + day;
                           }),
-                          
                         );
                       },
-                       controller: _textController,
+                      controller: _textController,
                       readOnly: true,
                       decoration: InputDecoration(
                         focusColor: Colors.black,
