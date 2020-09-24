@@ -323,7 +323,6 @@ class _StoreScreenState extends State<StoreScreen> {
                             SizedBox(
                               height: 10,
                             ),
-                           
                           Container(
                             color: CustomIcons.dropDownHeader,
                             child: ListTile(
@@ -819,160 +818,168 @@ class _StoreScreenState extends State<StoreScreen> {
                                 color: Colors.white,
                                 shape: alertButtonShape(),
                                 onPressed: () {
-                                  // if (_checkInType == "Check In" ||
-                                  //     _checkInType == "CHECKIN") {
-                                  //   _checkInType = "CHECKIN";
-                                  // } else {
-                                  //   _checkInType = "STORECLOSED";
-                                  //   if (_selectType == "Permanent Close") {
-                                  //     _selectType = "PERMANENT_CLOSE";
-                                  //   } else {
-                                  //     _selectType = "TEMPORARY_CLOSE";
-                                  //   }
-                                  // }
-                                  print(_checkInType);
-                                  print(_selectType);
-                                  print("HELlo");
-
-                                  if (_checkInType == "CHECKIN" ||
-                                      _checkInType == "Check In") {
-                                    loginUser =
-                                        this.storage.getItem("loginData");
-                                    params = {
-                                      "lat": data["lat"],
-                                      "lon": data["long"],
-                                      "address": data["address"],
-                                      "shopsyskey": data["shopsyskey"],
-                                      "usersyskey": loginUser['syskey'],
-                                      if (data["status"]["currentType"] ==
-                                          "CHECKIN")
-                                        "checkInType": "TEMPCHECKOUT"
-                                      else
-                                        "checkInType": "CHECKIN",
-                                      "register": true,
-                                      "reason": this._reasonText.toString(),
-                                      "task": "INCOMPLETE",
-                                    };
-                                    print(">>>" + params.toString());
-                                    this.onlineSerives.getSurveyor(params).then(
-                                          (value) => {
-                                            print(
-                                                "Everybody" + value.toString()),
-                                            if (value["status"] == true)
+                                  getGPSstatus().then((status) => {
+                                        if (status == true)
+                                          {
+                                            if (_checkInType == "CHECKIN" ||
+                                                _checkInType == "Check In")
                                               {
-                                                param = {
-                                                  "shopsyskey": shopData[0]
-                                                      ["shopsyskey"]
+                                                loginUser = this
+                                                    .storage
+                                                    .getItem("loginData"),
+                                                params = {
+                                                  "lat": data["lat"],
+                                                  "lon": data["long"],
+                                                  "address": data["address"],
+                                                  "shopsyskey":
+                                                      data["shopsyskey"],
+                                                  "usersyskey":
+                                                      loginUser['syskey'],
+                                                  if (data["status"]
+                                                          ["currentType"] ==
+                                                      "CHECKIN")
+                                                    "checkInType":
+                                                        "TEMPCHECKOUT"
+                                                  else
+                                                    "checkInType": "CHECKIN",
+                                                  "register": true,
+                                                  "reason": this
+                                                      ._reasonText
+                                                      .toString(),
+                                                  "task": "INCOMPLETE",
+                                                },
+                                                print(
+                                                    ">>>" + params.toString()),
+                                                this
+                                                    .onlineSerives
+                                                    .getSurveyor(params)
+                                                    .then(
+                                                      (value) => {
+                                                        print("Everybody" +
+                                                            value.toString()),
+                                                        if (value["status"] ==
+                                                            true)
+                                                          {
+                                                            param = {
+                                                              "shopsyskey":
+                                                                  shopData[0][
+                                                                      "shopsyskey"]
+                                                            },
+                                                            this
+                                                                .onlineSerives
+                                                                .getCategory(
+                                                                    param)
+                                                                .then(
+                                                                    (value) => {
+                                                                          print("98->" +
+                                                                              value.toString()),
+                                                                          if (value ==
+                                                                              true)
+                                                                            {
+                                                                              Navigator.of(context, rootNavigator: true).pop(),
+                                                                              Navigator.of(context).pushReplacement(
+                                                                                MaterialPageRoute(
+                                                                                  builder: (context) => StoresDetailsScreen(shopData, false, "assign", "null"),
+                                                                                ),
+                                                                              ),
+                                                                            }
+                                                                          else
+                                                                            {
+                                                                              hideLoadingDialog,
+                                                                            },
+                                                                        }),
+                                                          }
+                                                        else
+                                                          {
+                                                            print("helodee"),
+                                                          }
+                                                      },
+                                                    ),
+                                              }
+                                            else if ((_checkInType ==
+                                                        "STORECLOSED" ||
+                                                    _checkInType ==
+                                                        "Store Closed") &&
+                                                _selectType != null)
+                                              {
+                                                loginUser = this
+                                                    .storage
+                                                    .getItem("loginData"),
+                                                params = {
+                                                  "lat": data["lat"],
+                                                  "lon": data["long"],
+                                                  "address": data["address"],
+                                                  "shopsyskey":
+                                                      data["shopsyskey"],
+                                                  "usersyskey":
+                                                      loginUser['syskey'],
+                                                  if (data["status"]
+                                                          ["currentType"] ==
+                                                      "CHECKIN")
+                                                    "checkInType":
+                                                        "TEMPCHECKOUT"
+                                                  else
+                                                    "checkInType": "CHECKIN",
+                                                  "register": true,
+                                                  "reason": this
+                                                      ._reasonText
+                                                      .toString(),
+                                                  "task": "INCOMPLETE",
                                                 },
                                                 this
                                                     .onlineSerives
-                                                    .getCategory(param)
-                                                    .then((value) => {
-                                                          print("98->" +
-                                                              value.toString()),
-                                                          if (value == true)
-                                                            {
-                                                              Navigator.of(
-                                                                      context,
-                                                                      rootNavigator:
-                                                                          true)
-                                                                  .pop(),
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pushReplacement(
-                                                                MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      StoresDetailsScreen(
-                                                                          shopData,
-                                                                          false,
-                                                                          "assign",
-                                                                          "null"),
-                                                                ),
-                                                              ),
-                                                            }
-                                                          else
-                                                            {
-                                                              hideLoadingDialog,
+                                                    .getSurveyor(params)
+                                                    .then(
+                                                      (value) => {
+                                                        print("Everybody" +
+                                                            value.toString()),
+                                                        if (value["status"] ==
+                                                            true)
+                                                          {
+                                                            param = {
+                                                              "shopsyskey":
+                                                                  shopData[0][
+                                                                      "shopsyskey"]
                                                             },
-                                                        }),
+                                                            this
+                                                                .onlineSerives
+                                                                .getCategory(
+                                                                    param)
+                                                                .then(
+                                                                    (value) => {
+                                                                          print("98->" +
+                                                                              value.toString()),
+                                                                          if (value ==
+                                                                              true)
+                                                                            {
+                                                                              Navigator.of(context, rootNavigator: true).pop(),
+                                                                              Navigator.of(context).pushReplacement(
+                                                                                MaterialPageRoute(
+                                                                                  builder: (context) => StoresDetailsScreen(shopData, false, "assign", "null"),
+                                                                                ),
+                                                                              ),
+                                                                            }
+                                                                          else
+                                                                            {
+                                                                              hideLoadingDialog,
+                                                                            },
+                                                                        }),
+                                                          }
+                                                        else
+                                                          {
+                                                            print("helodee"),
+                                                          }
+                                                      },
+                                                    ),
                                               }
                                             else
                                               {
-                                                print("helodee"),
+                                                ShowToast("Please Select Type"),
                                               }
-                                          },
-                                        );
-                                  } else if ((_checkInType == "STORECLOSED" ||
-                                          _checkInType == "Store Closed") &&
-                                      _selectType != null) {
-                                    loginUser =
-                                        this.storage.getItem("loginData");
-                                    params = {
-                                      "lat": data["lat"],
-                                      "lon": data["long"],
-                                      "address": data["address"],
-                                      "shopsyskey": data["shopsyskey"],
-                                      "usersyskey": loginUser['syskey'],
-                                      if (data["status"]["currentType"] ==
-                                          "CHECKIN")
-                                        "checkInType": "TEMPCHECKOUT"
-                                      else
-                                        "checkInType": "CHECKIN",
-                                      "register": true,
-                                      "reason": this._reasonText.toString(),
-                                      "task": "INCOMPLETE",
-                                    };
-                                    this.onlineSerives.getSurveyor(params).then(
-                                          (value) => {
-                                            print(
-                                                "Everybody" + value.toString()),
-                                            if (value["status"] == true)
-                                              {
-                                                param = {
-                                                  "shopsyskey": shopData[0]
-                                                      ["shopsyskey"]
-                                                },
-                                                this
-                                                    .onlineSerives
-                                                    .getCategory(param)
-                                                    .then((value) => {
-                                                          print("98->" +
-                                                              value.toString()),
-                                                          if (value == true)
-                                                            {
-                                                              Navigator.of(
-                                                                      context,
-                                                                      rootNavigator:
-                                                                          true)
-                                                                  .pop(),
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pushReplacement(
-                                                                MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      StoresDetailsScreen(
-                                                                          shopData,
-                                                                          false,
-                                                                          "assign",
-                                                                          "null"),
-                                                                ),
-                                                              ),
-                                                            }
-                                                          else
-                                                            {
-                                                              hideLoadingDialog,
-                                                            },
-                                                        }),
-                                              }
-                                            else
-                                              {
-                                                print("helodee"),
-                                              }
-                                          },
-                                        );
-                                  } else {
-                                    ShowToast("Please Select Type");
-                                  }
+                                          }
+                                        else
+                                          {ShowToast("Please open GPS")}
+                                      });
                                 },
                                 child: Center(
                                   child: Column(
@@ -996,123 +1003,6 @@ class _StoreScreenState extends State<StoreScreen> {
         );
       },
     );
-  }
-
-  _showDialog2(var data) {
-    var shopData = [data];
-    var param;
-    showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Check In"),
-          content: new SingleChildScrollView(
-            child: new ListBody(
-              children: <Widget>[
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.store,
-                        color: CustomIcons.iconColor,
-                        size: 35,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Text(
-                            data["shopname"] + "(" + data["shopnamemm"] + ")"),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          child: RaisedButton(
-                            color: Colors.white,
-                            shape: alertButtonShape(),
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).pop();
-                            },
-                            child: Center(
-                              child: Column(
-                                children: <Widget>[
-//                                        buildStatusText(this.performTypearray)
-                                  Text("Cancel")
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: RaisedButton(
-                            color: Colors.white,
-                            shape: alertButtonShape(),
-                            onPressed: () {
-                              getGPSstatus().then((status) => {
-                                    print("$status"),
-                                    if (status == true)
-                                      {
-                                        param = {
-                                          "shopsyskey": shopData[0]
-                                              ["shopsyskey"]
-                                        },
-                                        this
-                                            .onlineSerives
-                                            .getCategory(param)
-                                            .then((value) => {
-                                                  print("98->" +
-                                                      value.toString()),
-                                                  if (value == true)
-                                                    {
-                                                      Navigator.of(context)
-                                                          .pushReplacement(
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              StoresDetailsScreen(
-                                                                  shopData,
-                                                                  false,
-                                                                  "assign",
-                                                                  "null"),
-                                                        ),
-                                                      ),
-                                                    }
-                                                  else
-                                                    {
-                                                      hideLoadingDialog,
-                                                    },
-                                                }),
-                                      }
-                                    else
-                                      {ShowToast("Please open GPS")}
-                                  });
-                            },
-                            child: Center(
-                              child: Column(
-                                children: <Widget>[
-//                                        buildStatusText(this.performTypearray)
-                                  Text("Next")
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ));
   }
 
   Widget buildAssignItem(data) {
@@ -1196,15 +1086,11 @@ class _StoreScreenState extends State<StoreScreen> {
                                     color: Colors.white,
                                     shape: buttonShape(),
                                     onPressed: () {
-                                      getGPSstatus().then(
-                                        (status) => {
-                                          _showDialog(data),
-                                          _checkInType = null,
-                                          _checkClosed = "2",
-                                          _selectType = null,
-                                          reason = null,
-                                        },
-                                      );
+                                      _showDialog(data);
+                                      _checkInType = null;
+                                      _checkClosed = "2";
+                                      _selectType = null;
+                                      reason = null;
                                     },
                                     child: Center(
                                       child: Text(
@@ -1379,9 +1265,11 @@ class _StoreScreenState extends State<StoreScreen> {
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
             print(paramforTownshipName.toString()),
             objData["regionName"] = value["data"][0]["description"],
-            if(objData["regionName"].toString() == "ချမ်းမြသာစည်"){
-              print("regionId=====>>>+++"+storeDatas[i]["regionId"].toString()),
-            },
+            if (objData["regionName"].toString() == "ချမ်းမြသာစည်")
+              {
+                print("regionId=====>>>+++" +
+                    storeDatas[i]["regionId"].toString()),
+              },
             setState(() {
               allData.add(objData);
               if (allData.length == storeDatas.length) {
@@ -1409,31 +1297,31 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["usertype"] = loginData["userType"];
     shopParam["date"] = getTodayDate();
     showLoadingDialog();
-     Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
 //    setState(() {
       showLoading();
 //    });
-    this
-        .onlineSerives
-        .getStores(shopParam)
-        .then((result) => {
-              if (result == true)
-                {
-                  this.assignStores = this.storage.getItem("storeData"),
-                  setState(() {
-                    this.count = this.assignStores.length.toString();
-                  }),
-                  allDataFunction(),
-                }
-              else
-                {
-                  this.storeRegistration = [],
-                  this.assignStores = [],
-                  hideLoadingDialog()
-                }
-            })
-        .catchError((onError) => {hideLoadingDialog()});
-     });
+      this
+          .onlineSerives
+          .getStores(shopParam)
+          .then((result) => {
+                if (result == true)
+                  {
+                    this.assignStores = this.storage.getItem("storeData"),
+                    setState(() {
+                      this.count = this.assignStores.length.toString();
+                    }),
+                    allDataFunction(),
+                  }
+                else
+                  {
+                    this.storeRegistration = [],
+                    this.assignStores = [],
+                    hideLoadingDialog()
+                  }
+              })
+          .catchError((onError) => {hideLoadingDialog()});
+    });
   }
 
   List data;
