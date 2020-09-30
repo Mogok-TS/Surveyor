@@ -385,12 +385,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           ];
           questionAndAnswer.add(_value);
         } else if (loopData["TypeDesc"] == "Checkbox") {
+         
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
           _value["questionNatureId"] = _question["sectionSyskey"].toString();
           _value["questionId"] = loopData["QuestionSyskey"].toString();
-          _value["remark"] = loopData["QuestionDescription"];
+
+          _value["remark"] = "";
           _value["desc"] = loopData["QuestionDescription"];
           _value["instruction"] = loopData["Instruction"];
           if (loopData["Comment"] == null) {
@@ -419,6 +421,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 data["t1"] = "";
                 data["t2"] = "";
                 data["t3"] = loopPrimary["checkDatas"][x]["text"];
+                data["t4"] = "";
                 data["n2"] = loopPrimary["checkDatas"][x]["syskey"];
                 datalist.add(data);
               }
@@ -525,8 +528,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               _value["questionId"] = loopData["QuestionSyskey"].toString();
               _value["answerId"] =
                   this.newQuestionarray[ss]["answerSyskey"].toString();
-              _value["remark"] =
-                  this.newQuestionarray[ss]["answerDesc"].toString();
+              _value["remark"] = "";
               _value["desc"] = loopData["QuestionDescription"];
               _value["instruction"] = loopData["Instruction"];
               if (loopData["Comment"] == null) {
@@ -546,7 +548,15 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               } else {
                 _value["n10"] = loopData["ApprovedFlag"];
               }
-              _value["svr9DataList"] = [];
+              _value["svr9DataList"] = [
+                {
+                  "t1":"",
+                  "t2":"",
+                  "t3":this.newQuestionarray[ss]["answerDesc"].toString(),
+                  "t4":"",
+                  "n2":"",
+                }
+              ];
               questionAndAnswer.add(_value);
             }
           }
@@ -563,23 +573,23 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             hideLoadingDialog(),
             if (reslut["status"] == true)
               {
-                ShowToast("Saved successfully."),
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => OutsideInsideNeighborhood(
-                        this.widget.isNeighborhood,
-                        this.widget.isOutside,
-                        this.widget.isInside,
-                        this.widget.isStoreOperater,
-                        this.widget.storeName,
-                        this.widget.storeNumber,
-                        this.widget.address,
-                        this.widget.regOrAss,
-                        this.widget.passData,
-                        this.widget.allsection,
-                        this.widget.header),
-                  ),
-                )
+                // ShowToast("Saved successfully."),
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (context) => OutsideInsideNeighborhood(
+                //         this.widget.isNeighborhood,
+                //         this.widget.isOutside,
+                //         this.widget.isInside,
+                //         this.widget.isStoreOperater,
+                //         this.widget.storeName,
+                //         this.widget.storeNumber,
+                //         this.widget.address,
+                //         this.widget.regOrAss,
+                //         this.widget.passData,
+                //         this.widget.allsection,
+                //         this.widget.header),
+                //   ),
+                // )
               }
             else
               {}
@@ -672,8 +682,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget buildRadio(var answerList, var questionIndex) {
-    var index = questionIndex - 1;
-    // return Text(index.toString());
+    // print("radion??",answerlist.toString());
+    //  return Text(answerList.toString());
     return Column(
       children: <Widget>[
         for (var q = 0; q < answerList.length; q++)
@@ -1328,6 +1338,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["checkDatas"] = [];
                       _data["images"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
+                      _data["rating"] = "0";
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
@@ -1435,7 +1446,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     } else if (data["TypeDesc"] == "Number Range") {
       _widget = fromToWidget(data);
     } else if (data["TypeDesc"] == "Rating 0-10") {
-      _widget = ratingWidget(data);
+      _widget = ratingWidget(data,primarydata);
     } else if (data["TypeDesc"] == "Time Range") {
       _widget = timeRangeWidget(data);
     } else {
@@ -1560,7 +1571,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   var rating = "0";
-  Widget ratingWidget(var data) {
+  Widget ratingWidget(var data,var dummyData) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
@@ -1575,18 +1586,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 onTap: () {},
                 child: Row(
                   children: <Widget>[
-//                    Text(
-//                      t1,
-//                      style: TextStyle(color: Colors.black),
-//                    ),
-//                    if (t1 != null && t2 != null)
-//                      Text(
-//                        " :",
-//                        style: TextStyle(color: Colors.black),
-//                      ),
-//                    SizedBox(
-//                      width: 10,
-//                    ),
                     Flexible(
                       child: Text(
                         t1 + " : " + t2,
@@ -1609,12 +1608,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("0"),
                     value: "0",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1622,12 +1621,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("1"),
                     value: "1",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1635,12 +1634,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("2"),
                     value: "2",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1648,12 +1647,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("3"),
                     value: "3",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1661,12 +1660,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("4"),
                     value: "4",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1674,12 +1673,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("5"),
                     value: "5",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1687,12 +1686,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("6"),
                     value: "6",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1700,12 +1699,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("7"),
                     value: "7",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1713,12 +1712,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("8"),
                     value: "e",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1726,12 +1725,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 100.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("9"),
                     value: "9",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1739,12 +1738,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Container(
                   width: 110.0,
                   child: RadioListTile(
-                    groupValue: rating,
+                    groupValue: dummyData["rating"],
                     title: Text("10"),
                     value: "10",
                     onChanged: (aaa) {
                       setState(() {
-                        rating = aaa;
+                        dummyData["rating"] = aaa;
                       });
                     },
                   ),
@@ -1867,7 +1866,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     TextEditingController _toController = new TextEditingController();
     _toController.text = data["AnswerDesc2"];
     var t1 = data["QuestionCode"];
-    var t2 = data["QuestionDescription"] + ">>>timerangewidget";
+    var t2 = data["QuestionDescription"];
     return Container(
       decoration: flagDecoration(data["Flag"]),
       margin: EdgeInsets.all(10),
@@ -2064,86 +2063,90 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             title: Text("Questions"),
           ),
           body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  color: Colors.grey[200],
-                  child: Container(
-                    width: 700,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          child: Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SelectableText(_consoleLable),
-                                Text(
-                                  this.widget.surveyType,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                if (this.widget.surveyType == "Store Operator")
+            child: Stack(
+                         children: <Widget>[
+                            Column(
+                children: <Widget>[
+                  Container(
+                    color: Colors.grey[200],
+                    child: Container(
+                      width: 700,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            child: Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SelectableText(_consoleLable),
                                   Text(
-                                    this.widget.storeName,
-                                    textAlign: TextAlign.left,
+                                    this.widget.surveyType,
+                                    textAlign: TextAlign.end,
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                if (this.widget.surveyType == "Store Operator")
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
-                                if (this.widget.surveyType == "Store Operator")
-                                  Text(
-                                    this.widget.storeNumber,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.0,
+                                  if (this.widget.surveyType == "Store Operator")
+                                    Text(
+                                      this.widget.storeName,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  ),
-                                if (this.widget.surveyType == "Store Operator")
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
-                                if (this.widget.surveyType == "Store Operator")
-                                  Text(
-                                    this.widget.address,
-                                    style: TextStyle(height: 1.3),
-                                  ),
-                              ],
+                                  if (this.widget.surveyType == "Store Operator")
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                  if (this.widget.surveyType == "Store Operator")
+                                    Text(
+                                      this.widget.storeNumber,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.0,
+                                      ),
+                                    ),
+                                  if (this.widget.surveyType == "Store Operator")
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                  if (this.widget.surveyType == "Store Operator")
+                                    Text(
+                                      this.widget.address,
+                                      style: TextStyle(height: 1.3),
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (_status)
-                  if (questions.length > 0)
-                    for (var i = 0; i < questions.length; i++)
-                      _allWidget(questions[i], i, _primaryData[i]),
-                if (!_status || questions.length == 0)
-                  Container(
-                    height: 50,
-                    color: Colors.grey[300],
-                    child: Center(
-                      child: Text(
-                        "No Data",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
+                        ],
                       ),
                     ),
-                  )
-              ],
+                  ),
+                  if (_status)
+                    if (questions.length > 0)
+                      for (var i = 0; i < questions.length; i++)
+                        _allWidget(questions[i], i, _primaryData[i]),
+                  if (!_status || questions.length == 0)
+                    Container(
+                      height: 50,
+                      color: Colors.grey[300],
+                      child: Center(
+                        child: Text(
+                          "No Data",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    )
+                ],
+              ),
+                         ],
             ),
           ),
           bottomNavigationBar: Container(

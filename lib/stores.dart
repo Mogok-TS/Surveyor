@@ -1295,12 +1295,10 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["spsyskey"] = loginData["syskey"];
     shopParam["teamsyskey"] = loginData["teamSyskey"];
     shopParam["usertype"] = loginData["userType"];
-    shopParam["date"] = getTodayDate();
+    shopParam["date"] = "";
     showLoadingDialog();
     Future.delayed(const Duration(milliseconds: 500), () {
-//    setState(() {
-      showLoading();
-//    });
+      showLoading(); 
       this
           .onlineSerives
           .getStores(shopParam)
