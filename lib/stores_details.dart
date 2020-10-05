@@ -83,7 +83,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     localJsonData();
     setState(
       () {
-        Future.delayed(const Duration(milliseconds: 500), () {
+        Future.delayed(const Duration(milliseconds: 900), () {
           showLoading();
         });
         _state = "-";
@@ -810,6 +810,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
 
   var n2Code;
   final FocusNode streetNode = FocusNode();
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -817,6 +818,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
+          key: _scaffoldKey,
           drawer: MainMenuWidget(),
           backgroundColor: Color(0xFFF8F8FF),
           appBar: AppBar(
@@ -924,7 +926,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       decoration: InputDecoration(
                         labelText: 'Shop Name',
                         labelStyle:
-                            TextStyle(color: Colors.black54, fontSize: 18),
+                        TextStyle(color: Colors.black54, fontSize: 18),
                         focusColor: Colors.black,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -940,7 +942,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       decoration: InputDecoration(
                         labelText: 'Shop Name (Myanmar)',
                         labelStyle:
-                            TextStyle(color: Colors.black54, fontSize: 18),
+                        TextStyle(color: Colors.black54, fontSize: 18),
                         focusColor: Colors.black,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -958,7 +960,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         focusColor: Colors.black,
                         labelText: 'Shop Phone No',
                         labelStyle:
-                            TextStyle(color: Colors.black54, fontSize: 18),
+                        TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -974,7 +976,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         focusColor: Colors.black,
                         labelText: 'Owner Name',
                         labelStyle:
-                            TextStyle(color: Colors.black54, fontSize: 18),
+                        TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -991,7 +993,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         focusColor: Colors.black,
                         labelText: 'Owner Phone No',
                         labelStyle:
-                            TextStyle(color: Colors.black54, fontSize: 18),
+                        TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -1021,7 +1023,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: DropdownButton(
                               isExpanded: true,
                               items: _stateList.map(
-                                (val) {
+                                    (val) {
                                   return DropdownMenuItem(
                                     value: val,
                                     child: Text(val),
@@ -1063,9 +1065,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   _villageTractList = ["-"];
                                   _village = "-";
                                   _villageList = ["-"];
-                                  _controller.animateTo(180.0,
-                                      duration: Duration(milliseconds: 500),
-                                      curve: Curves.ease);
+                                  // _controller.animateTo(180.0,
+                                  //     duration: Duration(milliseconds: 500),
+                                  //     curve: Curves.ease);
                                 });
                               },
                             ),
@@ -1097,7 +1099,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: DropdownButton(
                               isExpanded: true,
                               items: _districtList.map(
-                                (val) {
+                                    (val) {
                                   return DropdownMenuItem(
                                     value: val,
                                     child: Text(val),
@@ -1109,8 +1111,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                 setState(() {
                                   _district = value;
                                   for (var i = 0;
-                                      i < districtObject.length;
-                                      i++) {
+                                  i < districtObject.length;
+                                  i++) {
                                     if (_district ==
                                         districtObject[i]["description"]) {
                                       var data = {
@@ -1143,9 +1145,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   _villageTractList = ["-"];
                                   _village = "-";
                                   _villageList = ["-"];
-                                  _controller.animateTo(180.0,
-                                      duration: Duration(milliseconds: 500),
-                                      curve: Curves.ease);
+                                  // _controller.animateTo(180.0,
+                                  //     duration: Duration(milliseconds: 500),
+                                  //     curve: Curves.ease);
                                 });
                               },
                             ),
@@ -1177,7 +1179,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: DropdownButton(
                               isExpanded: true,
                               items: _townShipList.map(
-                                (val) {
+                                    (val) {
                                   return DropdownMenuItem(
                                     value: val,
                                     child: Text(val),
@@ -1189,8 +1191,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                 setState(() {
                                   _townShip = value;
                                   for (var i = 0;
-                                      i < townShipObject.length;
-                                      i++) {
+                                  i < townShipObject.length;
+                                  i++) {
                                     if (_townShip ==
                                         townShipObject[i]["description"]) {
                                       var data = {
@@ -1218,9 +1220,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   _villageTractList = ["-"];
                                   _village = "-";
                                   _villageList = ["-"];
-                                  _controller.animateTo(180.0,
-                                      duration: Duration(milliseconds: 500),
-                                      curve: Curves.ease);
+                                  // _controller.animateTo(180.0,
+                                  //     duration: Duration(milliseconds: 500),
+                                  //     curve: Curves.ease);
                                 });
                               },
                             ),
@@ -1238,7 +1240,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Town/Village Tract?",
                             style:
-                                TextStyle(fontSize: 17, color: Colors.black54),
+                            TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1254,7 +1256,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton<String>(
                                 isExpanded: true,
                                 items: _townOrVillagetractList.map(
-                                  (val) {
+                                      (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(
@@ -1314,9 +1316,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     _villageList = ['-'];
                                     this.townVillageTractId = "0";
                                     this.wardVillageId = "0";
-                                    _controller.animateTo(180.0,
-                                        duration: Duration(milliseconds: 500),
-                                        curve: Curves.ease);
+                                    // _controller.animateTo(180.0,
+                                    //     duration: Duration(milliseconds: 500),
+                                    //     curve: Curves.ease);
                                   });
                                 },
                               ),
@@ -1334,7 +1336,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Town",
                             style:
-                                TextStyle(fontSize: 17, color: Colors.black54),
+                            TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1350,7 +1352,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton(
                                 isExpanded: true,
                                 items: _townList.map(
-                                  (val) {
+                                      (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(val),
@@ -1372,7 +1374,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                         };
                                         townVillageTractId = townData[i]["id"];
                                         townVillageTractCode =
-                                            townData[i]["code"];
+                                        townData[i]["code"];
                                         _ward = "-";
                                         _wardList = ['-'];
                                         _getWard(params);
@@ -1381,9 +1383,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                         _wardList = ['-'];
                                       }
                                     }
-                                    _controller.animateTo(180.0,
-                                        duration: Duration(milliseconds: 500),
-                                        curve: Curves.ease);
+                                    // _controller.animateTo(180.0,
+                                    //     duration: Duration(milliseconds: 500),
+                                    //     curve: Curves.ease);
                                   });
                                 },
                               ),
@@ -1401,7 +1403,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Ward",
                             style:
-                                TextStyle(fontSize: 17, color: Colors.black54),
+                            TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1417,7 +1419,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton(
                                 isExpanded: true,
                                 items: _wardList.map(
-                                  (val) {
+                                      (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(val),
@@ -1434,9 +1436,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                         wardVillageId = wardData[i]["id"];
                                       }
                                     }
-                                    _controller.animateTo(180.0,
-                                        duration: Duration(milliseconds: 500),
-                                        curve: Curves.ease);
+                                    // _controller.animateTo(180.0,
+                                    //     duration: Duration(milliseconds: 500),
+                                    //     curve: Curves.ease);
                                   });
                                 },
                               ),
@@ -1454,7 +1456,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Village Tract",
                             style:
-                                TextStyle(fontSize: 17, color: Colors.black54),
+                            TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1470,7 +1472,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton(
                                 isExpanded: true,
                                 items: _villageTractList.map(
-                                  (val) {
+                                      (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(val),
@@ -1482,8 +1484,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   setState(() {
                                     _villageTract = value;
                                     for (var i = 0;
-                                        i < _villageTractData.length;
-                                        i++) {
+                                    i < _villageTractData.length;
+                                    i++) {
                                       if (_villageTract ==
                                           _villageTractData[i]['description']) {
                                         var params = {
@@ -1491,13 +1493,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                           "code": "",
                                           "description": "",
                                           "parentid": _villageTractData[i]
-                                              ["id"],
+                                          ["id"],
                                           "n2": "2"
                                         };
                                         townVillageTractCode =
-                                            _villageTractData[i]["code"];
+                                        _villageTractData[i]["code"];
                                         townVillageTractId =
-                                            _villageTractData[i]["id"];
+                                        _villageTractData[i]["id"];
                                         _village = "-";
                                         _villageList = ['-'];
                                         _getVillage(params);
@@ -1506,9 +1508,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                         _villageList = ['-'];
                                       }
                                     }
-                                    _controller.animateTo(180.0,
-                                        duration: Duration(milliseconds: 500),
-                                        curve: Curves.ease);
+                                    // _controller.animateTo(180.0,
+                                    //     duration: Duration(milliseconds: 500),
+                                    //     curve: Curves.ease);
                                   });
                                 },
                               ),
@@ -1526,7 +1528,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Village",
                             style:
-                                TextStyle(fontSize: 17, color: Colors.black54),
+                            TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1542,7 +1544,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton(
                                 isExpanded: true,
                                 items: _villageList.map(
-                                  (val) {
+                                      (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(val),
@@ -1554,18 +1556,18 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   setState(() {
                                     _village = value;
                                     for (var i = 0;
-                                        i < _villageData.length;
-                                        i++) {
+                                    i < _villageData.length;
+                                    i++) {
                                       if (_village ==
                                           _villageData[i]['description']) {
                                         wardVillageCode =
-                                            _villageData[i]["code"];
+                                        _villageData[i]["code"];
                                         wardVillageId = _villageData[i]["id"];
                                       }
                                     }
-                                    _controller.animateTo(180.0,
-                                        duration: Duration(milliseconds: 500),
-                                        curve: Curves.ease);
+                                    // _controller.animateTo(180.0,
+                                    //     duration: Duration(milliseconds: 500),
+                                    //     curve: Curves.ease);
                                   });
                                 },
                               ),
@@ -1590,7 +1592,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         focusColor: Colors.black,
                         labelText: 'Street',
                         labelStyle:
-                            TextStyle(color: Colors.black54, fontSize: 18),
+                        TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -1606,7 +1608,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10),
                         hintText:
-                            '${this.street.text != '' ? this.street.text + ',' : ''}${this._village != '-' ? this._village + ',' : ''}${this._villageTract != '-' ? this._villageTract + ',' : ''}${this._ward != '-' ? this._ward + ',' : ''}${this._town != '-' ? this._town + ',' : ''}${this._townShip != '-' ? this._townShip + ',' : ''}${this._district != '-' ? this._district + ',' : ''}${this._state != '-' ? this._state : ''}',
+                        '${this.street.text != '' ? this.street.text + ',' : ''}${this._village != '-' ? this._village + ',' : ''}${this._villageTract != '-' ? this._villageTract + ',' : ''}${this._ward != '-' ? this._ward + ',' : ''}${this._town != '-' ? this._town + ',' : ''}${this._townShip != '-' ? this._townShip + ',' : ''}${this._district != '-' ? this._district + ',' : ''}${this._state != '-' ? this._state : ''}',
                         fillColor: Colors.grey[300],
                         filled: true,
                       ),

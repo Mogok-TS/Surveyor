@@ -217,7 +217,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           }
           if (loopData["ApprovedFlag"] == "" ||
               loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "2";
+            _value["n10"] = "0";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -255,7 +255,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "2";
+            _value["n10"] = "0";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -293,7 +293,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "2";
+            _value["n10"] = "0";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -331,7 +331,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "2";
+            _value["n10"] = "0";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -369,7 +369,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "2";
+            _value["n10"] = "0";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -408,7 +408,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "2";
+            _value["n10"] = "0";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -474,7 +474,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             _value["n9"] = loopData["Flag"];
           }
           if (loopData["ApprovedFlag"] == null) {
-            _value["n10"] = "2";
+            _value["n10"] = "0";
           } else {
             _value["n10"] = loopData["ApprovedFlag"];
           }
@@ -526,8 +526,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               _value["questionNatureId"] =
                   _question["sectionSyskey"].toString();
               _value["questionId"] = loopData["QuestionSyskey"].toString();
-              _value["answerId"] =
-                  this.newQuestionarray[ss]["answerSyskey"].toString();
+              _value["answerId"] ="0";
+
               _value["remark"] = "";
               _value["desc"] = loopData["QuestionDescription"];
               _value["instruction"] = loopData["Instruction"];
@@ -544,7 +544,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 _value["n9"] = loopData["Flag"];
               }
               if (loopData["ApprovedFlag"] == null) {
-                _value["n10"] = "2";
+                _value["n10"] = "0";
               } else {
                 _value["n10"] = loopData["ApprovedFlag"];
               }
@@ -554,7 +554,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   "t2":"",
                   "t3":this.newQuestionarray[ss]["answerDesc"].toString(),
                   "t4":"",
-                  "n2":"",
+                  "n2": this.newQuestionarray[ss]["answerSyskey"].toString(),
                 }
               ];
               questionAndAnswer.add(_value);

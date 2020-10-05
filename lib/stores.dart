@@ -1296,7 +1296,7 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["teamsyskey"] = loginData["teamSyskey"];
     shopParam["usertype"] = loginData["userType"];
     shopParam["date"] = "";
-    showLoadingDialog();
+    showLoading();
     Future.delayed(const Duration(milliseconds: 500), () {
       showLoading(); 
       this
