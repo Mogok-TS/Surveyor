@@ -187,7 +187,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
       for (var i = 0; i < this.questions.length; i++) {
         var loopData = this.questions[i];
-        print("app>>" + loopData["ApprovedFlag"].toString());
         var loopPrimary = {};
         loopPrimary = this._primaryData[i];
         var singleQueAndAns = {};
@@ -302,7 +301,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               "recordStatus": 1,
               "t1": "",
               "t2": "",
-              "t3": rating,
+              "t3": loopPrimary["rating"],
               "t4": "",
               "n2": "",
             }
@@ -564,16 +563,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       }
       _allData["quesAndAns"] = questionAndAnswer;
 
-      // setState(() {
-      //   _consoleLable = _allData.toString();
-      //   hideLoadingDialog();
-      // });
+      setState(() {
+        _consoleLable = _allData.toString();
+        hideLoadingDialog();
+      });
 
       this.onlineSerives.createStore(_allData).then((reslut) => {
             hideLoadingDialog(),
             if (reslut["status"] == true)
               {
-                // ShowToast("Saved successfully."),
+                ShowToast("Saved successfully."),
                 // Navigator.of(context).pushReplacement(
                 //   MaterialPageRoute(
                 //     builder: (context) => OutsideInsideNeighborhood(
@@ -682,7 +681,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget buildRadio(var answerList, var questionIndex) {
-    // print("radion??",answerlist.toString());
+   
     //  return Text(answerList.toString());
     return Column(
       children: <Widget>[
@@ -1307,7 +1306,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["checkDatas"] = [];
                       _data["images"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Date") {
-                      print("desc --->> ---" + questions[ss]["AnswerDesc"]);
                       if (questions[ss]["AnswerDesc"] != "") {
                         String fulldate = questions[ss]["AnswerDesc"];
                         String year = fulldate.substring(0, 4);
@@ -1338,7 +1336,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["checkDatas"] = [];
                       _data["images"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
-                      _data["rating"] = "0";
+                      if(questions[ss]["AnswerDesc"].toString() != ""){
+                        _data["rating"] = questions[ss]["AnswerDesc"].toString();
+                      }else{
+                        _data["rating"] = "0";
+                      }
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
@@ -1424,7 +1426,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget _allWidget(var data, var questionIndex, var primarydata) {
-    print("singlequestion>>" + data.toString());
     if (primarydata["images"] == null) {
       primarydata["images"] = [];
     }
@@ -1511,7 +1512,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             nowDate = value;
                             var selected = value.toString();
                             var dateonly = selected.substring(0, 10);
-                            print("selecteddate>>" + dateonly.toString());
                             String day = dateonly.substring(8, 10);
                             String month = dateonly.substring(5, 7);
                             String year = dateonly.substring(0, 4);
@@ -1570,7 +1570,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     });
   }
 
-  var rating = "0";
   Widget ratingWidget(var data,var dummyData) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
@@ -1917,8 +1916,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               onTap: () {
                                 DatePicker.showTime12hPicker(context,
                                     showTitleActions: true, onChanged: (date) {
-                                  print('change $date in time zone ' +
-                                      date.timeZoneOffset.inHours.toString());
+                               
                                 }, onConfirm: (date) {
                                   var selected = date.toString();
                                   var timeonly = selected.substring(11, 16);
@@ -1951,10 +1949,28 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         minute +
                                         " AM";
                                   }
-                                  setState(() {
+                                  if(data["AnswerDesc2"] != ""){
+                                    if(data["AnswerDesc2"] == finalTime){
+                                      ShowToast("Invalid Selected date");
+                                    }else{
+                                    print("enddate>>"+data["AnswerDesc2"].toString());
+                                    print("startdate>>"+finalTime.toString());
+                                    String endDate = data["AnswerDesc2"];
+                                    int sHour = 0;
+                                    int sMin = 0;
+                                    String sDON = "";
+                                    int eHour = int.parse(endDate.substring(0,endDate.indexOf(":")));
+                                    int eMin = int.parse(endDate.substring(endDate.indexOf(":"),endDate.indexOf(":")+3));
+                                    String eDON = "";
+                                    // print("zone>"+endDate.substring(endDate.indexOf(":")+2,endDate.indexOf(":")+3).toString());
+                                    }
+                                  }else{
+                                    setState(() {
                                     data["AnswerDesc"] = finalTime;
                                     _fromController.text = finalTime;
                                   });
+                                  }
+                                  
                                 }, currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
@@ -1983,8 +1999,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               onTap: () {
                                 DatePicker.showTime12hPicker(context,
                                     showTitleActions: true, onChanged: (date) {
-                                  print('change $date in time zone ' +
-                                      date.timeZoneOffset.inHours.toString());
+                                
                                 }, onConfirm: (date) {
                                   var selected = date.toString();
                                   var timeonly = selected.substring(11, 16);
@@ -2017,15 +2032,15 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         minute +
                                         " AM";
                                   }
-                                  print(
-                                      "finaltimee>>>>>" + finalTime.toString());
-                                  print("hour" + timeonly.substring(0, 2));
-                                  print(
-                                      'substring ---------------------------- $timeonly');
-                                  setState(() {
+                                 if(data["AnswerDesc"] != ""){
+                                   print(data["AnswerDesc"]);
+                                 }else{
+                                   setState(() {
                                     data["AnswerDesc2"] = finalTime;
                                     _fromController.text = finalTime;
                                   });
+                                 }
+                                  
                                 }, currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
@@ -2080,7 +2095,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  SelectableText(_consoleLable),
+                                  SelectableText(_consoleLable.toString()),
                                   Text(
                                     this.widget.surveyType,
                                     textAlign: TextAlign.end,
