@@ -384,7 +384,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           ];
           questionAndAnswer.add(_value);
         } else if (loopData["TypeDesc"] == "Checkbox") {
-         
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
           _value["questionTypeId"] = loopData["TypeSK"].toString();
@@ -525,7 +524,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               _value["questionNatureId"] =
                   _question["sectionSyskey"].toString();
               _value["questionId"] = loopData["QuestionSyskey"].toString();
-              _value["answerId"] ="0";
+              _value["answerId"] = "0";
 
               _value["remark"] = "";
               _value["desc"] = loopData["QuestionDescription"];
@@ -549,10 +548,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               }
               _value["svr9DataList"] = [
                 {
-                  "t1":"",
-                  "t2":"",
-                  "t3":this.newQuestionarray[ss]["answerDesc"].toString(),
-                  "t4":"",
+                  "t1": "",
+                  "t2": "",
+                  "t3": this.newQuestionarray[ss]["answerDesc"].toString(),
+                  "t4": "",
                   "n2": this.newQuestionarray[ss]["answerSyskey"].toString(),
                 }
               ];
@@ -681,7 +680,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   }
 
   Widget buildRadio(var answerList, var questionIndex) {
-   
     //  return Text(answerList.toString());
     return Column(
       children: <Widget>[
@@ -1336,9 +1334,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["checkDatas"] = [];
                       _data["images"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
-                      if(questions[ss]["AnswerDesc"].toString() != ""){
-                        _data["rating"] = questions[ss]["AnswerDesc"].toString();
-                      }else{
+                      if (questions[ss]["AnswerDesc"].toString() != "") {
+                        _data["rating"] =
+                            questions[ss]["AnswerDesc"].toString();
+                      } else {
                         _data["rating"] = "0";
                       }
                       _data["radioDatas"] = [];
@@ -1447,7 +1446,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     } else if (data["TypeDesc"] == "Number Range") {
       _widget = fromToWidget(data);
     } else if (data["TypeDesc"] == "Rating 0-10") {
-      _widget = ratingWidget(data,primarydata);
+      _widget = ratingWidget(data, primarydata);
     } else if (data["TypeDesc"] == "Time Range") {
       _widget = timeRangeWidget(data);
     } else {
@@ -1570,7 +1569,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     });
   }
 
-  Widget ratingWidget(var data,var dummyData) {
+  Widget ratingWidget(var data, var dummyData) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
@@ -1915,9 +1914,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               },
                               onTap: () {
                                 DatePicker.showTime12hPicker(context,
-                                    showTitleActions: true, onChanged: (date) {
-                               
-                                }, onConfirm: (date) {
+                                    showTitleActions: true,
+                                    onChanged: (date) {}, onConfirm: (date) {
                                   var selected = date.toString();
                                   var timeonly = selected.substring(11, 16);
                                   var hour = timeonly.substring(0, 2);
@@ -1949,28 +1947,80 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         minute +
                                         " AM";
                                   }
-                                  if(data["AnswerDesc2"] != ""){
-                                    if(data["AnswerDesc2"] == finalTime){
+                                  if (data["AnswerDesc2"] != "") {
+                                    if (data["AnswerDesc2"] == finalTime) {
                                       ShowToast("Invalid Selected date");
-                                    }else{
-                                    print("enddate>>"+data["AnswerDesc2"].toString());
-                                    print("startdate>>"+finalTime.toString());
-                                    String endDate = data["AnswerDesc2"];
-                                    int sHour = 0;
-                                    int sMin = 0;
-                                    String sDON = "";
-                                    int eHour = int.parse(endDate.substring(0,endDate.indexOf(":")));
-                                    int eMin = int.parse(endDate.substring(endDate.indexOf(":"),endDate.indexOf(":")+3));
-                                    String eDON = "";
-                                    // print("zone>"+endDate.substring(endDate.indexOf(":")+2,endDate.indexOf(":")+3).toString());
+                                    } else {
+                                      print("enddate>>" +
+                                          data["AnswerDesc2"].toString());
+                                      print(
+                                          "startdate>>" + finalTime.toString());
+                                      String endDate = data["AnswerDesc2"];
+                                      int sHour = int.parse(finalTime
+                                          .toString()
+                                          .substring(
+                                              0,
+                                              finalTime
+                                                  .toString()
+                                                  .indexOf(":")));
+                                      int sMin = int.parse(finalTime
+                                          .toString()
+                                          .substring(
+                                              finalTime
+                                                      .toString()
+                                                      .indexOf(":") +
+                                                  1,
+                                              finalTime
+                                                      .toString()
+                                                      .indexOf(":") +
+                                                  3));
+                                      String sDON = finalTime
+                                          .toString()
+                                          .substring(
+                                              finalTime
+                                                      .toString()
+                                                      .indexOf(" ") +
+                                                  1,
+                                              finalTime
+                                                      .toString()
+                                                      .indexOf("M") +
+                                                  1);
+                                      int totalStart = (sHour * 60) + sMin;
+                                      int eHour = int.parse(endDate.substring(
+                                          0, endDate.indexOf(":")));
+                                      int eMin = int.parse(endDate.substring(
+                                          endDate.indexOf(":") + 1,
+                                          endDate.indexOf(":") + 3));
+                                      String eDON = endDate.substring(
+                                          endDate.indexOf(" ") + 1,
+                                          endDate.indexOf("M") + 1);
+                                      int totalEnd = (eHour * 60) + eMin;
+                                      if (eDON == sDON) {
+                                        if (totalStart >= totalEnd) {
+                                          ShowToast("Invalid Time");
+                                          setState(() {
+                                            data["AnswerDesc"] = "";
+                                            _fromController.text = "";
+                                          });
+                                        } else {
+                                          setState(() {
+                                            data["AnswerDesc"] = finalTime;
+                                            _fromController.text = finalTime;
+                                          });
+                                        }
+                                      } else {
+                                        setState(() {
+                                          data["AnswerDesc"] = finalTime;
+                                          _fromController.text = finalTime;
+                                        });
+                                      }
                                     }
-                                  }else{
+                                  } else {
                                     setState(() {
-                                    data["AnswerDesc"] = finalTime;
-                                    _fromController.text = finalTime;
-                                  });
+                                      data["AnswerDesc"] = finalTime;
+                                      _fromController.text = finalTime;
+                                    });
                                   }
-                                  
                                 }, currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
@@ -1998,9 +2048,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               },
                               onTap: () {
                                 DatePicker.showTime12hPicker(context,
-                                    showTitleActions: true, onChanged: (date) {
-                                
-                                }, onConfirm: (date) {
+                                    showTitleActions: true,
+                                    onChanged: (date) {}, onConfirm: (date) {
                                   var selected = date.toString();
                                   var timeonly = selected.substring(11, 16);
                                   var hour = timeonly.substring(0, 2);
@@ -2032,15 +2081,61 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         minute +
                                         " AM";
                                   }
-                                 if(data["AnswerDesc"] != ""){
-                                   print(data["AnswerDesc"]);
-                                 }else{
-                                   setState(() {
-                                    data["AnswerDesc2"] = finalTime;
-                                    _fromController.text = finalTime;
-                                  });
-                                 }
-                                  
+                                  if (data["AnswerDesc"] != "") {
+                                    String startDate = data["AnswerDesc"];
+                                    int eHour = int.parse(finalTime
+                                        .toString()
+                                        .substring(0,
+                                            finalTime.toString().indexOf(":")));
+                                    int eMin = int.parse(finalTime
+                                        .toString()
+                                        .substring(
+                                            finalTime.toString().indexOf(":") +
+                                                1,
+                                            finalTime.toString().indexOf(":") +
+                                                3));
+                                    String eDON = finalTime
+                                        .toString()
+                                        .substring(
+                                            finalTime.toString().indexOf(" ") +
+                                                1,
+                                            finalTime.toString().indexOf("M") +
+                                                1);
+                                    int totalEnd = (eHour * 60) + eMin;
+                                    int sHour = int.parse(startDate.substring(
+                                        0, startDate.indexOf(":")));
+                                    int sMin = int.parse(startDate.substring(
+                                        startDate.indexOf(":") + 1,
+                                        startDate.indexOf(":") + 3));
+                                    String sDON = startDate.substring(
+                                        startDate.indexOf(" ") + 1,
+                                        startDate.indexOf("M") + 1);
+                                    int totalStart = (sHour * 60) + sMin;
+                                    if(eDON == sDON){
+                                      if(totalEnd <= totalStart){
+                                        ShowToast("Invalid Time");
+                                        setState(() {
+                                      data["AnswerDesc2"] = "";
+                                      _fromController.text = "";
+                                    });
+                                      }else{
+                                        setState(() {
+                                      data["AnswerDesc2"] = finalTime;
+                                      _fromController.text = finalTime;
+                                    });
+                                      }
+                                    }else{
+                                      setState(() {
+                                      data["AnswerDesc2"] = finalTime;
+                                      _fromController.text = finalTime;
+                                    });
+                                    }
+                                  } else {
+                                    setState(() {
+                                      data["AnswerDesc2"] = finalTime;
+                                      _fromController.text = finalTime;
+                                    });
+                                  }
                                 }, currentTime: DateTime.now());
                               },
                               decoration: InputDecoration(
@@ -2079,89 +2174,94 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
           ),
           body: SingleChildScrollView(
             child: Stack(
-                         children: <Widget>[
-                            Column(
-                children: <Widget>[
-                  Container(
-                    color: Colors.grey[200],
-                    child: Container(
-                      width: 700,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            child: Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  SelectableText(_consoleLable.toString()),
-                                  Text(
-                                    this.widget.surveyType,
-                                    textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  if (this.widget.surveyType == "Store Operator")
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Container(
+                      color: Colors.grey[200],
+                      child: Container(
+                        width: 700,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              child: Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    SelectableText(_consoleLable.toString()),
                                     Text(
-                                      this.widget.storeName,
-                                      textAlign: TextAlign.left,
+                                      this.widget.surveyType,
+                                      textAlign: TextAlign.end,
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  if (this.widget.surveyType == "Store Operator")
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                  if (this.widget.surveyType == "Store Operator")
-                                    Text(
-                                      this.widget.storeNumber,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        height: 1.0,
+                                    if (this.widget.surveyType ==
+                                        "Store Operator")
+                                      Text(
+                                        this.widget.storeName,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
-                                    ),
-                                  if (this.widget.surveyType == "Store Operator")
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                  if (this.widget.surveyType == "Store Operator")
-                                    Text(
-                                      this.widget.address,
-                                      style: TextStyle(height: 1.3),
-                                    ),
-                                ],
+                                    if (this.widget.surveyType ==
+                                        "Store Operator")
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                    if (this.widget.surveyType ==
+                                        "Store Operator")
+                                      Text(
+                                        this.widget.storeNumber,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.0,
+                                        ),
+                                      ),
+                                    if (this.widget.surveyType ==
+                                        "Store Operator")
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                    if (this.widget.surveyType ==
+                                        "Store Operator")
+                                      Text(
+                                        this.widget.address,
+                                        style: TextStyle(height: 1.3),
+                                      ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  if (_status)
-                    if (questions.length > 0)
-                      for (var i = 0; i < questions.length; i++)
-                        _allWidget(questions[i], i, _primaryData[i]),
-                  if (!_status || questions.length == 0)
-                    Container(
-                      height: 50,
-                      color: Colors.grey[300],
-                      child: Center(
-                        child: Text(
-                          "No Data",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
+                          ],
                         ),
                       ),
-                    )
-                ],
-              ),
-                         ],
+                    ),
+                    if (_status)
+                      if (questions.length > 0)
+                        for (var i = 0; i < questions.length; i++)
+                          _allWidget(questions[i], i, _primaryData[i]),
+                    if (!_status || questions.length == 0)
+                      Container(
+                        height: 50,
+                        color: Colors.grey[300],
+                        child: Center(
+                          child: Text(
+                            "No Data",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      )
+                  ],
+                ),
+              ],
             ),
           ),
           bottomNavigationBar: Container(
