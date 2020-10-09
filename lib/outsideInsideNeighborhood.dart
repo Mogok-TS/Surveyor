@@ -214,7 +214,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                               answerItem++,
                             },
                         }
-                      else if (data[ii]["TypeDesc"] == "Date/Time Range")
+                      else if (data[ii]["TypeDesc"] == "Date")
                         {
                           if (data[ii]["AnswerDesc"] != "")
                             {
