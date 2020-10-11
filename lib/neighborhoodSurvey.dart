@@ -189,8 +189,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         var loopData = this.questions[i];
         var loopPrimary = {};
         loopPrimary = this._primaryData[i];
-        var singleQueAndAns = {};
-
         if (loopData["TypeDesc"] == "Fill in the Blank") {
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
@@ -263,7 +261,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               "recordStatus": 1,
               "t1": "",
               "t2": "",
-              "t3": loopData["AnswerDesc"],
+              "t3": loopPrimary["servicedate"],
               "t4": "",
               "n2": "",
             }
@@ -339,10 +337,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               "recordStatus": 1,
               "t1": "",
               "t2": "",
-              "t3": loopData["AnswerDesc"],
-              "t4": loopData["AnswerDesc2"],
+              "t3": loopPrimary["AnswerDesc"],
+              "t4": loopPrimary["AnswerDesc2"],
               "n2": "",
             }
+            //  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
+            //             _data["AnswerDesc2"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc2"];
           ];
           questionAndAnswer.add(_value);
         } else if (loopData["TypeDesc"] == "Time Range") {
@@ -377,8 +377,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               "recordStatus": 1,
               "t1": "",
               "t2": "",
-              "t3": loopData["AnswerDesc"],
-              "t4": loopData["AnswerDesc2"],
+              "t3": loopPrimary["AnswerDesc"],
+              "t4": loopPrimary["AnswerDesc2"],
               "n2": "",
             }
           ];
@@ -1202,10 +1202,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 if (result["status"] == true) {
                   hideLoadingDialog();
                    questions = result["data"];
-                   setState(() {
-        _consoleLable = result.toString();
-        hideLoadingDialog();
-      });
+      //              setState(() {
+      //   // _consoleLable = result.toString();
+      //   hideLoadingDialog();
+      // });
                   if(questions.length >0){
                   for (var ss = 0; ss < questions.length; ss++) {
                     var _data = {};
@@ -1327,9 +1327,17 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["images"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Number Range") {
                       print("5>>"+questions[ss].toString());
+                      if(questions[ss]["AnswerShopPhoto"].length > 0){
+                        _data["AnswerDesc1"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
+                        _data["AnswerDesc2"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc2"];
+                      }else{
+                        _data["AnswerDesc1"] =  "";
+                        _data["AnswerDesc2"] =  "";
+                      }
                       _data["radioDatas"] = [];
                       _data["checkDatas"] = [];
                       _data["images"] = [];
+                      
                     } else if (questions[ss]["TypeDesc"] == "Time Range") {
                       print("6>>"+questions[ss].toString());
                       if(questions[ss]["AnswerShopPhoto"].length > 0){
@@ -1468,7 +1476,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     } else if (data["TypeDesc"] == "Date") {
       _widget = dateTimePicker(data, primarydata);
     } else if (data["TypeDesc"] == "Number Range") {
-      _widget = fromToWidget(data);
+      _widget = fromToWidget(data,primarydata);
     } else if (data["TypeDesc"] == "Rating 0-10") {
       _widget = ratingWidget(data, primarydata);
     } else if (data["TypeDesc"] == "Time Range") {
@@ -1779,11 +1787,13 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget fromToWidget(var data) {
+  Widget fromToWidget(var data,var primaryData) {
+    //  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
+            //             _data["AnswerDesc2"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc2"];
     TextEditingController _fromController = new TextEditingController();
-    _fromController.text = data["AnswerDesc"];
+    _fromController.text = primaryData["AnswerDesc1"];
     TextEditingController _toController = new TextEditingController();
-    _toController.text = "10";
+    _toController.text = primaryData["AnswerDesc2"];
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     return Container(
@@ -1830,7 +1840,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             child: TextField(
                               controller: _fromController,
                               onChanged: (val) {
-                                data["AnswerDesc"] = _fromController.text;
+                                primaryData["AnswerDesc1"] = _fromController.text;
                               },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -1853,7 +1863,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             child: TextField(
                               controller: _toController,
                               onChanged: (val) {
-                                data["AnswerDesc2"] = _toController.text;
+                                primaryData["AnswerDesc2"] = _toController.text;
                               },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
