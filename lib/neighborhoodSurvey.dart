@@ -337,7 +337,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               "recordStatus": 1,
               "t1": "",
               "t2": "",
-              "t3": loopPrimary["AnswerDesc"],
+              "t3": loopPrimary["AnswerDesc1"],
               "t4": loopPrimary["AnswerDesc2"],
               "n2": "",
             }
@@ -377,7 +377,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               "recordStatus": 1,
               "t1": "",
               "t2": "",
-              "t3": loopPrimary["AnswerDesc"],
+              "t3": loopPrimary["AnswerDesc1"],
               "t4": loopPrimary["AnswerDesc2"],
               "n2": "",
             }
@@ -424,31 +424,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 datalist.add(data);
               }
             }
-            if (datalist.length == 0) {
-              // var data = {};
-              // data["recordStatus"] = 1;
-              // data["t1"] = "";
-              // data["t2"] = "";
-              // data["t3"] = "";
-              // data["t4"] = "";
-              // data["n2"] = "";
-              // datalist.add(data);
-            }
+           
             _value["svr9DataList"] = datalist;
           } else {
             var datalist = [];
-            // var data = {};
-            // data["recordStatus"] = 1;
-            // data["t1"] = "";
-            // data["t2"] = "";
-            // data["t3"] = "";
-            // data["t4"] = "";
-            // data["n2"] = "";
-            // datalist.add(data);
+           
             _value["svr9DataList"] = datalist;
           }
           questionAndAnswer.add(_value);
-          // singleQueAndAns["questionTypeId"] = _question["sectionSyskey"];
         } else if (loopData["TypeDesc"] == "Attach Photograph") {
           var _value = {};
           _value["id"] = loopData["QuestionShopSyskey"];
@@ -500,17 +483,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             questionAndAnswer.add(_value);
           } else {
             var datalist = [];
-//          if (this.saveCondition == 1) {
-//            var data = {};
-//            data["recordStatus"] = 1;
-//            data["t1"] = "";
-//            data["t2"] = "";
-//            data["t3"] = "";
-//            data["n2"] = "";
-//            datalist.add(data);
-//          } else {
-//            datalist = [];
-//          }
             _value["svr9DataList"] = datalist;
             questionAndAnswer.add(_value);
           }
@@ -572,22 +544,22 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             if (reslut["status"] == true)
               {
                 ShowToast("Saved successfully."),
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (context) => OutsideInsideNeighborhood(
-                //         this.widget.isNeighborhood,
-                //         this.widget.isOutside,
-                //         this.widget.isInside,
-                //         this.widget.isStoreOperater,
-                //         this.widget.storeName,
-                //         this.widget.storeNumber,
-                //         this.widget.address,
-                //         this.widget.regOrAss,
-                //         this.widget.passData,
-                //         this.widget.allsection,
-                //         this.widget.header),
-                //   ),
-                // )
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => OutsideInsideNeighborhood(
+                        this.widget.isNeighborhood,
+                        this.widget.isOutside,
+                        this.widget.isInside,
+                        this.widget.isStoreOperater,
+                        this.widget.storeName,
+                        this.widget.storeNumber,
+                        this.widget.address,
+                        this.widget.regOrAss,
+                        this.widget.passData,
+                        this.widget.allsection,
+                        this.widget.header),
+                  ),
+                )
               }
             else
               {}
@@ -1190,7 +1162,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       "HeaderSyskey": this.widget.header["headerSyskey"].toString(),
       "ShopSyskey": _pssOject.toString(),
     };
-    print("param"+ param.toString());
 //   var param = { "svrHdrSK": [ "2", "1", "3" ], "CategorySK": [ ] };
     showLoading();
     this
@@ -1260,7 +1231,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       _data["images"] = [];
                       _data["radioDatas"] = [];
                     } else if (questions[ss]["TypeDesc"] == "Multiple Choice") {
-                      print("2>>"+questions[ss].toString());
+                      print("3>>"+questions[ss].toString());
                       var answerSyskey;
                       answerSyskey = questions[ss]["AnswerSyskey"].toString();
                       var radioObj = {};
@@ -1308,7 +1279,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                         String year = fulldate.substring(0, 4);
                         String month = fulldate.substring(4, 6);
                         String day = fulldate.substring(6, 8);
-                        _data["servicedate"] = questions[ss]["AnswerDesc"];
+                        _data["servicedate"] = questions[ss]["AnswerShopPhoto"][0]["AnsShopCreatedDate"];
                         _data["dateFormat"] = year + "-" + month + "-" + day;
                         _data["showDate"] = day + "/" + month + "/" + year;
                       }
@@ -1944,7 +1915,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               readOnly: true,
                               controller: _fromController,
                               onChanged: (val) {
-                                data["AnswerDesc"] = _fromController.text;
+                                primaryData["AnswerDesc1"] = _fromController.text;
                               },
                               onTap: () {
                                 DatePicker.showTime12hPicker(context,
@@ -1981,15 +1952,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         minute +
                                         " AM";
                                   }
-                                  if (data["AnswerDesc2"] != "") {
-                                    if (data["AnswerDesc2"] == finalTime) {
+                                  if (primaryData["AnswerDesc2"] != "") {
+                                    if (primaryData["AnswerDesc2"] == finalTime) {
                                       ShowToast("Invalid Selected date");
                                     } else {
-                                      print("enddate>>" +
-                                          data["AnswerDesc2"].toString());
-                                      print(
-                                          "startdate>>" + finalTime.toString());
-                                      String endDate = data["AnswerDesc2"];
+                                     
+                                      String endDate = primaryData["AnswerDesc2"];
                                       int sHour = int.parse(finalTime
                                           .toString()
                                           .substring(
@@ -2033,25 +2001,25 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         if (totalStart >= totalEnd) {
                                           ShowToast("Invalid Time");
                                           setState(() {
-                                            data["AnswerDesc"] = "";
+                                            primaryData["AnswerDesc1"] = "";
                                             _fromController.text = "";
                                           });
                                         } else {
                                           setState(() {
-                                            data["AnswerDesc"] = finalTime;
+                                            primaryData["AnswerDesc1"] = finalTime;
                                             _fromController.text = finalTime;
                                           });
                                         }
                                       } else {
                                         setState(() {
-                                          data["AnswerDesc"] = finalTime;
+                                          primaryData["AnswerDesc1"] = finalTime;
                                           _fromController.text = finalTime;
                                         });
                                       }
                                     }
                                   } else {
                                     setState(() {
-                                      data["AnswerDesc"] = finalTime;
+                                      primaryData["AnswerDesc1"] = finalTime;
                                       _fromController.text = finalTime;
                                     });
                                   }
@@ -2078,7 +2046,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               readOnly: true,
                               controller: _toController,
                               onChanged: (val) {
-                                data["AnswerDesc2"] = _toController.text;
+                                primaryData["AnswerDesc2"] = _toController.text;
                               },
                               onTap: () {
                                 DatePicker.showTime12hPicker(context,
@@ -2115,8 +2083,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         minute +
                                         " AM";
                                   }
-                                  if (data["AnswerDesc"] != "") {
-                                    String startDate = data["AnswerDesc"];
+                                  if (primaryData["AnswerDesc1"] != "") {
+                                    String startDate = primaryData["AnswerDesc1"];
                                     int eHour = int.parse(finalTime
                                         .toString()
                                         .substring(0,
@@ -2149,24 +2117,24 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                       if(totalEnd <= totalStart){
                                         ShowToast("Invalid Time");
                                         setState(() {
-                                      data["AnswerDesc2"] = "";
+                                      primaryData["AnswerDesc2"] = "";
                                       _fromController.text = "";
                                     });
                                       }else{
                                         setState(() {
-                                      data["AnswerDesc2"] = finalTime;
+                                      primaryData["AnswerDesc2"]= finalTime;
                                       _fromController.text = finalTime;
                                     });
                                       }
                                     }else{
                                       setState(() {
-                                      data["AnswerDesc2"] = finalTime;
+                                      primaryData["AnswerDesc2"] = finalTime;
                                       _fromController.text = finalTime;
                                     });
                                     }
                                   } else {
                                     setState(() {
-                                      data["AnswerDesc2"] = finalTime;
+                                      primaryData["AnswerDesc2"] = finalTime;
                                       _fromController.text = finalTime;
                                     });
                                   }
@@ -2194,13 +2162,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       ),
     );
   }
-
+final _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: LoadingProvider(
         child: Scaffold(
+          key: _scaffoldKey,
           drawer: MainMenuWidget(),
           appBar: AppBar(
             backgroundColor: CustomIcons.appbarColor,
