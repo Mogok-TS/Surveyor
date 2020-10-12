@@ -1174,8 +1174,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   hideLoadingDialog();
                    questions = result["data"];
       //              setState(() {
-      //   // _consoleLable = result.toString();
-      //   hideLoadingDialog();
+      //    _consoleLable = result.toString();
+      //   // hideLoadingDialog();
       // });
                   if(questions.length >0){
                   for (var ss = 0; ss < questions.length; ss++) {
@@ -1217,7 +1217,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               y < questions[ss]["AnswerShopPhoto"].length;
                               y++) {
                             var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
-                            if (shopPhoto["CheckBoxSyskey"] ==
+                            if (shopPhoto["AnswerSyskey"] ==
                                 answers["answerSK"]) {
                               checkObj["check"] = true;
                             }
@@ -1233,7 +1233,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     } else if (questions[ss]["TypeDesc"] == "Multiple Choice") {
                       print("3>>"+questions[ss].toString());
                       var answerSyskey;
-                      answerSyskey = questions[ss]["AnswerSyskey"].toString();
+                      if(questions[ss]["AnswerShopPhoto"].length > 0){
+                        answerSyskey = questions[ss]["AnswerShopPhoto"][0]["AnswerSyskey"];
+                      }else{
+
+                      }
+                      
                       var radioObj = {};
                       var radioData = [];
                       var syskeys = {};
@@ -1275,11 +1280,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     } else if (questions[ss]["TypeDesc"] == "Date") {
                       print("4>>"+questions[ss].toString());
                       if(questions[ss]["AnswerShopPhoto"].length > 0){
-                           String fulldate = questions[ss]["AnswerShopPhoto"][0]["AnsShopCreatedDate"];
+                           String fulldate = questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
                         String year = fulldate.substring(0, 4);
                         String month = fulldate.substring(4, 6);
                         String day = fulldate.substring(6, 8);
-                        _data["servicedate"] = questions[ss]["AnswerShopPhoto"][0]["AnsShopCreatedDate"];
+                        _data["servicedate"] = questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
                         _data["dateFormat"] = year + "-" + month + "-" + day;
                         _data["showDate"] = day + "/" + month + "/" + year;
                       }
