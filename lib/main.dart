@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Surveyor',
       theme: ThemeData(
         appBarTheme: AppBarTheme(color: CustomIcons.appbarColor),
         primarySwatch: Colors.red,

@@ -22,10 +22,10 @@ class _myURL extends State<URL> {
     this.url.text = this.storage.getItem("URL");
     if (this.url.text == "" || this.url.text == null || this.url.text.isEmpty) {
 //      this.url.text = "http://52.255.142.115:8084/madbrepository/"; //For QC
-      this.url.text = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-//      this.url.text =
-//          "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
-      this.storage.setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
+//       this.url.text = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+     this.url.text =
+         "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+      this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
 

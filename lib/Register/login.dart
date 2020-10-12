@@ -303,6 +303,11 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                                                   else
                                                     {
                                                       hideLoadingDialog(),
+                                                      Navigator.of(context).pushReplacement(
+                                                        MaterialPageRoute(
+                                                          builder: (context) => StoreScreen(),
+                                                        ),
+                                                      )
                                                     }
                                                 }
                                               else
