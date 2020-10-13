@@ -1162,7 +1162,6 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       "HeaderSyskey": this.widget.header["headerSyskey"].toString(),
       "ShopSyskey": _pssOject.toString(),
     };
-//   var param = { "svrHdrSK": [ "2", "1", "3" ], "CategorySK": [ ] };
     showLoading();
     this
         .onlineSerives
@@ -1176,7 +1175,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       //              setState(() {
       //    _consoleLable = result.toString();
       //   // hideLoadingDialog();
-      // });
+      // });s
                   if(questions.length >0){
                   for (var ss = 0; ss < questions.length; ss++) {
                     var _data = {};
@@ -1931,8 +1930,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                   var hour = timeonly.substring(0, 2);
                                   var minute = timeonly.substring(3, 5);
                                   var finalTime;
+                                 print("time only"+timeonly.toString());
                                   if (int.parse(hour) < 12) {
                                     int finalHour = int.parse(hour);
+                                    if(finalHour == 0){
+                                      finalHour = 12;
+                                    }
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
@@ -1945,12 +1948,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         " PM";
                                   } else if (int.parse(hour) == 12 &&
                                       int.parse(minute) > 0) {
+                                      
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
                                         " PM";
-                                  } else {
+                                  } else if(int.parse(hour) == 12 && int.parse(minute) == 0){
+                                    int finalHour = int.parse(hour);
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " PM";
+                                  } else if(int.parse(hour) == 0 && int.parse(minute) == 0){
+                                    int finalHour = 12;
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " AM";
+                                  }
+                                  else {
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
@@ -2062,8 +2079,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                   var hour = timeonly.substring(0, 2);
                                   var minute = timeonly.substring(3, 5);
                                   var finalTime;
-                                  if (int.parse(hour) < 12) {
+                                   if (int.parse(hour) < 12) {
                                     int finalHour = int.parse(hour);
+                                    if(finalHour == 0){
+                                      finalHour = 12;
+                                    }
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
@@ -2076,12 +2096,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         " PM";
                                   } else if (int.parse(hour) == 12 &&
                                       int.parse(minute) > 0) {
+                                      
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
                                         " PM";
-                                  } else {
+                                  } else if(int.parse(hour) == 12 && int.parse(minute) == 0){
+                                    int finalHour = int.parse(hour);
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " PM";
+                                  } else if(int.parse(hour) == 0 && int.parse(minute) == 0){
+                                    int finalHour = 12;
+                                    finalTime = finalHour.toString() +
+                                        ":" +
+                                        minute +
+                                        " AM";
+                                  }
+                                  else {
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +

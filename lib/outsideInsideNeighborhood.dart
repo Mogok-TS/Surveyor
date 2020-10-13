@@ -208,7 +208,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                       totalCount++,
                       if (data[ii]["TypeDesc"] == "Fill in the Blank")
                         {
-                          if (data[ii]["AnswerDesc"] != "")
+                          if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
                               answeredCount++,
                               answerItem++,
@@ -216,7 +216,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         }
                       else if (data[ii]["TypeDesc"] == "Date")
                         {
-                          if (data[ii]["AnswerDesc"] != "")
+                          if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
                               answeredCount++,
                               answerItem++,
@@ -224,7 +224,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         }
                       else if (data[ii]["TypeDesc"] == "Rating 0-10")
                         {
-                          if (data[ii]["AnswerDesc"] != "")
+                          if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
                               answeredCount++,
                               answerItem++,
@@ -232,7 +232,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         }
                       else if (data[ii]["TypeDesc"] == "Number Range")
                         {
-                          if (data[ii]["AnswerDesc"] != "")
+                          if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
                               answeredCount++,
                               answerItem++,
@@ -256,7 +256,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         }
                       else if (data[ii]["TypeDesc"] == "Multiple Choice")
                         {
-                          if (data[ii]["AnswerSyskey"] != "")
+                          if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
                               answeredCount++,
                               answerItem++,
