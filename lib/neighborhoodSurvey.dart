@@ -424,11 +424,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 datalist.add(data);
               }
             }
-           
+
             _value["svr9DataList"] = datalist;
           } else {
             var datalist = [];
-           
+
             _value["svr9DataList"] = datalist;
           }
           questionAndAnswer.add(_value);
@@ -944,8 +944,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget fillintheBlank(var data,var primarydata) {
-    
+  Widget fillintheBlank(var data, var primarydata) {
     var t1 = data["QuestionCode"];
     var t2 = data["QuestionDescription"];
     TextEditingController _textController = new TextEditingController();
@@ -1171,192 +1170,200 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 this._checkSaveorupdate = result["checkSaveorupdate"];
                 if (result["status"] == true) {
                   hideLoadingDialog();
-                   questions = result["data"];
-      //              setState(() {
-      //    _consoleLable = result.toString();
-      //   // hideLoadingDialog();
-      // });s
-                  if(questions.length >0){
-                  for (var ss = 0; ss < questions.length; ss++) {
-                    var _data = {};
-                    _data["sysKey"] = questions[ss]["QuestionSyskey"];
-                    if (questions[ss]["TypeDesc"] == "Attach Photograph") {
-                      print("1>>"+questions[ss].toString());
-                      var onlinePhoto = [];
-                      if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                        for (var y = 0;
-                            y < questions[ss]["AnswerShopPhoto"].length;
-                            y++) {
-                          var datas = {};
-                          var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
-                          datas["image"] = shopPhoto["PhotoPath"];
-                          datas["name"] = shopPhoto["PhotoName"];
-                          datas["type"] = "online";
-                          datas["base64"] = "";
-                          onlinePhoto.add(datas);
-                        }
-                        _data["images"] = onlinePhoto;
-                      } else {
-                        _data["images"] = [];
-                      }
-                      _data["checkDatas"] = [];
-                    } else if (questions[ss]["TypeDesc"] == "Checkbox") {
-                      print("2>>"+questions[ss].toString());
-                      var checkData = [];
-                      for (var x = 0;
-                          x < questions[ss]["answers"].length;
-                          x++) {
-                        var answers = questions[ss]["answers"][x];
-                        var checkObj = {};
-                        checkObj["text"] = answers["answerDesc"];
-                        checkObj["syskey"] = answers["answerSK"];
-                        checkObj["check"] = false;
+                  questions = result["data"];
+                  //              setState(() {
+                  //    _consoleLable = result.toString();
+                  //   // hideLoadingDialog();
+                  // });s
+                  if (questions.length > 0) {
+                    for (var ss = 0; ss < questions.length; ss++) {
+                      var _data = {};
+                      _data["sysKey"] = questions[ss]["QuestionSyskey"];
+                      if (questions[ss]["TypeDesc"] == "Attach Photograph") {
+                        print("1>>" + questions[ss].toString());
+                        var onlinePhoto = [];
                         if (questions[ss]["AnswerShopPhoto"].length > 0) {
                           for (var y = 0;
                               y < questions[ss]["AnswerShopPhoto"].length;
                               y++) {
+                            var datas = {};
                             var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
-                            if (shopPhoto["AnswerSyskey"] ==
-                                answers["answerSK"]) {
-                              checkObj["check"] = true;
+                            datas["image"] = shopPhoto["PhotoPath"];
+                            datas["name"] = shopPhoto["PhotoName"];
+                            datas["type"] = "online";
+                            datas["base64"] = "";
+                            onlinePhoto.add(datas);
+                          }
+                          _data["images"] = onlinePhoto;
+                        } else {
+                          _data["images"] = [];
+                        }
+                        _data["checkDatas"] = [];
+                      } else if (questions[ss]["TypeDesc"] == "Checkbox") {
+                        print("2>>" + questions[ss].toString());
+                        var checkData = [];
+                        for (var x = 0;
+                            x < questions[ss]["answers"].length;
+                            x++) {
+                          var answers = questions[ss]["answers"][x];
+                          var checkObj = {};
+                          checkObj["text"] = answers["answerDesc"];
+                          checkObj["syskey"] = answers["answerSK"];
+                          checkObj["check"] = false;
+                          if (questions[ss]["AnswerShopPhoto"].length > 0) {
+                            for (var y = 0;
+                                y < questions[ss]["AnswerShopPhoto"].length;
+                                y++) {
+                              var shopPhoto =
+                                  questions[ss]["AnswerShopPhoto"][y];
+                              if (shopPhoto["AnswerSyskey"] ==
+                                  answers["answerSK"]) {
+                                checkObj["check"] = true;
+                              }
+                            }
+                            checkData.add(checkObj);
+                          } else {
+                            checkData.add(checkObj);
+                          }
+                        }
+                        _data["checkDatas"] = checkData;
+                        _data["images"] = [];
+                        _data["radioDatas"] = [];
+                      } else if (questions[ss]["TypeDesc"] ==
+                          "Multiple Choice") {
+                        print("3>>" + questions[ss].toString());
+                        var answerSyskey;
+                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
+                          answerSyskey = questions[ss]["AnswerShopPhoto"][0]
+                              ["AnswerSyskey"];
+                        } else {
+                          answerSyskey =
+                              questions[ss]["answers"][0]["answerSK"];
+                        }
+
+                        var radioObj = {};
+                        var radioData = [];
+                        var syskeys = {};
+                        syskeys["questionSyskey"] =
+                            questions[ss]["QuestionSyskey"].toString();
+                        for (var x = 0;
+                            x < questions[ss]["answers"].length;
+                            x++) {
+                          var radioObj = {};
+                          var getdefaultAns = questions[ss]["answers"][0];
+                          var answers = questions[ss]["answers"][x];
+                          radioObj["text"] = answers["answerDesc"];
+                          radioObj["syskey"] = answers["answerSK"];
+                          radioObj["questionSyskey"] =
+                              questions[ss]["QuestionSyskey"].toString();
+                          if (answerSyskey == "") {
+                            syskeys["answerSyskey"] =
+                                getdefaultAns["answerSK"].toString();
+                            syskeys["answerDesc"] =
+                                getdefaultAns["answerDesc"].toString();
+                          } else {
+                            syskeys["answerSyskey"] = answerSyskey.toString();
+                            if (answerSyskey.toString() ==
+                                answers["answerSK"].toString()) {
+                              syskeys["answerSyskey"] =
+                                  answers["answerSK"].toString();
+                              syskeys["answerDesc"] =
+                                  answers["answerDesc"].toString();
                             }
                           }
-                          checkData.add(checkObj);
-                        } else {
-                          checkData.add(checkObj);
+                          radioData.add(radioObj);
                         }
-                      }
-                      _data["checkDatas"] = checkData;
-                      _data["images"] = [];
-                      _data["radioDatas"] = [];
-                    } else if (questions[ss]["TypeDesc"] == "Multiple Choice") {
-                      print("3>>"+questions[ss].toString());
-                      var answerSyskey;
-                      if(questions[ss]["AnswerShopPhoto"].length > 0){
-                        answerSyskey = questions[ss]["AnswerShopPhoto"][0]["AnswerSyskey"];
-                      }else{
 
-                      }
-                      
-                      var radioObj = {};
-                      var radioData = [];
-                      var syskeys = {};
-                      syskeys["questionSyskey"] =
-                          questions[ss]["QuestionSyskey"].toString();
-                      for (var x = 0;
-                          x < questions[ss]["answers"].length;
-                          x++) {
-                        var radioObj = {};
-                        var getdefaultAns = questions[ss]["answers"][0];
-                        var answers = questions[ss]["answers"][x];
-                        radioObj["text"] = answers["answerDesc"];
-                        radioObj["syskey"] = answers["answerSK"];
-                        radioObj["questionSyskey"] =
-                            questions[ss]["QuestionSyskey"].toString();
-                        if (answerSyskey == "") {
-                          syskeys["answerSyskey"] =
-                              getdefaultAns["answerSK"].toString();
-                          syskeys["answerDesc"] =
-                              getdefaultAns["answerDesc"].toString();
+                        this.newQuestionarray.add(syskeys);
+                        radioObj["qustionSyskey"] =
+                            _data["radioDatas"] = radioData;
+                        _data["checkDatas"] = [];
+                        _data["images"] = [];
+                      } else if (questions[ss]["TypeDesc"] == "Date") {
+                        print("4>>" + questions[ss].toString());
+                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
+                          String fulldate = questions[ss]["AnswerShopPhoto"][0]
+                              ["AnswerDesc1"];
+                          String year = fulldate.substring(0, 4);
+                          String month = fulldate.substring(4, 6);
+                          String day = fulldate.substring(6, 8);
+                          _data["servicedate"] = questions[ss]
+                              ["AnswerShopPhoto"][0]["AnswerDesc1"];
+                          _data["dateFormat"] = year + "-" + month + "-" + day;
+                          _data["showDate"] = day + "/" + month + "/" + year;
                         } else {
-                          syskeys["answerSyskey"] = answerSyskey.toString();
-                          if (answerSyskey.toString() ==
-                              answers["answerSK"].toString()) {
-                            syskeys["answerSyskey"] =
-                                answers["answerSK"].toString();
-                            syskeys["answerDesc"] =
-                                answers["answerDesc"].toString();
-                          }
+                          DateTime selectedDate = DateTime.now();
+                          String fulldate = selectedDate.toString();
+                          String day = fulldate.substring(8, 10);
+                          String month = fulldate.substring(5, 7);
+                          String year = fulldate.substring(0, 4);
+                          _data["servicedate"] = year + month + day;
+                          _data["dateFormat"] = year + "-" + month + "-" + day;
+                          _data["showDate"] = day + "/" + month + "/" + year;
                         }
-                        radioData.add(radioObj);
-                      }
+                        _data["radioDatas"] = [];
+                        _data["checkDatas"] = [];
+                        _data["images"] = [];
+                      } else if (questions[ss]["TypeDesc"] == "Number Range") {
+                        print("5>>" + questions[ss].toString());
+                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
+                          _data["AnswerDesc1"] = questions[ss]
+                              ["AnswerShopPhoto"][0]["AnswerDesc1"];
+                          _data["AnswerDesc2"] = questions[ss]
+                              ["AnswerShopPhoto"][0]["AnswerDesc2"];
+                        } else {
+                          _data["AnswerDesc1"] = "";
+                          _data["AnswerDesc2"] = "";
+                        }
+                        _data["radioDatas"] = [];
+                        _data["checkDatas"] = [];
+                        _data["images"] = [];
+                      } else if (questions[ss]["TypeDesc"] == "Time Range") {
+                        print("6>>" + questions[ss].toString());
+                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
+                          _data["AnswerDesc1"] = questions[ss]
+                              ["AnswerShopPhoto"][0]["AnswerDesc1"];
+                          _data["AnswerDesc2"] = questions[ss]
+                              ["AnswerShopPhoto"][0]["AnswerDesc2"];
+                        } else {
+                          _data["AnswerDesc1"] = "";
+                          _data["AnswerDesc2"] = "";
+                        }
+                        _data["radioDatas"] = [];
+                        _data["checkDatas"] = [];
+                        _data["images"] = [];
+                      } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
+                        print("7>>" + questions[ss].toString());
+                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
+                          _data["rating"] = questions[ss]["AnswerShopPhoto"][0]
+                              ["AnswerDesc1"];
+                        } else {
+                          _data["rating"] = "0";
+                        }
 
-                      this.newQuestionarray.add(syskeys);
-                      radioObj["qustionSyskey"] =
-                          _data["radioDatas"] = radioData;
-                      _data["checkDatas"] = [];
-                      _data["images"] = [];
-                    } else if (questions[ss]["TypeDesc"] == "Date") {
-                      print("4>>"+questions[ss].toString());
-                      if(questions[ss]["AnswerShopPhoto"].length > 0){
-                           String fulldate = questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
-                        String year = fulldate.substring(0, 4);
-                        String month = fulldate.substring(4, 6);
-                        String day = fulldate.substring(6, 8);
-                        _data["servicedate"] = questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
-                        _data["dateFormat"] = year + "-" + month + "-" + day;
-                        _data["showDate"] = day + "/" + month + "/" + year;
+                        _data["radioDatas"] = [];
+                        _data["checkDatas"] = [];
+                        _data["images"] = [];
+                      } else if (questions[ss]["TypeDesc"] ==
+                          "Fill in the Blank") {
+                        print("8>>" + questions[ss].toString());
+                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
+                          _data["AnswerDesc"] = questions[ss]["AnswerShopPhoto"]
+                              [0]["AnswerDesc1"];
+                        } else {
+                          _data["AnswerDesc"] = "";
+                        }
+                        _data["radioDatas"] = [];
+                        _data["checkDatas"] = [];
+                        _data["images"] = [];
+                      } else {
+                        _data["radioDatas"] = [];
+                        _data["checkDatas"] = [];
+                        _data["images"] = [];
                       }
-                      else {
-                        DateTime selectedDate = DateTime.now();
-                        String fulldate = selectedDate.toString();
-                        String day = fulldate.substring(8, 10);
-                        String month = fulldate.substring(5, 7);
-                        String year = fulldate.substring(0, 4);
-                        _data["servicedate"] = year + month + day;
-                        _data["dateFormat"] = year + "-" + month + "-" + day;
-                        _data["showDate"] = day + "/" + month + "/" + year;
-                      }
-                      _data["radioDatas"] = [];
-                      _data["checkDatas"] = [];
-                      _data["images"] = [];
-                    } else if (questions[ss]["TypeDesc"] == "Number Range") {
-                      print("5>>"+questions[ss].toString());
-                      if(questions[ss]["AnswerShopPhoto"].length > 0){
-                        _data["AnswerDesc1"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
-                        _data["AnswerDesc2"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc2"];
-                      }else{
-                        _data["AnswerDesc1"] =  "";
-                        _data["AnswerDesc2"] =  "";
-                      }
-                      _data["radioDatas"] = [];
-                      _data["checkDatas"] = [];
-                      _data["images"] = [];
-                      
-                    } else if (questions[ss]["TypeDesc"] == "Time Range") {
-                      print("6>>"+questions[ss].toString());
-                      if(questions[ss]["AnswerShopPhoto"].length > 0){
-                        _data["AnswerDesc1"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
-                        _data["AnswerDesc2"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc2"];
-                      }else{
-                        _data["AnswerDesc1"] =  "";
-                        _data["AnswerDesc2"] =  "";
-                      }
-                      _data["radioDatas"] = [];
-                      _data["checkDatas"] = [];
-                      _data["images"] = [];
-                    } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
-                      print("7>>"+questions[ss].toString());
-                      if(questions[ss]["AnswerShopPhoto"].length > 0){
-                        _data["rating"] = questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
-                      }else{
-                        _data["rating"] = "0";
-                      }
-                      
-                      _data["radioDatas"] = [];
-                      _data["checkDatas"] = [];
-                      _data["images"] = [];
+                      _primaryData.add(_data);
                     }
-
-                    else if(questions[ss]["TypeDesc"] == "Fill in the Blank"){
-                      print("8>>"+questions[ss].toString());
-                      if(questions[ss]["AnswerShopPhoto"].length >0){
-                        _data["AnswerDesc"] = questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
-                      }else{
-                        _data["AnswerDesc"] = "";
-                      }
-                      _data["radioDatas"] = [];
-                      _data["checkDatas"] = [];
-                      _data["images"] = [];
-                    }
-                     else {
-                      _data["radioDatas"] = [];
-                      _data["checkDatas"] = [];
-                      _data["images"] = [];
-                    }
-                    _primaryData.add(_data);
                   }
-                }
                   _status = true;
                   if (this.widget.headershopKey == "") {
                     saveCondition = "0";
@@ -1440,7 +1447,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     if (data["TypeDesc"] == "Attach Photograph") {
       _widget = attachPhotograph(data, primarydata["images"]);
     } else if (data["TypeDesc"] == "Fill in the Blank") {
-      _widget = fillintheBlank(data,primarydata);
+      _widget = fillintheBlank(data, primarydata);
     } else if (data["TypeDesc"] == "Checkbox") {
       _widget = checkBox(data, primarydata["checkDatas"]);
     } else if (data["TypeDesc"] == "Multiple Choice") {
@@ -1451,11 +1458,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     } else if (data["TypeDesc"] == "Date") {
       _widget = dateTimePicker(data, primarydata);
     } else if (data["TypeDesc"] == "Number Range") {
-      _widget = fromToWidget(data,primarydata);
+      _widget = fromToWidget(data, primarydata);
     } else if (data["TypeDesc"] == "Rating 0-10") {
       _widget = ratingWidget(data, primarydata);
     } else if (data["TypeDesc"] == "Time Range") {
-      _widget = timeRangeWidget(data,primarydata);
+      _widget = timeRangeWidget(data, primarydata);
     } else {
       _widget = Container(
         margin: EdgeInsets.only(bottom: 20),
@@ -1762,9 +1769,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget fromToWidget(var data,var primaryData) {
+  Widget fromToWidget(var data, var primaryData) {
     //  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc1"];
-            //             _data["AnswerDesc2"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc2"];
+    //             _data["AnswerDesc2"] =  questions[ss]["AnswerShopPhoto"][0]["AnswerDesc2"];
     TextEditingController _fromController = new TextEditingController();
     _fromController.text = primaryData["AnswerDesc1"];
     TextEditingController _toController = new TextEditingController();
@@ -1815,7 +1822,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             child: TextField(
                               controller: _fromController,
                               onChanged: (val) {
-                                primaryData["AnswerDesc1"] = _fromController.text;
+                                primaryData["AnswerDesc1"] =
+                                    _fromController.text;
                               },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -1864,7 +1872,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     );
   }
 
-  Widget timeRangeWidget(var data,var primaryData) {
+  Widget timeRangeWidget(var data, var primaryData) {
     // var fromTime = TimeOfDay.now();
 
     TextEditingController _fromController = new TextEditingController();
@@ -1919,7 +1927,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                               readOnly: true,
                               controller: _fromController,
                               onChanged: (val) {
-                                primaryData["AnswerDesc1"] = _fromController.text;
+                                primaryData["AnswerDesc1"] =
+                                    _fromController.text;
                               },
                               onTap: () {
                                 DatePicker.showTime12hPicker(context,
@@ -1930,10 +1939,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                   var hour = timeonly.substring(0, 2);
                                   var minute = timeonly.substring(3, 5);
                                   var finalTime;
-                                 print("time only"+timeonly.toString());
+                                  print("time only" + timeonly.toString());
                                   if (int.parse(hour) < 12) {
                                     int finalHour = int.parse(hour);
-                                    if(finalHour == 0){
+                                    if (finalHour == 0) {
                                       finalHour = 12;
                                     }
                                     finalTime = finalHour.toString() +
@@ -1948,26 +1957,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         " PM";
                                   } else if (int.parse(hour) == 12 &&
                                       int.parse(minute) > 0) {
-                                      
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
                                         " PM";
-                                  } else if(int.parse(hour) == 12 && int.parse(minute) == 0){
+                                  } else if (int.parse(hour) == 12 &&
+                                      int.parse(minute) == 0) {
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
                                         " PM";
-                                  } else if(int.parse(hour) == 0 && int.parse(minute) == 0){
+                                  } else if (int.parse(hour) == 0 &&
+                                      int.parse(minute) == 0) {
                                     int finalHour = 12;
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
                                         " AM";
-                                  }
-                                  else {
+                                  } else {
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
@@ -1975,11 +1984,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         " AM";
                                   }
                                   if (primaryData["AnswerDesc2"] != "") {
-                                    if (primaryData["AnswerDesc2"] == finalTime) {
+                                    if (primaryData["AnswerDesc2"] ==
+                                        finalTime) {
                                       ShowToast("Invalid Selected date");
                                     } else {
-                                     
-                                      String endDate = primaryData["AnswerDesc2"];
+                                      String endDate =
+                                          primaryData["AnswerDesc2"];
                                       int sHour = int.parse(finalTime
                                           .toString()
                                           .substring(
@@ -2020,21 +2030,73 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                           endDate.indexOf("M") + 1);
                                       int totalEnd = (eHour * 60) + eMin;
                                       if (eDON == sDON) {
-                                        if (totalStart >= totalEnd) {
-                                          ShowToast("Invalid Time");
-                                          setState(() {
-                                            primaryData["AnswerDesc1"] = "";
-                                            _fromController.text = "";
-                                          });
-                                        } else {
-                                          setState(() {
-                                            primaryData["AnswerDesc1"] = finalTime;
-                                            _fromController.text = finalTime;
-                                          });
+                                        print("s>>" + sHour.toString());
+                                        print("e>>" + eHour.toString());
+                                        //added--
+                                        if (sHour == 12) {
+                                          if (eHour == 12) {
+                                            if (eMin > sMin) {
+                                              setState(() {
+                                                primaryData["AnswerDesc1"] = finalTime;
+                                                _fromController.text = finalTime;
+                                              });
+                                            } else {
+                                              ShowToast("Invalid Time");
+                                              primaryData["AnswerDesc1"] = "";
+                                                _fromController.text = "";
+                                            }
+                                          } else if (sHour > eHour) {
+                                            setState(() {
+                                              primaryData["AnswerDesc1"] = "";
+                                              _fromController.text = "";
+                                            });
+                                          } else {
+                                            ShowToast("Invalid Time");
+                                              primaryData["AnswerDesc1"] = "";
+                                                _fromController.text = "";
+                                          }
+                                        }else if (eHour == 12) {
+                                          if (sHour == 12) {
+                                            if (eMin > sMin) {
+                                              setState(() {
+                                                primaryData["AnswerDesc1"] = finalTime;
+                                                _fromController.text = finalTime;
+                                              });
+                                            } else {
+                                              ShowToast("Invalid Time");
+                                              primaryData["AnswerDesc1"] = "";
+                                                _fromController.text = "";
+                                            }
+                                          } else if (eHour > sHour) {
+                                            setState(() {
+                                              primaryData["AnswerDesc1"] = "";
+                                              _fromController.text = "";
+                                            });
+                                          } else {
+                                            ShowToast("Invalid Time");
+                                              primaryData["AnswerDesc1"] = "";
+                                                _fromController.text = "";
+                                          }
+                                        }
+                                         else {
+                                          if (totalStart >= totalEnd) {
+                                            ShowToast("Invalid Time");
+                                            setState(() {
+                                              primaryData["AnswerDesc1"] = "";
+                                              _fromController.text = "";
+                                            });
+                                          } else {
+                                            setState(() {
+                                              primaryData["AnswerDesc1"] =
+                                                  finalTime;
+                                              _fromController.text = finalTime;
+                                            });
+                                          }
                                         }
                                       } else {
                                         setState(() {
-                                          primaryData["AnswerDesc1"] = finalTime;
+                                          primaryData["AnswerDesc1"] =
+                                              finalTime;
                                           _fromController.text = finalTime;
                                         });
                                       }
@@ -2079,9 +2141,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                   var hour = timeonly.substring(0, 2);
                                   var minute = timeonly.substring(3, 5);
                                   var finalTime;
-                                   if (int.parse(hour) < 12) {
+                                  if (int.parse(hour) < 12) {
                                     int finalHour = int.parse(hour);
-                                    if(finalHour == 0){
+                                    if (finalHour == 0) {
                                       finalHour = 12;
                                     }
                                     finalTime = finalHour.toString() +
@@ -2096,26 +2158,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         " PM";
                                   } else if (int.parse(hour) == 12 &&
                                       int.parse(minute) > 0) {
-                                      
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
                                         " PM";
-                                  } else if(int.parse(hour) == 12 && int.parse(minute) == 0){
+                                  } else if (int.parse(hour) == 12 &&
+                                      int.parse(minute) == 0) {
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
                                         " PM";
-                                  } else if(int.parse(hour) == 0 && int.parse(minute) == 0){
+                                  } else if (int.parse(hour) == 0 &&
+                                      int.parse(minute) == 0) {
                                     int finalHour = 12;
                                     finalTime = finalHour.toString() +
                                         ":" +
                                         minute +
                                         " AM";
-                                  }
-                                  else {
+                                  } else {
                                     int finalHour = int.parse(hour);
                                     finalTime = finalHour.toString() +
                                         ":" +
@@ -2123,7 +2185,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         " AM";
                                   }
                                   if (primaryData["AnswerDesc1"] != "") {
-                                    String startDate = primaryData["AnswerDesc1"];
+                                    String startDate =
+                                        primaryData["AnswerDesc1"];
                                     int eHour = int.parse(finalTime
                                         .toString()
                                         .substring(0,
@@ -2152,29 +2215,86 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         startDate.indexOf(" ") + 1,
                                         startDate.indexOf("M") + 1);
                                     int totalStart = (sHour * 60) + sMin;
-                                    if(eDON == sDON){
-                                      if(totalEnd <= totalStart){
-                                        ShowToast("Invalid Time");
-                                        setState(() {
-                                      primaryData["AnswerDesc2"] = "";
-                                      _fromController.text = "";
-                                    });
-                                      }else{
-                                        setState(() {
-                                      primaryData["AnswerDesc2"]= finalTime;
-                                      _fromController.text = finalTime;
-                                    });
+                                    if (eDON == sDON) {
+                                      if (eHour == 12) {
+                                        if (sHour == 12) {
+                                          if (eMin > sMin) {
+                                            setState(() {
+                                               primaryData["AnswerDesc2"] = finalTime;
+                                      _toController.text = finalTime;
+                                            });
+                                          } else {
+                                             ShowToast("Invalid Time..");
+                                          setState(() {
+                                            primaryData["AnswerDesc2"] = "";
+                                            _toController.text = "";
+                                          });
+                                          }
+                                        } else if (eHour > sHour) {
+                                          setState(() {
+                                           primaryData["AnswerDesc2"] = finalTime;
+                                      _toController.text = finalTime;
+                                          });
+                                        } else {
+                                           ShowToast("Invalid Time");
+                                          setState(() {
+                                            primaryData["AnswerDesc2"] = "";
+                                            _toController.text = "";
+                                          });
+                                        }
                                       }
-                                    }else{
+                                      else if (sHour == 12) {
+                                        if (eHour == 12) {
+                                          if (eMin > sMin) {
+                                            setState(() {
+                                               primaryData["AnswerDesc2"] = finalTime;
+                                      _toController.text = finalTime;
+                                            });
+                                          } else {
+                                             ShowToast("Invalid Time..");
+                                          setState(() {
+                                            primaryData["AnswerDesc2"] = "";
+                                            _toController.text = "";
+                                          });
+                                          }
+                                        } else if (sHour > eHour) {
+                                          setState(() {
+                                           primaryData["AnswerDesc2"] = finalTime;
+                                      _toController.text = finalTime;
+                                          });
+                                        } else {
+                                           ShowToast("Invalid Time");
+                                          setState(() {
+                                            primaryData["AnswerDesc2"] = "";
+                                            _toController.text = "";
+                                          });
+                                        }
+                                      }
+                                       else {
+                                        if (totalEnd <= totalStart) {
+                                          ShowToast("Invalid Time");
+                                          setState(() {
+                                            primaryData["AnswerDesc2"] = "";
+                                            _toController.text = "";
+                                          });
+                                        } else {
+                                          setState(() {
+                                            primaryData["AnswerDesc2"] =
+                                                finalTime;
+                                            _toController.text = finalTime;
+                                          });
+                                        }
+                                      }
+                                    } else {
                                       setState(() {
-                                      primaryData["AnswerDesc2"] = finalTime;
-                                      _fromController.text = finalTime;
-                                    });
+                                        primaryData["AnswerDesc2"] = finalTime;
+                                        _toController.text = finalTime;
+                                      });
                                     }
                                   } else {
                                     setState(() {
                                       primaryData["AnswerDesc2"] = finalTime;
-                                      _fromController.text = finalTime;
+                                      _toController.text = finalTime;
                                     });
                                   }
                                 }, currentTime: DateTime.now());
@@ -2201,7 +2321,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       ),
     );
   }
-final _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

@@ -210,32 +210,55 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-                              answeredCount++,
-                              answerItem++,
+                              if (data[ii]["AnswerShopPhoto"][0]
+                                      ["AnswerDesc1"] !=
+                                  "")
+                                {
+                                  answeredCount++,
+                                  answerItem++,
+                                }
                             },
                         }
                       else if (data[ii]["TypeDesc"] == "Date")
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-                              answeredCount++,
-                              answerItem++,
+                              if (data[ii]["AnswerShopPhoto"][0]
+                                      ["AnswerDesc1"] !=
+                                  "")
+                                {
+                                  answeredCount++,
+                                  answerItem++,
+                                }
                             },
                         }
                       else if (data[ii]["TypeDesc"] == "Rating 0-10")
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-                              answeredCount++,
-                              answerItem++,
+                              if (data[ii]["AnswerShopPhoto"][0]
+                                      ["AnswerDesc1"] !=
+                                  "")
+                                {
+                                  answeredCount++,
+                                  answerItem++,
+                                }
                             },
                         }
                       else if (data[ii]["TypeDesc"] == "Number Range")
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-                              answeredCount++,
-                              answerItem++,
+                              if (data[ii]["AnswerShopPhoto"][0]
+                                          ["AnswerDesc1"] !=
+                                      "" ||
+                                  data[ii]["AnswerShopPhoto"][0]
+                                          ["AnswerDesc2"] !=
+                                      "")
+                                {
+                                  answeredCount++,
+                                  answerItem++,
+                                }
                             },
                         }
                       else if (data[ii]["TypeDesc"] == "Attach Photograph")
@@ -250,16 +273,26 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-                              answeredCount++,
-                              answerItem++,
+                              if (data[ii]["AnswerShopPhoto"][0]
+                                      ["AnswerDesc1"] !=
+                                  "")
+                                {
+                                  answeredCount++,
+                                  answerItem++,
+                                }
                             },
                         }
                       else if (data[ii]["TypeDesc"] == "Multiple Choice")
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-                              answeredCount++,
-                              answerItem++,
+                              if (data[ii]["AnswerShopPhoto"][0]
+                                      ["AnswerDesc1"] !=
+                                  "")
+                                {
+                                  answeredCount++,
+                                  answerItem++,
+                                }
                             },
                         },
                     },
@@ -422,7 +455,8 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
-                if (this.headerItems.length.toString() == this.widget.question.length.toString())
+                if (this.headerItems.length.toString() ==
+                    this.widget.question.length.toString())
                   for (var x = 0; x < this.widget.question.length; x++)
                     sectionList(this.widget.question[x], this.headerItems[x])
               ],
