@@ -2030,9 +2030,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                           endDate.indexOf("M") + 1);
                                       int totalEnd = (eHour * 60) + eMin;
                                       if (eDON == sDON) {
-                                        print("s>>" + sHour.toString());
-                                        print("e>>" + eHour.toString());
-                                        //added--
+                                       
                                         if (sHour == 12) {
                                           if (eHour == 12) {
                                             if (eMin > sMin) {
@@ -2047,9 +2045,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                             }
                                           } else if (sHour > eHour) {
                                             setState(() {
-                                              primaryData["AnswerDesc1"] = "";
-                                              _fromController.text = "";
-                                            });
+                                                primaryData["AnswerDesc1"] = finalTime;
+                                                _fromController.text = finalTime;
+                                              });
                                           } else {
                                             ShowToast("Invalid Time");
                                               primaryData["AnswerDesc1"] = "";
@@ -2067,11 +2065,11 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                               primaryData["AnswerDesc1"] = "";
                                                 _fromController.text = "";
                                             }
-                                          } else if (eHour > sHour) {
+                                          } else if (sHour > eHour) {
                                             setState(() {
-                                              primaryData["AnswerDesc1"] = "";
-                                              _fromController.text = "";
-                                            });
+                                                primaryData["AnswerDesc1"] = finalTime;
+                                                _fromController.text = finalTime;
+                                              });
                                           } else {
                                             ShowToast("Invalid Time");
                                               primaryData["AnswerDesc1"] = "";
@@ -2216,8 +2214,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         startDate.indexOf("M") + 1);
                                     int totalStart = (sHour * 60) + sMin;
                                     if (eDON == sDON) {
-                                      if (eHour == 12) {
-                                        if (sHour == 12) {
+                                      if (sHour == 12) {
+                                        if (eHour == 12) {
                                           if (eMin > sMin) {
                                             setState(() {
                                                primaryData["AnswerDesc2"] = finalTime;
@@ -2230,7 +2228,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                             _toController.text = "";
                                           });
                                           }
-                                        } else if (eHour > sHour) {
+                                        } else if (sHour > eHour) {
                                           setState(() {
                                            primaryData["AnswerDesc2"] = finalTime;
                                       _toController.text = finalTime;
@@ -2243,8 +2241,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                           });
                                         }
                                       }
-                                      else if (sHour == 12) {
-                                        if (eHour == 12) {
+                                      else if (eHour == 12) {
+                                        if (sHour == 12) {
                                           if (eMin > sMin) {
                                             setState(() {
                                                primaryData["AnswerDesc2"] = finalTime;
