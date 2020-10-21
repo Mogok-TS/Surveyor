@@ -39,6 +39,7 @@ class OnlineSerives {
 //      this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
 //       this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
      this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+     //  this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
       this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
@@ -395,8 +396,8 @@ class OnlineSerives {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
-          this.storage.setItem("storeReg", data["list"]);
-          var aa = data["list"].length;
+          // this.storage.setItem("storeReg", data["list"]);
+          // var aa = data["list"].length;
 
           this.status = true;
         } else {
@@ -830,6 +831,7 @@ class OnlineSerives {
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+    print("12-->" + response.body);
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -904,6 +906,10 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
           this.storage.setItem("getSurveyor", data["list"]);
+          if(data["list"].length == 0){
+            this.storage.setItem("Category", []);
+            print("123-->");
+          }
         } else {
           ShowToast("Server fail.");
           this.status = false;

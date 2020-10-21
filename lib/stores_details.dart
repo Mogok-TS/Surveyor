@@ -1694,10 +1694,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           this.ownerName.text.isEmpty ||
                           this.ownerPhoneNo.text == "" ||
                           this.ownerPhoneNo.text == null ||
-                          this.ownerPhoneNo.text.isEmpty ||
-                          this.street.text == "" ||
-                          this.street.text == null ||
-                          this.street.text.isEmpty) {
+                          this.ownerPhoneNo.text.isEmpty
+                      // ||
+                          // this.street.text == "" ||
+                          // this.street.text == null ||
+                          // this.street.text.isEmpty
+                      ) {
                         ShowToast("Please fill all fields");
                       } else {
                         showLoading();
@@ -1861,9 +1863,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           };
                         }
                         ;
-                        print("Data" + "${param}");
+                        print("Data-->" + "${param}");
                         this.onlineSerives.createStore(param).then((reslut) => {
-                              print("${reslut}"),
+                              print("ass-->" + reslut.toString()),
                               if (reslut["status"] == true)
                                 {
                                   hideLoadingDialog(),
@@ -1888,6 +1890,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     this.updateStatus = true;
                                     this.widget.updateStatuspass =
                                         this.updateStatus;
+                                    this.widget.passData = this.updateDataarray;
                                   }),
                                 }
                               else

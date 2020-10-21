@@ -165,14 +165,15 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   var flag;
   @override
   void initState() {
-    print("Hello World");
     super.initState();
     var _pssOject;
+    print("ss-->" + this.widget.passData.toString());
     if (this.widget.regOrAss == "assign") {
       _pssOject = this.widget.passData[0]["shopsyskey"];
     } else {
       _pssOject = this.widget.passData[0]["id"];
     }
+
     var param = {
       "HeaderShopSyskey": "",
       "ShopTransSyskey": "",
@@ -206,10 +207,12 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         },
                       this.allItem++,
                       totalCount++,
+                      print("1ss-->" + data[ii]["TypeDesc"].toString()),
                       if (data[ii]["TypeDesc"] == "Fill in the Blank")
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
+
                               if (data[ii]["AnswerShopPhoto"][0]
                                       ["AnswerDesc1"] !=
                                   "")
@@ -223,6 +226,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
+
                               if (data[ii]["AnswerShopPhoto"][0]
                                       ["AnswerDesc1"] !=
                                   "")
@@ -271,6 +275,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         }
                       else if (data[ii]["TypeDesc"] == "Checkbox")
                         {
+
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
                               if (data[ii]["AnswerShopPhoto"][0]
@@ -286,6 +291,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
+
                               if (data[ii]["AnswerShopPhoto"][0]
                                       ["AnswerDesc1"] !=
                                   "")
@@ -294,7 +300,21 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                   answerItem++,
                                 }
                             },
-                        },
+                        }
+                        else if (data[ii]["TypeDesc"] == "Time Range")
+                            {
+                              if (data[ii]["AnswerShopPhoto"].length > 0)
+                                {
+
+                                  if (data[ii]["AnswerShopPhoto"][0]
+                                  ["AnswerDesc1"] !=
+                                      "")
+                                    {
+                                      answeredCount++,
+                                      answerItem++,
+                                    }
+                                },
+                            },
                     },
                   if (data[ii]["HeaderShopSyskey"].toString() != "")
                     {

@@ -37,13 +37,16 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   LocalStorage storage = new LocalStorage('Surveyor');
   var headerList = [];
 
-  Widget _listTileWidget(var passData) {
+  Widget _listTileWidget(passData) {
     var isNeighborhood;
     var isOutside;
     var isInside;
     var isStoreOperater;
+    print("data-->" + passData.toString());
     var header = passData;
+
     var secitons = passData["sections"];
+
     var section;
     for (var i = 0; i < secitons.length; i++) {
       if (secitons[i]["sectionDescription"] == "Neighborhood Survey") {
@@ -134,9 +137,16 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
 
   bool complete = true;
   _getData() {
-    var routeData = this.storage.getItem('Routebyuser');
-    var category = this.storage.getItem("Category");
-    var answer = category[0]["answer"];
+    var routeData = this.storage.getItem("Routebyuser");
+    List category = this.storage.getItem("Category");
+    print("answer-->" + category.toString() + " ___ " + routeData.toString());
+    var answer;
+    if(category.length > 0){
+      answer = category[0]["answer"];
+    }else{
+      answer = [];
+    }
+
     var categories = [];
     var passData;
     var svrHdrSk = [];
@@ -146,6 +156,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
         categories.add(answer[q]["category"]);
       }
     }
+    print("aa-->" + this.widget.regOrAss.toString() + " __ " + this.widget.passData.toString() );
     if (this.widget.regOrAss == "assign") {
       passData = this.widget.passData;
       for (var i = 0; i < routeData.length; i++) {
@@ -155,6 +166,8 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
         }
       }
 
+      print("30-->" + surDetail.toString() + "___" +  passData[0]["regionsyskey"]);
+
       if (surDetail.length == 0) {
       } else {
         for (var ss = 0; ss < surDetail.length; ss++) {
@@ -163,10 +176,12 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       }
     } else {}
     var params = {"svrHdrSK": svrHdrSk, "CategorySK": categories};
+    print("param1 -->" + params.toString());
     this
         .onlineSerives
         .getHeaderList(params)
         .then((result) => {
+
               if (result["status"] == true)
                 {
                   setState(() => {
@@ -181,7 +196,8 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                                 this.complete = false,
                               }),
                         }
-                    }
+                    },
+                  print("res -->" +  this.headerList.toString()),
                 }
               else
                 {

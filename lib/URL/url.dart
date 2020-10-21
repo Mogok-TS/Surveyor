@@ -25,7 +25,8 @@ class _myURL extends State<URL> {
 //       this.url.text = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
      this.url.text =
          "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
-      this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
+     //  this.url.text = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
+      this.storage.setItem('URL', "http://52.255.142.115:8084/madbrepositorydev/");
     }
   }
 

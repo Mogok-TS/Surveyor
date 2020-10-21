@@ -91,6 +91,7 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget assignStoreWidget(var data) {
+    print("sdfsdf-->" + data.toString());
     return Container(
       // margin: EdgeInsets.all(5),
       margin: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
@@ -395,6 +396,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                         Expanded(
                                           child: Container(),
                                         ),
+                                        if(data["newStore"] == false)
                                         Expanded(
                                           child: RaisedButton(
                                             color: Colors.white,
@@ -403,6 +405,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                               getGPSstatus().then((status) => {
                                                     if (status == true)
                                                       {
+                                                        this.storage.setItem(
+                                                            "Category", []),
                                                         Navigator.of(context)
                                                             .pushReplacement(
                                                           MaterialPageRoute(
@@ -1252,8 +1256,8 @@ class _StoreScreenState extends State<StoreScreen> {
       objData["existItem"] = false;
       objData["flagStore"] = storeDatas[i]["flagStore"];
       objData["flagItem"] = false;
-      objData['storeItem'] = false;
-      objData['newStore'] = true;
+      objData["storeItem"] = false;
+      objData["newStore"] = storeDatas[i]["containNewStore"];
       var paramforTownshipName = {
         "id": storeDatas[i]["regionId"].toString(),
         "code": "",
@@ -1272,6 +1276,7 @@ class _StoreScreenState extends State<StoreScreen> {
               },
             setState(() {
               allData.add(objData);
+              print("3003-->" + allData.toString());
               if (allData.length == storeDatas.length) {
                 hideLoadingDialog();
               }
@@ -1298,7 +1303,7 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["date"] = "";
     showLoading();
     Future.delayed(const Duration(milliseconds: 500), () {
-      showLoading(); 
+      showLoading();
       this
           .onlineSerives
           .getStores(shopParam)

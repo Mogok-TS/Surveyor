@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      home: Login(),
+      home:Login(),
     );
   }
 }
