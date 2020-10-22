@@ -38,8 +38,9 @@ class OnlineSerives {
     if (this.url == "" || this.url == null || this.url.isEmpty) {
 //      this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
 //       this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-     this.url = "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
-     //  this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
+      this.url =
+          "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+      //  this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
       this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
@@ -218,8 +219,10 @@ class OnlineSerives {
     return returndata;
   }
 
+  
+
   Future getQuestions(params) async {
-    print("prams for get question>>"+ params.toString());
+    print("prams for get question>>" + params.toString());
     var returnData = {};
     var _array = [];
     var checkSaveorupdate = "save";
@@ -262,25 +265,24 @@ class OnlineSerives {
             }
             // if (dataList[ii]["TypeSK"].toString() == "1" ||
             //     dataList[ii]["TypeSK"].toString() == "3") {
-              _bojArray["AnswerSyskey"] = "";
-              _bojArray["Instruction"] = dataList[ii]["Instruction"];
-              if (dataList[ii]["AnswerShopPhoto"] == null ||
-                  dataList[ii]["AnswerShopPhoto"].length == 0) {
-                if (dataList[ii]["HeaderShopSyskey"] != null) {
-                  _bojArray["HeaderShopSyskey"] =
-                      dataList[ii]["HeaderShopSyskey"];
-                } else {
-                  _bojArray["HeaderShopSyskey"] = "";
-                }
-                _bojArray["AnswerShopPhoto"] = [];
-                _bojArray["AnswerDesc"] = "";
-              } else {
-                checkSaveorupdate = "update";
+            _bojArray["AnswerSyskey"] = "";
+            _bojArray["Instruction"] = dataList[ii]["Instruction"];
+            if (dataList[ii]["AnswerShopPhoto"] == null ||
+                dataList[ii]["AnswerShopPhoto"].length == 0) {
+              if (dataList[ii]["HeaderShopSyskey"] != null) {
                 _bojArray["HeaderShopSyskey"] =
                     dataList[ii]["HeaderShopSyskey"];
-                _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
-                _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
+              } else {
+                _bojArray["HeaderShopSyskey"] = "";
               }
+              _bojArray["AnswerShopPhoto"] = [];
+              _bojArray["AnswerDesc"] = "";
+            } else {
+              checkSaveorupdate = "update";
+              _bojArray["HeaderShopSyskey"] = dataList[ii]["HeaderShopSyskey"];
+              _bojArray["AnswerShopPhoto"] = dataList[ii]["AnswerShopPhoto"];
+              _bojArray["AnswerDesc"] = dataList[ii]["AnswerDesc"];
+            }
             // } else if (dataList[ii]["TypeSK"].toString() == "2") {
             //   _bojArray["Instruction"] = "";
             //   if (dataList[ii]["AnswerShopPhoto"] == null ||
@@ -486,7 +488,37 @@ class OnlineSerives {
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
-    
+
+    if (response != null) {
+      data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (data["status"] == "SUCCESS") {
+          this.status = true;
+//          this.storage.setItem("State", data["list"]);
+        } else {
+          ShowToast("Server fail.");
+          this.status = false;
+        }
+      } else {
+        ShowToast(this.Servererror(response.statusCode));
+        this.status = false;
+      }
+    } else {
+      ShowToast(this.netWorkerr);
+      this.status = false;
+    }
+    var param = {"status": this.status, "data": data["list"]};
+    return param;
+  }
+  Future getNewStore(params) async {
+    this.mainData();
+    this.url = this.url + "shop/get-svr-shoplist";
+    var body = json.encode(params);
+    var data;
+    var response = await http
+        .post(this.url, headers: this.headersWithKey, body: body)
+        .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -883,10 +915,7 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-//    var param = {
-//      "status":this.status,
-//      "data":data["list"]
-//    };
+
     return this.status;
   }
 
@@ -906,7 +935,7 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
           this.storage.setItem("getSurveyor", data["list"]);
-          if(data["list"].length == 0){
+          if (data["list"].length == 0) {
             this.storage.setItem("Category", []);
             print("123-->");
           }

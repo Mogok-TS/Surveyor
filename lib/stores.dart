@@ -91,7 +91,6 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget assignStoreWidget(var data) {
-    print("sdfsdf-->" + data.toString());
     return Container(
       // margin: EdgeInsets.all(5),
       margin: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
@@ -324,6 +323,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             SizedBox(
                               height: 10,
                             ),
+                          // if (data["newStore"])
                           Container(
                             color: CustomIcons.dropDownHeader,
                             child: ListTile(
@@ -371,32 +371,39 @@ class _StoreScreenState extends State<StoreScreen> {
                             Container(
                               child: Column(
                                 children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Container(
-                                          height: 50,
-                                          color: Colors.grey[200],
-                                          child: Center(
-                                            child: Text(
-                                              "No Data",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Colors.black,
+                                  if (data["newStoresList"].length == 0)
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Container(
+                                            height: 50,
+                                            color: Colors.grey[200],
+                                            child: Center(
+                                              child: Text(
+                                                "No Data",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                        )
+                                      ],
+                                    ),
+                                  if (data["newStoresList"].length > 0 &&
+                                      data["storeItem"] == true)
+                                    for (var a = 0;
+                                        a < data["newStoresList"].length;
+                                        a++)
+                                     
+                                  buildNewStoreItem(data["newStoresList"][a]),
                                   Container(
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
                                           child: Container(),
                                         ),
-                                        if(data["newStore"] == false)
                                         Expanded(
                                           child: RaisedButton(
                                             color: Colors.white,
@@ -852,15 +859,11 @@ class _StoreScreenState extends State<StoreScreen> {
                                                       .toString(),
                                                   "task": "INCOMPLETE",
                                                 },
-                                                print(
-                                                    ">>>" + params.toString()),
                                                 this
                                                     .onlineSerives
                                                     .getSurveyor(params)
                                                     .then(
                                                       (value) => {
-                                                        print("Everybody" +
-                                                            value.toString()),
                                                         if (value["status"] ==
                                                             true)
                                                           {
@@ -875,8 +878,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                     param)
                                                                 .then(
                                                                     (value) => {
-                                                                          print("98->" +
-                                                                              value.toString()),
                                                                           if (value ==
                                                                               true)
                                                                             {
@@ -894,9 +895,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                         }),
                                                           }
                                                         else
-                                                          {
-                                                            print("helodee"),
-                                                          }
+                                                          {}
                                                       },
                                                     ),
                                               }
@@ -935,8 +934,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                                     .getSurveyor(params)
                                                     .then(
                                                       (value) => {
-                                                        print("Everybody" +
-                                                            value.toString()),
                                                         if (value["status"] ==
                                                             true)
                                                           {
@@ -951,8 +948,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                     param)
                                                                 .then(
                                                                     (value) => {
-                                                                          print("98->" +
-                                                                              value.toString()),
                                                                           if (value ==
                                                                               true)
                                                                             {
@@ -970,9 +965,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                         }),
                                                           }
                                                         else
-                                                          {
-                                                            print("helodee"),
-                                                          }
+                                                          {}
                                                       },
                                                     ),
                                               }
@@ -1028,7 +1021,6 @@ class _StoreScreenState extends State<StoreScreen> {
       checkStatus = "Temporary Close";
     }
 
-    // print("99-->  ${shopData}");
     return Container(
       color: Colors.grey[200],
       child: Card(
@@ -1117,6 +1109,111 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
+  Widget buildNewStoreItem(data) {
+    var checkStatus = "Not Started";
+    bool start = true;
+    // if (data["status"]["currentType"] == "") {
+    //   checkStatus = "Not Started";
+    // } else if (data["status"]["currentType"] == "CHECKIN") {
+    //   checkStatus = "In Progress";
+    // } else if (data["status"]["currentType"] == "CHECKOUT") {
+    //   checkStatus = "Check Out";
+    // } else if (data["status"]["currentType"] == "TEMPCHECKOUT") {
+    //   checkStatus = "In Progress";
+    // } else if (data["status"]["currentType"] == "PERMANENT_CLOSE") {
+    //   checkStatus = "Permanent Close";
+    //   start = false;
+    // } else if (data["status"]["currentType"] == "TEMPORARY_CLOSE") {
+    //   checkStatus = "Temporary Close";
+    // }
+
+    return Container(
+      color: Colors.grey[200],
+      child: Card(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                  title: Text(
+                    data["name"] + " ( " + data["mmName"] + " )",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      ),
+                      Text(
+                        data["phoneNumber"],
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          height: 1.0,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      ),
+                      Text(
+                        data["address"],
+                        style: TextStyle(height: 1.3),
+                      ),
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
+                                child: RaisedButton(
+                                  color: Colors.white,
+                                  shape: buttonShape(),
+                                  onPressed: () {},
+                                  child: Center(
+                                    child: Column(
+                                      children: <Widget>[
+//                                        buildStatusText(this.performTypearray)
+                                        Text(checkStatus.toString())
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            if (start)
+                              Expanded(
+                                child: Container(
+                                  child: RaisedButton(
+                                    color: Colors.white,
+                                    shape: buttonShape(),
+                                    onPressed: () {
+                                      // _showDialog(data);
+                                      // _checkInType = null;
+                                      // _checkClosed = "2";
+                                      // _selectType = null;
+                                      // reason = null;
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        "Start",
+                                        style: TextStyle(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildRegisterItem(
       String storeName, String phone, String address, data) {
     var params;
@@ -1182,7 +1279,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                   shape: buttonShape(),
                                   onPressed: () {
                                     getGPSstatus().then((status) => {
-                                          print("$status"),
                                           if (status == true)
                                             {
                                               params = {
@@ -1194,8 +1290,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                                   .then((value) => {
                                                         if (value == true)
                                                           {
-                                                            print("33->" +
-                                                                data.toString()),
                                                             Navigator.of(
                                                                     context)
                                                                 .pushReplacement(
@@ -1243,13 +1337,11 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   var allData = [];
-  allDataFunction() {
+  allDataFunction() async {
     allData = [];
     var storeDatas = this.storage.getItem("storeData");
-    print(".." + storeDatas.toString());
     for (var i = 0; i < storeDatas.length; i++) {
       var objData = {};
-      print("regionID111>>>>>" + storeDatas[i]["regionId"].toString());
       objData["show"] = false;
       objData["regionId"] = storeDatas[i]["regionId"].toString();
       objData["existingStore"] = storeDatas[i]["existingStore"];
@@ -1258,6 +1350,32 @@ class _StoreScreenState extends State<StoreScreen> {
       objData["flagItem"] = false;
       objData["storeItem"] = false;
       objData["newStore"] = storeDatas[i]["containNewStore"];
+      print("status" + storeDatas[i]["containNewStore"].toString());
+      var newStores;
+      var newStoresList;
+      var params = {
+        "usersyskey": this.loginData["syskey"].toString(),
+        "regionsyskey": storeDatas[i]["regionId"].toString(),
+      };
+      print("param-->" + params.toString());
+
+      if (storeDatas[i]["containNewStore"] == true) {
+        print("Hello New Youk");
+        newStores = await this.onlineSerives.getNewStore(params);
+        if (newStores != null) {
+          if (newStores["status"]) {
+            print("true-->" + newStores["status"].toString());
+            newStoresList = newStores["data"];
+          } else {
+            print("false-->" + newStores["status"].toString());
+            newStoresList = [];
+          }
+        }
+      } else {
+        newStoresList = [];
+      }
+      objData["newStoresList"] = newStoresList;
+      print("--->>" + newStoresList.toString());
       var paramforTownshipName = {
         "id": storeDatas[i]["regionId"].toString(),
         "code": "",
@@ -1265,18 +1383,10 @@ class _StoreScreenState extends State<StoreScreen> {
         "parentid": "",
         "n2": ""
       };
-      print("1234-->" + paramforTownshipName.toString());
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
-            print(paramforTownshipName.toString()),
             objData["regionName"] = value["data"][0]["description"],
-            if (objData["regionName"].toString() == "ချမ်းမြသာစည်")
-              {
-                print("regionId=====>>>+++" +
-                    storeDatas[i]["regionId"].toString()),
-              },
             setState(() {
               allData.add(objData);
-              print("3003-->" + allData.toString());
               if (allData.length == storeDatas.length) {
                 hideLoadingDialog();
               }
@@ -1285,6 +1395,7 @@ class _StoreScreenState extends State<StoreScreen> {
     }
   }
 
+  var loginData;
   @override
   void initState() {
     super.initState();
@@ -1294,12 +1405,12 @@ class _StoreScreenState extends State<StoreScreen> {
       "usertype": "",
       "date": ""
     };
-    var loginData, newParam;
-    loginData = this.storage.getItem("loginData");
-    newParam = {"usersyskey": loginData["syskey"].toString()};
-    shopParam["spsyskey"] = loginData["syskey"];
-    shopParam["teamsyskey"] = loginData["teamSyskey"];
-    shopParam["usertype"] = loginData["userType"];
+    var newParam;
+    this.loginData = this.storage.getItem("loginData");
+    newParam = {"usersyskey": this.loginData["syskey"].toString()};
+    shopParam["spsyskey"] = this.loginData["syskey"];
+    shopParam["teamsyskey"] = this.loginData["teamSyskey"];
+    shopParam["usertype"] = this.loginData["userType"];
     shopParam["date"] = "";
     showLoading();
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -1379,7 +1490,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                     });
                                   } else {}
 //                                    }).catchError((error) {
-//                                      print(error);
 //                                    });
                                 }
 //                                });
@@ -1462,7 +1572,7 @@ class _StoreScreenState extends State<StoreScreen> {
                   //                 Icons.add_box,
                   //                 color: Colors.black,
                   //               ),
-                  //               Text(" Add New Store",
+                  //
                   //                   style: TextStyle(
                   //                     color: Colors.black,
                   //                   ))
