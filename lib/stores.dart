@@ -398,6 +398,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                         a++)
                                      
                                   buildNewStoreItem(data["newStoresList"][a]),
+                                  if(data["newStoresList"].length == 0)
                                   Container(
                                     child: Row(
                                       children: <Widget>[
