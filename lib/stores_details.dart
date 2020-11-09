@@ -164,7 +164,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             this.longitude =
                 this.updateDataarray[0]["locationData"]["longitude"];
             _getUpdateData();
-          } else if (this.widget.regOrAss == "newStoreMap") {
+          }
+         
+          else if (this.widget.regOrAss == "newStoreMap") {
             for (var i = 0; i < this.widget.coordiante.length; i++) {
               latitude = this.widget.coordiante[i]["lat"];
               longitude = this.widget.coordiante[i]["long"];

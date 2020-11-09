@@ -165,9 +165,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   var flag;
   @override
   void initState() {
+    
     super.initState();
     var _pssOject;
-    print("ss-->" + this.widget.passData.toString());
     if (this.widget.regOrAss == "assign") {
       _pssOject = this.widget.passData[0]["shopsyskey"];
     } else {
@@ -189,6 +189,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     var sections = this.widget.header["sections"];
     this.onlineSerives.getQuestions(param).then((value) => {
           data = value["data"],
+          print("--data>>"+ sections.toString()),
           for (var i = 0; i < sections.length; i++)
             {
               flag = false,
@@ -332,10 +333,11 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
             },
           setState(() => {
                 if (allItem == answerItem)
-                  {
+                  { 
                     continueStatus = true,
                   }
               }),
+    print("questions-->" + this.headerItems.toString()),
         });
   }
 
@@ -475,6 +477,7 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     ),
                   ),
                 ),
+                // error widget
                 if (this.headerItems.length.toString() ==
                     this.widget.question.length.toString())
                   for (var x = 0; x < this.widget.question.length; x++)

@@ -974,6 +974,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                               {
                                                 ShowToast("Please Select Type"),
                                               }
+                                              
                                           }
                                         else
                                           {ShowToast("Please open GPS")}
@@ -1188,11 +1189,25 @@ class _StoreScreenState extends State<StoreScreen> {
                                     color: Colors.white,
                                     shape: buttonShape(),
                                     onPressed: () {
-                                      // _showDialog(data);
-                                      // _checkInType = null;
-                                      // _checkClosed = "2";
-                                      // _selectType = null;
-                                      // reason = null;
+                                      getGPSstatus().then((status) => {
+                                        if (status == true)
+                                          {
+                                            Navigator.of(
+                                                                    context)
+                                                                .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    StoresDetailsScreen(
+                                                                        [data],
+                                                                        false,
+                                                                        "register",
+                                                                        "null"),
+                                                              ),
+                                                            ),
+                                          }
+                                        else
+                                          {ShowToast("Please open GPS")}
+                                    });
                                     },
                                     child: Center(
                                       child: Text(
