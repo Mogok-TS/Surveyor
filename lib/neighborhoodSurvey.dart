@@ -15,6 +15,8 @@ import 'Services/Loading/LoadingServices.dart';
 import 'assets/custom_icons_icons.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:math';
 
 // ignore: must_be_immutable
 class NeighborhoodSurveyScreen extends StatefulWidget {
@@ -93,6 +95,26 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var _checkSaveorupdate;
   var url;
   var saveCondition = "1";
+
+
+  Future<File> urlToFile(String imageUrl) async {
+// generate random number.
+    var rng = new Random();
+// get temporary directory of device.
+    Directory tempDir = await getTemporaryDirectory();
+// get temporary path from temporary directory.
+    String tempPath = tempDir.path;
+// create a new file in temporary path with random file name.
+    File file = new File('$tempPath' + (rng.nextInt(100)).toString() + '.png');
+// call http.get method and pass imageUrl into it to get response.
+    http.Response response = await http.get(imageUrl);
+// write bodyBytes received in response to file.
+    await file.writeAsBytes(response.bodyBytes);
+// now return the file which is created with random name in
+// temporary directory and image bytes from response is written to // that file.
+print("2");
+    return file;
+  }
 
   _clickDoneAssignStore() async {
     var checkPHoto = "sinple";
@@ -467,9 +489,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               var data = {};
               data["recordStatus"] = 1;
               if (loopObj["type"] == "online") {
-                final imgBase64Str = await networkImageToBase64(
-                    this.subUrl + loopObj["image"].toString());
-                data["t1"] = imgBase64Str.toString();
+                data["t1"] = loopObj["base64"].toString();
               } else {
                 data["t1"] = loopObj["base64"].toString();
               }
@@ -1125,7 +1145,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
   var subUrl;
 
-  Future<String> networkImageToBase64(String imageUrl) async {
+  networkImageToBase64(String imageUrl) async {
     http.Response response = await http.get(imageUrl);
     final bytes = response?.bodyBytes;
     return (bytes != null ? base64Encode(bytes) : null);
@@ -1166,7 +1186,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         .onlineSerives
         .getQuestions(param)
         .then((result) => {
-              setState(() {
+              setState(() async {
                 this._checkSaveorupdate = result["checkSaveorupdate"];
                 if (result["status"] == true) {
                   hideLoadingDialog();
@@ -1191,10 +1211,25 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                             datas["image"] = shopPhoto["PhotoPath"];
                             datas["name"] = shopPhoto["PhotoName"];
                             datas["type"] = "online";
-                            datas["base64"] = "";
+                            var fullurl =
+                                this.subUrl + shopPhoto["PhotoPath"].toString();
+                                print("1");
+                            var file = await urlToFile(fullurl);
+                            print("3");
+                            if(file.toString() != ""){
+                              List<int> imageBytes = file.readAsBytesSync();
+                            String base64Image ="data:image/png;base64,"+ base64Encode(imageBytes).toString();
+                            datas["base64"] = base64Image;
+                            }else{
+                              datas["base64"] = "";
+                            }
                             onlinePhoto.add(datas);
                           }
                           _data["images"] = onlinePhoto;
+                          if(_data["images"].length == questions[ss]["AnswerShopPhoto"].length){
+                            setState(() {
+                            });
+                          }
                         } else {
                           _data["images"] = [];
                         }
@@ -2030,53 +2065,57 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                           endDate.indexOf("M") + 1);
                                       int totalEnd = (eHour * 60) + eMin;
                                       if (eDON == sDON) {
-                                       
                                         if (sHour == 12) {
                                           if (eHour == 12) {
                                             if (eMin > sMin) {
                                               setState(() {
-                                                primaryData["AnswerDesc1"] = finalTime;
-                                                _fromController.text = finalTime;
+                                                primaryData["AnswerDesc1"] =
+                                                    finalTime;
+                                                _fromController.text =
+                                                    finalTime;
                                               });
                                             } else {
                                               ShowToast("Invalid Time");
                                               primaryData["AnswerDesc1"] = "";
-                                                _fromController.text = "";
+                                              _fromController.text = "";
                                             }
                                           } else if (sHour > eHour) {
                                             setState(() {
-                                                primaryData["AnswerDesc1"] = finalTime;
-                                                _fromController.text = finalTime;
-                                              });
+                                              primaryData["AnswerDesc1"] =
+                                                  finalTime;
+                                              _fromController.text = finalTime;
+                                            });
                                           } else {
                                             ShowToast("Invalid Time");
-                                              primaryData["AnswerDesc1"] = "";
-                                                _fromController.text = "";
+                                            primaryData["AnswerDesc1"] = "";
+                                            _fromController.text = "";
                                           }
-                                        }else if (eHour == 12) {
+                                        } else if (eHour == 12) {
                                           if (sHour == 12) {
                                             if (eMin > sMin) {
                                               setState(() {
-                                                primaryData["AnswerDesc1"] = finalTime;
-                                                _fromController.text = finalTime;
+                                                primaryData["AnswerDesc1"] =
+                                                    finalTime;
+                                                _fromController.text =
+                                                    finalTime;
                                               });
                                             } else {
                                               ShowToast("Invalid Time");
                                               primaryData["AnswerDesc1"] = "";
-                                                _fromController.text = "";
+                                              _fromController.text = "";
                                             }
                                           } else if (sHour > eHour) {
                                             setState(() {
-                                                primaryData["AnswerDesc1"] = finalTime;
-                                                _fromController.text = finalTime;
-                                              });
+                                              primaryData["AnswerDesc1"] =
+                                                  finalTime;
+                                              _fromController.text = finalTime;
+                                            });
                                           } else {
                                             ShowToast("Invalid Time");
-                                              primaryData["AnswerDesc1"] = "";
-                                                _fromController.text = "";
+                                            primaryData["AnswerDesc1"] = "";
+                                            _fromController.text = "";
                                           }
-                                        }
-                                         else {
+                                        } else {
                                           if (totalStart >= totalEnd) {
                                             ShowToast("Invalid Time");
                                             setState(() {
@@ -2218,57 +2257,59 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                         if (eHour == 12) {
                                           if (eMin > sMin) {
                                             setState(() {
-                                               primaryData["AnswerDesc2"] = finalTime;
-                                      _toController.text = finalTime;
+                                              primaryData["AnswerDesc2"] =
+                                                  finalTime;
+                                              _toController.text = finalTime;
                                             });
                                           } else {
-                                             ShowToast("Invalid Time..");
-                                          setState(() {
-                                            primaryData["AnswerDesc2"] = "";
-                                            _toController.text = "";
-                                          });
+                                            ShowToast("Invalid Time..");
+                                            setState(() {
+                                              primaryData["AnswerDesc2"] = "";
+                                              _toController.text = "";
+                                            });
                                           }
                                         } else if (sHour > eHour) {
                                           setState(() {
-                                           primaryData["AnswerDesc2"] = finalTime;
-                                      _toController.text = finalTime;
+                                            primaryData["AnswerDesc2"] =
+                                                finalTime;
+                                            _toController.text = finalTime;
                                           });
                                         } else {
-                                           ShowToast("Invalid Time");
+                                          ShowToast("Invalid Time");
                                           setState(() {
                                             primaryData["AnswerDesc2"] = "";
                                             _toController.text = "";
                                           });
                                         }
-                                      }
-                                      else if (eHour == 12) {
+                                      } else if (eHour == 12) {
                                         if (sHour == 12) {
                                           if (eMin > sMin) {
                                             setState(() {
-                                               primaryData["AnswerDesc2"] = finalTime;
-                                      _toController.text = finalTime;
+                                              primaryData["AnswerDesc2"] =
+                                                  finalTime;
+                                              _toController.text = finalTime;
                                             });
                                           } else {
-                                             ShowToast("Invalid Time..");
-                                          setState(() {
-                                            primaryData["AnswerDesc2"] = "";
-                                            _toController.text = "";
-                                          });
+                                            ShowToast("Invalid Time..");
+                                            setState(() {
+                                              primaryData["AnswerDesc2"] = "";
+                                              _toController.text = "";
+                                            });
                                           }
                                         } else if (sHour > eHour) {
                                           setState(() {
-                                           primaryData["AnswerDesc2"] = finalTime;
-                                      _toController.text = finalTime;
+                                            primaryData["AnswerDesc2"] =
+                                                finalTime;
+                                            _toController.text = finalTime;
                                           });
                                         } else {
-                                           ShowToast("Invalid Time");
+                                          ShowToast("Invalid Time");
                                           setState(() {
                                             primaryData["AnswerDesc2"] = "";
                                             _toController.text = "";
                                           });
                                         }
-                                      }
-                                       else {
+                                      } else {
                                         if (totalEnd <= totalStart) {
                                           ShowToast("Invalid Time");
                                           setState(() {
