@@ -95,6 +95,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var _checkSaveorupdate;
   var url;
   var saveCondition = "1";
+  var file;
+  var completeStatus;
 
 
   Future<File> urlToFile(String imageUrl) async {
@@ -117,6 +119,7 @@ print("2");
   }
 
   _clickDoneAssignStore() async {
+    print("saveCondition->" + saveCondition.toString());
     var checkPHoto = "sinple";
     for (var i = 0; i < this.questions.length; i++) {
       var loopdata = questions[i];
@@ -129,6 +132,7 @@ print("2");
         }
       }
     }
+
     if (checkPHoto == "have") {
       ShowToast("Please answer  the photo questions at least one");
     } else {
@@ -138,7 +142,6 @@ print("2");
       if (this.widget.regOrAss == "assign") {
         _allData["id"] = pssOject["shopsyskey"];
         _allData["saveCondition"] = saveCondition;
-        _allData["active"] = true;
         _allData["active"] = true;
         _allData["name"] = pssOject["shopname"];
         _allData["mmName"] = pssOject["shopnamemm"];
@@ -186,11 +189,13 @@ print("2");
         _allData["street"] = pssOject["street"];
         _allData["t12"] = "";
         var _syskey = "";
-        if (this._checkSaveorupdate == "update") {
-          _syskey = this.questions[0]["HeaderShopSyskey"].toString();
-        } else {
-          _syskey = "";
-        }
+        _syskey = this.storage.getItem("allsectionHeadersyskey").toString();
+        // if (this._checkSaveorupdate == "update") {
+        //   _syskey = this.questions[0]["HeaderShopSyskey"].toString();
+        // } else {
+        //   _syskey = "";
+        // }
+        print("syskey=>" + _syskey);
         _allData["svrHdrData"] = {
           "syskey": _syskey,
           "n1": "0",
@@ -1145,16 +1150,17 @@ print("2");
 
   var subUrl;
 
-  networkImageToBase64(String imageUrl) async {
-    http.Response response = await http.get(imageUrl);
-    final bytes = response?.bodyBytes;
-    return (bytes != null ? base64Encode(bytes) : null);
-  }
+  // networkImageToBase64(String imageUrl) async {
+  //   http.Response response = await http.get(imageUrl);
+  //   final bytes = response?.bodyBytes;
+  //   return (bytes != null ? base64Encode(bytes) : null);
+  // }
 
   @override
   void initState() {
     super.initState();
 //    if(){} for questionNature
+    completeStatus = this.storage.getItem("completeStatus");
     var _pssOject;
     if (this.widget.regOrAss == "assign") {
       _pssOject = this.widget.passData[0]["shopsyskey"];
@@ -1184,13 +1190,14 @@ print("2");
     showLoading();
     this
         .onlineSerives
-        .getQuestions(param)
+        .getQuestions(param,"eachsection")
         .then((result) => {
-              setState(() async {
+              setState(()  {
                 this._checkSaveorupdate = result["checkSaveorupdate"];
                 if (result["status"] == true) {
                   hideLoadingDialog();
                   questions = result["data"];
+                  print("Q->" + questions.toString());
                   //              setState(() {
                   //    _consoleLable = result.toString();
                   //   // hideLoadingDialog();
@@ -1202,38 +1209,8 @@ print("2");
                       if (questions[ss]["TypeDesc"] == "Attach Photograph") {
                         print("1>>" + questions[ss].toString());
                         var onlinePhoto = [];
-                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                          for (var y = 0;
-                              y < questions[ss]["AnswerShopPhoto"].length;
-                              y++) {
-                            var datas = {};
-                            var shopPhoto = questions[ss]["AnswerShopPhoto"][y];
-                            datas["image"] = shopPhoto["PhotoPath"];
-                            datas["name"] = shopPhoto["PhotoName"];
-                            datas["type"] = "online";
-                            var fullurl =
-                                this.subUrl + shopPhoto["PhotoPath"].toString();
-                                print("1");
-                            var file = await urlToFile(fullurl);
-                            print("3");
-                            if(file.toString() != ""){
-                              List<int> imageBytes = file.readAsBytesSync();
-                            String base64Image ="data:image/png;base64,"+ base64Encode(imageBytes).toString();
-                            datas["base64"] = base64Image;
-                            }else{
-                              datas["base64"] = "";
-                            }
-                            onlinePhoto.add(datas);
-                          }
-                          _data["images"] = onlinePhoto;
-                          if(_data["images"].length == questions[ss]["AnswerShopPhoto"].length){
-                            setState(() {
-                            });
-                          }
-                        } else {
-                          _data["images"] = [];
-                        }
-                        _data["checkDatas"] = [];
+                        getImage(ss,_data,onlinePhoto);
+                        "---->";
                       } else if (questions[ss]["TypeDesc"] == "Checkbox") {
                         print("2>>" + questions[ss].toString());
                         var checkData = [];
@@ -1264,6 +1241,7 @@ print("2");
                         _data["checkDatas"] = checkData;
                         _data["images"] = [];
                         _data["radioDatas"] = [];
+                        // print("ssdf-->" + _data.toString());
                       } else if (questions[ss]["TypeDesc"] ==
                           "Multiple Choice") {
                         print("3>>" + questions[ss].toString());
@@ -1275,7 +1253,7 @@ print("2");
                           answerSyskey =
                               questions[ss]["answers"][0]["answerSK"];
                         }
-
+                        print("123-->");
                         var radioObj = {};
                         var radioData = [];
                         var syskeys = {};
@@ -1397,11 +1375,13 @@ print("2");
                         _data["images"] = [];
                       }
                       _primaryData.add(_data);
+                      print("conditionEnd->" + _primaryData.toString());
                     }
                   }
                   _status = true;
+
                   if (this.widget.headershopKey == "") {
-                    saveCondition = "0";
+                    saveCondition = "1";
                   } else {
                     for (var i = 0; i < questions.length; i++) {
                       if (questions[i]["AnswerShopPhoto"].length > 0) {
@@ -1418,6 +1398,7 @@ print("2");
                       }
                     }
                   }
+                  print("12300->" + _primaryData.toString()+ "_____" + _status.toString());
                 } else {
                   _status = false;
                   hideLoadingDialog();
@@ -1425,6 +1406,44 @@ print("2");
               }),
             })
         .catchError((err) => {});
+  }
+
+
+  getImage(index,_data,onlinePhoto) async {
+    if (questions[index]["AnswerShopPhoto"].length > 0) {
+      for (var y = 0;
+      y < questions[index]["AnswerShopPhoto"].length;
+      y++) {
+        var datas = {};
+        var shopPhoto = questions[index]["AnswerShopPhoto"][y];
+        datas["image"] = shopPhoto["PhotoPath"];
+        datas["name"] = shopPhoto["PhotoName"];
+        datas["type"] = "online";
+        var fullurl =
+            this.subUrl + shopPhoto["PhotoPath"].toString();
+        print("1->");
+        file = await urlToFile(fullurl);
+        print("3->");
+        if(file.toString() != ""){
+          List<int> imageBytes = file.readAsBytesSync();
+          print("4->");
+          String base64Image ="data:image/png;base64,"+ base64Encode(imageBytes).toString();
+          datas["base64"] = base64Image;
+
+        }else{
+          datas["base64"] = "";
+        }
+        onlinePhoto.add(datas);
+      }
+      _data["images"] = onlinePhoto;
+      if(_data["images"].length == questions[index]["AnswerShopPhoto"].length){
+        setState(() {
+        });
+      }
+    } else {
+      _data["images"] = [];
+    }
+    _data["checkDatas"] = [];
   }
 
   Future<void> showMessageAlert(String message) async {
@@ -1474,11 +1493,11 @@ print("2");
   }
 
   Widget _allWidget(var data, var questionIndex, var primarydata) {
+    print("ss-->");
     if (primarydata["images"] == null) {
       primarydata["images"] = [];
     }
     Widget _widget;
-
     if (data["TypeDesc"] == "Attach Photograph") {
       _widget = attachPhotograph(data, primarydata["images"]);
     } else if (data["TypeDesc"] == "Fill in the Blank") {
@@ -2447,7 +2466,7 @@ print("2");
                       if (questions.length > 0)
                         for (var i = 0; i < questions.length; i++)
                           _allWidget(questions[i], i, _primaryData[i]),
-                    if (!_status || questions.length == 0)
+                    if (!_status || questions.length == 0 )
                       Container(
                         height: 50,
                         color: Colors.grey[300],
@@ -2511,36 +2530,45 @@ print("2");
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      if (this._status == true && this.questions.length > 0) {
-                        setState(() {
-                          _clickDoneAssignStore();
-                        });
-                      } else {
-                        showLoading();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => OutsideInsideNeighborhood(
-                                this.widget.isNeighborhood,
-                                this.widget.isOutside,
-                                this.widget.isInside,
-                                this.widget.isStoreOperater,
-                                this.widget.storeName,
-                                this.widget.storeNumber,
-                                this.widget.address,
-                                this.widget.regOrAss,
-                                this.widget.passData,
-                                this.widget.allsection,
-                                this.widget.header),
-                          ),
-                        );
+                      if(completeStatus != "Complete"){
+                        if (this._status == true && this.questions.length > 0) {
+                          setState(() {
+                            _clickDoneAssignStore();
+                          });
+                        } else {
+                          showLoading();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => OutsideInsideNeighborhood(
+                                  this.widget.isNeighborhood,
+                                  this.widget.isOutside,
+                                  this.widget.isInside,
+                                  this.widget.isStoreOperater,
+                                  this.widget.storeName,
+                                  this.widget.storeNumber,
+                                  this.widget.address,
+                                  this.widget.regOrAss,
+                                  this.widget.passData,
+                                  this.widget.allsection,
+                                  this.widget.header),
+                            ),
+                          );
+                        }
                       }
+
                     },
                     child: Column(
                       children: <Widget>[
                         Container(
                           constraints: BoxConstraints(minHeight: 50.0),
                           alignment: Alignment.center,
-                          child: Text(
+                          child: completeStatus == "Complete"?
+                          Text(
+                            "Done",
+                            style: TextStyle(color: Colors.white54, fontSize: 16),
+                          )
+                              :
+                          Text(
                             "Done",
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),

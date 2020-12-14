@@ -35,8 +35,10 @@ class OnlineSerives {
   void URL() {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
-//      this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
+      // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/";
+     // this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
 //       this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+//       this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
       this.url =
           "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
       //  this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
@@ -220,7 +222,7 @@ class OnlineSerives {
 
   
 
-  Future getQuestions(params) async {
+  Future getQuestions(params,sections) async {
     print("prams for get question>>" + params.toString());
     var returnData = {};
     var _array = [];
@@ -357,8 +359,8 @@ class OnlineSerives {
                 dataList[ii]["QuestionDescription"];
             _array.add(json.encode(_bojArray));
           }
-
-          print("RES $_array");
+          print("checkorupdate->" + checkSaveorupdate);
+          // print("RES $_array");
         } else {
           ShowToast("Server fail.");
           this.status = false;
@@ -379,7 +381,9 @@ class OnlineSerives {
     returnData["status"] = this.status;
     returnData["data"] = aj;
     returnData["checkSaveorupdate"] = checkSaveorupdate;
-
+    if(sections == "allsection"){
+      this.storage.setItem("allsectionHeadersyskey", aj[0]["HeaderShopSyskey"].toString());
+    }
     return returnData;
   }
 
@@ -520,6 +524,7 @@ class OnlineSerives {
 
     if (response != null) {
       data = json.decode(response.body);
+      print("data-->" + data.toString());
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
@@ -856,6 +861,7 @@ class OnlineSerives {
 
   Future getCategory(params) async {
     this.mainData();
+    print("paramCate-->" + params.toString());
     this.url = this.url + "surveyor/getsuvcategory";
     var body = json.encode(params);
     var data;
@@ -919,7 +925,7 @@ class OnlineSerives {
   }
 
   Future getSurveyor(params) async {
-    print("Nucejkdl" + params.toString());
+    print("param -> " + params.toString());
     this.mainData();
     this.url = this.url + "route/checkin";
     var body = json.encode(params);

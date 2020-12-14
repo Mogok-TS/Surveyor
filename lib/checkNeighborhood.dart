@@ -36,6 +36,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   OnlineSerives onlineSerives = new OnlineSerives();
   LocalStorage storage = new LocalStorage('Surveyor');
   var headerList = [];
+  var completeStatus;
 
   Widget _listTileWidget(passData) {
     var isNeighborhood;
@@ -47,7 +48,8 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
 
     var secitons = passData["sections"];
 
-    var section;
+    var section = [];
+    print("1-->" + "$secitons");
     for (var i = 0; i < secitons.length; i++) {
       if (secitons[i]["sectionDescription"] == "Neighborhood Survey") {
         isNeighborhood = true;
@@ -71,6 +73,8 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       child: Card(
         child: ListTile(
           onTap: () {
+            print("aa-->" + section.toString());
+
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                   builder: (context) => OutsideInsideNeighborhood(
@@ -129,21 +133,23 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   @override
   void initState() {
     super.initState();
+    completeStatus = this.storage.getItem("completeStatus");
+    print("aa-->"+ completeStatus.toString());
     Future.delayed(const Duration(milliseconds: 500), () {
       showLoading();
       _getData();
     });
   }
 
-  bool complete = true;
+  bool complete = false;
   _getData() {
     var routeData = this.storage.getItem("Routebyuser");
     List category = this.storage.getItem("Category");
     print("answer-->" + category.toString() + " ___ " + routeData.toString());
     var answer;
-    if(category.length > 0){
+    if (category.length > 0) {
       answer = category[0]["answer"];
-    }else{
+    } else {
       answer = [];
     }
 
@@ -152,11 +158,23 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
     var svrHdrSk = [];
     var surDetail = [];
     if (answer.length > 0) {
-      for (var q = 0; q < answer.length; q++) {
-        categories.add(answer[q]["category"]);
+      final compileArray = answer.map((e) => e["category"]).toSet().toList();
+      print("Set-->" +
+          compileArray.toString() +
+          "______" +
+          compileArray.length.toString());
+      if (compileArray.length <= 1 && compileArray[0].toString() == "0") {
+        categories = [];
+      } else {
+        for (var q = 0; q < compileArray.length; q++) {
+          categories.add(compileArray[q]);
+        }
       }
     }
-    print("aa-->" + this.widget.regOrAss.toString() + " __ " + this.widget.passData.toString() );
+    print("aa-->" +
+        this.widget.regOrAss.toString() +
+        " __ " +
+        this.widget.passData.toString());
     if (this.widget.regOrAss == "assign") {
       passData = this.widget.passData;
       for (var i = 0; i < routeData.length; i++) {
@@ -166,7 +184,8 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
         }
       }
 
-      print("30-->" + surDetail.toString() + "___" +  passData[0]["regionsyskey"]);
+      print(
+          "30-->" + surDetail.toString() + "___" + passData[0]["regionsyskey"]);
 
       if (surDetail.length == 0) {
       } else {
@@ -181,7 +200,6 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
         .onlineSerives
         .getHeaderList(params)
         .then((result) => {
-
               if (result["status"] == true)
                 {
                   setState(() => {
@@ -190,14 +208,14 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                       }),
                   for (var i = 0; i < headerList.length; i++)
                     {
-                      if (headerList[i]["status"].toString() == "0.0")
+                      if (headerList[i]["status"].toString() != "0.0")
                         {
                           setState(() => {
-                                this.complete = false,
+                                this.complete = true,
                               }),
                         }
                     },
-                  print("res -->" +  this.headerList.toString()),
+                  print("res -->" + this.headerList.toString()),
                 }
               else
                 {
@@ -263,6 +281,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 // for (var i = 0; i < headerList.length; i++)
                 if (headerList.length > 0)
                   for (var i = 0; i < headerList.length; i++)
+                    if(headerList[i] != null)
                     _listTileWidget(headerList[i]),
               ],
             ),
@@ -311,26 +330,28 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      if (complete != true) {
-                        var passValue = this.widget.passData[0];
-                        var loginUser = this.storage.getItem("loginData");
-                        var param = {
-                          "lat": passValue["lat"].toString(),
-                          "lon": passValue["long"].toString(),
-                          "address": passValue["address"].toString(),
-                          "shopsyskey": passValue["shopsyskey"].toString(),
-                          "usersyskey": loginUser['syskey'],
-                          "checkInType": "TEMPCHECKOUT",
-                          "register": true,
-                          "reason": "",
-                          "task": "INCOMPLETE",
-                        };
-                        this.onlineSerives.getSurveyor(param).then((value) => {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => StoreScreen()),
-                              ),
-                            });
+                      if(completeStatus != "Complete"){
+                        if (complete != true) {
+                          var passValue = this.widget.passData[0];
+                          var loginUser = this.storage.getItem("loginData");
+                          var param = {
+                            "lat": passValue["lat"].toString(),
+                            "lon": passValue["long"].toString(),
+                            "address": passValue["address"].toString(),
+                            "shopsyskey": passValue["shopsyskey"].toString(),
+                            "usersyskey": loginUser['syskey'],
+                            "checkInType": "TEMPCHECKOUT",
+                            "register": true,
+                            "reason": "",
+                            "task": "INCOMPLETE",
+                          };
+                          this.onlineSerives.getSurveyor(param).then((value) => {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => StoreScreen()),
+                            ),
+                          });
+                        }
                       }
                     },
                     child: Container(
@@ -338,7 +359,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                       width: 300,
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Center(
-                        child: complete
+                        child: completeStatus == "Complete" || complete
                             ? Text(
                                 "Check Out",
                                 textAlign: TextAlign.center,
@@ -364,40 +385,55 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      if (this.complete == true) {
-                        var passValue = this.widget.passData[0];
-                        var loginUser = this.storage.getItem("loginData");
-                        var param = {
-                          "lat": passValue["lat"].toString(),
-                          "lon": passValue["long"].toString(),
-                          "address": passValue["address"].toString(),
-                          "shopsyskey": passValue["shopsyskey"].toString(),
-                          "usersyskey": loginUser['syskey'],
-                          "checkInType": "CHECKOUT",
-                          "register": true,
-                          "reason": "",
-                          "task": "INCOMPLETE",
-                        };
-                        this.onlineSerives.getSurveyor(param).then((value) => {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => StoreScreen()),
-                              ),
-                            });
+                      if(completeStatus != "Complete" ){
+                        if (this.complete == true) {
+                          var passValue = this.widget.passData[0];
+                          print("passValue->" + passValue.toString());
+                          var loginUser = this.storage.getItem("loginData");
+                          var lat, lon, shopSyskey;
+                          if(passValue["lat"] == null){
+                            lat = passValue["locationData"]["latitude"].toString();
+                            lon = passValue["locationData"]["longitude"].toString();
+                            shopSyskey = passValue["id"].toString();
+                          }else{
+                            lat = passValue["lat"].toString();
+                            lon = passValue["long"].toString();
+                            shopSyskey  = passValue["shopsyskey"].toString();
+                          }
+                          var param = {
+                            "lat":lat,
+                            "lon": lon,
+                            "address": passValue["address"].toString(),
+                            "shopsyskey": shopSyskey,
+                            "usersyskey": loginUser['syskey'],
+                            "checkInType": "CHECKOUT",
+                            "register": true,
+                            "reason": "",
+                            "task": "INCOMPLETE",
+                          };
+                          print("params->" + param.toString());
+                          this.onlineSerives.getSurveyor(param).then((value) => {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => StoreScreen()),
+                            ),
+                          });
+                        }
                       }
+
                     },
                     child: Container(
                       height: 40,
                       width: 300,
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Center(
-                        child: complete
+                        child: completeStatus == "Complete" || complete != true
                             ? Text(
                                 "Complete",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                                    color: Colors.white54,
                                     fontSize: 15),
                               )
                             : Text(
@@ -405,7 +441,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white54,
+                                    color: Colors.white,
                                     fontSize: 15),
                               ),
                       ),

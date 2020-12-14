@@ -4,6 +4,7 @@ import 'package:Surveyor/neighborhoodSurvey.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
+import 'package:localstorage/localstorage.dart';
 
 import 'assets/custom_icons_icons.dart';
 
@@ -40,9 +41,11 @@ class OutsideInsideNeighborhood extends StatefulWidget {
 
 class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   var headerItems = [];
+  LocalStorage storage = new LocalStorage('Surveyor');
   var allItem = 0;
   var answerItem = 0;
   bool continueStatus = false;
+  var completeStatus;
   BoxDecoration flagDecoration(var flag) {
     if (flag == "1") {
       return BoxDecoration(
@@ -165,8 +168,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
   var flag;
   @override
   void initState() {
-    
     super.initState();
+    print("s->" + this.widget.question.toString());
+    completeStatus = this.storage.getItem("completeStatus");
     var _pssOject;
     if (this.widget.regOrAss == "assign") {
       _pssOject = this.widget.passData[0]["shopsyskey"];
@@ -187,9 +191,9 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
     var totalCount;
     var answeredCount;
     var sections = this.widget.header["sections"];
-    this.onlineSerives.getQuestions(param).then((value) => {
+    this.onlineSerives.getQuestions(param,"allsection").then((value) => {
           data = value["data"],
-          print("--data>>"+ sections.toString()),
+          print("--data>>" + sections.toString()),
           for (var i = 0; i < sections.length; i++)
             {
               flag = false,
@@ -213,7 +217,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-
                               if (data[ii]["AnswerShopPhoto"][0]
                                       ["AnswerDesc1"] !=
                                   "")
@@ -227,7 +230,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-
                               if (data[ii]["AnswerShopPhoto"][0]
                                       ["AnswerDesc1"] !=
                                   "")
@@ -276,7 +278,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         }
                       else if (data[ii]["TypeDesc"] == "Checkbox")
                         {
-
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
                               if (data[ii]["AnswerShopPhoto"][0]
@@ -292,7 +293,6 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                         {
                           if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-
                               if (data[ii]["AnswerShopPhoto"][0]
                                       ["AnswerDesc1"] !=
                                   "")
@@ -302,20 +302,19 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                                 }
                             },
                         }
-                        else if (data[ii]["TypeDesc"] == "Time Range")
+                      else if (data[ii]["TypeDesc"] == "Time Range")
+                        {
+                          if (data[ii]["AnswerShopPhoto"].length > 0)
                             {
-                              if (data[ii]["AnswerShopPhoto"].length > 0)
+                              if (data[ii]["AnswerShopPhoto"][0]
+                                      ["AnswerDesc1"] !=
+                                  "")
                                 {
-
-                                  if (data[ii]["AnswerShopPhoto"][0]
-                                  ["AnswerDesc1"] !=
-                                      "")
-                                    {
-                                      answeredCount++,
-                                      answerItem++,
-                                    }
-                                },
+                                  answeredCount++,
+                                  answerItem++,
+                                }
                             },
+                        },
                     },
                   if (data[ii]["HeaderShopSyskey"].toString() != "")
                     {
@@ -332,12 +331,22 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                   }),
             },
           setState(() => {
-                if (allItem == answerItem)
-                  { 
-                    continueStatus = true,
+                if (sections.length == 0)
+                  {
+                    continueStatus = false,
+                  }
+                else
+                  {
+                    if (allItem == answerItem)
+                      {
+                        continueStatus = true,
+                      }
                   }
               }),
-    print("questions-->" + this.headerItems.toString()),
+          print("questions-->" +
+              this.headerItems.toString() +
+              "--> " +
+              this.widget.question.toString()),
         });
   }
 
@@ -347,6 +356,15 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
           if (value == true)
             {
               ShowToast("Completed successfully"),
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (context) => CheckNeighborhoodScreen(
+                        this.widget.shopName,
+                        this.widget.shopPhone,
+                        this.widget.address,
+                        this.widget.regOrAss,
+                        this.widget.passData)),
+              ),
             }
         });
   }
@@ -524,8 +542,10 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    if (continueStatus == true) {
-                      this.clickComplete();
+                    if(completeStatus != "Complete"){
+                      if (continueStatus == true) {
+                        this.clickComplete();
+                      }
                     }
                   },
                   child: Container(
@@ -533,19 +553,19 @@ class _OutsideInsideNeighborhoodState extends State<OutsideInsideNeighborhood> {
                     width: 300,
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: Center(
-                      child: continueStatus == true
+                      child: completeStatus == "Complete" || continueStatus != true
                           ? Text(
                               "Complete",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: Colors.white38,
                                   fontSize: 15),
                             )
                           : Text(
                               "Complete",
                               style: TextStyle(
-                                  color: Colors.white38,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15),
                             ),

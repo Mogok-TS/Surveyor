@@ -391,11 +391,12 @@ class MapSampleState extends State<GmapS> {
                 });
                 this._latLong = {
                   "tranid": null,
-                  "lat": null,
-                  "long": null,
+                  "lat": latLong.latitude,
+                  "long": latLong.latitude,
                 };
                 print("Current" + this.curLatLong.toString());
                 createNewMarker(latLong.latitude, latLong.longitude);
+                this.storage.setItem("Maplatlong", this._latLong);
               },
             ),
             Padding(
@@ -458,9 +459,9 @@ class MapSampleState extends State<GmapS> {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => StoresDetailsScreen(
-                            [this._latLong],
+                            [],
                             true,
-                            "newStoreMap",
+                            "Map",
                             [this._latLong]),
                       ),
                     );
@@ -468,7 +469,7 @@ class MapSampleState extends State<GmapS> {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => StoresDetailsScreen(
-                            curLatLong, true, "newStoreMap", curLatLong),
+                            curLatLong, true, "Map", curLatLong),
                       ),
                     );
                   }
@@ -491,7 +492,6 @@ class MapSampleState extends State<GmapS> {
                 print(this.widget.passLength);
                 print(this.curLatLong);
                 print(this._latLong);
-                print("Hello");
                 if (this.curLatLong == null &&
                     this._latLong["tranid"] == null &&
                     this.widget.shopkey == null) {
@@ -504,7 +504,7 @@ class MapSampleState extends State<GmapS> {
                         builder: (context) => StoresDetailsScreen(
                             [this.closeCod],
                             true,
-                            "newStoreMap",
+                            "Map",
                             [this.closeCod]),
                       ),
                     );
@@ -515,7 +515,7 @@ class MapSampleState extends State<GmapS> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => StoresDetailsScreen(
-                              curLatLong, true, "newStoreMap", curLatLong),
+                              curLatLong, true, "Map", curLatLong),
                         ),
                       );
                     } else {
@@ -528,7 +528,6 @@ class MapSampleState extends State<GmapS> {
                                     .toString() ==
                                 this.widget.shopkey) {
                           print(this.widget.passLength[i]["shopsyskey"]);
-                          print("dkjfjdks;");
                           print(this.widget.passLength[i]);
                           if (this.curLatLong == null) {
                             Navigator.of(context).pushReplacement(
@@ -594,6 +593,7 @@ class MapSampleState extends State<GmapS> {
                   }
                 }
               }
+              this.storage.setItem("Maplatlong", this._latLong);
               // getGPSstatus().then((status) => {
               //       print("$status"),
               //       if (status == true)

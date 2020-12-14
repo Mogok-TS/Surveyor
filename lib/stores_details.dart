@@ -66,7 +66,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   var plusCode, storeRegistration;
   double longitude = 0;
   double latitude = 0;
-  var createRegistration;
+  var createRegistration = [];
   List mpaArray;
   List<LatLng> latlng;
   List list1 = [];
@@ -76,11 +76,14 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   LatLng location;
   LatLng curLocation;
   var townshipMimucode, stateCode;
+  var loginData;
 
   @override
   void initState() {
     super.initState();
     localJsonData();
+    this.loginData = this.storage.getItem("loginData");
+    print("as-->" + this.loginData.toString());
     setState(
       () {
         Future.delayed(const Duration(milliseconds: 900), () {
@@ -207,6 +210,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
           (k) {
             print({"$k"});
             Future.delayed(const Duration(milliseconds: 600), () {
+              print("latLong-->" + this.widget.regOrAss.toString());
               if (this.widget.regOrAss == "Map") {
                 var _latLong = this.storage.getItem("Maplatlong");
                 print("--->" + _latLong.toString());
@@ -1805,6 +1809,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "saveCondition": "",
                             "id": this.shopSyskey,
                             "active": true,
+                            "usersyskey":this.loginData["syskey"].toString(),
                             "name": this.shopName.text.toString(),
                             "mmName": this.shopNamemm.text.toString(),
                             "personName": this.ownerName.text.toString(),
@@ -1834,8 +1839,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           };
                         } else {
                           param = {
-                            "saveCondition": "1",
+                            "saveCondition": "",
                             "active": true,
+                            "usersyskey":this.loginData["syskey"].toString(),
                             "name": this.shopName.text.toString(),
                             "mmName": this.shopNamemm.text.toString(),
                             "personName": this.ownerName.text.toString(),
@@ -1880,11 +1886,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                       ShowToast("Updated successfully."),
                                     },
                                   setState(() {
-                                    this.createRegistration = reslut["data"];
-                                    print("hello" + "${reslut["data"]}");
-                                    this.updateDataarray = [
-                                      this.createRegistration
-                                    ];
+                                    print("11->" + reslut["data"].toString());
+                                    this.createRegistration = [reslut["data"]];
+
+                                    // print("hello" + "${reslut["data"]}");
+                                    this.updateDataarray = this.createRegistration;
                                     this.shopSyskey = this
                                         .updateDataarray[0]["id"]
                                         .toString();
