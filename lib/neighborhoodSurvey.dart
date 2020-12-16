@@ -97,7 +97,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var saveCondition = "1";
   var file;
   var completeStatus;
-
+  var svrhdrSyskey = "";
 
   Future<File> urlToFile(String imageUrl) async {
 // generate random number.
@@ -114,7 +114,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     await file.writeAsBytes(response.bodyBytes);
 // now return the file which is created with random name in
 // temporary directory and image bytes from response is written to // that file.
-print("2");
+    print("2");
     return file;
   }
 
@@ -156,7 +156,8 @@ print("2");
         _allData["address"] = pssOject["address"];
         _allData["street"] = pssOject["street"];
         _allData["t12"] = "";
-        var _syskey = this.widget.headershopKey;
+        var _syskey = "";
+        _syskey = svrhdrSyskey;
 
         _allData["svrHdrData"] = {
           "syskey": _syskey,
@@ -189,13 +190,8 @@ print("2");
         _allData["street"] = pssOject["street"];
         _allData["t12"] = "";
         var _syskey = "";
-        _syskey = this.storage.getItem("allsectionHeadersyskey").toString();
-        // if (this._checkSaveorupdate == "update") {
-        //   _syskey = this.questions[0]["HeaderShopSyskey"].toString();
-        // } else {
-        //   _syskey = "";
-        // }
-        print("syskey=>" + _syskey);
+        _syskey = svrhdrSyskey;
+        print("syskey1=>" + _syskey);
         _allData["svrHdrData"] = {
           "syskey": _syskey,
           "n1": "0",
@@ -563,11 +559,19 @@ print("2");
       //   _consoleLable = _allData.toString();
       //   hideLoadingDialog();
       // });
-
+      // var aa;
       this.onlineSerives.createStore(_allData).then((reslut) => {
             hideLoadingDialog(),
+            // aa = reslut["data"]["respHdrSyskey"].toString(),
+            // setState((){
+            //   this.storage.setItem("allsectionHeadersyskey", aa);
+            // }),
+
             if (reslut["status"] == true)
               {
+                this.storage.setItem("allsectionHeadersyskey",
+                    reslut["data"]["respHdrSyskey"].toString()),
+                print("445-->" + this.storage.getItem("allsectionHeadersyskey")),
                 ShowToast("Saved successfully."),
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
@@ -943,23 +947,29 @@ print("2");
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   for (var i = 0; i < datas.length; i++)
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                            value: datas[i]["check"],
-                            onChanged: (bool newValue) {
-                              setState(() {
-                                datas[i]["check"] = !datas[i]["check"];
-                              });
-                            }),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          datas[i]["text"].toString(),
-                          style: TextStyle(fontSize: 16),
-                        )
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Checkbox(
+                              value: datas[i]["check"],
+                              onChanged: (bool newValue) {
+                                setState(() {
+                                  datas[i]["check"] = !datas[i]["check"];
+                                });
+                              }),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Flexible(
+                            child: Text(
+                              datas[i]["text"].toString(),
+                              // "asdfghjksdfghjkdfgdgdddddddddddddddddddddddddddddddddddddddddddddddddddddddsdfsdfsdfsfsfsfsdfsdfsdfsdfsdfsdfs",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                 ],
               )),
@@ -1161,6 +1171,8 @@ print("2");
     super.initState();
 //    if(){} for questionNature
     completeStatus = this.storage.getItem("completeStatus");
+    svrhdrSyskey = this.storage.getItem("allsectionHeadersyskey");
+    print("098-->" + svrhdrSyskey);
     var _pssOject;
     if (this.widget.regOrAss == "assign") {
       _pssOject = this.widget.passData[0]["shopsyskey"];
@@ -1190,9 +1202,9 @@ print("2");
     showLoading();
     this
         .onlineSerives
-        .getQuestions(param,"eachsection")
+        .getQuestions(param, "eachsection")
         .then((result) => {
-              setState(()  {
+              setState(() {
                 this._checkSaveorupdate = result["checkSaveorupdate"];
                 if (result["status"] == true) {
                   hideLoadingDialog();
@@ -1209,7 +1221,7 @@ print("2");
                       if (questions[ss]["TypeDesc"] == "Attach Photograph") {
                         print("1>>" + questions[ss].toString());
                         var onlinePhoto = [];
-                        getImage(ss,_data,onlinePhoto);
+                        getImage(ss, _data, onlinePhoto);
                         "---->";
                       } else if (questions[ss]["TypeDesc"] == "Checkbox") {
                         print("2>>" + questions[ss].toString());
@@ -1398,7 +1410,10 @@ print("2");
                       }
                     }
                   }
-                  print("12300->" + _primaryData.toString()+ "_____" + _status.toString());
+                  print("12300->" +
+                      _primaryData.toString() +
+                      "_____" +
+                      _status.toString());
                 } else {
                   _status = false;
                   hideLoadingDialog();
@@ -1408,37 +1423,33 @@ print("2");
         .catchError((err) => {});
   }
 
-
-  getImage(index,_data,onlinePhoto) async {
+  getImage(index, _data, onlinePhoto) async {
     if (questions[index]["AnswerShopPhoto"].length > 0) {
-      for (var y = 0;
-      y < questions[index]["AnswerShopPhoto"].length;
-      y++) {
+      for (var y = 0; y < questions[index]["AnswerShopPhoto"].length; y++) {
         var datas = {};
         var shopPhoto = questions[index]["AnswerShopPhoto"][y];
         datas["image"] = shopPhoto["PhotoPath"];
         datas["name"] = shopPhoto["PhotoName"];
         datas["type"] = "online";
-        var fullurl =
-            this.subUrl + shopPhoto["PhotoPath"].toString();
+        var fullurl = this.subUrl + shopPhoto["PhotoPath"].toString();
         print("1->");
         file = await urlToFile(fullurl);
         print("3->");
-        if(file.toString() != ""){
+        if (file.toString() != "") {
           List<int> imageBytes = file.readAsBytesSync();
           print("4->");
-          String base64Image ="data:image/png;base64,"+ base64Encode(imageBytes).toString();
+          String base64Image =
+              "data:image/png;base64," + base64Encode(imageBytes).toString();
           datas["base64"] = base64Image;
-
-        }else{
+        } else {
           datas["base64"] = "";
         }
         onlinePhoto.add(datas);
       }
       _data["images"] = onlinePhoto;
-      if(_data["images"].length == questions[index]["AnswerShopPhoto"].length){
-        setState(() {
-        });
+      if (_data["images"].length ==
+          questions[index]["AnswerShopPhoto"].length) {
+        setState(() {});
       }
     } else {
       _data["images"] = [];
@@ -2466,7 +2477,7 @@ print("2");
                       if (questions.length > 0)
                         for (var i = 0; i < questions.length; i++)
                           _allWidget(questions[i], i, _primaryData[i]),
-                    if (!_status || questions.length == 0 )
+                    if (!_status || questions.length == 0)
                       Container(
                         height: 50,
                         color: Colors.grey[300],
@@ -2530,7 +2541,7 @@ print("2");
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      if(completeStatus != "Complete"){
+                      if (completeStatus != "Complete") {
                         if (this._status == true && this.questions.length > 0) {
                           setState(() {
                             _clickDoneAssignStore();
@@ -2555,23 +2566,23 @@ print("2");
                           );
                         }
                       }
-
                     },
                     child: Column(
                       children: <Widget>[
                         Container(
                           constraints: BoxConstraints(minHeight: 50.0),
                           alignment: Alignment.center,
-                          child: completeStatus == "Complete"?
-                          Text(
-                            "Done",
-                            style: TextStyle(color: Colors.white54, fontSize: 16),
-                          )
-                              :
-                          Text(
-                            "Done",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
+                          child: completeStatus == "Complete"
+                              ? Text(
+                                  "Done",
+                                  style: TextStyle(
+                                      color: Colors.white54, fontSize: 16),
+                                )
+                              : Text(
+                                  "Done",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
                         ),
                       ],
                     ),

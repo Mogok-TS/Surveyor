@@ -1,4 +1,3 @@
-
 getCommonshop(data, type) {
   var commonArray = [];
   bool repeated = false;
@@ -29,3 +28,4 @@ getCommonshop(data, type) {
   }
   return commonArray;
 }
+

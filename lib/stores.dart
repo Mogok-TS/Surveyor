@@ -76,7 +76,7 @@ class _StoreScreenState extends State<StoreScreen> {
       textColor = Color(0xFFe0ac08);
     } else if (status == "Not Started") {
       textColor = Colors.blue;
-    } else if (status == "Complete") {
+    } else if (status == "Check Out") {
       textColor = Colors.green;
     } else if (status == "Permanent Close") {
       textColor = Colors.red;
@@ -85,14 +85,12 @@ class _StoreScreenState extends State<StoreScreen> {
     }
     return Text(
       status,
-      style: TextStyle(
-        color: textColor,
-        fontWeight: FontWeight.bold
-      ),
+      style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
     );
   }
 
   Widget assignStoreWidget(var data) {
+    print("1234-->" + data.toString());
     return Container(
       // margin: EdgeInsets.all(5),
       margin: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
@@ -326,6 +324,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               height: 10,
                             ),
                           // if (data["newStore"])
+                          if(data["newStore"] == true)
                           Container(
                             color: CustomIcons.dropDownHeader,
                             child: ListTile(
@@ -1014,7 +1013,7 @@ class _StoreScreenState extends State<StoreScreen> {
     } else if (data["status"]["currentType"] == "CHECKIN") {
       checkStatus = "In Progress";
     } else if (data["status"]["currentType"] == "CHECKOUT") {
-      checkStatus = "Complete";
+      checkStatus = "Check Out";
     } else if (data["status"]["currentType"] == "TEMPCHECKOUT") {
       checkStatus = "In Progress";
     } else if (data["status"]["currentType"] == "PERMANENT_CLOSE") {
@@ -1085,15 +1084,19 @@ class _StoreScreenState extends State<StoreScreen> {
                                     color: Colors.white,
                                     shape: buttonShape(),
                                     onPressed: () {
-                                      if(checkStatus == "Complete"){
-                                        this.storage.setItem("completeStatus", "Complete");
+                                      if (checkStatus == "Check Out") {
+                                        this.storage.setItem(
+                                            "completeStatus", "Complete");
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
-                                            builder: (context) => StoresDetailsScreen(shopData, false, "assign", "null"),
+                                            builder: (context) =>
+                                                StoresDetailsScreen(shopData,
+                                                    false, "assign", "null"),
                                           ),
                                         );
-                                      }else{
-                                        this.storage.setItem("completeStatus", "inComplete");
+                                      } else {
+                                        this.storage.setItem(
+                                            "completeStatus", "inComplete");
                                         _showDialog(data);
                                       }
                                       _checkInType = null;
@@ -1205,6 +1208,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                       getGPSstatus().then((status) => {
                                             if (status == true)
                                               {
+                                                this.storage.setItem(
+                                                    "completeStatus",
+                                                    "inComplete"),
                                                 Navigator.of(context)
                                                     .pushReplacement(
                                                   MaterialPageRoute(
@@ -1366,6 +1372,7 @@ class _StoreScreenState extends State<StoreScreen> {
 
   var allData = [];
   allDataFunction() async {
+    showLoading();
     allData = [];
     var storeDatas = this.storage.getItem("storeData");
     print("shops-->" + storeDatas.length.toString());
@@ -1412,11 +1419,14 @@ class _StoreScreenState extends State<StoreScreen> {
         "parentid": "",
         "n2": ""
       };
+
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
             objData["regionName"] = value["data"][0]["description"],
             setState(() {
               allData.add(objData);
+              print("check->>" + allData.length.toString()+ "__" + storeDatas.length.toString());
               if (allData.length == storeDatas.length) {
+                allData.sort((a,b) => a["regionName"].compareTo(b["regionName"]));
                 hideLoadingDialog();
               }
             }),
@@ -1450,6 +1460,7 @@ class _StoreScreenState extends State<StoreScreen> {
           .then((result) => {
                 if (result == true)
                   {
+                    showLoading(),
                     this.assignStores = this.storage.getItem("storeData"),
                     setState(() {
                       this.count = this.assignStores.length.toString();
@@ -1475,6 +1486,7 @@ class _StoreScreenState extends State<StoreScreen> {
       data = json.decode(jsonText);
     });
   }
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -1482,6 +1494,7 @@ class _StoreScreenState extends State<StoreScreen> {
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
+            key: _scaffoldKey,
             backgroundColor: Color(0xFFF8F8FF),
             drawer: MainMenuWidget(),
             appBar: AppBar(

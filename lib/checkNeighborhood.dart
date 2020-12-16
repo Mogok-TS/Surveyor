@@ -146,6 +146,9 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
     var routeData = this.storage.getItem("Routebyuser");
     List category = this.storage.getItem("Category");
     print("answer-->" + category.toString() + " ___ " + routeData.toString());
+    if(category == null){
+      category = [];
+    }
     var answer;
     if (category.length > 0) {
       answer = category[0]["answer"];

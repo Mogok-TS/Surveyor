@@ -69,18 +69,18 @@ class MainMenuWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1, color: Colors.black26),
-                    ),
-                  ),
-                  child: ListTile(
-                    leading: Icon(Icons.shopping_basket),
-                    title: Text("Order List"),
-                    trailing: Icon(Icons.chevron_right),
-                  ),
-                ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //     border: Border(
+                //       bottom: BorderSide(width: 1, color: Colors.black26),
+                //     ),
+                //   ),
+                //   child: ListTile(
+                //     leading: Icon(Icons.shopping_basket),
+                //     title: Text("Order List"),
+                //     trailing: Icon(Icons.chevron_right),
+                //   ),
+                // ),
               ],
             )),
             Expanded(
