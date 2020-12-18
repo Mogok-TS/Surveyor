@@ -80,7 +80,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.22'),
+                        child: Text('Version 1.0.23'),
                       ),
                     ],
                     child: Icon(
@@ -203,7 +203,8 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                     "LOGIN",
                     style: TextStyle(fontSize: 15),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    await showLoading();
                     if (userID.text == "" ||
                         userID.text == null ||
                         userID.text.isEmpty ||
@@ -212,7 +213,9 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         password.text.isEmpty) {
                       ShowToast("Please, fill all fields");
                       FocusScope.of(context).requestFocus(new FocusNode());
+                      hideLoadingDialog();
                     } else {
+                      print("ss->");
                       this.userID.text = getPhoneNumber(this.userID.text);
                       var param = {
                         "userId": userID.text.toString(),
@@ -222,7 +225,6 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                       var getMimuparam;
                       var checkIndex = 0;
                       var mimuCodearray = [];
-                      showLoading();
                       var _loginData;
                       FocusScope.of(context).requestFocus(new FocusNode());
                       this

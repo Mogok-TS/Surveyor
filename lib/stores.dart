@@ -2,8 +2,6 @@ import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Loading/LoadingServices.dart';
 import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
-import 'package:Surveyor/checkNeighborhood.dart';
-import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +10,6 @@ import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
 
 import 'Map/map.dart';
-import 'Services/GeneralUse/TodayDate.dart';
-import 'Services/GeneralUse/CommonArray.dart';
 import 'assets/custom_icons_icons.dart';
 import 'stores_details.dart';
 import 'widgets/mainmenuwidgets.dart';
@@ -31,10 +27,7 @@ class _StoreScreenState extends State<StoreScreen> {
   var storeData;
   var assignStores = [];
   var storeRegistration = [];
-  var _assignShop = [];
-  var _storeShop = [];
   var count = "0";
-  var _status;
   bool showAssignStore = false;
   bool showRegisterStore = false;
   var performType, performTypearray;
@@ -150,7 +143,7 @@ class _StoreScreenState extends State<StoreScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          if (data["existingStore"].length > 0)
+                          if (data["existingStore"]["storeList"].length > 0)
                             Container(
                               color: CustomIcons.dropDownHeader,
                               child: ListTile(
@@ -172,7 +165,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                       Text(
                                         "0" +
                                             "/" +
-                                            data["existingStore"]
+                                            data["existingStore"]["storeList"]
                                                 .length
                                                 .toString(),
                                         style: TextStyle(color: Colors.black),
@@ -207,7 +200,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               ),
                             ),
                           if (data["existItem"] == true)
-                            if (data["existingStore"].length == 0 &&
+                            if (data["existingStore"]["storeList"].length == 0 &&
                                 data["existItem"] == true)
                               Row(
                                 children: <Widget>[
@@ -228,17 +221,17 @@ class _StoreScreenState extends State<StoreScreen> {
                                   )
                                 ],
                               ),
-                          if (data["existingStore"].length > 0 &&
+                          if (data["existingStore"]["storeList"].length > 0 &&
                               data["existItem"] == true)
                             for (var ii = 0;
-                                ii < data["existingStore"].length;
+                                ii < data["existingStore"]["storeList"].length;
                                 ii++)
-                              buildAssignItem(data["existingStore"][ii]),
-                          if (data["existingStore"].length > 0)
+                              buildAssignItem(data["existingStore"]["storeList"][ii],data["existingStore"]["surDetail"]),
+                          if (data["existingStore"]["storeList"].length > 0)
                             SizedBox(
                               height: 10,
                             ),
-                          if (data["flagStore"].length > 0)
+                          if (data["flagStore"]["storeList"].length > 0)
                             Container(
                               color: CustomIcons.dropDownHeader,
                               child: ListTile(
@@ -260,7 +253,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                       Text(
                                         "0" +
                                             "/" +
-                                            data["flagStore"].length.toString(),
+                                            data["flagStore"]["storeList"].length.toString(),
                                         style: TextStyle(color: Colors.black),
                                       )
                                     ],
@@ -292,7 +285,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               ),
                             ),
                           if (data["flagItem"] == true)
-                            if (data["flagStore"].length == 0 &&
+                            if (data["flagStore"]["storeList"].length == 0 &&
                                 data["flagItem"] == true)
                               Row(
                                 children: <Widget>[
@@ -313,13 +306,13 @@ class _StoreScreenState extends State<StoreScreen> {
                                   )
                                 ],
                               ),
-                          if (data["flagStore"].length > 0 &&
+                          if (data["flagStore"]["storeList"].length > 0 &&
                               data["flagItem"] == true)
                             for (var ii = 0;
-                                ii < data["flagStore"].length;
+                                ii < data["flagStore"]["storeList"].length;
                                 ii++)
-                              buildAssignItem(data["flagStore"][ii]),
-                          if (data["flagStore"].length > 0)
+                              buildAssignItem(data["flagStore"]["storeList"][ii],data["flagStore"]["surDetail"]),
+                          if (data["flagStore"]["storeList"].length > 0)
                             SizedBox(
                               height: 10,
                             ),
@@ -398,7 +391,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                         a < data["newStoresList"].length;
                                         a++)
                                       buildNewStoreItem(
-                                          data["newStoresList"][a]),
+                                          data["newStoresList"][a],data["newSurdetail"]),
                                   // if(data["newStoresList"].length == 0)
                                   Container(
                                     child: Row(
@@ -421,6 +414,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                           MaterialPageRoute(
                                                             builder: (context) =>
                                                                 StoresDetailsScreen(
+                                                                    data["newSurdetail"],
                                                                     [],
                                                                     false,
                                                                     "newStore",
@@ -477,103 +471,103 @@ class _StoreScreenState extends State<StoreScreen> {
     }
   }
 
-  Widget storeRegWIdget(var data) {
-    return Container(
-      margin: EdgeInsets.all(5),
-      child: Column(
-        children: <Widget>[
-          Container(
-            color: CustomIcons.dropDownHeader,
-            child: ListTile(
-              title: InkWell(
-                onTap: () {
-                  setState(() {
-                    data["show"] = !data["show"];
-                  });
-                },
-                child: Text(
-                  data["townshipname"],
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  data["show"] = !data["show"];
-                });
-              },
-              trailing: Wrap(
-                spacing: 12, // space between two icons
-                children: <Widget>[
-                  // icon-1
-                  IconButton(
-                    color: Colors.black,
-                    icon: data["show"] == true
-                        ? Icon(Icons.keyboard_arrow_down)
-                        : Icon(Icons.chevron_right),
-                    onPressed: () {
-                      setState(() {
-                        data["show"] = !data["show"];
-                      });
-                    },
-                  ) // icon-2
-                ],
-              ),
-            ),
-          ),
-          Container(
-              child: data["show"] == true
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        this.storeRegistration.length == 0
-                            ? Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      height: 50,
-                                      color: Colors.grey[200],
-                                      child: Center(
-                                        child: Text(
-                                          "No Data",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              )
-                            : Column(
-                                children: <Widget>[
-                                  for (var i = 0;
-                                      i < data["childData"].length;
-                                      i++)
-                                    buildRegisterItem(
-                                        data["childData"][i]["name"]
-                                                .toString() +
-                                            "( " +
-                                            data["childData"][i]["mmName"]
-                                                .toString() +
-                                            " )",
-                                        data["childData"][i]["phoneNumber"]
-                                            .toString(),
-                                        data["childData"][i]["address"]
-                                            .toString(),
-                                        data["childData"][i])
-                                ],
-                              ),
-                      ],
-                    )
-                  : new Container())
-        ],
-      ),
-    );
-  }
+  // Widget storeRegWIdget(var data) {
+  //   return Container(
+  //     margin: EdgeInsets.all(5),
+  //     child: Column(
+  //       children: <Widget>[
+  //         Container(
+  //           color: CustomIcons.dropDownHeader,
+  //           child: ListTile(
+  //             title: InkWell(
+  //               onTap: () {
+  //                 setState(() {
+  //                   data["show"] = !data["show"];
+  //                 });
+  //               },
+  //               child: Text(
+  //                 data["townshipname"],
+  //                 style: TextStyle(color: Colors.black),
+  //               ),
+  //             ),
+  //             onTap: () {
+  //               setState(() {
+  //                 data["show"] = !data["show"];
+  //               });
+  //             },
+  //             trailing: Wrap(
+  //               spacing: 12, // space between two icons
+  //               children: <Widget>[
+  //                 // icon-1
+  //                 IconButton(
+  //                   color: Colors.black,
+  //                   icon: data["show"] == true
+  //                       ? Icon(Icons.keyboard_arrow_down)
+  //                       : Icon(Icons.chevron_right),
+  //                   onPressed: () {
+  //                     setState(() {
+  //                       data["show"] = !data["show"];
+  //                     });
+  //                   },
+  //                 ) // icon-2
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //         Container(
+  //             child: data["show"] == true
+  //                 ? Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     mainAxisAlignment: MainAxisAlignment.start,
+  //                     children: <Widget>[
+  //                       this.storeRegistration.length == 0
+  //                           ? Row(
+  //                               children: <Widget>[
+  //                                 Expanded(
+  //                                   child: Container(
+  //                                     height: 50,
+  //                                     color: Colors.grey[200],
+  //                                     child: Center(
+  //                                       child: Text(
+  //                                         "No Data",
+  //                                         textAlign: TextAlign.center,
+  //                                         style: TextStyle(
+  //                                           color: Colors.black,
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                   ),
+  //                                 )
+  //                               ],
+  //                             )
+  //                           : Column(
+  //                               children: <Widget>[
+  //                                 for (var i = 0;
+  //                                     i < data["childData"].length;
+  //                                     i++)
+  //                                   buildRegisterItem(
+  //                                       data["childData"][i]["name"]
+  //                                               .toString() +
+  //                                           "( " +
+  //                                           data["childData"][i]["mmName"]
+  //                                               .toString() +
+  //                                           " )",
+  //                                       data["childData"][i]["phoneNumber"]
+  //                                           .toString(),
+  //                                       data["childData"][i]["address"]
+  //                                           .toString(),
+  //                                       data["childData"][i])
+  //                               ],
+  //                             ),
+  //                     ],
+  //                   )
+  //                 : new Container())
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  _showDialog(var data) {
+  _showDialog(data, surDetail) {
     var shopData = [data];
     var param;
     var params;
@@ -886,7 +880,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                               Navigator.of(context, rootNavigator: true).pop(),
                                                                               Navigator.of(context).pushReplacement(
                                                                                 MaterialPageRoute(
-                                                                                  builder: (context) => StoresDetailsScreen(shopData, false, "assign", "null"),
+                                                                                  builder: (context) => StoresDetailsScreen(surDetail,shopData, false, "assign", "null"),
                                                                                 ),
                                                                               ),
                                                                             }
@@ -956,7 +950,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                               Navigator.of(context, rootNavigator: true).pop(),
                                                                               Navigator.of(context).pushReplacement(
                                                                                 MaterialPageRoute(
-                                                                                  builder: (context) => StoresDetailsScreen(shopData, false, "assign", "null"),
+                                                                                  builder: (context) => StoresDetailsScreen(surDetail,shopData, false, "assign", "null"),
                                                                                 ),
                                                                               ),
                                                                             }
@@ -1004,7 +998,7 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget buildAssignItem(data) {
+  Widget buildAssignItem(data, surDetail) {
     var shopData = [data];
     var checkStatus;
     bool start = true;
@@ -1090,14 +1084,14 @@ class _StoreScreenState extends State<StoreScreen> {
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                StoresDetailsScreen(shopData,
+                                                StoresDetailsScreen(surDetail,shopData,
                                                     false, "assign", "null"),
                                           ),
                                         );
                                       } else {
                                         this.storage.setItem(
                                             "completeStatus", "inComplete");
-                                        _showDialog(data);
+                                        _showDialog(data,surDetail);
                                       }
                                       _checkInType = null;
                                       _checkClosed = "2";
@@ -1125,25 +1119,26 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget buildNewStoreItem(data) {
+  Widget buildNewStoreItem(data,surDetail) {
     var checkStatus = "Not Started";
     data["address"] = data["locationData"]["address"];
     bool start = true;
+
     print("datas->" + data.toString());
-    // if (data["status"]["currentType"] == "") {
-    //   checkStatus = "Not Started";
-    // } else if (data["status"]["currentType"] == "CHECKIN") {
-    //   checkStatus = "In Progress";
-    // } else if (data["status"]["currentType"] == "CHECKOUT") {
-    //   checkStatus = "Check Out";
-    // } else if (data["status"]["currentType"] == "TEMPCHECKOUT") {
-    //   checkStatus = "In Progress";
-    // } else if (data["status"]["currentType"] == "PERMANENT_CLOSE") {
-    //   checkStatus = "Permanent Close";
-    //   start = false;
-    // } else if (data["status"]["currentType"] == "TEMPORARY_CLOSE") {
-    //   checkStatus = "Temporary Close";
-    // }
+    if (data["routeStatus"]["currentType"] == "") {
+      checkStatus = "Not Started";
+    } else if (data["routeStatus"]["currentType"] == "CHECKIN") {
+      checkStatus = "In Progress";
+    } else if (data["routeStatus"]["currentType"] == "CHECKOUT") {
+      checkStatus = "Check Out";
+    } else if (data["routeStatus"]["currentType"] == "TEMPCHECKOUT") {
+      checkStatus = "In Progress";
+    } else if (data["routeStatus"]["currentType"] == "PERMANENT_CLOSE") {
+      checkStatus = "Permanent Close";
+      start = false;
+    } else if (data["routeStatus"]["currentType"] == "TEMPORARY_CLOSE") {
+      checkStatus = "Temporary Close";
+    }
 
     return Container(
       color: Colors.grey[200],
@@ -1216,6 +1211,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         StoresDetailsScreen(
+                                                            surDetail,
                                                             [data],
                                                             false,
                                                             "register",
@@ -1248,134 +1244,142 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget buildRegisterItem(
-      String storeName, String phone, String address, data) {
-    var params;
-    return Container(
-      color: Colors.grey[200],
-      padding: EdgeInsets.all(1),
-      child: Card(
-        child: Container(
-          decoration: flagDecoration(data["FlagCount"].toString()),
-          padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                  title: Text(
-                    storeName,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      ),
-                      Text(
-                        phone,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          height: 1.0,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      ),
-                      Text(
-                        address,
-                        style: TextStyle(height: 1.3),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  shape: buttonShape(),
-                                  onPressed: () {},
-                                  child: Center(
-                                    child: Text(
-                                      "Status",
-                                      style: TextStyle(),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  shape: buttonShape(),
-                                  onPressed: () {
-                                    getGPSstatus().then((status) => {
-                                          if (status == true)
-                                            {
-                                              params = {
-                                                "shopsyskey": data["id"]
-                                              },
-                                              this
-                                                  .onlineSerives
-                                                  .getCategory(params)
-                                                  .then((value) => {
-                                                        if (value == true)
-                                                          {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
-                                                              MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    StoresDetailsScreen(
-                                                                        [data],
-                                                                        false,
-                                                                        "register",
-                                                                        "null"),
-                                                              ),
-                                                            ),
-                                                          }
-                                                        else
-                                                          {
-                                                            hideLoadingDialog(),
-                                                          }
-                                                      }),
-                                            }
-                                          else
-                                            {
-                                              {ShowToast("Please open GPS")}
-                                            }
-                                        });
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      "Continue",
-                                      style: TextStyle(),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget buildRegisterItem(
+  //     String storeName, String phone, String address, data) {
+  //   var params;
+  //   return Container(
+  //     color: Colors.grey[200],
+  //     padding: EdgeInsets.all(1),
+  //     child: Card(
+  //       child: Container(
+  //         decoration: flagDecoration(data["FlagCount"].toString()),
+  //         padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+  //         child: Column(
+  //           children: <Widget>[
+  //             ListTile(
+  //                 title: Text(
+  //                   storeName,
+  //                   style: TextStyle(
+  //                     fontWeight: FontWeight.w700,
+  //                   ),
+  //                 ),
+  //                 subtitle: Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: <Widget>[
+  //                     Container(
+  //                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+  //                     ),
+  //                     Text(
+  //                       phone,
+  //                       style: TextStyle(
+  //                         fontWeight: FontWeight.w600,
+  //                         height: 1.0,
+  //                       ),
+  //                     ),
+  //                     Container(
+  //                       margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+  //                     ),
+  //                     Text(
+  //                       address,
+  //                       style: TextStyle(height: 1.3),
+  //                     ),
+  //                     Container(
+  //                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+  //                       child: Row(
+  //                         children: <Widget>[
+  //                           Expanded(
+  //                             child: Container(
+  //                               child: RaisedButton(
+  //                                 color: Colors.white,
+  //                                 shape: buttonShape(),
+  //                                 onPressed: () {},
+  //                                 child: Center(
+  //                                   child: Text(
+  //                                     "Status",
+  //                                     style: TextStyle(),
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                           Expanded(
+  //                             child: Container(
+  //                               child: RaisedButton(
+  //                                 color: Colors.white,
+  //                                 shape: buttonShape(),
+  //                                 onPressed: () {
+  //                                   getGPSstatus().then((status) => {
+  //                                         if (status == true)
+  //                                           {
+  //                                             params = {
+  //                                               "shopsyskey": data["id"]
+  //                                             },
+  //                                             this
+  //                                                 .onlineSerives
+  //                                                 .getCategory(params)
+  //                                                 .then((value) => {
+  //                                                       if (value == true)
+  //                                                         {
+  //                                                           Navigator.of(
+  //                                                                   context)
+  //                                                               .pushReplacement(
+  //                                                             MaterialPageRoute(
+  //                                                               builder: (context) =>
+  //                                                                   StoresDetailsScreen(
+  //                                                                       [data],
+  //                                                                       false,
+  //                                                                       "register",
+  //                                                                       "null"),
+  //                                                             ),
+  //                                                           ),
+  //                                                         }
+  //                                                       else
+  //                                                         {
+  //                                                           hideLoadingDialog(),
+  //                                                         }
+  //                                                     }),
+  //                                           }
+  //                                         else
+  //                                           {
+  //                                             {ShowToast("Please open GPS")}
+  //                                           }
+  //                                       });
+  //                                 },
+  //                                 child: Center(
+  //                                   child: Text(
+  //                                     "Continue",
+  //                                     style: TextStyle(),
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     )
+  //                   ],
+  //                 )),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   var allData = [];
-  allDataFunction() async {
+  var storeallData = [];
+  allDataFunction() {
     showLoading();
     allData = [];
+    storeallData = [];
     var storeDatas = this.storage.getItem("storeData");
     print("shops-->" + storeDatas.length.toString());
+    sortArray(storeDatas);
+    allData = storeallData;
+    hideLoadingDialog();
+  }
+
+  sortArray(storeDatas) async{
     for (var i = 0; i < storeDatas.length; i++) {
       var objData = {};
       objData["show"] = false;
@@ -1386,6 +1390,7 @@ class _StoreScreenState extends State<StoreScreen> {
       objData["flagItem"] = false;
       objData["storeItem"] = false;
       objData["newStore"] = storeDatas[i]["containNewStore"];
+      objData["newSurdetail"] = storeDatas[i]["newStore"]["surDetail"];
       print("status" + storeDatas[i]["containNewStore"].toString());
       var newStores;
       var newStoresList;
@@ -1421,22 +1426,22 @@ class _StoreScreenState extends State<StoreScreen> {
       };
 
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
-            objData["regionName"] = value["data"][0]["description"],
-            setState(() {
-              allData.add(objData);
-              print("check->>" + allData.length.toString()+ "__" + storeDatas.length.toString());
-              if (allData.length == storeDatas.length) {
-                allData.sort((a,b) => a["regionName"].compareTo(b["regionName"]));
-                hideLoadingDialog();
-              }
-            }),
-          });
+        objData["regionName"] = value["data"][0]["description"],
+        setState(() {
+          storeallData.add(objData);
+          print("check->>" + storeallData.length.toString()+ "__" + storeDatas.length.toString());
+          if (storeallData.length == storeDatas.length) {
+            storeallData.sort((a,b) => a["regionName"].compareTo(b["regionName"]));
+          }
+        }),
+      });
     }
   }
 
-  var loginData;
+  var loginData,newParam;
   @override
   void initState() {
+    print("aa-->");
     super.initState();
     var shopParam = {
       "spsyskey": "",
@@ -1444,16 +1449,17 @@ class _StoreScreenState extends State<StoreScreen> {
       "usertype": "",
       "date": ""
     };
-    var newParam;
+
     this.loginData = this.storage.getItem("loginData");
     newParam = {"usersyskey": this.loginData["syskey"].toString()};
     shopParam["spsyskey"] = this.loginData["syskey"];
     shopParam["teamsyskey"] = this.loginData["teamSyskey"];
     shopParam["usertype"] = this.loginData["userType"];
     shopParam["date"] = "";
-    showLoading();
     Future.delayed(const Duration(milliseconds: 500), () {
-      showLoading();
+      setState(() {
+        showLoading();
+      });
       this
           .onlineSerives
           .getStores(shopParam)

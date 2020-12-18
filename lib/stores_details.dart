@@ -25,11 +25,11 @@ import 'Map/map.dart';
 
 // ignore: must_be_immutable
 class StoresDetailsScreen extends StatefulWidget {
-  var regOrAss;
+  var regOrAss,surDetail;
   var passData, updateStatuspass, coordiante;
 
   StoresDetailsScreen(
-      this.passData, this.updateStatuspass, this.regOrAss, this.coordiante);
+      this.surDetail,this.passData, this.updateStatuspass, this.regOrAss, this.coordiante);
 
   @override
   _StoresDetailsScreenState createState() => _StoresDetailsScreenState();
@@ -83,6 +83,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     super.initState();
     localJsonData();
     this.loginData = this.storage.getItem("loginData");
+    this.storage.setItem("surDetail", this.widget.surDetail);
     print("as-->" + this.loginData.toString());
     setState(
       () {
@@ -1858,7 +1859,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "t12": "",
                             "svrHdrData": {
                               "syskey": "",
-                              "n1": "1",
+                              "n1": "0",
                               "n2": "",
                               "n3": ""
                             },
@@ -1933,7 +1934,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
+                      print("3333-->" + this.widget.passData.toString());
+
                       if (this.updateStatus == true) {
+                        // if(this.widget.regOrAss == "newStore" || this.widget.regOrAss == "register"){
+                        //
+                        // }
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (context) => CheckNeighborhoodScreen(

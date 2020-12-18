@@ -361,6 +361,7 @@ class MapSampleState extends State<GmapS> {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => StoresDetailsScreen(
+                        [],
                           this.widget.passLength,
                           this.widget.updateStatus,
                           this.widget.regass,
@@ -459,6 +460,7 @@ class MapSampleState extends State<GmapS> {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => StoresDetailsScreen(
+                          [],
                             [],
                             true,
                             "Map",
@@ -469,6 +471,7 @@ class MapSampleState extends State<GmapS> {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => StoresDetailsScreen(
+                          [],
                             curLatLong, true, "Map", curLatLong),
                       ),
                     );
@@ -480,6 +483,7 @@ class MapSampleState extends State<GmapS> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => StoresDetailsScreen(
+                            [],
                               [storeList[i]], true, "assign", curLatLong),
                         ),
                       );
@@ -502,6 +506,7 @@ class MapSampleState extends State<GmapS> {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => StoresDetailsScreen(
+                          [],
                             [this.closeCod],
                             true,
                             "Map",
@@ -515,6 +520,7 @@ class MapSampleState extends State<GmapS> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => StoresDetailsScreen(
+                            [],
                               curLatLong, true, "Map", curLatLong),
                         ),
                       );
@@ -533,6 +539,7 @@ class MapSampleState extends State<GmapS> {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => StoresDetailsScreen(
+                                  [],
                                   [this.widget.passLength[i]],
                                   false,
                                   "assignStore",
@@ -544,6 +551,7 @@ class MapSampleState extends State<GmapS> {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => StoresDetailsScreen(
+                                  [],
                                     [this.widget.passLength[i]],
                                     false,
                                     "assignStore",
@@ -563,6 +571,7 @@ class MapSampleState extends State<GmapS> {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => StoresDetailsScreen(
+                                    [],
                                       [storeList[i]],
                                       true,
                                       "assignStore",
@@ -582,6 +591,7 @@ class MapSampleState extends State<GmapS> {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => StoresDetailsScreen(
+                              [],
                                 [storeList[i]],
                                 true,
                                 "assignStore",

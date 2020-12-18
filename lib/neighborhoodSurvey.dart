@@ -121,6 +121,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   _clickDoneAssignStore() async {
     print("saveCondition->" + saveCondition.toString());
     var checkPHoto = "sinple";
+    var sectionCompletestatus = "0";
+    if(this.widget.header["status"].toString() == "1.0"){
+      sectionCompletestatus = "1";
+    }else{
+      sectionCompletestatus = "0";
+    }
     for (var i = 0; i < this.questions.length; i++) {
       var loopdata = questions[i];
       var loopPrimary = _primaryData[i];
@@ -135,6 +141,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
     if (checkPHoto == "have") {
       ShowToast("Please answer  the photo questions at least one");
+      hideLoadingDialog();
     } else {
       showLoading();
       var _question = this.widget.question;
@@ -161,7 +168,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 
         _allData["svrHdrData"] = {
           "syskey": _syskey,
-          "n1": "0",
+          "n1": sectionCompletestatus,
           "n2": pssOject["shopsyskey"].toString(),
           "n3": this.widget.header["headerSyskey"].toString()
         };
@@ -194,7 +201,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         print("syskey1=>" + _syskey);
         _allData["svrHdrData"] = {
           "syskey": _syskey,
-          "n1": "0",
+          "n1": sectionCompletestatus,
           "n2": pssOject["id"].toString(),
           "n3": this.widget.header["headerSyskey"].toString()
         };
@@ -2542,12 +2549,14 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                   child: InkWell(
                     onTap: () {
                       if (completeStatus != "Complete") {
+                        showLoading();
                         if (this._status == true && this.questions.length > 0) {
                           setState(() {
+                            // showLoading();
                             _clickDoneAssignStore();
                           });
                         } else {
-                          showLoading();
+                          // showLoading();
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => OutsideInsideNeighborhood(

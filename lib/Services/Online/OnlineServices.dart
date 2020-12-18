@@ -37,12 +37,12 @@ class OnlineSerives {
     if (this.url == "" || this.url == null || this.url.isEmpty) {
       // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/";
      // this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
-//       this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-      this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
-//       this.url =
-//           "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+     //  this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+      // this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
+      this.url =
+          "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
        // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
-      this.storage.setItem('URL', "http://18.136.44.90:8084/madbrepository/");
+      this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
 
@@ -335,7 +335,7 @@ class OnlineSerives {
   }
 
   Future getsvrShoplist(params) async {
-    print(("${params}"));
+    print("params00->" + params.toString());
     this.mainData();
     this.url = this.url + "/shop/get-svr-shoplist";
     var body = json.encode(params);
@@ -343,7 +343,7 @@ class OnlineSerives {
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
-    print("${response.body}");
+    print("aassdd-->" + "${response.body}");
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -722,7 +722,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-//          this.storage.setItem("HeaderList", data["list"]);
+         this.storage.setItem("HeaderList", data["list"]);
         } else {
           ShowToast("Server fail.");
           this.status = false;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:load/load.dart';
 
 import 'Register/login.dart';
 import 'assets/custom_icons_icons.dart';
@@ -17,16 +18,18 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Color(0xFFab000d),
     ));
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Surveyor',
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(color: CustomIcons.appbarColor),
-        primarySwatch: Colors.red,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        iconTheme: IconThemeData(color: Colors.white),
+    return LoadingProvider(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Surveyor',
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(color: CustomIcons.appbarColor),
+          primarySwatch: Colors.red,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        home:Login(),
       ),
-      home:Login(),
     );
   }
 }
