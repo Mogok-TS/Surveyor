@@ -1203,9 +1203,15 @@ class _StoreScreenState extends State<StoreScreen> {
                                       getGPSstatus().then((status) => {
                                             if (status == true)
                                               {
-                                                this.storage.setItem(
-                                                    "completeStatus",
-                                                    "inComplete"),
+                                                if(checkStatus == "Check Out"){
+                                                  this.storage.setItem(
+                                                      "completeStatus",
+                                                      "Complete"),
+                                                }else{
+                                                  this.storage.setItem(
+                                                      "completeStatus",
+                                                      "inComplete"),
+                                                },
                                                 Navigator.of(context)
                                                     .pushReplacement(
                                                   MaterialPageRoute(

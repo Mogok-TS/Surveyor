@@ -36,13 +36,13 @@ class OnlineSerives {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
       // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/";
-     // this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
+     this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
      //  this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-      // this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
-      this.url =
-          "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+     //  this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
+      // this.url =
+      //     "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
        // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
-      this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
+      this.storage.setItem('URL', "http://52.255.142.115:8084/madbrepository/");
     }
   }
 
@@ -58,6 +58,7 @@ class OnlineSerives {
     var body = json.encode(param);
     var response = await http
         .post(this.url, headers: this.headers, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     print("${response.statusCode}");
     print("${response.body}");
@@ -131,6 +132,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     if (response != null) {
       data = json.decode(response.body);
@@ -161,6 +163,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
 
     if (response != null) {
@@ -197,6 +200,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
 //    print("${response.body}");
     if (response != null) {
@@ -233,6 +237,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     print("123456-->");
     print("${response.body}");
@@ -342,6 +347,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     print("aassdd-->" + "${response.body}");
     if (response != null) {
@@ -375,6 +381,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     print("--> ${response.body}");
     if (response != null) {
@@ -406,6 +413,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     if (response != null) {
       data = json.decode(response.body);
@@ -437,6 +445,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
 
     if (response != null) {
@@ -467,6 +476,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
 
     if (response != null) {
@@ -499,6 +509,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     if (response != null) {
       data = json.decode(response.body);
@@ -531,6 +542,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     if (response != null) {
       data = json.decode(response.body);
@@ -716,6 +728,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     if (response != null) {
       data = json.decode(response.body);
@@ -723,7 +736,13 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
          this.storage.setItem("HeaderList", data["list"]);
-        } else {
+        } else if (data["status"].toString() == "No Data Record"){
+          ShowToast("No data.");
+          this.status = false;
+        }else if (data["status"].toString() == "No Param"){
+          ShowToast("No data.");
+          this.status = false;
+        }else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -748,6 +767,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .get(this.url, headers: this.headersWithKey)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     print("100-> ${response.body}");
     if (response != null) {
@@ -756,7 +776,7 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
           this.storage.setItem("Routebyuser", data["list"]);
-        } else {
+        }else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -779,6 +799,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     print("2345-->" + this.url.toString());
     print("sss--> ${response.body}");
@@ -814,6 +835,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     print("12-->" + response.body);
     if (response != null) {
@@ -848,6 +870,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     if (response != null) {
       data = json.decode(response.body);
@@ -879,6 +902,7 @@ class OnlineSerives {
     var data;
     var response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
+        .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
     if (response != null) {
       data = json.decode(response.body);

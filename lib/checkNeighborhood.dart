@@ -217,6 +217,7 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
       "svrHdrSK": svrHdrSk,
       "CategorySK": categories
     };
+    var count = 0;
     print("param1 -->" + params.toString());
     this
         .onlineSerives
@@ -233,14 +234,19 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
                       }),
                   for (var i = 0; i < headerList.length; i++)
                     {
+                      // print("ssee->" + headerList[i]["status"].toString())
                       if (headerList[i]["status"].toString() == "1.0")
                         {
-                          setState(() => {
-                                this.complete = true,
-                              }),
+                          count += 1,
+                          print("ssee->" + count.toString()),
                         }
                     },
-                  print("res -->" + this.headerList.toString()),
+                  if(count == headerList.length){
+                    setState(() => {
+                      this.complete = true,
+                    }),
+                  },
+                  print("res -->" + this.headerList.length.toString() + "___" + count.toString()),
                 }
               else
                 {

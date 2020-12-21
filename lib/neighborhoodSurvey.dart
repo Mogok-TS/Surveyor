@@ -122,9 +122,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     print("saveCondition->" + saveCondition.toString());
     var checkPHoto = "sinple";
     var sectionCompletestatus = "0";
-    if(this.widget.header["status"].toString() == "1.0"){
+    print("sdfd-->" + this.widget.header["status"].toString());
+    if (this.widget.header["status"].toString() == "1.0") {
       sectionCompletestatus = "1";
-    }else{
+    } else {
       sectionCompletestatus = "0";
     }
     for (var i = 0; i < this.questions.length; i++) {
@@ -578,7 +579,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               {
                 this.storage.setItem("allsectionHeadersyskey",
                     reslut["data"]["respHdrSyskey"].toString()),
-                print("445-->" + this.storage.getItem("allsectionHeadersyskey")),
+                print(
+                    "445-->" + this.storage.getItem("allsectionHeadersyskey")),
                 ShowToast("Saved successfully."),
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
@@ -2511,7 +2513,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      showLoading();
+                      // showLoading();
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => OutsideInsideNeighborhood(
@@ -2551,9 +2553,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                       if (completeStatus != "Complete") {
                         showLoading();
                         if (this._status == true && this.questions.length > 0) {
-                          setState(() {
-                            // showLoading();
-                            _clickDoneAssignStore();
+                          // Future.delayed(const Duration(milliseconds: 500), () {
+                            setState(() {
+                              // showLoading();
+                              // showLoading();
+                              _clickDoneAssignStore();
+                            // });
                           });
                         } else {
                           // showLoading();
