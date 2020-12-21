@@ -365,7 +365,9 @@ class MapSampleState extends State<GmapS> {
                           this.widget.passLength,
                           this.widget.updateStatus,
                           this.widget.regass,
-                          [this.closeCod]),
+                          [this.closeCod],
+                        "CHECKIN"
+                      ),
                     ),
                   );
                 }
@@ -464,7 +466,9 @@ class MapSampleState extends State<GmapS> {
                             [],
                             true,
                             "Map",
-                            [this._latLong]),
+                            [this._latLong],
+                            "CHECKIN",
+                        ),
                       ),
                     );
                   } else if (this.curLatLong != null) {
@@ -472,7 +476,7 @@ class MapSampleState extends State<GmapS> {
                       MaterialPageRoute(
                         builder: (context) => StoresDetailsScreen(
                           [],
-                            curLatLong, true, "Map", curLatLong),
+                            curLatLong, true, "Map", curLatLong,"CHECKIN"),
                       ),
                     );
                   }
@@ -484,7 +488,7 @@ class MapSampleState extends State<GmapS> {
                         MaterialPageRoute(
                           builder: (context) => StoresDetailsScreen(
                             [],
-                              [storeList[i]], true, "assign", curLatLong),
+                              [storeList[i]], true, "assign", curLatLong,"CHECKIN"),
                         ),
                       );
                     }
@@ -510,7 +514,8 @@ class MapSampleState extends State<GmapS> {
                             [this.closeCod],
                             true,
                             "Map",
-                            [this.closeCod]),
+                            [this.closeCod],
+                            "CHECKIN"),
                       ),
                     );
                   }
@@ -521,7 +526,8 @@ class MapSampleState extends State<GmapS> {
                         MaterialPageRoute(
                           builder: (context) => StoresDetailsScreen(
                             [],
-                              curLatLong, true, "Map", curLatLong),
+                              curLatLong, true, "Map", curLatLong,
+                              "CHECKIN"),
                         ),
                       );
                     } else {
@@ -544,6 +550,7 @@ class MapSampleState extends State<GmapS> {
                                   false,
                                   "assignStore",
                                   [this.closeCod],
+                                    "CHECKIN"
                                 ),
                               ),
                             );
@@ -555,7 +562,9 @@ class MapSampleState extends State<GmapS> {
                                     [this.widget.passLength[i]],
                                     false,
                                     "assignStore",
-                                    this.curLatLong),
+                                    this.curLatLong,
+                                    "CHECKIN"
+                                ),
                               ),
                             );
                           }
@@ -575,7 +584,8 @@ class MapSampleState extends State<GmapS> {
                                       [storeList[i]],
                                       true,
                                       "assignStore",
-                                      curLatLong),
+                                      curLatLong,
+                                      "CHECKIN"),
                                 ),
                               );
                             }
@@ -595,7 +605,9 @@ class MapSampleState extends State<GmapS> {
                                 [storeList[i]],
                                 true,
                                 "assignStore",
-                                curLatLong),
+                                curLatLong,
+                                "CHECKIN"
+                            ),
                           ),
                         );
                       }

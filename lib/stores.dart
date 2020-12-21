@@ -418,7 +418,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                     [],
                                                                     false,
                                                                     "newStore",
-                                                                    "null"),
+                                                                    "null",
+                                                                  "Not Started"
+                                                                ),
                                                           ),
                                                         ),
                                                       }
@@ -880,7 +882,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                               Navigator.of(context, rootNavigator: true).pop(),
                                                                               Navigator.of(context).pushReplacement(
                                                                                 MaterialPageRoute(
-                                                                                  builder: (context) => StoresDetailsScreen(surDetail,shopData, false, "assign", "null"),
+                                                                                  builder: (context) => StoresDetailsScreen(surDetail,shopData, false, "assign", "null","CHECKIN"),
                                                                                 ),
                                                                               ),
                                                                             }
@@ -950,7 +952,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                               Navigator.of(context, rootNavigator: true).pop(),
                                                                               Navigator.of(context).pushReplacement(
                                                                                 MaterialPageRoute(
-                                                                                  builder: (context) => StoresDetailsScreen(surDetail,shopData, false, "assign", "null"),
+                                                                                  builder: (context) => StoresDetailsScreen(surDetail,shopData, false, "assign", "null","CHECKIN"),
                                                                                 ),
                                                                               ),
                                                                             }
@@ -1085,7 +1087,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 StoresDetailsScreen(surDetail,shopData,
-                                                    false, "assign", "null"),
+                                                    false, "assign", "null", checkStatus),
                                           ),
                                         );
                                       } else {
@@ -1221,7 +1223,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                                             [data],
                                                             false,
                                                             "register",
-                                                            "null"),
+                                                            "null",
+                                                            checkStatus
+                                                        ),
                                                   ),
                                                 ),
                                               }

@@ -80,7 +80,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.23'),
+                        child: Text('Version 1.0.24'),
                       ),
                     ],
                     child: Icon(
@@ -226,6 +226,9 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                       var checkIndex = 0;
                       var mimuCodearray = [];
                       var _loginData;
+                      this.storage.setItem(
+                          "completeStatus",
+                          "inComplete");
                       FocusScope.of(context).requestFocus(new FocusNode());
                       this
                           .onlineSerives

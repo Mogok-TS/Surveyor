@@ -25,11 +25,11 @@ import 'Map/map.dart';
 
 // ignore: must_be_immutable
 class StoresDetailsScreen extends StatefulWidget {
-  var regOrAss,surDetail;
+  var regOrAss, surDetail, checkStatus;
   var passData, updateStatuspass, coordiante;
 
-  StoresDetailsScreen(
-      this.surDetail,this.passData, this.updateStatuspass, this.regOrAss, this.coordiante);
+  StoresDetailsScreen(this.surDetail, this.passData, this.updateStatuspass,
+      this.regOrAss, this.coordiante, this.checkStatus);
 
   @override
   _StoresDetailsScreenState createState() => _StoresDetailsScreenState();
@@ -168,9 +168,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             this.longitude =
                 this.updateDataarray[0]["locationData"]["longitude"];
             _getUpdateData();
-          }
-         
-          else if (this.widget.regOrAss == "newStoreMap") {
+          } else if (this.widget.regOrAss == "newStoreMap") {
             for (var i = 0; i < this.widget.coordiante.length; i++) {
               latitude = this.widget.coordiante[i]["lat"];
               longitude = this.widget.coordiante[i]["long"];
@@ -933,7 +931,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       decoration: InputDecoration(
                         labelText: 'Shop Name',
                         labelStyle:
-                        TextStyle(color: Colors.black54, fontSize: 18),
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusColor: Colors.black,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -949,7 +947,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       decoration: InputDecoration(
                         labelText: 'Shop Name (Myanmar)',
                         labelStyle:
-                        TextStyle(color: Colors.black54, fontSize: 18),
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusColor: Colors.black,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -967,7 +965,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         focusColor: Colors.black,
                         labelText: 'Shop Phone No',
                         labelStyle:
-                        TextStyle(color: Colors.black54, fontSize: 18),
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -983,7 +981,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         focusColor: Colors.black,
                         labelText: 'Owner Name',
                         labelStyle:
-                        TextStyle(color: Colors.black54, fontSize: 18),
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -1000,7 +998,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         focusColor: Colors.black,
                         labelText: 'Owner Phone No',
                         labelStyle:
-                        TextStyle(color: Colors.black54, fontSize: 18),
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -1030,7 +1028,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: DropdownButton(
                               isExpanded: true,
                               items: _stateList.map(
-                                    (val) {
+                                (val) {
                                   return DropdownMenuItem(
                                     value: val,
                                     child: Text(val),
@@ -1106,7 +1104,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: DropdownButton(
                               isExpanded: true,
                               items: _districtList.map(
-                                    (val) {
+                                (val) {
                                   return DropdownMenuItem(
                                     value: val,
                                     child: Text(val),
@@ -1118,8 +1116,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                 setState(() {
                                   _district = value;
                                   for (var i = 0;
-                                  i < districtObject.length;
-                                  i++) {
+                                      i < districtObject.length;
+                                      i++) {
                                     if (_district ==
                                         districtObject[i]["description"]) {
                                       var data = {
@@ -1186,7 +1184,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: DropdownButton(
                               isExpanded: true,
                               items: _townShipList.map(
-                                    (val) {
+                                (val) {
                                   return DropdownMenuItem(
                                     value: val,
                                     child: Text(val),
@@ -1198,8 +1196,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                 setState(() {
                                   _townShip = value;
                                   for (var i = 0;
-                                  i < townShipObject.length;
-                                  i++) {
+                                      i < townShipObject.length;
+                                      i++) {
                                     if (_townShip ==
                                         townShipObject[i]["description"]) {
                                       var data = {
@@ -1247,7 +1245,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Town/Village Tract?",
                             style:
-                            TextStyle(fontSize: 17, color: Colors.black54),
+                                TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1263,7 +1261,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton<String>(
                                 isExpanded: true,
                                 items: _townOrVillagetractList.map(
-                                      (val) {
+                                  (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(
@@ -1343,7 +1341,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Town",
                             style:
-                            TextStyle(fontSize: 17, color: Colors.black54),
+                                TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1359,7 +1357,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton(
                                 isExpanded: true,
                                 items: _townList.map(
-                                      (val) {
+                                  (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(val),
@@ -1381,7 +1379,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                         };
                                         townVillageTractId = townData[i]["id"];
                                         townVillageTractCode =
-                                        townData[i]["code"];
+                                            townData[i]["code"];
                                         _ward = "-";
                                         _wardList = ['-'];
                                         _getWard(params);
@@ -1410,7 +1408,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Ward",
                             style:
-                            TextStyle(fontSize: 17, color: Colors.black54),
+                                TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1426,7 +1424,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton(
                                 isExpanded: true,
                                 items: _wardList.map(
-                                      (val) {
+                                  (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(val),
@@ -1463,7 +1461,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Village Tract",
                             style:
-                            TextStyle(fontSize: 17, color: Colors.black54),
+                                TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1479,7 +1477,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton(
                                 isExpanded: true,
                                 items: _villageTractList.map(
-                                      (val) {
+                                  (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(val),
@@ -1491,8 +1489,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   setState(() {
                                     _villageTract = value;
                                     for (var i = 0;
-                                    i < _villageTractData.length;
-                                    i++) {
+                                        i < _villageTractData.length;
+                                        i++) {
                                       if (_villageTract ==
                                           _villageTractData[i]['description']) {
                                         var params = {
@@ -1500,13 +1498,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                           "code": "",
                                           "description": "",
                                           "parentid": _villageTractData[i]
-                                          ["id"],
+                                              ["id"],
                                           "n2": "2"
                                         };
                                         townVillageTractCode =
-                                        _villageTractData[i]["code"];
+                                            _villageTractData[i]["code"];
                                         townVillageTractId =
-                                        _villageTractData[i]["id"];
+                                            _villageTractData[i]["id"];
                                         _village = "-";
                                         _villageList = ['-'];
                                         _getVillage(params);
@@ -1535,7 +1533,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Text(
                             "Village",
                             style:
-                            TextStyle(fontSize: 17, color: Colors.black54),
+                                TextStyle(fontSize: 17, color: Colors.black54),
                           ),
                         ),
                         Container(
@@ -1551,7 +1549,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               child: DropdownButton(
                                 isExpanded: true,
                                 items: _villageList.map(
-                                      (val) {
+                                  (val) {
                                     return DropdownMenuItem(
                                       value: val,
                                       child: Text(val),
@@ -1563,12 +1561,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                   setState(() {
                                     _village = value;
                                     for (var i = 0;
-                                    i < _villageData.length;
-                                    i++) {
+                                        i < _villageData.length;
+                                        i++) {
                                       if (_village ==
                                           _villageData[i]['description']) {
                                         wardVillageCode =
-                                        _villageData[i]["code"];
+                                            _villageData[i]["code"];
                                         wardVillageId = _villageData[i]["id"];
                                       }
                                     }
@@ -1599,7 +1597,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         focusColor: Colors.black,
                         labelText: 'Street',
                         labelStyle:
-                        TextStyle(color: Colors.black54, fontSize: 18),
+                            TextStyle(color: Colors.black54, fontSize: 18),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
@@ -1615,7 +1613,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10),
                         hintText:
-                        '${this.street.text != '' ? this.street.text + ',' : ''}${this._village != '-' ? this._village + ',' : ''}${this._villageTract != '-' ? this._villageTract + ',' : ''}${this._ward != '-' ? this._ward + ',' : ''}${this._town != '-' ? this._town + ',' : ''}${this._townShip != '-' ? this._townShip + ',' : ''}${this._district != '-' ? this._district + ',' : ''}${this._state != '-' ? this._state : ''}',
+                            '${this.street.text != '' ? this.street.text + ',' : ''}${this._village != '-' ? this._village + ',' : ''}${this._villageTract != '-' ? this._villageTract + ',' : ''}${this._ward != '-' ? this._ward + ',' : ''}${this._town != '-' ? this._town + ',' : ''}${this._townShip != '-' ? this._townShip + ',' : ''}${this._district != '-' ? this._district + ',' : ''}${this._state != '-' ? this._state : ''}',
                         fillColor: Colors.grey[300],
                         filled: true,
                       ),
@@ -1664,17 +1662,17 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       print("thisCode" + this.n2Code);
                       var param;
                       if (this._state == null ||
-                          this._state == "-" ||
-                          this._state.isEmpty ||
-                          this._district == null ||
-                          this._district == "-" ||
-                          this._district.isEmpty ||
-                          this._townShip == null ||
-                          this._townShip == "-" ||
-                          this._townShip.isEmpty ||
-                          // this._townOrVillagetract == null ||
-                          // this._townOrVillagetract == "-" ||
-                          // this._townOrVillagetract.isEmpty ||
+                              this._state == "-" ||
+                              this._state.isEmpty ||
+                              this._district == null ||
+                              this._district == "-" ||
+                              this._district.isEmpty ||
+                              this._townShip == null ||
+                              this._townShip == "-" ||
+                              this._townShip.isEmpty ||
+                              // this._townOrVillagetract == null ||
+                              // this._townOrVillagetract == "-" ||
+                              // this._townOrVillagetract.isEmpty ||
 //                        this._town == null ||
 //                        this._town == "Town" ||
 //                        this._town.isEmpty ||
@@ -1687,26 +1685,26 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
 //                        this._village == null ||
 //                        this._village == "Village" ||
 //                        this._village.isEmpty ||
-                          this.shopName.text == "" ||
-                          this.shopName.text == null ||
-                          this.shopName.text.isEmpty ||
-                          this.shopNamemm.text == "" ||
-                          this.shopNamemm.text == null ||
-                          this.shopNamemm.text.isEmpty ||
-                          this.shopPhoneNo.text == "" ||
-                          this.shopPhoneNo.text == null ||
-                          this.shopPhoneNo.text.isEmpty ||
-                          this.ownerName.text == "" ||
-                          this.ownerName.text == null ||
-                          this.ownerName.text.isEmpty ||
-                          this.ownerPhoneNo.text == "" ||
-                          this.ownerPhoneNo.text == null ||
-                          this.ownerPhoneNo.text.isEmpty
-                      // ||
+                              this.shopName.text == "" ||
+                              this.shopName.text == null ||
+                              this.shopName.text.isEmpty ||
+                              this.shopNamemm.text == "" ||
+                              this.shopNamemm.text == null ||
+                              this.shopNamemm.text.isEmpty ||
+                              this.shopPhoneNo.text == "" ||
+                              this.shopPhoneNo.text == null ||
+                              this.shopPhoneNo.text.isEmpty ||
+                              this.ownerName.text == "" ||
+                              this.ownerName.text == null ||
+                              this.ownerName.text.isEmpty ||
+                              this.ownerPhoneNo.text == "" ||
+                              this.ownerPhoneNo.text == null ||
+                              this.ownerPhoneNo.text.isEmpty
+                          // ||
                           // this.street.text == "" ||
                           // this.street.text == null ||
                           // this.street.text.isEmpty
-                      ) {
+                          ) {
                         ShowToast("Please fill all fields");
                       } else {
                         showLoading();
@@ -1810,7 +1808,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "saveCondition": "",
                             "id": this.shopSyskey,
                             "active": true,
-                            "usersyskey":this.loginData["syskey"].toString(),
+                            "usersyskey": this.loginData["syskey"].toString(),
                             "name": this.shopName.text.toString(),
                             "mmName": this.shopNamemm.text.toString(),
                             "personName": this.ownerName.text.toString(),
@@ -1842,7 +1840,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           param = {
                             "saveCondition": "",
                             "active": true,
-                            "usersyskey":this.loginData["syskey"].toString(),
+                            "usersyskey": this.loginData["syskey"].toString(),
                             "name": this.shopName.text.toString(),
                             "mmName": this.shopNamemm.text.toString(),
                             "personName": this.ownerName.text.toString(),
@@ -1891,7 +1889,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                     this.createRegistration = [reslut["data"]];
 
                                     // print("hello" + "${reslut["data"]}");
-                                    this.updateDataarray = this.createRegistration;
+                                    this.updateDataarray =
+                                        this.createRegistration;
                                     this.shopSyskey = this
                                         .updateDataarray[0]["id"]
                                         .toString();
@@ -1940,6 +1939,11 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         // if(this.widget.regOrAss == "newStore" || this.widget.regOrAss == "register"){
                         //
                         // }
+                        if (this.widget.checkStatus == "Check Out") {
+                          this.storage.setItem("completeStatus", "Complete");
+                        } else {
+                          this.storage.setItem("completeStatus", "inComplete");
+                        }
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (context) => CheckNeighborhoodScreen(

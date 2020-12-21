@@ -36,13 +36,13 @@ class OnlineSerives {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
       // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/";
-     this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
+     // this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
      //  this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-     //  this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
-      // this.url =
-      //     "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+      this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
+     //  this.url =
+     //      "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
        // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
-      this.storage.setItem('URL', "http://52.255.142.115:8084/madbrepository/");
+      this.storage.setItem('URL', "http://18.136.44.90:8084/madbrepository/");
     }
   }
 
