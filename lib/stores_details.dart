@@ -77,6 +77,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   LatLng curLocation;
   var townshipMimucode, stateCode;
   var loginData;
+  var lables;
 
   @override
   void initState() {
@@ -836,6 +837,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  // Container(
+                  //   child: Text(lables.toString()),
+                  // ),
                   Container(
                     margin: EdgeInsets.only(top: 10.0),
                     child: GestureDetector(
@@ -1712,6 +1716,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             getPhoneNumber(this.shopPhoneNo.text);
                         this.ownerPhoneNo.text =
                             getPhoneNumber(this.ownerPhoneNo.text);
+
                         if (this._townOrVillagetract == '-') {
                           allCode = _townShipCode;
                           allAddress = street.text +
@@ -1871,40 +1876,51 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         }
                         ;
                         print("Data-->" + "${param}");
+                        // setState(() {
+                        //   lables = param.toString() + "____" +  this.ownerPhoneNo.text;
+                        //   hideLoadingDialog();
+                        // });
+                        // hideLoadingDialog();
                         this.onlineSerives.createStore(param).then((reslut) => {
+                              // setState(() {
+                              //   lables = param.toString() +
+                              //       "__________" +
+                              //       reslut.toString();
+                              // }),
+                              // hideLoadingDialog(),
                               print("ass-->" + reslut.toString()),
-                              if (reslut["status"] == true)
-                                {
-                                  hideLoadingDialog(),
-                                  if (this.updateStatus == false)
-                                    {
-                                      ShowToast("Saved successfully."),
-                                    }
-                                  else
-                                    {
-                                      ShowToast("Updated successfully."),
-                                    },
-                                  setState(() {
-                                    print("11->" + reslut["data"].toString());
-                                    this.createRegistration = [reslut["data"]];
+                                if (reslut["status"] == true)
+                                  {
+                                    hideLoadingDialog(),
+                                    if (this.updateStatus == false)
+                                      {
+                                        ShowToast("Saved successfully."),
+                                      }
+                                    else
+                                      {
+                                        ShowToast("Updated successfully."),
+                                      },
+                                    setState(() {
+                                      print("11->" + reslut["data"].toString());
+                                      this.createRegistration = [reslut["data"]];
 
-                                    // print("hello" + "${reslut["data"]}");
-                                    this.updateDataarray =
-                                        this.createRegistration;
-                                    this.shopSyskey = this
-                                        .updateDataarray[0]["id"]
-                                        .toString();
-                                    print("$shopSyskey");
-                                    this.updateStatus = true;
-                                    this.widget.updateStatuspass =
-                                        this.updateStatus;
-                                    this.widget.passData = this.updateDataarray;
-                                  }),
-                                }
-                              else
-                                {
-                                  hideLoadingDialog(),
-                                }
+                                      // print("hello" + "${reslut["data"]}");
+                                      this.updateDataarray =
+                                          this.createRegistration;
+                                      this.shopSyskey = this
+                                          .updateDataarray[0]["id"]
+                                          .toString();
+                                      print("$shopSyskey");
+                                      this.updateStatus = true;
+                                      this.widget.updateStatuspass =
+                                          this.updateStatus;
+                                      this.widget.passData = this.updateDataarray;
+                                    }),
+                                  }
+                                else
+                                  {
+                                    hideLoadingDialog(),
+                                  }
                             });
                       }
                     },

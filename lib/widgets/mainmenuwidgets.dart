@@ -83,27 +83,43 @@ class MainMenuWidget extends StatelessWidget {
                 // ),
               ],
             )),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  buildListTile(
-                    'Log Out',
-                    Icons.input,
-                    () {
-//                      this.storage.deleteItem("Surveyor");
-//                      this.storage.deleteItem("storeData");
-//                      this.storage.deleteItem("storeReg");
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => Login(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+            Container(
+              color: CustomIcons.appbarColor,
+              height: 50,
+              child: OutlineButton(
+                onPressed: () {
+                  this.storage.deleteItem("Surveyor");
+                  this.storage.deleteItem("storeData");
+                  this.storage.deleteItem("storeReg");
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => Login(),
+                    ),
+                  );
+                },
+                child: Stack(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.power_settings_new,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Log Out",
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                highlightedBorderColor: Colors.orange,
+                color: CustomIcons.appbarColor,
               ),
-            )
+            ),
           ],
         ),
       ),

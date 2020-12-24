@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
 import 'dart:ui' as ui;
 import '../stores.dart';
@@ -321,7 +322,7 @@ class MapSampleState extends State<GmapS> {
     super.initState();
     localJsonData();
     data = widget.data;
-    locationFromServer();
+    // locationFromServer();
     toUserLocation();
     polygonArray = this.storage.getItem("RouteMimu");
     _kGooglePlex = CameraPosition(
@@ -329,6 +330,7 @@ class MapSampleState extends State<GmapS> {
       zoom: 10.0,
     );
     this.closeCod = {"lat": this.widget.lati, "long": this.widget.long};
+    hideLoadingDialog();
   }
 
   @override

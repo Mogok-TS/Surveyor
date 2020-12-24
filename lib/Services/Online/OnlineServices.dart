@@ -38,11 +38,11 @@ class OnlineSerives {
       // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/";
      // this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
      //  this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-      this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
-     //  this.url =
-     //      "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
+     //  this.url = "http://18.136.44.90:8084/madbrepository/"; //For Go Live
+      this.url =
+          "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
        // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
-      this.storage.setItem('URL', "http://18.136.44.90:8084/madbrepository/");
+      this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
 
@@ -447,7 +447,7 @@ class OnlineSerives {
         .post(this.url, headers: this.headersWithKey, body: body)
         .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
-
+print("data123->"+ json.decode(response.body).toString());
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
