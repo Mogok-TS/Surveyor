@@ -144,7 +144,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       ShowToast("Please answer  the photo questions at least one");
       hideLoadingDialog();
     } else {
-      showLoading();
+      Future.delayed(const Duration(milliseconds: 200), () async {
+        await showLoading();
+      });
       var _question = this.widget.question;
       var pssOject = this.widget.passData[0];
       if (this.widget.regOrAss == "assign") {
@@ -164,6 +166,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _allData["address"] = pssOject["address"];
         _allData["street"] = pssOject["street"];
         _allData["t12"] = "";
+        _allData["t14"] = "";
         var _syskey = "";
         _syskey = svrhdrSyskey;
 
@@ -197,6 +200,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _allData["address"] = pssOject["address"];
         _allData["street"] = pssOject["street"];
         _allData["t12"] = "";
+        _allData["t14"] = "";
         var _syskey = "";
         _syskey = svrhdrSyskey;
         print("syskey1=>" + _syskey);
@@ -567,7 +571,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       //   _consoleLable = _allData.toString();
       //   hideLoadingDialog();
       // });
-      // var aa;
+      var aa;
       this.onlineSerives.createStore(_allData).then((reslut) => {
             hideLoadingDialog(),
             // aa = reslut["data"]["respHdrSyskey"].toString(),
@@ -662,8 +666,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
     // List returnList = [];
     var result = await FlutterImageCompress.compressWithFile(
       imageFileList.path,
-      minWidth: 500,
-      minHeight: 500,
+      minWidth: 400,
+      minHeight: 400,
       quality: 50,
       rotate: 0,
     );
@@ -680,8 +684,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   Future<String> convertBase64(var imagefile) async {
     var result = await FlutterImageCompress.compressWithFile(
       imagefile.path,
-      minWidth: 500,
-      minHeight: 500,
+      minWidth: 400,
+      minHeight: 400,
       quality: 50,
       rotate: 0,
     );
@@ -819,7 +823,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
               shrinkWrap: true,
               controller: ScrollController(keepScrollOffset: false),
               scrollDirection: Axis.vertical,
-              crossAxisCount: 3,
+              crossAxisCount: 4,
               children: List.generate(_imageslist.length, (index) {
                 return storeImage(_imageslist[index], index, _imageslist);
               }),
@@ -1085,16 +1089,16 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                 if (image["type"] == "online") {
                   return Image.network(
                     online.toString(),
-                    height: 200,
-                    width: 200,
-                    fit: BoxFit.fill,
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.cover,
                   );
                 } else {
                   return Image(
                     image: FileImage(image["image"]),
-                    height: 200,
-                    width: 200,
-                    fit: BoxFit.fill,
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.cover,
                   );
                 }
               })),
@@ -1110,8 +1114,8 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                     });
                   },
                   child: Container(
-                    width: 25.0,
-                    height: 25.0,
+                    width: 22.0,
+                    height: 22.0,
                     padding: const EdgeInsets.all(0),
                     decoration: new BoxDecoration(
                       color: Colors.white,
@@ -1208,228 +1212,642 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
       "HeaderSyskey": this.widget.header["headerSyskey"].toString(),
       "ShopSyskey": _pssOject.toString(),
     };
+    var _data = {};
+    var onlinePhoto = [];
+    var checkData = [];
+    var answers, shopPhoto, answerSyskey;
+    var checkObj = {};
+    var radioObj = {};
+    var radioData = [];
+    var syskeys = {};
+    var getdefaultAns, year, month, day;
+    DateTime selectedDate;
+    String fulldate;
     showLoading();
-    this
+    // this
+    //     .onlineSerives
+    //     .getQuestions(param, "eachsection")
+    //     .then((result) => {
+    //           // setState(() {
+    //           this._checkSaveorupdate = result["checkSaveorupdate"],
+    //           if (result["status"] == true)
+    //             {
+    //               questions = result["data"],
+    //               print("Q->" + questions.toString()),
+    //               //              setState(() {
+    //               //    _consoleLable = result.toString();
+    //               //   // hideLoadingDialog();
+    //               // });s
+    //               if (questions.length > 0)
+    //                 {
+    //                   for (var ss = 0; ss < questions.length; ss++)
+    //                     {
+    //                       _data = {},
+    //                       _data["sysKey"] = questions[ss]["QuestionSyskey"],
+    //                       if (questions[ss]["TypeDesc"] == "Attach Photograph")
+    //                         {
+    //                           print("1>>" + questions[ss].toString()),
+    //                           onlinePhoto = [],
+    //                           // getImage(ss, _data, onlinePhoto),
+    //                         }
+    //                       else if (questions[ss]["TypeDesc"] == "Checkbox")
+    //                         {
+    //                           print("2>>" + questions[ss].toString()),
+    //                           checkData = [],
+    //                           for (var x = 0;
+    //                               x < questions[ss]["answers"].length;
+    //                               x++)
+    //                             {
+    //                               answers = questions[ss]["answers"][x],
+    //                               checkObj = {},
+    //                               checkObj["text"] = answers["answerDesc"],
+    //                               checkObj["syskey"] = answers["answerSK"],
+    //                               checkObj["check"] = false,
+    //                               if (questions[ss]["AnswerShopPhoto"].length >
+    //                                   0)
+    //                                 {
+    //                                   for (var y = 0;
+    //                                       y <
+    //                                           questions[ss]["AnswerShopPhoto"]
+    //                                               .length;
+    //                                       y++)
+    //                                     {
+    //                                       shopPhoto = questions[ss]
+    //                                           ["AnswerShopPhoto"][y],
+    //                                       if (shopPhoto["AnswerSyskey"] ==
+    //                                           answers["answerSK"])
+    //                                         {
+    //                                           checkObj["check"] = true,
+    //                                         }
+    //                                     },
+    //                                   checkData.add(checkObj),
+    //                                 }
+    //                               else
+    //                                 {
+    //                                   checkData.add(checkObj),
+    //                                 }
+    //                             },
+    //                           _data["checkDatas"] = checkData,
+    //                           _data["images"] = [],
+    //                           _data["radioDatas"] = [],
+    //                           // print("ssdf-->" + _data.toString());
+    //                         }
+    //                       else if (questions[ss]["TypeDesc"] ==
+    //                           "Multiple Choice")
+    //                         {
+    //                           print("3>>" + questions[ss].toString()),
+    //                           answerSyskey = "",
+    //                           if (questions[ss]["AnswerShopPhoto"].length > 0)
+    //                             {
+    //                               answerSyskey = questions[ss]
+    //                                   ["AnswerShopPhoto"][0]["AnswerSyskey"],
+    //                             }
+    //                           else
+    //                             {
+    //                               answerSyskey =
+    //                                   questions[ss]["answers"][0]["answerSK"],
+    //                             },
+    //                           print("123-->"),
+    //                           radioObj = {},
+    //                           radioData = [],
+    //                           syskeys = {},
+    //                           syskeys["questionSyskey"] =
+    //                               questions[ss]["QuestionSyskey"].toString(),
+    //                           for (var x = 0;
+    //                               x < questions[ss]["answers"].length;
+    //                               x++)
+    //                             {
+    //                               radioObj = {},
+    //                               getdefaultAns = questions[ss]["answers"][0],
+    //                               answers = questions[ss]["answers"][x],
+    //                               radioObj["text"] = answers["answerDesc"],
+    //                               radioObj["syskey"] = answers["answerSK"],
+    //                               radioObj["questionSyskey"] = questions[ss]
+    //                                       ["QuestionSyskey"]
+    //                                   .toString(),
+    //                               if (answerSyskey == "")
+    //                                 {
+    //                                   syskeys["answerSyskey"] =
+    //                                       getdefaultAns["answerSK"].toString(),
+    //                                   syskeys["answerDesc"] =
+    //                                       getdefaultAns["answerDesc"]
+    //                                           .toString(),
+    //                                 }
+    //                               else
+    //                                 {
+    //                                   syskeys["answerSyskey"] =
+    //                                       answerSyskey.toString(),
+    //                                   if (answerSyskey.toString() ==
+    //                                       answers["answerSK"].toString())
+    //                                     {
+    //                                       syskeys["answerSyskey"] =
+    //                                           answers["answerSK"].toString(),
+    //                                       syskeys["answerDesc"] =
+    //                                           answers["answerDesc"].toString(),
+    //                                     }
+    //                                 },
+    //                               radioData.add(radioObj),
+    //                             },
+    //                           this.newQuestionarray.add(syskeys),
+    //                           radioObj["qustionSyskey"] =
+    //                               _data["radioDatas"] = radioData,
+    //                           _data["checkDatas"] = [],
+    //                           _data["images"] = [],
+    //                         }
+    //                       else if (questions[ss]["TypeDesc"] == "Date")
+    //                         {
+    //                           print("4>>" + questions[ss].toString()),
+    //                           if (questions[ss]["AnswerShopPhoto"].length > 0)
+    //                             {
+    //                               fulldate = questions[ss]["AnswerShopPhoto"][0]
+    //                                   ["AnswerDesc1"],
+    //                               year = fulldate.substring(0, 4),
+    //                               month = fulldate.substring(4, 6),
+    //                               day = fulldate.substring(6, 8),
+    //                               _data["servicedate"] = questions[ss]
+    //                                   ["AnswerShopPhoto"][0]["AnswerDesc1"],
+    //                               _data["dateFormat"] =
+    //                                   year + "-" + month + "-" + day,
+    //                               _data["showDate"] =
+    //                                   day + "/" + month + "/" + year,
+    //                             }
+    //                           else
+    //                             {
+    //                               selectedDate = DateTime.now(),
+    //                               fulldate = selectedDate.toString(),
+    //                               day = fulldate.substring(8, 10),
+    //                               month = fulldate.substring(5, 7),
+    //                               year = fulldate.substring(0, 4),
+    //                               _data["servicedate"] = year + month + day,
+    //                               _data["dateFormat"] =
+    //                                   year + "-" + month + "-" + day,
+    //                               _data["showDate"] =
+    //                                   day + "/" + month + "/" + year,
+    //                             },
+    //                           _data["radioDatas"] = [],
+    //                           _data["checkDatas"] = [],
+    //                           _data["images"] = [],
+    //                         }
+    //                       else if (questions[ss]["TypeDesc"] == "Number Range")
+    //                         {
+    //                           print("5>>" + questions[ss].toString()),
+    //                           if (questions[ss]["AnswerShopPhoto"].length > 0)
+    //                             {
+    //                               _data["AnswerDesc1"] = questions[ss]
+    //                                   ["AnswerShopPhoto"][0]["AnswerDesc1"],
+    //                               _data["AnswerDesc2"] = questions[ss]
+    //                                   ["AnswerShopPhoto"][0]["AnswerDesc2"],
+    //                             }
+    //                           else
+    //                             {
+    //                               _data["AnswerDesc1"] = "",
+    //                               _data["AnswerDesc2"] = "",
+    //                             },
+    //                           _data["radioDatas"] = [],
+    //                           _data["checkDatas"] = [],
+    //                           _data["images"] = [],
+    //                         }
+    //                       else if (questions[ss]["TypeDesc"] == "Time Range")
+    //                         {
+    //                           print("6>>" + questions[ss].toString()),
+    //                           if (questions[ss]["AnswerShopPhoto"].length > 0)
+    //                             {
+    //                               _data["AnswerDesc1"] = questions[ss]
+    //                                   ["AnswerShopPhoto"][0]["AnswerDesc1"],
+    //                               _data["AnswerDesc2"] = questions[ss]
+    //                                   ["AnswerShopPhoto"][0]["AnswerDesc2"],
+    //                             }
+    //                           else
+    //                             {
+    //                               _data["AnswerDesc1"] = "",
+    //                               _data["AnswerDesc2"] = "",
+    //                             },
+    //                           _data["radioDatas"] = [],
+    //                           _data["checkDatas"] = [],
+    //                           _data["images"] = [],
+    //                         }
+    //                       else if (questions[ss]["TypeDesc"] == "Rating 0-10")
+    //                         {
+    //                           print("7>>" + questions[ss].toString()),
+    //                           if (questions[ss]["AnswerShopPhoto"].length > 0)
+    //                             {
+    //                               _data["rating"] = questions[ss]
+    //                                   ["AnswerShopPhoto"][0]["AnswerDesc1"],
+    //                             }
+    //                           else
+    //                             {
+    //                               _data["rating"] = "0",
+    //                             },
+    //                           _data["radioDatas"] = [],
+    //                           _data["checkDatas"] = [],
+    //                           _data["images"] = [],
+    //                         }
+    //                       else if (questions[ss]["TypeDesc"] ==
+    //                           "Fill in the Blank")
+    //                         {
+    //                           print("8>>" + questions[ss].toString()),
+    //                           if (questions[ss]["AnswerShopPhoto"].length > 0)
+    //                             {
+    //                               _data["AnswerDesc"] = questions[ss]
+    //                                   ["AnswerShopPhoto"][0]["AnswerDesc1"],
+    //                             }
+    //                           else
+    //                             {
+    //                               _data["AnswerDesc"] = "",
+    //                             },
+    //                           _data["radioDatas"] = [],
+    //                           _data["checkDatas"] = [],
+    //                           _data["images"] = [],
+    //                         }
+    //                       else
+    //                         {
+    //                           _data["radioDatas"] = [],
+    //                           _data["checkDatas"] = [],
+    //                           _data["images"] = [],
+    //                         },
+    //                       _primaryData.add(_data),
+    //                       print("conditionEnd->" + _primaryData.toString()),
+    //                     },
+    //                   // hideLoadingDialog(),
+    //                   // setState(() {
+    //                   //
+    //                   // }),
+    //                 },
+    //               _status = true,
+    //             }
+    //           else
+    //             {
+    //               _status = false,
+    //               hideLoadingDialog(),
+    //             }
+    //           // }),
+    //         })
+    //     .catchError((err) => {});
+    samplefunction(param);
+
+    // if (this.widget.headershopKey == "") {
+    //   saveCondition = "1";
+    // } else {
+    //   // setState(() {
+    //   for (var i = 0; i < questions.length; i++) {
+    //     if (questions[i]["AnswerShopPhoto"].length > 0) {
+    //       saveCondition = "";
+    //       break;
+    //     }
+    //     if (questions[i]["AnswerDesc"] != "") {
+    //       saveCondition = "";
+    //       break;
+    //     }
+    //     if (questions[i]["AnswerSyskey"] != "") {
+    //       saveCondition = "";
+    //       break;
+    //     }
+    //   }
+    //   // hideLoadingDialog();
+    //   // }),
+    // }
+    print("12300->" + _primaryData.toString() + "_____" + _status.toString());
+  }
+
+  samplefunction(param) async {
+    var _data = {};
+    var onlinePhoto = [];
+    var checkData = [];
+    var answers, shopPhoto, answerSyskey;
+    var checkObj = {};
+    var radioObj = {};
+    var radioData = [];
+    var syskeys = {};
+    var datas = {};
+    List<int> imageBytes;
+    String base64Image;
+    var getdefaultAns, year, month, day, fullurl;
+    DateTime selectedDate;
+    String fulldate;
+    await this
         .onlineSerives
         .getQuestions(param, "eachsection")
-        .then((result) => {
-              setState(() {
-                this._checkSaveorupdate = result["checkSaveorupdate"];
-                if (result["status"] == true) {
-                  hideLoadingDialog();
-                  questions = result["data"];
-                  print("Q->" + questions.toString());
+        .then((result) async => {
+              // setState(() {
+              this._checkSaveorupdate = result["checkSaveorupdate"],
+              if (result["status"] == true)
+                {
+                  questions = result["data"],
+                  print("Q->" + questions.toString()),
                   //              setState(() {
                   //    _consoleLable = result.toString();
                   //   // hideLoadingDialog();
                   // });s
-                  if (questions.length > 0) {
-                    for (var ss = 0; ss < questions.length; ss++) {
-                      var _data = {};
-                      _data["sysKey"] = questions[ss]["QuestionSyskey"];
-                      if (questions[ss]["TypeDesc"] == "Attach Photograph") {
-                        print("1>>" + questions[ss].toString());
-                        var onlinePhoto = [];
-                        getImage(ss, _data, onlinePhoto);
-                        "---->";
-                      } else if (questions[ss]["TypeDesc"] == "Checkbox") {
-                        print("2>>" + questions[ss].toString());
-                        var checkData = [];
-                        for (var x = 0;
-                            x < questions[ss]["answers"].length;
-                            x++) {
-                          var answers = questions[ss]["answers"][x];
-                          var checkObj = {};
-                          checkObj["text"] = answers["answerDesc"];
-                          checkObj["syskey"] = answers["answerSK"];
-                          checkObj["check"] = false;
-                          if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                            for (var y = 0;
-                                y < questions[ss]["AnswerShopPhoto"].length;
-                                y++) {
-                              var shopPhoto =
-                                  questions[ss]["AnswerShopPhoto"][y];
-                              if (shopPhoto["AnswerSyskey"] ==
-                                  answers["answerSK"]) {
-                                checkObj["check"] = true;
-                              }
+                  if (questions.length > 0)
+                    {
+                      for (var ss = 0; ss < questions.length; ss++)
+                        {
+                          _data = {},
+                          _data["sysKey"] = questions[ss]["QuestionSyskey"],
+                          if (questions[ss]["TypeDesc"] == "Attach Photograph")
+                            {
+                              print("1>>" + questions[ss].toString()),
+                              onlinePhoto = [],
+                              if (questions[ss]["AnswerShopPhoto"].length > 0)
+                                {
+                                  for (var y = 0;
+                                      y <
+                                          questions[ss]["AnswerShopPhoto"]
+                                              .length;
+                                      y++)
+                                    {
+                                      datas = {},
+                                      shopPhoto =
+                                          questions[ss]["AnswerShopPhoto"][y],
+                                      datas["image"] = shopPhoto["PhotoPath"],
+                                      datas["name"] = shopPhoto["PhotoName"],
+                                      datas["type"] = "online",
+                                      fullurl = this.subUrl +
+                                          shopPhoto["PhotoPath"].toString(),
+                                      print("1->" + y.toString()),
+                                      file = await urlToFile(fullurl),
+                                      print("3->"),
+                                      if (file.toString() != "")
+                                        {
+                                          imageBytes = file.readAsBytesSync(),
+                                          print("4->"),
+                                          base64Image =
+                                              "data:image/png;base64," +
+                                                  base64Encode(imageBytes)
+                                                      .toString(),
+                                          datas["base64"] = base64Image,
+                                        }
+                                      else
+                                        {
+                                          datas["base64"] = "",
+                                        },
+                                      onlinePhoto.add(datas),
+                                    },
+                                  _data["images"] = onlinePhoto,
+                                }
+                              else
+                                {
+                                  _data["images"] = [],
+                                },
+                              _data["checkDatas"] = [],
+                              // getImage(ss, _data, onlinePhoto),
                             }
-                            checkData.add(checkObj);
-                          } else {
-                            checkData.add(checkObj);
-                          }
-                        }
-                        _data["checkDatas"] = checkData;
-                        _data["images"] = [];
-                        _data["radioDatas"] = [];
-                        // print("ssdf-->" + _data.toString());
-                      } else if (questions[ss]["TypeDesc"] ==
-                          "Multiple Choice") {
-                        print("3>>" + questions[ss].toString());
-                        var answerSyskey;
-                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                          answerSyskey = questions[ss]["AnswerShopPhoto"][0]
-                              ["AnswerSyskey"];
-                        } else {
-                          answerSyskey =
-                              questions[ss]["answers"][0]["answerSK"];
-                        }
-                        print("123-->");
-                        var radioObj = {};
-                        var radioData = [];
-                        var syskeys = {};
-                        syskeys["questionSyskey"] =
-                            questions[ss]["QuestionSyskey"].toString();
-                        for (var x = 0;
-                            x < questions[ss]["answers"].length;
-                            x++) {
-                          var radioObj = {};
-                          var getdefaultAns = questions[ss]["answers"][0];
-                          var answers = questions[ss]["answers"][x];
-                          radioObj["text"] = answers["answerDesc"];
-                          radioObj["syskey"] = answers["answerSK"];
-                          radioObj["questionSyskey"] =
-                              questions[ss]["QuestionSyskey"].toString();
-                          if (answerSyskey == "") {
-                            syskeys["answerSyskey"] =
-                                getdefaultAns["answerSK"].toString();
-                            syskeys["answerDesc"] =
-                                getdefaultAns["answerDesc"].toString();
-                          } else {
-                            syskeys["answerSyskey"] = answerSyskey.toString();
-                            if (answerSyskey.toString() ==
-                                answers["answerSK"].toString()) {
-                              syskeys["answerSyskey"] =
-                                  answers["answerSK"].toString();
-                              syskeys["answerDesc"] =
-                                  answers["answerDesc"].toString();
+                          else if (questions[ss]["TypeDesc"] == "Checkbox")
+                            {
+                              print("2>>" + questions[ss].toString()),
+                              checkData = [],
+                              for (var x = 0;
+                                  x < questions[ss]["answers"].length;
+                                  x++)
+                                {
+                                  answers = questions[ss]["answers"][x],
+                                  checkObj = {},
+                                  checkObj["text"] = answers["answerDesc"],
+                                  checkObj["syskey"] = answers["answerSK"],
+                                  checkObj["check"] = false,
+                                  if (questions[ss]["AnswerShopPhoto"].length >
+                                      0)
+                                    {
+                                      for (var y = 0;
+                                          y <
+                                              questions[ss]["AnswerShopPhoto"]
+                                                  .length;
+                                          y++)
+                                        {
+                                          shopPhoto = questions[ss]
+                                              ["AnswerShopPhoto"][y],
+                                          if (shopPhoto["AnswerSyskey"] ==
+                                              answers["answerSK"])
+                                            {
+                                              checkObj["check"] = true,
+                                            }
+                                        },
+                                      checkData.add(checkObj),
+                                    }
+                                  else
+                                    {
+                                      checkData.add(checkObj),
+                                    }
+                                },
+                              _data["checkDatas"] = checkData,
+                              _data["images"] = [],
+                              _data["radioDatas"] = [],
+                              // print("ssdf-->" + _data.toString());
                             }
-                          }
-                          radioData.add(radioObj);
-                        }
-
-                        this.newQuestionarray.add(syskeys);
-                        radioObj["qustionSyskey"] =
-                            _data["radioDatas"] = radioData;
-                        _data["checkDatas"] = [];
-                        _data["images"] = [];
-                      } else if (questions[ss]["TypeDesc"] == "Date") {
-                        print("4>>" + questions[ss].toString());
-                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                          String fulldate = questions[ss]["AnswerShopPhoto"][0]
-                              ["AnswerDesc1"];
-                          String year = fulldate.substring(0, 4);
-                          String month = fulldate.substring(4, 6);
-                          String day = fulldate.substring(6, 8);
-                          _data["servicedate"] = questions[ss]
-                              ["AnswerShopPhoto"][0]["AnswerDesc1"];
-                          _data["dateFormat"] = year + "-" + month + "-" + day;
-                          _data["showDate"] = day + "/" + month + "/" + year;
-                        } else {
-                          DateTime selectedDate = DateTime.now();
-                          String fulldate = selectedDate.toString();
-                          String day = fulldate.substring(8, 10);
-                          String month = fulldate.substring(5, 7);
-                          String year = fulldate.substring(0, 4);
-                          _data["servicedate"] = year + month + day;
-                          _data["dateFormat"] = year + "-" + month + "-" + day;
-                          _data["showDate"] = day + "/" + month + "/" + year;
-                        }
-                        _data["radioDatas"] = [];
-                        _data["checkDatas"] = [];
-                        _data["images"] = [];
-                      } else if (questions[ss]["TypeDesc"] == "Number Range") {
-                        print("5>>" + questions[ss].toString());
-                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                          _data["AnswerDesc1"] = questions[ss]
-                              ["AnswerShopPhoto"][0]["AnswerDesc1"];
-                          _data["AnswerDesc2"] = questions[ss]
-                              ["AnswerShopPhoto"][0]["AnswerDesc2"];
-                        } else {
-                          _data["AnswerDesc1"] = "";
-                          _data["AnswerDesc2"] = "";
-                        }
-                        _data["radioDatas"] = [];
-                        _data["checkDatas"] = [];
-                        _data["images"] = [];
-                      } else if (questions[ss]["TypeDesc"] == "Time Range") {
-                        print("6>>" + questions[ss].toString());
-                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                          _data["AnswerDesc1"] = questions[ss]
-                              ["AnswerShopPhoto"][0]["AnswerDesc1"];
-                          _data["AnswerDesc2"] = questions[ss]
-                              ["AnswerShopPhoto"][0]["AnswerDesc2"];
-                        } else {
-                          _data["AnswerDesc1"] = "";
-                          _data["AnswerDesc2"] = "";
-                        }
-                        _data["radioDatas"] = [];
-                        _data["checkDatas"] = [];
-                        _data["images"] = [];
-                      } else if (questions[ss]["TypeDesc"] == "Rating 0-10") {
-                        print("7>>" + questions[ss].toString());
-                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                          _data["rating"] = questions[ss]["AnswerShopPhoto"][0]
-                              ["AnswerDesc1"];
-                        } else {
-                          _data["rating"] = "0";
-                        }
-
-                        _data["radioDatas"] = [];
-                        _data["checkDatas"] = [];
-                        _data["images"] = [];
-                      } else if (questions[ss]["TypeDesc"] ==
-                          "Fill in the Blank") {
-                        print("8>>" + questions[ss].toString());
-                        if (questions[ss]["AnswerShopPhoto"].length > 0) {
-                          _data["AnswerDesc"] = questions[ss]["AnswerShopPhoto"]
-                              [0]["AnswerDesc1"];
-                        } else {
-                          _data["AnswerDesc"] = "";
-                        }
-                        _data["radioDatas"] = [];
-                        _data["checkDatas"] = [];
-                        _data["images"] = [];
-                      } else {
-                        _data["radioDatas"] = [];
-                        _data["checkDatas"] = [];
-                        _data["images"] = [];
-                      }
-                      _primaryData.add(_data);
-                      print("conditionEnd->" + _primaryData.toString());
-                    }
-                  }
-                  _status = true;
-
-                  if (this.widget.headershopKey == "") {
-                    saveCondition = "1";
-                  } else {
-                    for (var i = 0; i < questions.length; i++) {
-                      if (questions[i]["AnswerShopPhoto"].length > 0) {
-                        saveCondition = "";
-                        break;
-                      }
-                      if (questions[i]["AnswerDesc"] != "") {
-                        saveCondition = "";
-                        break;
-                      }
-                      if (questions[i]["AnswerSyskey"] != "") {
-                        saveCondition = "";
-                        break;
-                      }
-                    }
-                  }
-                  print("12300->" +
-                      _primaryData.toString() +
-                      "_____" +
-                      _status.toString());
-                } else {
-                  _status = false;
-                  hideLoadingDialog();
+                          else if (questions[ss]["TypeDesc"] ==
+                              "Multiple Choice")
+                            {
+                              print("3>>" + questions[ss].toString()),
+                              answerSyskey = "",
+                              if (questions[ss]["AnswerShopPhoto"].length > 0)
+                                {
+                                  answerSyskey = questions[ss]
+                                      ["AnswerShopPhoto"][0]["AnswerSyskey"],
+                                }
+                              else
+                                {
+                                  answerSyskey =
+                                      questions[ss]["answers"][0]["answerSK"],
+                                },
+                              print("123-->"),
+                              radioObj = {},
+                              radioData = [],
+                              syskeys = {},
+                              syskeys["questionSyskey"] =
+                                  questions[ss]["QuestionSyskey"].toString(),
+                              for (var x = 0;
+                                  x < questions[ss]["answers"].length;
+                                  x++)
+                                {
+                                  radioObj = {},
+                                  getdefaultAns = questions[ss]["answers"][0],
+                                  answers = questions[ss]["answers"][x],
+                                  radioObj["text"] = answers["answerDesc"],
+                                  radioObj["syskey"] = answers["answerSK"],
+                                  radioObj["questionSyskey"] = questions[ss]
+                                          ["QuestionSyskey"]
+                                      .toString(),
+                                  if (answerSyskey == "")
+                                    {
+                                      syskeys["answerSyskey"] =
+                                          getdefaultAns["answerSK"].toString(),
+                                      syskeys["answerDesc"] =
+                                          getdefaultAns["answerDesc"]
+                                              .toString(),
+                                    }
+                                  else
+                                    {
+                                      syskeys["answerSyskey"] =
+                                          answerSyskey.toString(),
+                                      if (answerSyskey.toString() ==
+                                          answers["answerSK"].toString())
+                                        {
+                                          syskeys["answerSyskey"] =
+                                              answers["answerSK"].toString(),
+                                          syskeys["answerDesc"] =
+                                              answers["answerDesc"].toString(),
+                                        }
+                                    },
+                                  radioData.add(radioObj),
+                                },
+                              this.newQuestionarray.add(syskeys),
+                              radioObj["qustionSyskey"] =
+                                  _data["radioDatas"] = radioData,
+                              _data["checkDatas"] = [],
+                              _data["images"] = [],
+                            }
+                          else if (questions[ss]["TypeDesc"] == "Date")
+                            {
+                              print("4>>" + questions[ss].toString()),
+                              if (questions[ss]["AnswerShopPhoto"].length > 0)
+                                {
+                                  fulldate = questions[ss]["AnswerShopPhoto"][0]
+                                      ["AnswerDesc1"],
+                                  year = fulldate.substring(0, 4),
+                                  month = fulldate.substring(4, 6),
+                                  day = fulldate.substring(6, 8),
+                                  _data["servicedate"] = questions[ss]
+                                      ["AnswerShopPhoto"][0]["AnswerDesc1"],
+                                  _data["dateFormat"] =
+                                      year + "-" + month + "-" + day,
+                                  _data["showDate"] =
+                                      day + "/" + month + "/" + year,
+                                }
+                              else
+                                {
+                                  selectedDate = DateTime.now(),
+                                  fulldate = selectedDate.toString(),
+                                  day = fulldate.substring(8, 10),
+                                  month = fulldate.substring(5, 7),
+                                  year = fulldate.substring(0, 4),
+                                  _data["servicedate"] = year + month + day,
+                                  _data["dateFormat"] =
+                                      year + "-" + month + "-" + day,
+                                  _data["showDate"] =
+                                      day + "/" + month + "/" + year,
+                                },
+                              _data["radioDatas"] = [],
+                              _data["checkDatas"] = [],
+                              _data["images"] = [],
+                            }
+                          else if (questions[ss]["TypeDesc"] == "Number Range")
+                            {
+                              print("5>>" + questions[ss].toString()),
+                              if (questions[ss]["AnswerShopPhoto"].length > 0)
+                                {
+                                  _data["AnswerDesc1"] = questions[ss]
+                                      ["AnswerShopPhoto"][0]["AnswerDesc1"],
+                                  _data["AnswerDesc2"] = questions[ss]
+                                      ["AnswerShopPhoto"][0]["AnswerDesc2"],
+                                }
+                              else
+                                {
+                                  _data["AnswerDesc1"] = "",
+                                  _data["AnswerDesc2"] = "",
+                                },
+                              _data["radioDatas"] = [],
+                              _data["checkDatas"] = [],
+                              _data["images"] = [],
+                            }
+                          else if (questions[ss]["TypeDesc"] == "Time Range")
+                            {
+                              print("6>>" + questions[ss].toString()),
+                              if (questions[ss]["AnswerShopPhoto"].length > 0)
+                                {
+                                  _data["AnswerDesc1"] = questions[ss]
+                                      ["AnswerShopPhoto"][0]["AnswerDesc1"],
+                                  _data["AnswerDesc2"] = questions[ss]
+                                      ["AnswerShopPhoto"][0]["AnswerDesc2"],
+                                }
+                              else
+                                {
+                                  _data["AnswerDesc1"] = "",
+                                  _data["AnswerDesc2"] = "",
+                                },
+                              _data["radioDatas"] = [],
+                              _data["checkDatas"] = [],
+                              _data["images"] = [],
+                            }
+                          else if (questions[ss]["TypeDesc"] == "Rating 0-10")
+                            {
+                              print("7>>" + questions[ss].toString()),
+                              if (questions[ss]["AnswerShopPhoto"].length > 0)
+                                {
+                                  _data["rating"] = questions[ss]
+                                      ["AnswerShopPhoto"][0]["AnswerDesc1"],
+                                }
+                              else
+                                {
+                                  _data["rating"] = "0",
+                                },
+                              _data["radioDatas"] = [],
+                              _data["checkDatas"] = [],
+                              _data["images"] = [],
+                            }
+                          else if (questions[ss]["TypeDesc"] ==
+                              "Fill in the Blank")
+                            {
+                              print("8>>" + questions[ss].toString()),
+                              if (questions[ss]["AnswerShopPhoto"].length > 0)
+                                {
+                                  _data["AnswerDesc"] = questions[ss]
+                                      ["AnswerShopPhoto"][0]["AnswerDesc1"],
+                                }
+                              else
+                                {
+                                  _data["AnswerDesc"] = "",
+                                },
+                              _data["radioDatas"] = [],
+                              _data["checkDatas"] = [],
+                              _data["images"] = [],
+                            }
+                          else
+                            {
+                              _data["radioDatas"] = [],
+                              _data["checkDatas"] = [],
+                              _data["images"] = [],
+                            },
+                          _primaryData.add(_data),
+                          print("conditionEnd->" + _primaryData.toString()),
+                        },
+                      // hideLoadingDialog(),
+                      // setState(() {
+                      //
+                      // }),
+                    },
+                  _status = true,
                 }
-              }),
+              else
+                {
+                  _status = false,
+                  hideLoadingDialog(),
+                }
+              // }),
             })
         .catchError((err) => {});
+      print("await data ----------");
+      if (this.widget.headershopKey == "") {
+        saveCondition = "1";
+      } else {
+        for (var i = 0; i < questions.length; i++) {
+          if (questions[i]["AnswerShopPhoto"].length > 0) {
+            saveCondition = "";
+            break;
+          }
+          if (questions[i]["AnswerDesc"] != "") {
+            saveCondition = "";
+            break;
+          }
+          if (questions[i]["AnswerSyskey"] != "") {
+            saveCondition = "";
+            break;
+          }
+        }
+        hideLoadingDialog();
+        setState(() {
+
+        });
+      }
   }
 
   getImage(index, _data, onlinePhoto) async {
@@ -1441,7 +1859,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         datas["name"] = shopPhoto["PhotoName"];
         datas["type"] = "online";
         var fullurl = this.subUrl + shopPhoto["PhotoPath"].toString();
-        print("1->");
+        print("1->" + y.toString());
         file = await urlToFile(fullurl);
         print("3->");
         if (file.toString() != "") {
@@ -1456,10 +1874,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         onlinePhoto.add(datas);
       }
       _data["images"] = onlinePhoto;
-      if (_data["images"].length ==
-          questions[index]["AnswerShopPhoto"].length) {
-        setState(() {});
-      }
+      // if (_data["images"].length ==
+      //     questions[index]["AnswerShopPhoto"].length) {
+      //   setState(() {});
+      // }
     } else {
       _data["images"] = [];
     }
@@ -2431,7 +2849,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    SelectableText(_consoleLable.toString()),
+                                    // SelectableText(_consoleLable.toString()),
                                     Text(
                                       this.widget.surveyType,
                                       textAlign: TextAlign.end,
@@ -2554,10 +2972,10 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
                         showLoading();
                         if (this._status == true && this.questions.length > 0) {
                           // Future.delayed(const Duration(milliseconds: 500), () {
-                            setState(() {
-                              // showLoading();
-                              // showLoading();
-                              _clickDoneAssignStore();
+                          setState(() {
+                            // showLoading();
+                            // showLoading();
+                            _clickDoneAssignStore();
                             // });
                           });
                         } else {

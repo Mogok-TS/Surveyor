@@ -83,6 +83,7 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget assignStoreWidget(var data) {
+    var townshipID = data["townshipId"].toString();
     print("1234-->" + data.toString());
     return Container(
       // margin: EdgeInsets.all(5),
@@ -200,7 +201,8 @@ class _StoreScreenState extends State<StoreScreen> {
                               ),
                             ),
                           if (data["existItem"] == true)
-                            if (data["existingStore"]["storeList"].length == 0 &&
+                            if (data["existingStore"]["storeList"].length ==
+                                    0 &&
                                 data["existItem"] == true)
                               Row(
                                 children: <Widget>[
@@ -226,7 +228,10 @@ class _StoreScreenState extends State<StoreScreen> {
                             for (var ii = 0;
                                 ii < data["existingStore"]["storeList"].length;
                                 ii++)
-                              buildAssignItem(data["existingStore"]["storeList"][ii],data["existingStore"]["surDetail"]),
+                              buildAssignItem(
+                                  data["existingStore"]["storeList"][ii],
+                                  data["existingStore"]["surDetail"],
+                                  townshipID),
                           if (data["existingStore"]["storeList"].length > 0)
                             SizedBox(
                               height: 10,
@@ -253,7 +258,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                       Text(
                                         "0" +
                                             "/" +
-                                            data["flagStore"]["storeList"].length.toString(),
+                                            data["flagStore"]["storeList"]
+                                                .length
+                                                .toString(),
                                         style: TextStyle(color: Colors.black),
                                       )
                                     ],
@@ -311,56 +318,60 @@ class _StoreScreenState extends State<StoreScreen> {
                             for (var ii = 0;
                                 ii < data["flagStore"]["storeList"].length;
                                 ii++)
-                              buildAssignItem(data["flagStore"]["storeList"][ii],data["flagStore"]["surDetail"]),
+                              buildAssignItem(
+                                  data["flagStore"]["storeList"][ii],
+                                  data["flagStore"]["surDetail"],
+                                  townshipID),
                           if (data["flagStore"]["storeList"].length > 0)
                             SizedBox(
                               height: 10,
                             ),
                           // if (data["newStore"])
-                          if(data["newStore"] == true)
-                          Container(
-                            color: CustomIcons.dropDownHeader,
-                            child: ListTile(
-                              title: InkWell(
+                          if (data["newStore"] == true)
+                            Container(
+                              color: CustomIcons.dropDownHeader,
+                              child: ListTile(
+                                title: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      data["storeItem"] = !data["storeItem"];
+                                    });
+                                  },
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "New Store",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                trailing: Wrap(
+                                  spacing: 12, // space between two icons
+                                  children: <Widget>[
+                                    // icon-1
+                                    IconButton(
+                                      color: Colors.black,
+                                      icon: data["storeItem"] == true
+                                          ? Icon(Icons.keyboard_arrow_down)
+                                          : Icon(Icons.chevron_right),
+                                      onPressed: () {
+                                        setState(() {
+                                          // data["show"] = !data["show"];
+                                          data["storeItem"] =
+                                              !data["storeItem"];
+                                        });
+                                      },
+                                    ) // icon-2
+                                  ],
+                                ),
                                 onTap: () {
                                   setState(() {
                                     data["storeItem"] = !data["storeItem"];
                                   });
                                 },
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "New Store",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  ],
-                                ),
                               ),
-                              trailing: Wrap(
-                                spacing: 12, // space between two icons
-                                children: <Widget>[
-                                  // icon-1
-                                  IconButton(
-                                    color: Colors.black,
-                                    icon: data["storeItem"] == true
-                                        ? Icon(Icons.keyboard_arrow_down)
-                                        : Icon(Icons.chevron_right),
-                                    onPressed: () {
-                                      setState(() {
-                                        // data["show"] = !data["show"];
-                                        data["storeItem"] = !data["storeItem"];
-                                      });
-                                    },
-                                  ) // icon-2
-                                ],
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  data["storeItem"] = !data["storeItem"];
-                                });
-                              },
                             ),
-                          ),
                           if (data["storeItem"] == true)
                             Container(
                               child: Column(
@@ -391,7 +402,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                         a < data["newStoresList"].length;
                                         a++)
                                       buildNewStoreItem(
-                                          data["newStoresList"][a],data["newSurdetail"]),
+                                          data["newStoresList"][a],
+                                          data["newSurdetail"],
+                                          townshipID),
                                   // if(data["newStoresList"].length == 0)
                                   Container(
                                     child: Row(
@@ -414,13 +427,14 @@ class _StoreScreenState extends State<StoreScreen> {
                                                           MaterialPageRoute(
                                                             builder: (context) =>
                                                                 StoresDetailsScreen(
-                                                                    data["newSurdetail"],
+                                                                    data[
+                                                                        "newSurdetail"],
                                                                     [],
                                                                     false,
                                                                     "newStore",
                                                                     "null",
-                                                                  "Not Started"
-                                                                ),
+                                                                    "Not Started",
+                                                                    townshipID),
                                                           ),
                                                         ),
                                                       }
@@ -569,7 +583,7 @@ class _StoreScreenState extends State<StoreScreen> {
   //   );
   // }
 
-  _showDialog(data, surDetail) {
+  _showDialog(data, surDetail, townshipId) {
     var shopData = [data];
     var param;
     var params;
@@ -882,13 +896,13 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                               Navigator.of(context, rootNavigator: true).pop(),
                                                                               Navigator.of(context).pushReplacement(
                                                                                 MaterialPageRoute(
-                                                                                  builder: (context) => StoresDetailsScreen(surDetail,shopData, false, "assign", "null","CHECKIN"),
+                                                                                  builder: (context) => StoresDetailsScreen(surDetail, shopData, false, "assign", "null", "CHECKIN", townshipId),
                                                                                 ),
                                                                               ),
                                                                             }
                                                                           else
                                                                             {
-                                                                              hideLoadingDialog,
+                                                                              hideLoadingDialog(),
                                                                             },
                                                                         }),
                                                           }
@@ -952,13 +966,13 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                               Navigator.of(context, rootNavigator: true).pop(),
                                                                               Navigator.of(context).pushReplacement(
                                                                                 MaterialPageRoute(
-                                                                                  builder: (context) => StoresDetailsScreen(surDetail,shopData, false, "assign", "null","CHECKIN"),
+                                                                                  builder: (context) => StoresDetailsScreen(surDetail, shopData, false, "assign", "null", "CHECKIN", townshipId),
                                                                                 ),
                                                                               ),
                                                                             }
                                                                           else
                                                                             {
-                                                                              hideLoadingDialog,
+                                                                              hideLoadingDialog(),
                                                                             },
                                                                         }),
                                                           }
@@ -1000,7 +1014,7 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget buildAssignItem(data, surDetail) {
+  Widget buildAssignItem(data, surDetail, townshipId) {
     var shopData = [data];
     var checkStatus;
     bool start = true;
@@ -1086,14 +1100,21 @@ class _StoreScreenState extends State<StoreScreen> {
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                StoresDetailsScreen(surDetail,shopData,
-                                                    false, "assign", "null", checkStatus),
+                                                StoresDetailsScreen(
+                                                    surDetail,
+                                                    shopData,
+                                                    false,
+                                                    "assign",
+                                                    "null",
+                                                    checkStatus,
+                                                    townshipId),
                                           ),
                                         );
                                       } else {
                                         this.storage.setItem(
                                             "completeStatus", "inComplete");
-                                        _showDialog(data,surDetail);
+                                        _showDialog(
+                                            data, surDetail, townshipId);
                                       }
                                       _checkInType = null;
                                       _checkClosed = "2";
@@ -1121,7 +1142,7 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget buildNewStoreItem(data,surDetail) {
+  Widget buildNewStoreItem(data, surDetail, townshipId) {
     var checkStatus = "Not Started";
     data["address"] = data["locationData"]["address"];
     bool start = true;
@@ -1205,15 +1226,18 @@ class _StoreScreenState extends State<StoreScreen> {
                                       getGPSstatus().then((status) => {
                                             if (status == true)
                                               {
-                                                if(checkStatus == "Check Out"){
-                                                  this.storage.setItem(
-                                                      "completeStatus",
-                                                      "Complete"),
-                                                }else{
-                                                  this.storage.setItem(
-                                                      "completeStatus",
-                                                      "inComplete"),
-                                                },
+                                                if (checkStatus == "Check Out")
+                                                  {
+                                                    this.storage.setItem(
+                                                        "completeStatus",
+                                                        "Complete"),
+                                                  }
+                                                else
+                                                  {
+                                                    this.storage.setItem(
+                                                        "completeStatus",
+                                                        "inComplete"),
+                                                  },
                                                 Navigator.of(context)
                                                     .pushReplacement(
                                                   MaterialPageRoute(
@@ -1224,8 +1248,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                             false,
                                                             "register",
                                                             "null",
-                                                            checkStatus
-                                                        ),
+                                                            checkStatus,
+                                                            townshipId),
                                                   ),
                                                 ),
                                               }
@@ -1379,17 +1403,16 @@ class _StoreScreenState extends State<StoreScreen> {
   var allData = [];
   var storeallData = [];
   allDataFunction() {
-    showLoading();
+    // showLoading();
     allData = [];
     storeallData = [];
     var storeDatas = this.storage.getItem("storeData");
     print("shops-->" + storeDatas.length.toString());
     sortArray(storeDatas);
-    allData = storeallData;
-    hideLoadingDialog();
+
   }
 
-  sortArray(storeDatas) async{
+  sortArray(storeDatas) async {
     for (var i = 0; i < storeDatas.length; i++) {
       var objData = {};
       objData["show"] = false;
@@ -1436,19 +1459,35 @@ class _StoreScreenState extends State<StoreScreen> {
       };
 
       this.onlineSerives.getTownship(paramforTownshipName).then((value) => {
-        objData["regionName"] = value["data"][0]["description"],
-        setState(() {
-          storeallData.add(objData);
-          print("check->>" + storeallData.length.toString()+ "__" + storeDatas.length.toString());
-          if (storeallData.length == storeDatas.length) {
-            storeallData.sort((a,b) => a["regionName"].compareTo(b["regionName"]));
-          }
-        }),
-      });
+            if (value["status"] == true)
+              {
+                objData["regionName"] = value["data"][0]["description"],
+                objData["townshipId"] = value["data"][0]["id"],
+                // setState(() {
+                storeallData.add(objData),
+                print("check->>" +
+                    storeallData.length.toString() +
+                    "__" +
+                    storeDatas.length.toString()),
+                if (storeallData.length == storeDatas.length)
+                  {
+                    storeallData.sort(
+                        (a, b) => a["regionName"].compareTo(b["regionName"])),
+                  },
+                // }),
+                if((storeDatas.length - 1) == i){
+                  setState(() {
+                    this.count = this.assignStores.length.toString();
+                    allData = storeallData;
+                  })
+                }
+              }
+          });
     }
+
   }
 
-  var loginData,newParam;
+  var loginData, newParam;
   @override
   void initState() {
     print("aa-->");
@@ -1466,31 +1505,28 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["teamsyskey"] = this.loginData["teamSyskey"];
     shopParam["usertype"] = this.loginData["userType"];
     shopParam["date"] = "";
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        showLoading();
-      });
+    Future.delayed(const Duration(milliseconds: 900), () {
+      // setState(() {
+      showLoading();
+      // });
       this
           .onlineSerives
           .getStores(shopParam)
           .then((result) => {
                 if (result == true)
                   {
-                    showLoading(),
                     this.assignStores = this.storage.getItem("storeData"),
-                    setState(() {
-                      this.count = this.assignStores.length.toString();
-                    }),
                     allDataFunction(),
                   }
                 else
                   {
                     this.storeRegistration = [],
                     this.assignStores = [],
-                    hideLoadingDialog()
+                    // hideLoadingDialog()
                   }
               })
-          .catchError((onError) => {hideLoadingDialog()});
+          .catchError((onError) =>
+              {print("onError==>" + onError.toString()), hideLoadingDialog()});
     });
   }
 
@@ -1502,6 +1538,7 @@ class _StoreScreenState extends State<StoreScreen> {
       data = json.decode(jsonText);
     });
   }
+
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -1530,6 +1567,17 @@ class _StoreScreenState extends State<StoreScreen> {
 //                                    _getAddress(value).then((val) async {
                                   if (value.latitude != null &&
                                       value.longitude != null) {
+                                    var param = {
+                                      {
+                                        "usersyskey":
+                                            loginData["syskey"].toString(),
+                                        "regionsyskey": ""
+                                      }
+                                    };
+                                    this
+                                        .onlineSerives
+                                        .getNewStore(param)
+                                        .then((value) => {});
                                     localJsonData().then((val) {
                                       // hideLoadingDialog();
                                       Navigator.of(context).pushReplacement(

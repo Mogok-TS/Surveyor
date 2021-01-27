@@ -42,11 +42,12 @@ class _myURL extends State<URL> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => Login(),
-                ),
-              );
+              Navigator.pop(context);
+              // Navigator.of(context).pushReplacement(
+              //   MaterialPageRoute(
+              //     builder: (context) => Login(),
+              //   ),
+              // );
             },
           ),
           backgroundColor: CustomIcons.appbarColor,
@@ -86,11 +87,12 @@ class _myURL extends State<URL> {
                     ShowToast("Please fill URL field");
                   } else {
                     this.storage.setItem("URL", this.url.text);
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => Login(),
-                      ),
-                    );
+                    Navigator.pop(context);
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => Login(),
+                    //   ),
+                    // );
                   }
                 },
                 textColor: CustomIcons.buttonText,

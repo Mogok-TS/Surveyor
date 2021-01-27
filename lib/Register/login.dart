@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:Surveyor/Services/GeneralUse/PhoneNumber.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,6 +36,41 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
   String longitude;
   var mpaArray = [];
 
+  // Widget buildDropdown(data){
+  //   dropdownValue = data["data"];
+  //   return Container(
+  //       child: DropdownButton<String>(
+  //         value: dropdownValue,
+  //         iconSize: 24,
+  //         elevation: 16,
+  //         style: TextStyle(color: Colors.deepPurple),
+  //         underline: Container(
+  //           height: 2,
+  //           color: Colors.deepPurpleAccent,
+  //         ),
+  //         onChanged: (String newValue) {
+  //           setState(() {
+  //             dropdownValue = newValue;
+  //             setState(() {
+  //               if(array.length  < 3){
+  //                 array.add({
+  //                   "data": "Three",
+  //                   "dropDown": ["Three", "Four"]
+  //                 });
+  //               }
+  //             });
+  //           });
+  //         },
+  //         items: data["dropDown"].map<DropdownMenuItem<String>>((value) {
+  //           return DropdownMenuItem<String>(
+  //             value: value,
+  //             child: Text(value),
+  //           );
+  //         }).toList(),
+  //       )
+  //   );
+  // }
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +78,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     latitude = "";
     longitude = "";
+    // dropDown = datadropDwon;
     getCurrentLocation().then((k) {
       latitude = k.latitude.toString();
       longitude = k.longitude.toString();
@@ -51,6 +88,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    // final size = MediaQuery.of(context).size;
     return LoadingProvider(
       child: WillPopScope(
         onWillPop: () async => false,
@@ -80,7 +118,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.24'),
+                        child: Text('Version 1.0.25'),
                       ),
                     ],
                     child: Icon(
@@ -148,7 +186,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
               ),
               Container(
                 padding: EdgeInsets.all(20),
-                child: TextField(
+                child: TextFormField(
                   controller: userID,
                   cursorColor: CustomIcons.textField,
                   keyboardType: TextInputType.number,
@@ -203,131 +241,158 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                     "LOGIN",
                     style: TextStyle(fontSize: 15),
                   ),
-                  onPressed: () async {
-                    await showLoading();
-                    if (userID.text == "" ||
-                        userID.text == null ||
-                        userID.text.isEmpty ||
-                        password.text == "" ||
-                        password.text == null ||
-                        password.text.isEmpty) {
-                      ShowToast("Please, fill all fields");
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                      hideLoadingDialog();
-                    } else {
-                      print("ss->");
-                      this.userID.text = getPhoneNumber(this.userID.text);
-                      var param = {
-                        "userId": userID.text.toString(),
-                        "password": password.text.toString()
-                      };
-                      var returnData = [];
-                      var getMimuparam;
-                      var checkIndex = 0;
-                      var mimuCodearray = [];
-                      var _loginData;
-                      this.storage.setItem(
-                          "completeStatus",
-                          "inComplete");
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                      this
-                          .onlineSerives
-                          .loginData(param)
-                          .then((data) => {
-                                _loginData = this.storage.getItem("loginData"),
-                                if (data == true)
-                                  {
-                                    this
-                                        .onlineSerives
-                                        .getSurveyorroutebyuser(
-                                            _loginData["syskey"])
-                                        .then((returnVal) => {
-                                              if (returnVal["status"] == true)
-                                                {
-                                                  if (returnVal["data"].length >
-                                                      0)
-                                                    {
-                                                      returnData =
-                                                          returnVal["data"],
-                                                      for (var ss = 0;
-                                                          ss <
-                                                              returnData.length;
-                                                          ss++)
-                                                        {
-                                                          getMimuparam = {
-                                                            "id": returnData[ss]
-                                                                    ["regionId"]
-                                                                .toString(),
-                                                            "code": "",
-                                                            "description": "",
-                                                            "parentid": "",
-                                                            "n2": ""
-                                                          },
-                                                          print("regionID ---> " +
-                                                              getMimuparam
-                                                                  .toString()),
-                                                          this
-                                                              .onlineSerives
-                                                              .getTownship(
-                                                                  getMimuparam)
-                                                              .then(
-                                                                  (townReturn) =>
-                                                                      {
-                                                                        print("s->" +
-                                                                            townReturn.toString()),
-                                                                        if (townReturn["status"] ==
-                                                                            true)
-                                                                          {
-                                                                            if (townReturn["data"].length >
-                                                                                0)
-                                                                              {
-                                                                                checkIndex = ss,
-                                                                                mimuCodearray.add({
-                                                                                  "code": townReturn["data"][0]["code"]
-                                                                                }),
-                                                                                if (returnData.length == mimuCodearray.length)
-                                                                                  {
-                                                                                    print("11--->" + mimuCodearray.toString()),
-                                                                                    this.storage.setItem("RouteMimu", mimuCodearray),
-                                                                                    hideLoadingDialog(),
-                                                                                    Navigator.of(context).pushReplacement(
-                                                                                      MaterialPageRoute(
-                                                                                        builder: (context) => StoreScreen(),
+                  onPressed: () {
+                    showLoading();
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      if (userID.text == "" ||
+                          userID.text == null ||
+                          userID.text.isEmpty ||
+                          password.text == "" ||
+                          password.text == null ||
+                          password.text.isEmpty) {
+                        ShowToast("Please, fill all fields");
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        hideLoadingDialog();
+                      } else {
+                        print("ss->");
+                        this.userID.text = getPhoneNumber(this.userID.text);
+                        var param = {
+                          "userId": userID.text.toString(),
+                          "password": password.text.toString()
+                        };
+                        var returnData = [];
+                        var getMimuparam;
+                        var checkIndex = 0;
+                        var mimuCodearray = [];
+                        var _loginData;
+                        this.storage.setItem("completeStatus", "inComplete");
+                        this
+                            .onlineSerives
+                            .loginData(param)
+                            .then((data) => {
+                                  _loginData =
+                                      this.storage.getItem("loginData"),
+                                  if (data == true)
+                                    {
+                                      this
+                                          .onlineSerives
+                                          .getSurveyorroutebyuser(
+                                              _loginData["syskey"])
+                                          .then((returnVal) => {
+                                                if (returnVal["status"] == true)
+                                                  {
+                                                    if (returnVal["data"]
+                                                            .length >
+                                                        0)
+                                                      {
+                                                        returnData =
+                                                            returnVal["data"],
+                                                        for (var ss = 0;
+                                                            ss <
+                                                                returnData
+                                                                    .length;
+                                                            ss++)
+                                                          {
+                                                            getMimuparam = {
+                                                              "id": returnData[
+                                                                          ss][
+                                                                      "regionId"]
+                                                                  .toString(),
+                                                              "code": "",
+                                                              "description": "",
+                                                              "parentid": "",
+                                                              "n2": ""
+                                                            },
+                                                            print("regionID ---> " +
+                                                                getMimuparam
+                                                                    .toString()),
+                                                            this
+                                                                .onlineSerives
+                                                                .getTownship(
+                                                                    getMimuparam)
+                                                                .then(
+                                                                    (townReturn) =>
+                                                                        {
+                                                                          print("s->" +
+                                                                              townReturn.toString()),
+                                                                          if (townReturn["status"] ==
+                                                                              true)
+                                                                            {
+                                                                              if (townReturn["data"].length > 0)
+                                                                                {
+                                                                                  checkIndex = ss,
+                                                                                  mimuCodearray.add({
+                                                                                    "code": townReturn["data"][0]["code"]
+                                                                                  }),
+                                                                                  if (returnData.length == mimuCodearray.length)
+                                                                                    {
+                                                                                      getStoreType(),
+                                                                                      print("11--->" + mimuCodearray.toString()),
+                                                                                      this.storage.setItem("RouteMimu", mimuCodearray),
+                                                                                      hideLoadingDialog(),
+                                                                                      Navigator.of(context).pushReplacement(
+                                                                                        MaterialPageRoute(
+                                                                                          builder: (context) => StoreScreen(),
+                                                                                        ),
                                                                                       ),
-                                                                                    )
-                                                                                  }
-                                                                              }
-                                                                          }
-                                                                        else
-                                                                          {
-                                                                            hideLoadingDialog(),
-                                                                          }
-                                                                      }),
-                                                        }
-                                                    }
-                                                  else
-                                                    {
-                                                      hideLoadingDialog(),
-                                                      Navigator.of(context).pushReplacement(
-                                                        MaterialPageRoute(
-                                                          builder: (context) => StoreScreen(),
+                                                                                      // Future.delayed(const Duration(milliseconds: 1000), () {
+                                                                                      //
+                                                                                      // }),
+
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                          else
+                                                                            {
+                                                                              // Future.delayed(const Duration(milliseconds: 1000), () {
+                                                                                hideLoadingDialog(),
+                                                                              // })
+                                                                            }
+                                                                        }),
+                                                          }
+                                                      }
+                                                    else
+                                                      {
+                                                        getStoreType(),
+                                                        Navigator.of(context)
+                                                            .pushReplacement(
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                StoreScreen(),
+                                                          ),
                                                         ),
-                                                      )
-                                                    }
-                                                }
-                                              else
-                                                {
-                                                  hideLoadingDialog(),
-                                                }
-                                            }),
-                                  }
-                                else
-                                  {
+                                                        // Future.delayed(
+                                                        //     const Duration(
+                                                        //         milliseconds:
+                                                        //         1000), () {
+                                                          hideLoadingDialog(),
+                                                        // }),
+                                                      }
+                                                  }
+                                                else
+                                                  {
+                                                      hideLoadingDialog(),
+                                                  }
+                                              }),
+                                    }
+                                  else
+                                    {
+                                      // Future.delayed(
+                                      //     const Duration(milliseconds: 1000),
+                                      //     () {
+                                        hideLoadingDialog(),
+                                      // })
+                                    }
+                                })
+                            .catchError((err) => {
+                              print("error -->"  + err.toString()),
                                     hideLoadingDialog(),
-                                  }
-                              })
-                          .catchError((err) => {hideLoadingDialog()});
-                    }
+                                });
+                      }
+                    });
+                    // setState(() {
+                    //    showLoading();
+                    // });
                   },
                   textColor: CustomIcons.buttonText,
                 ),
@@ -369,5 +434,16 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+
+  getStoreType(){
+    var param = {
+      "code":"",
+      "description":""
+    };
+
+    this.onlineSerives.getStoretype(param).then((data)=>{
+
+    });
   }
 }

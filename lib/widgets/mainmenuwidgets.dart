@@ -84,40 +84,32 @@ class MainMenuWidget extends StatelessWidget {
               ],
             )),
             Container(
+              width: MediaQuery.of(context).size.width,
               color: CustomIcons.appbarColor,
               height: 50,
               child: OutlineButton(
+                color: CustomIcons.appbarColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.power_settings_new,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "Log Out",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
                 onPressed: () {
-                  this.storage.deleteItem("Surveyor");
-                  this.storage.deleteItem("storeData");
-                  this.storage.deleteItem("storeReg");
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => Login(),
                     ),
                   );
                 },
-                child: Stack(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Log Out",
-                        style: TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-                highlightedBorderColor: Colors.orange,
-                color: CustomIcons.appbarColor,
               ),
             ),
           ],

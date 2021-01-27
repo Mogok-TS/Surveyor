@@ -1,5 +1,6 @@
 import 'package:Surveyor/Services/Loading/LoadingServices.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
+import 'package:Surveyor/neighborhoodSurvey.dart';
 import 'package:Surveyor/outsideInsideNeighborhood.dart';
 import 'package:Surveyor/stores.dart';
 import 'package:Surveyor/stores_details.dart';
@@ -39,10 +40,8 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
   var completeStatus;
 
   Widget _listTileWidget(passData) {
-    var isNeighborhood;
-    var isOutside;
-    var isInside;
-    var isStoreOperater;
+    var isNeighborhood, isOutside, isInside, isStoreOperater;
+    var isOther = false;
     print("data-->" + passData.toString());
     var header = passData;
 
@@ -67,6 +66,11 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
         isInside = true;
         section = header["sections"];
       }
+      if (secitons[i]["sectionDescription"] == "Other") {
+        isOther = true;
+        // section = header["sections"];
+      }
+
     }
     return Container(
       margin: EdgeInsets.only(left: 5, right: 5),
@@ -74,29 +78,51 @@ class _CheckNeighborhoodScreenState extends State<CheckNeighborhoodScreen> {
         child: ListTile(
           onTap: () {
             print("aa-->" + section.toString());
-
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                  builder: (context) => OutsideInsideNeighborhood(
-                        isNeighborhood,
-                        isOutside,
-                        isInside,
-                        isStoreOperater,
-                        this.widget.shopName,
-                        this.widget.shopPhone,
-                        this.widget.address,
-                        this.widget.regOrAss,
-                        this.widget.passData,
-                        section,
-                        header,
-                      )),
-            );
+            if(isOther == true){
+              // Navigator.of(context).pushReplacement(
+              //   MaterialPageRoute(
+              //     builder: (context) => NeighborhoodSurveyScreen(
+              //         isNeighborhood,
+              //         isOutside,
+              //         isInside,
+              //         isStoreOperater,
+              //         this.widget.shopName,
+              //         this.widget.shopPhone,
+              //         this.widget.address,
+              //         "This is text for the instruciotns",
+              //        "Other", // for passSection["sectionDescription"]
+              //         this.widget.regOrAss,
+              //         this.widget.passData,
+              //         passSection,
+              //         this.widget.header,
+              //         this.widget.header["sections"],
+              //         this.headerShopSyskey),
+              //   ),
+              // );
+            }else{
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (context) => OutsideInsideNeighborhood(
+                      isNeighborhood,
+                      isOutside,
+                      isInside,
+                      isStoreOperater,
+                      this.widget.shopName,
+                      this.widget.shopPhone,
+                      this.widget.address,
+                      this.widget.regOrAss,
+                      this.widget.passData,
+                      section,
+                      header,
+                    )),
+              );
+            }
           },
           title: Center(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(passData["headerDescription"]),
+              Flexible(child: Text(passData["headerDescription"])),
               SizedBox(
                 width: 5,
               ),

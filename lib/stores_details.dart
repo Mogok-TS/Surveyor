@@ -26,10 +26,10 @@ import 'Map/map.dart';
 // ignore: must_be_immutable
 class StoresDetailsScreen extends StatefulWidget {
   var regOrAss, surDetail, checkStatus;
-  var passData, updateStatuspass, coordiante;
+  var passData, updateStatuspass, coordiante, townshipId;
 
   StoresDetailsScreen(this.surDetail, this.passData, this.updateStatuspass,
-      this.regOrAss, this.coordiante, this.checkStatus);
+      this.regOrAss, this.coordiante, this.checkStatus, this.townshipId);
 
   @override
   _StoresDetailsScreenState createState() => _StoresDetailsScreenState();
@@ -78,6 +78,10 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   var townshipMimucode, stateCode;
   var loginData;
   var lables;
+  var _storeTypeList = ["-"];
+  var _storeType = "-";
+  var _storeTypecode = "";
+  var temStoetype = [];
 
   @override
   void initState() {
@@ -109,8 +113,14 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
         _villageTractList = ["-"];
         _village = "-";
         _villageList = ["-"];
+        temStoetype = this.storage.getItem("getStroetype");
+        if(temStoetype.length > 0){
+          for(var i = 0; i < temStoetype.length; i++){
+            _storeTypeList.add(temStoetype[i]["t2"]);
+          }
+        }
         _getState();
-        print("??>> ${this.widget.passData}");
+        print("??>> ${this.widget.regOrAss}");
         this.storeRegistration = this.widget.passData;
         if (this.storeRegistration.length == 0) {
           this.updateStatus = this.widget.updateStatuspass;
@@ -125,6 +135,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
         } else {
           this.updateStatus = true;
           if (this.widget.regOrAss == "assign") {
+            if(this.updateDataarray[0]["STDescription"].toString() == ""){
+              _storeType = "-";
+              _storeTypecode = "";
+            }else{
+              _storeType = this.updateDataarray[0]["STDescription"].toString();
+              _storeTypecode = this.updateDataarray[0]["STCode"].toString();
+            }
             this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
             this.shopName.text = this.updateDataarray[0]["shopname"].toString();
             this.shopNamemm.text =
@@ -147,6 +164,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             this.longitude = double.parse(this.updateDataarray[0]["long"]);
             _getUpdateData();
           } else if (this.widget.regOrAss == "register") {
+            if(this.updateDataarray[0]["STDescription"].toString() == ""){
+              _storeType = "-";
+              _storeTypecode = "";
+            }else{
+              _storeType = this.updateDataarray[0]["STDescription"].toString();
+              _storeTypecode = this.updateDataarray[0]["t14"].toString();
+            }
             this.updateStatus = true;
             this.shopSyskey = this.updateDataarray[0]["id"].toString();
             this.shopName.text = this.updateDataarray[0]["name"].toString();
@@ -175,6 +199,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               longitude = this.widget.coordiante[i]["long"];
             }
           } else if (this.widget.regOrAss == "assignStore") {
+            if(this.updateDataarray[0]["STDescription"].toString() == ""){
+              _storeType = "-";
+              _storeTypecode = "";
+            }else{
+              _storeType = this.updateDataarray[0]["STDescription"].toString();
+              _storeTypecode = this.updateDataarray[0]["STCode"].toString();
+            }
             this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
             this.shopName.text = this.updateDataarray[0]["shopname"].toString();
             this.shopNamemm.text =
@@ -283,6 +314,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                     },
                   );
             });
+            print("townID==>" + this.widget.townshipId.toString());
+            if (this.widget.regOrAss == "newStore") {
+              // setState(() {
+              _getSateDistrictandTownShip();
+              // });
+            }
           },
         );
       },
@@ -297,13 +334,92 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     });
   }
 
+  _getSateDistrictandTownShip() {
+    // setState(()=> {
+    var sateanddistrictData;
+    var districtData;
+    var townData;
+    var allDatas;
+    var param = {"townshipSyskey": this.widget.townshipId.toString()};
+
+    this.onlineSerives.getStateandDistrict(param).then((result) => {
+          if (result["status"] == true)
+            {
+              sateanddistrictData = result["data"],
+              allDatas = result["data"][0],
+              this._stateId = result["data"][0]["StateSyskey"].toString(),
+              this._state = result["data"][0]["StateDesc"].toString(),
+              print("stateId==>" + this._stateId),
+              districtData = {
+                "id": "0",
+                "code": "",
+                "description": "",
+                "parentid": this._stateId,
+                "n2": ''
+              },
+              print("districtData-->" + districtData.toString()),
+              onlineSerives.getDistrict(districtData).then((val) => {
+                    print("datas->" + val.toString()),
+                    if (val["status"] == true)
+                      {
+                        setState(() {
+                          this.districtObject = val["data"];
+                          for (var i = 0; i < districtObject.length; i++) {
+                            _districtList.add(districtObject[i]["description"]);
+                          }
+                          ;
+                          this._districtId =
+                              allDatas['DistrictSyskey'].toString();
+                          this._district = allDatas['DistrictDesc'].toString();
+                          print("dist==>" +
+                              this._districtId.toString() +
+                              "__" +
+                              this._district.toString() +
+                              "___" +
+                              _districtList.toString());
+                        }),
+                        townData = {
+                          "id": "",
+                          "code": "",
+                          "description": "",
+                          "parentid": this._districtId,
+                        },
+                        print("townData -->" + townData.toString()),
+                        onlineSerives.getTownship(townData).then((val) => {
+                              if (val["status"] == true)
+                                {
+                                  setState(() {
+                                    this.townShipObject = val["data"];
+                                    for (var i = 0;
+                                        i < townShipObject.length;
+                                        i++) {
+                                      _townShipList.add(
+                                          townShipObject[i]['description']);
+                                    }
+                                    ;
+                                    this._townShip =
+                                        allDatas["TownshipDesc"].toString();
+                                    // this._town =
+                                    //     allDatas["TownshipSyskey"].toString();
+                                    this._townShipId = allDatas["TownshipSyskey"].toString();
+                                  })
+                                }
+                            }),
+                      }
+                  }),
+              // _state = result["data"][0]["StateDesc"].toString(),
+            }
+        });
+    // });
+  }
+
   _getUpdateData() {
     var params = {
       "id": "",
       "code": "",
       "description": "",
       "parentid": "",
-      "n2": ''
+      "n2": ""
     };
     onlineSerives.getState(params).then((value) => {
           this.stateObject = value["data"],
@@ -556,6 +672,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     if (params != null) {
       onlineSerives.getDistrict(params).then((val) => {
             districtObject = val["data"],
+            print("district==>" + districtObject.toString()),
             for (var i = 0; i < districtObject.length; i++)
               {
                 setState(() {
@@ -597,6 +714,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
   }
 
   _getTown(params) {
+    print("townParam-->" + params.toString());
     if (params != null) {
       onlineSerives.getTown(params).then(
             (value) => {
@@ -1015,7 +1133,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                       Container(
                         margin: EdgeInsets.only(left: 20, top: 20),
                         child: Text(
-                          "State",
+                          "Store Type",
                           style: TextStyle(fontSize: 17, color: Colors.black54),
                         ),
                       ),
@@ -1030,55 +1148,118 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 10.0),
                             child: DropdownButton(
+                              iconEnabledColor: Colors.black,
                               isExpanded: true,
-                              items: _stateList.map(
-                                (val) {
+                              items: _storeTypeList.map(
+                                    (val) {
                                   return DropdownMenuItem(
                                     value: val,
-                                    child: Text(val),
+                                    child: Text(
+                                      val,
+                                      style: TextStyle(
+                                          color: Colors.black
+                                      ),
+                                    ),
                                   );
                                 },
                               ).toList(),
-                              value: _state,
+                              value: _storeType,
                               onChanged: (value) {
                                 setState(() {
-                                  _state = value;
-                                  for (var i = 0; i < stateObject.length; i++) {
-                                    if (_state ==
-                                        stateObject[i]["description"]) {
-                                      var data = {
-                                        "id": "0",
-                                        "code": "",
-                                        "description": "",
-                                        "parentid": stateObject[i]["id"]
-                                      };
-                                      print(data.toString());
-                                      _stateId = stateObject[i]["id"];
-                                      _stateCode = stateObject[i]["code"];
-                                      _getDistrict(data);
-                                      break;
-                                    } else if (_state == "-") {
-                                      n2Code = "0";
-                                      _townOrVillagetract = "-";
-                                      _getDistrict(null);
-                                      break;
+                                  _storeType = value;
+                                  _storeTypecode = "";
+                                  for(var i = 0; i < temStoetype.length; i++ ){
+                                    if(_storeType.toString() == temStoetype[i]["t2"].toString()){
+                                      _storeTypecode = temStoetype[i]["t1"];
                                     }
                                   }
-                                  _townOrVillagetract = "-";
-                                  n2Code = "0";
-                                  _town = "-";
-                                  _townList = ['-'];
-                                  _ward = "-";
-                                  _wardList = ['-'];
-                                  _villageTract = "-";
-                                  _villageTractList = ["-"];
-                                  _village = "-";
-                                  _villageList = ["-"];
-                                  // _controller.animateTo(180.0,
-                                  //     duration: Duration(milliseconds: 500),
-                                  //     curve: Curves.ease);
                                 });
                               },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 20, top: 20),
+                        child: Text(
+                          "State",
+                          style: TextStyle(fontSize: 17, color: Colors.black54),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          ),
+                        ),
+                        margin: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: AbsorbPointer(
+                            absorbing: true,
+                          child: DropdownButtonHideUnderline(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DropdownButton(
+                                iconEnabledColor: Colors.grey,
+                                isExpanded: true,
+                                items: _stateList.map(
+                                  (val) {
+                                    return DropdownMenuItem(
+                                      value: val,
+                                      child: Text(
+                                        val,
+                                        style: TextStyle(
+                                          color: Colors.grey
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).toList(),
+                                value: _state,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _state = value;
+                                    for (var i = 0; i < stateObject.length; i++) {
+                                      if (_state ==
+                                          stateObject[i]["description"]) {
+                                        var data = {
+                                          "id": "0",
+                                          "code": "",
+                                          "description": "",
+                                          "parentid": stateObject[i]["id"]
+                                        };
+                                        print(data.toString());
+                                        _stateId = stateObject[i]["id"];
+                                        _stateCode = stateObject[i]["code"];
+                                        _getDistrict(data);
+                                        break;
+                                      } else if (_state == "-") {
+                                        n2Code = "0";
+                                        _townOrVillagetract = "-";
+                                        _getDistrict(null);
+                                        break;
+                                      }
+                                    }
+                                    _townOrVillagetract = "-";
+                                    n2Code = "0";
+                                    _town = "-";
+                                    _townList = ['-'];
+                                    _ward = "-";
+                                    _wardList = ['-'];
+                                    _villageTract = "-";
+                                    _villageTractList = ["-"];
+                                    _village = "-";
+                                    _villageList = ["-"];
+                                    // _controller.animateTo(180.0,
+                                    //     duration: Duration(milliseconds: 500),
+                                    //     curve: Curves.ease);
+                                  });
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -1102,63 +1283,72 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           ),
                         ),
                         margin: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: DropdownButtonHideUnderline(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            child: DropdownButton(
-                              isExpanded: true,
-                              items: _districtList.map(
-                                (val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(val),
-                                  );
-                                },
-                              ).toList(),
-                              value: _district,
-                              onChanged: (value) {
-                                setState(() {
-                                  _district = value;
-                                  for (var i = 0;
-                                      i < districtObject.length;
-                                      i++) {
-                                    if (_district ==
-                                        districtObject[i]["description"]) {
-                                      var data = {
-                                        "id": "0",
-                                        "code": "",
-                                        "description": "",
-                                        "parentid": districtObject[i]["id"]
-                                      };
-                                      print(data.toString());
-                                      _districtId = districtObject[i]["id"];
-                                      _districtCode = districtObject[i]["code"];
-                                      _getTownShip(data);
-                                      break;
-                                    } else if (_district == "-") {
-                                      _districtId = "";
-                                      _districtCode = "";
-                                      n2Code = "0";
-                                      _townOrVillagetract = "-";
-                                      _getTownShip(null);
-                                      break;
+                        child: AbsorbPointer(
+                          absorbing: true,
+                          child: DropdownButtonHideUnderline(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DropdownButton(
+                                iconEnabledColor: Colors.grey,
+                                isExpanded: true,
+                                items: _districtList.map(
+                                  (val) {
+                                    return DropdownMenuItem(
+                                      value: val,
+                                      child: Text(
+                                        val,
+                                        style: TextStyle(
+                                            color: Colors.grey
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).toList(),
+                                value: _district,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _district = value;
+                                    for (var i = 0;
+                                        i < districtObject.length;
+                                        i++) {
+                                      if (_district ==
+                                          districtObject[i]["description"]) {
+                                        var data = {
+                                          "id": "0",
+                                          "code": "",
+                                          "description": "",
+                                          "parentid": districtObject[i]["id"]
+                                        };
+                                        print(data.toString());
+                                        _districtId = districtObject[i]["id"];
+                                        _districtCode = districtObject[i]["code"];
+                                        _getTownShip(data);
+                                        break;
+                                      } else if (_district == "-") {
+                                        _districtId = "";
+                                        _districtCode = "";
+                                        n2Code = "0";
+                                        _townOrVillagetract = "-";
+                                        _getTownShip(null);
+                                        break;
+                                      }
                                     }
-                                  }
-                                  _townOrVillagetract = "-";
-                                  n2Code = "0";
-                                  _town = "-";
-                                  _townList = ['-'];
-                                  _ward = "-";
-                                  _wardList = ['-'];
-                                  _villageTract = "-";
-                                  _villageTractList = ["-"];
-                                  _village = "-";
-                                  _villageList = ["-"];
-                                  // _controller.animateTo(180.0,
-                                  //     duration: Duration(milliseconds: 500),
-                                  //     curve: Curves.ease);
-                                });
-                              },
+                                    _townOrVillagetract = "-";
+                                    n2Code = "0";
+                                    _town = "-";
+                                    _townList = ['-'];
+                                    _ward = "-";
+                                    _wardList = ['-'];
+                                    _villageTract = "-";
+                                    _villageTractList = ["-"];
+                                    _village = "-";
+                                    _villageList = ["-"];
+                                    // _controller.animateTo(180.0,
+                                    //     duration: Duration(milliseconds: 500),
+                                    //     curve: Curves.ease);
+                                  });
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -1182,58 +1372,67 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                           ),
                         ),
                         margin: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: DropdownButtonHideUnderline(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            child: DropdownButton(
-                              isExpanded: true,
-                              items: _townShipList.map(
-                                (val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(val),
-                                  );
-                                },
-                              ).toList(),
-                              value: _townShip,
-                              onChanged: (value) {
-                                setState(() {
-                                  _townShip = value;
-                                  for (var i = 0;
-                                      i < townShipObject.length;
-                                      i++) {
-                                    if (_townShip ==
-                                        townShipObject[i]["description"]) {
-                                      var data = {
-                                        "id": "0",
-                                        "code": "",
-                                        "description": "",
-                                        "parentid": townShipObject[i]["id"]
-                                      };
-                                      _townShipId = townShipObject[i]["id"];
-                                      _townShipCode = townShipObject[i]["code"];
-                                      break;
-                                    } else if (_townShip == "-") {
-                                      _townShipId = "";
-                                      _townShipCode = "";
-                                      break;
+                        child: AbsorbPointer(
+                          absorbing: true,
+                          child: DropdownButtonHideUnderline(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DropdownButton(
+                                iconEnabledColor: Colors.grey,
+                                isExpanded: true,
+                                items: _townShipList.map(
+                                  (val) {
+                                    return DropdownMenuItem(
+                                      value: val,
+                                      child: Text(
+                                        val,
+                                        style: TextStyle(
+                                            color: Colors.grey
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).toList(),
+                                value: _townShip,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _townShip = value;
+                                    for (var i = 0;
+                                        i < townShipObject.length;
+                                        i++) {
+                                      if (_townShip ==
+                                          townShipObject[i]["description"]) {
+                                        var data = {
+                                          "id": "0",
+                                          "code": "",
+                                          "description": "",
+                                          "parentid": townShipObject[i]["id"]
+                                        };
+                                        _townShipId = townShipObject[i]["id"];
+                                        _townShipCode = townShipObject[i]["code"];
+                                        break;
+                                      } else if (_townShip == "-") {
+                                        _townShipId = "";
+                                        _townShipCode = "";
+                                        break;
+                                      }
                                     }
-                                  }
-                                  _townOrVillagetract = "-";
-                                  n2Code = "0";
-                                  _town = "-";
-                                  _townList = ['-'];
-                                  _ward = "-";
-                                  _wardList = ['-'];
-                                  _villageTract = "-";
-                                  _villageTractList = ["-"];
-                                  _village = "-";
-                                  _villageList = ["-"];
-                                  // _controller.animateTo(180.0,
-                                  //     duration: Duration(milliseconds: 500),
-                                  //     curve: Curves.ease);
-                                });
-                              },
+                                    _townOrVillagetract = "-";
+                                    n2Code = "0";
+                                    _town = "-";
+                                    _townList = ['-'];
+                                    _ward = "-";
+                                    _wardList = ['-'];
+                                    _villageTract = "-";
+                                    _villageTractList = ["-"];
+                                    _village = "-";
+                                    _villageList = ["-"];
+                                    // _controller.animateTo(180.0,
+                                    //     duration: Duration(milliseconds: 500),
+                                    //     curve: Curves.ease);
+                                  });
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -1263,6 +1462,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
                               child: DropdownButton<String>(
+                                iconEnabledColor: Colors.black,
                                 isExpanded: true,
                                 items: _townOrVillagetractList.map(
                                   (val) {
@@ -1359,6 +1559,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
                               child: DropdownButton(
+                                iconEnabledColor: Colors.black,
                                 isExpanded: true,
                                 items: _townList.map(
                                   (val) {
@@ -1426,6 +1627,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
                               child: DropdownButton(
+                                iconEnabledColor: Colors.black,
                                 isExpanded: true,
                                 items: _wardList.map(
                                   (val) {
@@ -1479,6 +1681,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
                               child: DropdownButton(
+                                iconEnabledColor: Colors.black,
                                 isExpanded: true,
                                 items: _villageTractList.map(
                                   (val) {
@@ -1551,6 +1754,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
                               child: DropdownButton(
+                                iconEnabledColor: Colors.black,
                                 isExpanded: true,
                                 items: _villageList.map(
                                   (val) {
@@ -1828,6 +2032,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
+                            "t14":_storeTypecode,
                             "svrHdrData": {
                               "syskey": "",
                               "n1": "1",
@@ -1860,6 +2065,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
+                            "t14":_storeTypecode,
                             "svrHdrData": {
                               "syskey": "",
                               "n1": "0",
@@ -1889,38 +2095,38 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               // }),
                               // hideLoadingDialog(),
                               print("ass-->" + reslut.toString()),
-                                if (reslut["status"] == true)
-                                  {
-                                    hideLoadingDialog(),
-                                    if (this.updateStatus == false)
-                                      {
-                                        ShowToast("Saved successfully."),
-                                      }
-                                    else
-                                      {
-                                        ShowToast("Updated successfully."),
-                                      },
-                                    setState(() {
-                                      print("11->" + reslut["data"].toString());
-                                      this.createRegistration = [reslut["data"]];
+                              if (reslut["status"] == true)
+                                {
+                                  hideLoadingDialog(),
+                                  if (this.updateStatus == false)
+                                    {
+                                      ShowToast("Saved successfully."),
+                                    }
+                                  else
+                                    {
+                                      ShowToast("Updated successfully."),
+                                    },
+                                  setState(() {
+                                    print("11->" + reslut["data"].toString());
+                                    this.createRegistration = [reslut["data"]];
 
-                                      // print("hello" + "${reslut["data"]}");
-                                      this.updateDataarray =
-                                          this.createRegistration;
-                                      this.shopSyskey = this
-                                          .updateDataarray[0]["id"]
-                                          .toString();
-                                      print("$shopSyskey");
-                                      this.updateStatus = true;
-                                      this.widget.updateStatuspass =
-                                          this.updateStatus;
-                                      this.widget.passData = this.updateDataarray;
-                                    }),
-                                  }
-                                else
-                                  {
-                                    hideLoadingDialog(),
-                                  }
+                                    // print("hello" + "${reslut["data"]}");
+                                    this.updateDataarray =
+                                        this.createRegistration;
+                                    this.shopSyskey = this
+                                        .updateDataarray[0]["id"]
+                                        .toString();
+                                    print("$shopSyskey");
+                                    this.updateStatus = true;
+                                    this.widget.updateStatuspass =
+                                        this.updateStatus;
+                                    this.widget.passData = this.updateDataarray;
+                                  }),
+                                }
+                              else
+                                {
+                                  hideLoadingDialog(),
+                                }
                             });
                       }
                     },
