@@ -98,6 +98,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
   var file;
   var completeStatus;
   var svrhdrSyskey = "";
+  var userSyseky = "";
 
   Future<File> urlToFile(String imageUrl) async {
 // generate random number.
@@ -171,6 +172,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _syskey = svrhdrSyskey;
 
         _allData["svrHdrData"] = {
+          "userSyskey":userSyseky.toString(),
           "syskey": _syskey,
           "n1": sectionCompletestatus,
           "n2": pssOject["shopsyskey"].toString(),
@@ -205,6 +207,7 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
         _syskey = svrhdrSyskey;
         print("syskey1=>" + _syskey);
         _allData["svrHdrData"] = {
+          "userSyskey":userSyseky.toString(),
           "syskey": _syskey,
           "n1": sectionCompletestatus,
           "n2": pssOject["id"].toString(),
@@ -1185,7 +1188,9 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
 //    if(){} for questionNature
     completeStatus = this.storage.getItem("completeStatus");
     svrhdrSyskey = this.storage.getItem("allsectionHeadersyskey");
-    print("098-->" + svrhdrSyskey);
+    var tempData = this.storage.getItem("loginData");
+    userSyseky = tempData["syskey"].toString();
+    print("098-->" + userSyseky.toString());
     var _pssOject;
     if (this.widget.regOrAss == "assign") {
       _pssOject = this.widget.passData[0]["shopsyskey"];
@@ -1843,11 +1848,12 @@ class _NeighborhoodSurveyScreenState extends State<NeighborhoodSurveyScreen> {
             break;
           }
         }
-        hideLoadingDialog();
-        setState(() {
-
-        });
+        print("121--");
       }
+    hideLoadingDialog();
+    setState(() {
+
+    });
   }
 
   getImage(index, _data, onlinePhoto) async {

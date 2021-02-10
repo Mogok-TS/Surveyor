@@ -25,8 +25,13 @@ import 'Map/map.dart';
 
 // ignore: must_be_immutable
 class StoresDetailsScreen extends StatefulWidget {
-  var regOrAss, surDetail, checkStatus;
-  var passData, updateStatuspass, coordiante, townshipId;
+  var regOrAss,
+      surDetail,
+      checkStatus,
+      passData,
+      updateStatuspass,
+      coordiante,
+      townshipId;
 
   StoresDetailsScreen(this.surDetail, this.passData, this.updateStatuspass,
       this.regOrAss, this.coordiante, this.checkStatus, this.townshipId);
@@ -89,7 +94,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
     localJsonData();
     this.loginData = this.storage.getItem("loginData");
     this.storage.setItem("surDetail", this.widget.surDetail);
-    print("as-->" + this.loginData.toString());
+    print("as-->" + this.widget.passData.toString());
     setState(
       () {
         Future.delayed(const Duration(milliseconds: 900), () {
@@ -114,11 +119,13 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
         _village = "-";
         _villageList = ["-"];
         temStoetype = this.storage.getItem("getStroetype");
-        if(temStoetype.length > 0){
-          for(var i = 0; i < temStoetype.length; i++){
+
+        if (temStoetype.length > 0) {
+          for (var i = 0; i < temStoetype.length; i++) {
             _storeTypeList.add(temStoetype[i]["t2"]);
           }
         }
+        print("-->" + _storeTypeList.toString());
         _getState();
         print("??>> ${this.widget.regOrAss}");
         this.storeRegistration = this.widget.passData;
@@ -135,12 +142,16 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
         } else {
           this.updateStatus = true;
           if (this.widget.regOrAss == "assign") {
-            if(this.updateDataarray[0]["STDescription"].toString() == ""){
+            if (this.updateDataarray[0]["STDescription"].toString() == "") {
               _storeType = "-";
               _storeTypecode = "";
-            }else{
-              _storeType = this.updateDataarray[0]["STDescription"].toString();
+            } else {
               _storeTypecode = this.updateDataarray[0]["STCode"].toString();
+              for (var i = 0; i < temStoetype.length; i++) {
+                if (_storeTypecode == temStoetype[i]["t1"].toString()) {
+                  _storeType = temStoetype[i]["t2"].toString();
+                }
+              }
             }
             this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
             this.shopName.text = this.updateDataarray[0]["shopname"].toString();
@@ -164,12 +175,17 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             this.longitude = double.parse(this.updateDataarray[0]["long"]);
             _getUpdateData();
           } else if (this.widget.regOrAss == "register") {
-            if(this.updateDataarray[0]["STDescription"].toString() == ""){
+            if (this.updateDataarray[0]["STDescription"].toString() == "") {
               _storeType = "-";
               _storeTypecode = "";
-            }else{
-              _storeType = this.updateDataarray[0]["STDescription"].toString();
+            } else {
+              // _storeType = this.updateDataarray[0]["STDescription"].toString();
               _storeTypecode = this.updateDataarray[0]["t14"].toString();
+              for (var i = 0; i < temStoetype.length; i++) {
+                if (_storeTypecode == temStoetype[i]["t1"].toString()) {
+                  _storeType = temStoetype[i]["t2"].toString();
+                }
+              }
             }
             this.updateStatus = true;
             this.shopSyskey = this.updateDataarray[0]["id"].toString();
@@ -199,12 +215,17 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
               longitude = this.widget.coordiante[i]["long"];
             }
           } else if (this.widget.regOrAss == "assignStore") {
-            if(this.updateDataarray[0]["STDescription"].toString() == ""){
+            if (this.updateDataarray[0]["STDescription"].toString() == "") {
               _storeType = "-";
               _storeTypecode = "";
-            }else{
-              _storeType = this.updateDataarray[0]["STDescription"].toString();
+            } else {
               _storeTypecode = this.updateDataarray[0]["STCode"].toString();
+              // _storeType = this.updateDataarray[0]["STDescription"].toString();
+              for (var i = 0; i < temStoetype.length; i++) {
+                if (_storeTypecode == temStoetype[i]["t1"].toString()) {
+                  _storeType = temStoetype[i]["t2"].toString();
+                }
+              }
             }
             this.shopSyskey = this.updateDataarray[0]["shopsyskey"].toString();
             this.shopName.text = this.updateDataarray[0]["shopname"].toString();
@@ -235,93 +256,108 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
             }
             _getUpdateData();
           }
-          print("shopSyskey--> $shopSyskey");
+          print("shopSyskey1--> $shopSyskey" + "___" + _storeType.toString());
         }
-        getCurrentLocation().then(
-          (k) {
-            print({"$k"});
-            Future.delayed(const Duration(milliseconds: 600), () {
-              print("latLong-->" + this.widget.regOrAss.toString());
-              if (this.widget.regOrAss == "Map") {
-                var _latLong = this.storage.getItem("Maplatlong");
-                print("--->" + _latLong.toString());
-                latitude = _latLong["lat"];
-                longitude = _latLong["long"];
-              } else if (this.widget.regOrAss == "newStore") {
-                latitude = k.latitude;
-                longitude = k.longitude;
-              }
+        getLocation().then((k) => {
+              print({"$k"}),
+              Future.delayed(const Duration(milliseconds: 600), () {
+                print("latLong-->" + this.widget.regOrAss.toString());
+                if (this.widget.regOrAss == "Map") {
+                  var _latLong = this.storage.getItem("Maplatlong");
+                  print("--->" + _latLong.toString());
+                  latitude = _latLong["lat"];
+                  longitude = _latLong["long"];
+                } else if (this.widget.regOrAss == "newStore") {
+                  latitude = k.latitude;
+                  longitude = k.longitude;
+                }
 
-              googlePlusparam = {"lat": latitude, "lng": longitude};
-              this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
-                    (result) => {
-                      if (result["status"] == true)
-                        {
+                googlePlusparam = {"lat": latitude, "lng": longitude};
+                this.onlineSerives.getGooglePlusCode(googlePlusparam).then(
+                      (result) => {
+                        // setState((){
+                        //   lables = result.toString();
+                        // }),
+                        if (result == null)
+                          {
+                            setState(() {
+                              this.plusCode = "";
+                              hideLoadingDialog();
+                            }),
+                          }
+                        else if (result["status"] == true)
+                          {
 //                  print("12-->" + mpaArray.toString()),
-                          for (var a = 0; a < mpaArray.length; a++)
-                            {
-                              latlng = List(),
-                              setState(() {
-                                latlng = [];
-                              }),
+                            for (var a = 0; a < mpaArray.length; a++)
+                              {
+                                latlng = List(),
+                                setState(() {
+                                  latlng = [];
+                                }),
 
-                              list1 = mpaArray
-                                  .where((element) =>
-                                      element["properties"]["TS_PCODE"]
-                                          .toString() ==
-                                      mpaArray[a]["properties"]["TS_PCODE"]
-                                          .toString())
-                                  .toList(),
+                                list1 = mpaArray
+                                    .where((element) =>
+                                        element["properties"]["TS_PCODE"]
+                                            .toString() ==
+                                        mpaArray[a]["properties"]["TS_PCODE"]
+                                            .toString())
+                                    .toList(),
 //                      print("123-->" + list1.toString()),
-                              for (var b = 0; b < list1.length; b++)
-                                {
-                                  list2 = list1[b]["geometry"]["coordinates"],
+                                for (var b = 0; b < list1.length; b++)
+                                  {
+                                    list2 = list1[b]["geometry"]["coordinates"],
 //                        print("43-->" + list2.toString()),
-                                  for (var c = 0; c < list2.length; c++)
-                                    {
-                                      for (var d = 0; d < list2[c].length; d++)
-                                        {
-                                          for (var e = 0;
-                                              e < list2[c][d].length;
-                                              e++)
-                                            {
-                                              lati = double.parse(
-                                                  list2[c][d][e][1].toString()),
-                                              long = double.parse(
-                                                  list2[c][d][e][0].toString()),
-                                              location = LatLng(lati, long),
-                                              latlng.add(location),
-                                            }
-                                        }
-                                    }
-                                },
-                              curLocation = LatLng(latitude, longitude),
-                              _checkIfValidMarker(
-                                  curLocation,
-                                  latlng,
-                                  mpaArray[a]["properties"]["TS_PCODE"]
-                                      .toString()),
-                            },
-                          setState(() {
-                            this.plusCode = "${result["data"]["plusCode"]}";
-                            hideLoadingDialog();
-                          }),
-                        }
-                      else
-                        {
-                          hideLoadingDialog(),
-                        }
-                    },
-                  );
+                                    for (var c = 0; c < list2.length; c++)
+                                      {
+                                        for (var d = 0;
+                                            d < list2[c].length;
+                                            d++)
+                                          {
+                                            for (var e = 0;
+                                                e < list2[c][d].length;
+                                                e++)
+                                              {
+                                                lati = double.parse(list2[c][d]
+                                                        [e][1]
+                                                    .toString()),
+                                                long = double.parse(list2[c][d]
+                                                        [e][0]
+                                                    .toString()),
+                                                location = LatLng(lati, long),
+                                                latlng.add(location),
+                                              }
+                                          }
+                                      }
+                                  },
+                                curLocation = LatLng(latitude, longitude),
+                                _checkIfValidMarker(
+                                    curLocation,
+                                    latlng,
+                                    mpaArray[a]["properties"]["TS_PCODE"]
+                                        .toString()),
+                              },
+                            setState(() {
+                              this.plusCode = "${result["data"]["plusCode"]}";
+                              hideLoadingDialog();
+                            }),
+                          }
+                        else
+                          {
+                            hideLoadingDialog(),
+                          }
+                      },
+                    );
+              }),
+
             });
-            print("townID==>" + this.widget.townshipId.toString());
-            if (this.widget.regOrAss == "newStore") {
-              // setState(() {
-              _getSateDistrictandTownShip();
-              // });
-            }
-          },
-        );
+        print("townID==>" + this.widget.townshipId.toString());
+
+        if (this.widget.regOrAss == "newStore")
+        {
+        // setState(() {
+        _getSateDistrictandTownShip();
+        // });
+        }
       },
     );
   }
@@ -401,7 +437,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                         allDatas["TownshipDesc"].toString();
                                     // this._town =
                                     //     allDatas["TownshipSyskey"].toString();
-                                    this._townShipId = allDatas["TownshipSyskey"].toString();
+                                    this._townShipId =
+                                        allDatas["TownshipSyskey"].toString();
                                   })
                                 }
                             }),
@@ -956,7 +993,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // Container(
-                  //   child: Text(lables.toString()),
+                  //   child: SelectableText(lables.toString()),
                   // ),
                   Container(
                     margin: EdgeInsets.only(top: 10.0),
@@ -1151,14 +1188,12 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                               iconEnabledColor: Colors.black,
                               isExpanded: true,
                               items: _storeTypeList.map(
-                                    (val) {
+                                (val) {
                                   return DropdownMenuItem(
                                     value: val,
                                     child: Text(
                                       val,
-                                      style: TextStyle(
-                                          color: Colors.black
-                                      ),
+                                      style: TextStyle(color: Colors.black),
                                     ),
                                   );
                                 },
@@ -1168,8 +1203,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                 setState(() {
                                   _storeType = value;
                                   _storeTypecode = "";
-                                  for(var i = 0; i < temStoetype.length; i++ ){
-                                    if(_storeType.toString() == temStoetype[i]["t2"].toString()){
+                                  for (var i = 0; i < temStoetype.length; i++) {
+                                    if (_storeType.toString() ==
+                                        temStoetype[i]["t2"].toString()) {
                                       _storeTypecode = temStoetype[i]["t1"];
                                     }
                                   }
@@ -1199,7 +1235,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                         ),
                         margin: EdgeInsets.symmetric(horizontal: 20.0),
                         child: AbsorbPointer(
-                            absorbing: true,
+                          absorbing: true,
                           child: DropdownButtonHideUnderline(
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -1212,9 +1248,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                       value: val,
                                       child: Text(
                                         val,
-                                        style: TextStyle(
-                                          color: Colors.grey
-                                        ),
+                                        style: TextStyle(color: Colors.grey),
                                       ),
                                     );
                                   },
@@ -1223,7 +1257,9 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                 onChanged: (value) {
                                   setState(() {
                                     _state = value;
-                                    for (var i = 0; i < stateObject.length; i++) {
+                                    for (var i = 0;
+                                        i < stateObject.length;
+                                        i++) {
                                       if (_state ==
                                           stateObject[i]["description"]) {
                                         var data = {
@@ -1297,9 +1333,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                       value: val,
                                       child: Text(
                                         val,
-                                        style: TextStyle(
-                                            color: Colors.grey
-                                        ),
+                                        style: TextStyle(color: Colors.grey),
                                       ),
                                     );
                                   },
@@ -1321,7 +1355,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                         };
                                         print(data.toString());
                                         _districtId = districtObject[i]["id"];
-                                        _districtCode = districtObject[i]["code"];
+                                        _districtCode =
+                                            districtObject[i]["code"];
                                         _getTownShip(data);
                                         break;
                                       } else if (_district == "-") {
@@ -1386,9 +1421,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                       value: val,
                                       child: Text(
                                         val,
-                                        style: TextStyle(
-                                            color: Colors.grey
-                                        ),
+                                        style: TextStyle(color: Colors.grey),
                                       ),
                                     );
                                   },
@@ -1409,7 +1442,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                                           "parentid": townShipObject[i]["id"]
                                         };
                                         _townShipId = townShipObject[i]["id"];
-                                        _townShipCode = townShipObject[i]["code"];
+                                        _townShipCode =
+                                            townShipObject[i]["code"];
                                         break;
                                       } else if (_townShip == "-") {
                                         _townShipId = "";
@@ -2017,7 +2051,8 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "saveCondition": "",
                             "id": this.shopSyskey,
                             "active": true,
-                            "usersyskey": this.loginData["syskey"].toString(),
+                            "usersyskey":
+                                "", //this.loginData["syskey"].toString(),
                             "name": this.shopName.text.toString(),
                             "mmName": this.shopNamemm.text.toString(),
                             "personName": this.ownerName.text.toString(),
@@ -2032,7 +2067,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
-                            "t14":_storeTypecode,
+                            "t14": _storeTypecode,
                             "svrHdrData": {
                               "syskey": "",
                               "n1": "1",
@@ -2065,7 +2100,7 @@ class _StoresDetailsScreenState extends State<StoresDetailsScreen> {
                             "address": this.allAddress,
                             "street": this.street.text.toString(),
                             "t12": "",
-                            "t14":_storeTypecode,
+                            "t14": _storeTypecode,
                             "svrHdrData": {
                               "syskey": "",
                               "n1": "0",

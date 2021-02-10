@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:Surveyor/Services/GeneralUse/Geolocation.dart';
 import 'package:Surveyor/Services/Online/OnlineServices.dart';
 import 'package:Surveyor/widgets/mainmenuwidgets.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ class MapSampleState extends State<GmapS> {
   }
 
   void toUserLocation() {
-    _getLocation().then((value) async {
+    getLocation().then((value) async {
 //      setState(() {
       if (value == null) {
       } else {
@@ -179,17 +180,6 @@ class MapSampleState extends State<GmapS> {
     });
   }
 
-  Future<Position> _getLocation() async {
-    var currentLocation;
-    try {
-      currentLocation = await geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-    } catch (e) {
-      currentLocation = null;
-    }
-    return currentLocation;
-  }
-
   Future<String> _getAddress(Position pos) async {
     List<Placemark> placemarks = await Geolocator()
         .placemarkFromCoordinates(pos.latitude, pos.longitude);
@@ -201,9 +191,9 @@ class MapSampleState extends State<GmapS> {
   }
 
   void locationFromServer() {
-    _getLocation().then((value) async {
+    getLocation().then((value) async {
 //      setState(() {
-    print("val-->" + value.toString());
+      print("val-->" + value.toString());
       if (value == null) {
       } else {
 //          _getAddress(value).then((val) async {
@@ -214,11 +204,14 @@ class MapSampleState extends State<GmapS> {
 
           for (var i = 0; i < list.length; i++) {
             var existingStore = list[i]["existingStore"]["storeList"];
-            if(existingStore.length > 0){
-              for(var ss = 0; ss < existingStore.length; ss++){
+            if (existingStore.length > 0) {
+              for (var ss = 0; ss < existingStore.length; ss++) {
                 addressList.add({
                   "tranid": existingStore[ss]["tranid"],
-                  "name": existingStore[ss]["shopname"] + "(" + existingStore[ss]["shopnamemm"] + ")" ,
+                  "name": existingStore[ss]["shopname"] +
+                      "(" +
+                      existingStore[ss]["shopnamemm"] +
+                      ")",
                   "lati": double.parse(existingStore[ss]["lat"]),
                   "long": double.parse(existingStore[ss]["long"])
                 });
@@ -256,9 +249,9 @@ class MapSampleState extends State<GmapS> {
           print("ss-->" + this.regStore.toString());
           for (var a = 0; a < regStore.length; a++) {
             storeregi.add({
-              "name": regStore[a]["name"] +"("+ regStore[a]["mmName"] + ")",
-              "lati":
-                  double.parse(regStore[a]["locationData"]['latitude'].toString()),
+              "name": regStore[a]["name"] + "(" + regStore[a]["mmName"] + ")",
+              "lati": double.parse(
+                  regStore[a]["locationData"]['latitude'].toString()),
               "long": double.parse(
                   regStore[a]["locationData"]['longitude'].toString()),
               "tranid": regStore[a]["transactionId"]
@@ -336,14 +329,13 @@ class MapSampleState extends State<GmapS> {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => StoresDetailsScreen(
-                        [],
+                          [],
                           this.widget.passLength,
                           this.widget.updateStatus,
                           this.widget.regass,
                           [this.closeCod],
-                        "CHECKIN",
-                        ""
-                      ),
+                          "CHECKIN",
+                          ""),
                     ),
                   );
                 }
@@ -437,23 +429,21 @@ class MapSampleState extends State<GmapS> {
                   if (this._latLong["lat"] != null && this.curLatLong == null) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => StoresDetailsScreen(
-                          [],
-                            [],
-                            true,
-                            "Map",
-                            [this._latLong],
-                            "CHECKIN",
-                          ""
-                        ),
+                        builder: (context) => StoresDetailsScreen([], [], true,
+                            "Map", [this._latLong], "CHECKIN", ""),
                       ),
                     );
                   } else if (this.curLatLong != null) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => StoresDetailsScreen(
-                          [],
-                            curLatLong, true, "Map", curLatLong,"CHECKIN",""),
+                            [],
+                            curLatLong,
+                            true,
+                            "Map",
+                            curLatLong,
+                            "CHECKIN",
+                            ""),
                       ),
                     );
                   }
@@ -464,8 +454,13 @@ class MapSampleState extends State<GmapS> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => StoresDetailsScreen(
-                            [],
-                              [storeList[i]], true, "assign", curLatLong,"CHECKIN",""),
+                              [],
+                              [storeList[i]],
+                              true,
+                              "assign",
+                              curLatLong,
+                              "CHECKIN",
+                              ""),
                         ),
                       );
                     }
@@ -487,13 +482,13 @@ class MapSampleState extends State<GmapS> {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => StoresDetailsScreen(
-                          [],
+                            [],
                             [this.closeCod],
                             true,
                             "Map",
                             [this.closeCod],
                             "CHECKIN",
-                        ""),
+                            ""),
                       ),
                     );
                   }
@@ -503,10 +498,13 @@ class MapSampleState extends State<GmapS> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => StoresDetailsScreen(
-                            [],
-                              curLatLong, true, "Map", curLatLong,
+                              [],
+                              curLatLong,
+                              true,
+                              "Map",
+                              curLatLong,
                               "CHECKIN",
-                          ""),
+                              ""),
                         ),
                       );
                     } else {
@@ -524,28 +522,26 @@ class MapSampleState extends State<GmapS> {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => StoresDetailsScreen(
-                                  [],
-                                  [this.widget.passLength[i]],
-                                  false,
-                                  "assignStore",
-                                  [this.closeCod],
+                                    [],
+                                    [this.widget.passLength[i]],
+                                    false,
+                                    "assignStore",
+                                    [this.closeCod],
                                     "CHECKIN",
-                                  ""
-                                ),
+                                    ""),
                               ),
                             );
                           } else {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => StoresDetailsScreen(
-                                  [],
+                                    [],
                                     [this.widget.passLength[i]],
                                     false,
                                     "assignStore",
                                     this.curLatLong,
                                     "CHECKIN",
-                                  ""
-                                ),
+                                    ""),
                               ),
                             );
                           }
@@ -561,13 +557,13 @@ class MapSampleState extends State<GmapS> {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => StoresDetailsScreen(
-                                    [],
+                                      [],
                                       [storeList[i]],
                                       true,
                                       "assignStore",
                                       curLatLong,
                                       "CHECKIN",
-                                  ""),
+                                      ""),
                                 ),
                               );
                             }
@@ -583,14 +579,13 @@ class MapSampleState extends State<GmapS> {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => StoresDetailsScreen(
-                              [],
+                                [],
                                 [storeList[i]],
                                 true,
                                 "assignStore",
                                 curLatLong,
                                 "CHECKIN",
-                              ""
-                            ),
+                                ""),
                           ),
                         );
                       }
@@ -693,7 +688,7 @@ class MapSampleState extends State<GmapS> {
     return x > pX;
   }
 
-  void polyGon(){
+  void polyGon() {
     for (var v = 0; v < polygonArray.length; v++) {
       List<LatLng> latlng = List();
       setState(() {
@@ -701,8 +696,8 @@ class MapSampleState extends State<GmapS> {
       });
       List list1 = data
           .where((element) =>
-      element["properties"]["TS_PCODE"].toString() ==
-          polygonArray[v]["code"].toString())
+              element["properties"]["TS_PCODE"].toString() ==
+              polygonArray[v]["code"].toString())
           .toList();
 
       for (var b = 0; b < list1.length; b++) {

@@ -17,7 +17,7 @@ import 'package:Surveyor/Services/Messages/Messages.dart';
 import 'package:flutter/services.dart';
 import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:geolocator/geolocator.dart';
+
 
 import '../URL/url.dart';
 
@@ -118,7 +118,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.25'),
+                        child: Text('Version 1.0.27'),
                       ),
                     ],
                     child: Icon(
@@ -435,6 +435,8 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
       ),
     );
   }
+
+
 
   getStoreType(){
     var param = {

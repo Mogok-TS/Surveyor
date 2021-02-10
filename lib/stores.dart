@@ -231,6 +231,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               buildAssignItem(
                                   data["existingStore"]["storeList"][ii],
                                   data["existingStore"]["surDetail"],
+                                  data["userDetail"],
                                   townshipID),
                           if (data["existingStore"]["storeList"].length > 0)
                             SizedBox(
@@ -321,6 +322,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               buildAssignItem(
                                   data["flagStore"]["storeList"][ii],
                                   data["flagStore"]["surDetail"],
+                                  data["userDetail"],
                                   townshipID),
                           if (data["flagStore"]["storeList"].length > 0)
                             SizedBox(
@@ -404,6 +406,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                       buildNewStoreItem(
                                           data["newStoresList"][a],
                                           data["newSurdetail"],
+                                          data["userDetail"],
                                           townshipID),
                                   // if(data["newStoresList"].length == 0)
                                   Container(
@@ -583,7 +586,7 @@ class _StoreScreenState extends State<StoreScreen> {
   //   );
   // }
 
-  _showDialog(data, surDetail, townshipId) {
+  _showDialog(data, surDetail, userDetail, townshipId) {
     var shopData = [data];
     var param;
     var params;
@@ -1014,7 +1017,7 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget buildAssignItem(data, surDetail, townshipId) {
+  Widget buildAssignItem(data, surDetail, userDetail, townshipId) {
     var shopData = [data];
     var checkStatus;
     bool start = true;
@@ -1114,7 +1117,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                         this.storage.setItem(
                                             "completeStatus", "inComplete");
                                         _showDialog(
-                                            data, surDetail, townshipId);
+                                            data, surDetail, townshipId,
+                                            userDetail);
                                       }
                                       _checkInType = null;
                                       _checkClosed = "2";
@@ -1142,7 +1146,7 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget buildNewStoreItem(data, surDetail, townshipId) {
+  Widget buildNewStoreItem(data, surDetail, userDetail, townshipId) {
     var checkStatus = "Not Started";
     data["address"] = data["locationData"]["address"];
     bool start = true;
@@ -1408,8 +1412,12 @@ class _StoreScreenState extends State<StoreScreen> {
     storeallData = [];
     var storeDatas = this.storage.getItem("storeData");
     print("shops-->" + storeDatas.length.toString());
-    sortArray(storeDatas);
-
+    if(storeDatas.length == 0){
+      ShowToast("No Data!");
+      hideLoadingDialog();
+    }else{
+      sortArray(storeDatas);
+    }
   }
 
   sortArray(storeDatas) async {
