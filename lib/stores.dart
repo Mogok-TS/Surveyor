@@ -920,6 +920,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                         "Store Closed") &&
                                                 _selectType != null)
                                               {
+
+                                                // print("adf-->" + _selectType.toString()),
                                                 loginUser = this
                                                     .storage
                                                     .getItem("loginData"),
@@ -931,13 +933,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                       data["shopsyskey"],
                                                   "usersyskey":
                                                       loginUser['syskey'],
-                                                  if (data["status"]
-                                                          ["currentType"] ==
-                                                      "CHECKIN")
-                                                    "checkInType":
-                                                        "TEMPCHECKOUT"
-                                                  else
-                                                    "checkInType": "CHECKIN",
+                                                    "checkInType": "STORECLOSED",
                                                   "register": true,
                                                   "reason": this
                                                       ._reasonText
@@ -952,32 +948,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                         if (value["status"] ==
                                                             true)
                                                           {
-                                                            param = {
-                                                              "shopsyskey":
-                                                                  shopData[0][
-                                                                      "shopsyskey"]
-                                                            },
-                                                            this
-                                                                .onlineSerives
-                                                                .getCategory(
-                                                                    param)
-                                                                .then(
-                                                                    (value) => {
-                                                                          if (value ==
-                                                                              true)
-                                                                            {
-                                                                              Navigator.of(context, rootNavigator: true).pop(),
-                                                                              Navigator.of(context).pushReplacement(
-                                                                                MaterialPageRoute(
-                                                                                  builder: (context) => StoresDetailsScreen(surDetail, shopData, false, "assign", "null", "CHECKIN", townshipId),
-                                                                                ),
-                                                                              ),
-                                                                            }
-                                                                          else
-                                                                            {
-                                                                              hideLoadingDialog(),
-                                                                            },
-                                                                        }),
+
                                                           }
                                                         else
                                                           {}
