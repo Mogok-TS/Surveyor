@@ -185,6 +185,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                           : Icon(Icons.chevron_right),
                                       onPressed: () {
                                         setState(() {
+                                          print("sdfs-->" + data["existingStore"]["storeList"].length.toString());
                                           // data["show"] = !data["show"];
                                           data["existItem"] =
                                               !data["existItem"];
@@ -989,6 +990,7 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget buildAssignItem(data, surDetail, userDetail, townshipId) {
+    print("123--->" + data.toString());
     var shopData = [data];
     var checkStatus;
     bool start = true;
@@ -1006,7 +1008,9 @@ class _StoreScreenState extends State<StoreScreen> {
     } else if (data["status"]["currentType"] == "TEMPORARY_CLOSE") {
       checkStatus = "Temporary Close";
     }
-
+    else if (data["status"]["currentType"] == "STORECLOSED") {
+      checkStatus = "Temporary Close";
+    }
     return Container(
       color: Colors.grey[200],
       child: Card(
