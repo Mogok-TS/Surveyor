@@ -28,8 +28,11 @@ class _StoreScreenState extends State<StoreScreen> {
   var assignStores = [];
   var storeRegistration = [];
   var count = "0";
+
   bool showAssignStore = false;
   bool showRegisterStore = false;
+  bool showSearch = false;
+
   var performType, performTypearray;
   OnlineSerives onlineSerives = new OnlineSerives();
   Geolocator geolocator = Geolocator();
@@ -185,7 +188,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                           : Icon(Icons.chevron_right),
                                       onPressed: () {
                                         setState(() {
-                                          print("sdfs-->" + data["existingStore"]["storeList"].length.toString());
+                                          print("sdfs-->" +
+                                              data["existingStore"]["storeList"]
+                                                  .length
+                                                  .toString());
                                           // data["show"] = !data["show"];
                                           data["existItem"] =
                                               !data["existItem"];
@@ -921,44 +927,45 @@ class _StoreScreenState extends State<StoreScreen> {
                                                         "Store Closed") &&
                                                 _selectType != null)
                                               {
+                                                print("adf-->" +
+                                                    _selectType.toString()),
+                                                //     loginUser = this
+                                                //         .storage
+                                                //         .getItem("loginData"),
+                                                //     params = {
+                                                //       "lat": data["lat"],
+                                                //       "lon": data["long"],
+                                                //       "address": data["address"],
+                                                //       "shopsyskey":
+                                                //           data["shopsyskey"],
+                                                //       "usersyskey":
+                                                //           loginUser['syskey'],
+                                                //         "checkInType": "STORECLOSED",
+                                                //       "register": true,
+                                                //       "reason": this
+                                                //           ._reasonText
+                                                //           .toString(),
+                                                //       "task": "INCOMPLETE",
+                                                //     },
+                                                //     this
+                                                //         .onlineSerives
+                                                //         .getSurveyor(params)
+                                                //         .then(
+                                                //           (value) => {
+                                                //             if (value["status"] ==
+                                                //                 true)
+                                                //               {
 
-                                                // print("adf-->" + _selectType.toString()),
-                                                loginUser = this
-                                                    .storage
-                                                    .getItem("loginData"),
-                                                params = {
-                                                  "lat": data["lat"],
-                                                  "lon": data["long"],
-                                                  "address": data["address"],
-                                                  "shopsyskey":
-                                                      data["shopsyskey"],
-                                                  "usersyskey":
-                                                      loginUser['syskey'],
-                                                    "checkInType": "STORECLOSED",
-                                                  "register": true,
-                                                  "reason": this
-                                                      ._reasonText
-                                                      .toString(),
-                                                  "task": "INCOMPLETE",
-                                                },
-                                                this
-                                                    .onlineSerives
-                                                    .getSurveyor(params)
-                                                    .then(
-                                                      (value) => {
-                                                        if (value["status"] ==
-                                                            true)
-                                                          {
-
-                                                          }
-                                                        else
-                                                          {}
-                                                      },
-                                                    ),
-                                              }
-                                            else
-                                              {
-                                                ShowToast("Please Select Type"),
+                                                //               }
+                                                //             else
+                                                //               {}
+                                                //           },
+                                                //         ),
+                                                //   }
+                                                // else
+                                                //   {
+                                                //     ShowToast("Please Select Type"),
+                                                //   }
                                               }
                                           }
                                         else
@@ -990,7 +997,7 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget buildAssignItem(data, surDetail, userDetail, townshipId) {
-    print("123--->" + data.toString());
+    // print("123--->" + data.toString());
     var shopData = [data];
     var checkStatus;
     bool start = true;
@@ -1007,8 +1014,7 @@ class _StoreScreenState extends State<StoreScreen> {
       start = false;
     } else if (data["status"]["currentType"] == "TEMPORARY_CLOSE") {
       checkStatus = "Temporary Close";
-    }
-    else if (data["status"]["currentType"] == "STORECLOSED") {
+    } else if (data["status"]["currentType"] == "STORECLOSED") {
       checkStatus = "Temporary Close";
     }
     return Container(
@@ -1091,8 +1097,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                       } else {
                                         this.storage.setItem(
                                             "completeStatus", "inComplete");
-                                        _showDialog(
-                                            data, surDetail, townshipId,
+                                        _showDialog(data, surDetail, townshipId,
                                             userDetail);
                                       }
                                       _checkInType = null;
@@ -1379,18 +1384,18 @@ class _StoreScreenState extends State<StoreScreen> {
   //   );
   // }
 
-  var allData = [];
-  var storeallData = [];
+  List allData = [];
+  List storeallData = [];
   allDataFunction() {
     // showLoading();
     allData = [];
     storeallData = [];
     var storeDatas = this.storage.getItem("storeData");
     print("shops-->" + storeDatas.length.toString());
-    if(storeDatas.length == 0){
+    if (storeDatas.length == 0) {
       ShowToast("No Data!");
       hideLoadingDialog();
-    }else{
+    } else {
       sortArray(storeDatas);
     }
   }
@@ -1458,16 +1463,33 @@ class _StoreScreenState extends State<StoreScreen> {
                         (a, b) => a["regionName"].compareTo(b["regionName"])),
                   },
                 // }),
-                if((storeDatas.length - 1) == i){
-                  setState(() {
-                    this.count = this.assignStores.length.toString();
-                    allData = storeallData;
-                  })
-                }
+                if ((storeDatas.length - 1) == i)
+                  {
+                    setState(() {
+                      this.count = this.assignStores.length.toString();
+                      // allData = storeallData;
+                      allData = json.decode(json.encode(storeallData));
+                    })
+                  }
               }
           });
     }
+  }
 
+  String query = '';
+  TextEditingController tc;
+  void setResults(query) {
+    print(allData.length);
+    print(storeallData[0]["existingStore"]["storeList"].length);
+    allData = json.decode(json.encode(storeallData));
+    allData.forEach((d) {
+      d["existingStore"]["storeList"] = d["existingStore"]["storeList"]
+          .where((element) => element["shopname"]
+              .toString()
+              .toLowerCase()
+              .contains(query.toString().toLowerCase()))
+          .toList();
+    });
   }
 
   var loginData, newParam;
@@ -1534,8 +1556,17 @@ class _StoreScreenState extends State<StoreScreen> {
             backgroundColor: Color(0xFFF8F8FF),
             drawer: MainMenuWidget(),
             appBar: AppBar(
+              title: Text("Surveyor"),
               backgroundColor: CustomIcons.appbarColor,
               actions: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      setState(() {
+                        showSearch = !showSearch;
+                        setResults("");
+                      });
+                    }),
                 IconButton(
                   icon: Icon(Icons.map),
                   onPressed: () {
@@ -1595,6 +1626,22 @@ class _StoreScreenState extends State<StoreScreen> {
               child: Container(
                 padding: EdgeInsets.all(5),
                 child: Column(children: <Widget>[
+                  Visibility(
+                    visible: showSearch,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextField(
+                        controller: tc,
+                        decoration: InputDecoration(hintText: 'Search...'),
+                        onChanged: (v) {
+                          setState(() {
+                            query = v;
+                            setResults(query);
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                   Container(
                     child: Column(
                       children: <Widget>[

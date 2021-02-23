@@ -18,7 +18,6 @@ import 'package:flutter/services.dart';
 import 'package:load/load.dart';
 import 'package:localstorage/localstorage.dart';
 
-
 import '../URL/url.dart';
 
 class Login extends StatefulWidget {
@@ -118,7 +117,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.27'),
+                        child: Text('Version 1.0.28'),
                       ),
                     ],
                     child: Icon(
@@ -338,14 +337,13 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                                                                                       // Future.delayed(const Duration(milliseconds: 1000), () {
                                                                                       //
                                                                                       // }),
-
                                                                                     }
                                                                                 }
                                                                             }
                                                                           else
                                                                             {
                                                                               // Future.delayed(const Duration(milliseconds: 1000), () {
-                                                                                hideLoadingDialog(),
+                                                                              hideLoadingDialog(),
                                                                               // })
                                                                             }
                                                                         }),
@@ -365,13 +363,13 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                                                         //     const Duration(
                                                         //         milliseconds:
                                                         //         1000), () {
-                                                          hideLoadingDialog(),
+                                                        hideLoadingDialog(),
                                                         // }),
                                                       }
                                                   }
                                                 else
                                                   {
-                                                      hideLoadingDialog(),
+                                                    hideLoadingDialog(),
                                                   }
                                               }),
                                     }
@@ -380,13 +378,13 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                                       // Future.delayed(
                                       //     const Duration(milliseconds: 1000),
                                       //     () {
-                                        hideLoadingDialog(),
+                                      hideLoadingDialog(),
                                       // })
                                     }
                                 })
                             .catchError((err) => {
-                              print("error -->"  + err.toString()),
-                                    hideLoadingDialog(),
+                                  print("error -->" + err.toString()),
+                                  hideLoadingDialog(),
                                 });
                       }
                     });
@@ -436,16 +434,9 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
     );
   }
 
+  getStoreType() {
+    var param = {"code": "", "description": ""};
 
-
-  getStoreType(){
-    var param = {
-      "code":"",
-      "description":""
-    };
-
-    this.onlineSerives.getStoretype(param).then((data)=>{
-
-    });
+    this.onlineSerives.getStoretype(param).then((data) => {});
   }
 }

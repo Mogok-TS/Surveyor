@@ -13,23 +13,31 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Color(0xFFab000d),
     ));
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Surveyor',
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(color: CustomIcons.appbarColor),
-        primarySwatch: Colors.red,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        iconTheme: IconThemeData(color: Colors.white),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Surveyor',
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(color: CustomIcons.appbarColor),
+          primarySwatch: Colors.red,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        home: Login(),
       ),
-      home:Login(),
     );
   }
 }
