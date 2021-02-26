@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:localstorage/localstorage.dart';
 
-
-
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -50,7 +48,10 @@ class _ProfileState extends State<Profile> {
                       gradient: LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
-                          colors: [ CustomIcons.appbarColor, Colors.yellow])),
+                          colors: [
+                        CustomIcons.appbarColor,
+                        Color(0xFFc73200)
+                      ])),
                   height: (MediaQuery.of(context).size.height -
                           appBar.preferredSize.height) /
                       3,
@@ -64,15 +65,15 @@ class _ProfileState extends State<Profile> {
                       color: Colors.white,
                       elevation: 5,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Column(
                         children: [
                           Container(
                             transform: Matrix4.translationValues(
                                 0.0, -appBar.preferredSize.height, 0.0),
-                            width: 150,
-                            height: 150,
+                            width: 130,
+                            height: 130,
                             child: Card(
                               color: Colors.white10,
                               elevation: 6,
@@ -89,52 +90,24 @@ class _ProfileState extends State<Profile> {
                           Container(
                             transform: Matrix4.translationValues(
                                 0.0, -appBar.preferredSize.height, 0.0),
-                            padding: EdgeInsets.only(top: 0, left: 50),
+                            padding: EdgeInsets.only(top: 0, left: 10),
                             // color: Colors.red,
                             child: Column(
                               children: [
-                                SizedBox(height: appBar.preferredSize.height - 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Name",
-                                      style: TextStyle(color: Colors.black,fontSize: 19),
-
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                        ":",
-                                      style: TextStyle(color: Colors.black,fontSize: 19),
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      userData["userName"],
-                                      style: TextStyle(fontSize: 18, color: Colors.black54),
-                                    )
-                                  ],
+                                SizedBox(
+                                    height: appBar.preferredSize.height - 15),
+                                Text(
+                                  userData["userName"],
+                                  style: TextStyle(
+                                      fontSize: 17, color: Colors.black54),
                                 ),
-                                SizedBox(height: appBar.preferredSize.height - 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Phone",
-                                      style: TextStyle(color: Colors.black,fontSize: 19),
-
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      ":",
-                                      style: TextStyle(color: Colors.black,fontSize: 19),
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "+" + userData["userId"],
-                                      style: TextStyle(fontSize: 18, color: Colors.black54),
-                                    )
-                                  ],
-                                ),
+                                SizedBox(
+                                    height: appBar.preferredSize.height - 15),
+                                Text(
+                                  "+" + userData["userId"],
+                                  style: TextStyle(
+                                      fontSize: 17, color: Colors.black54),
+                                )
                               ],
                             ),
                           )

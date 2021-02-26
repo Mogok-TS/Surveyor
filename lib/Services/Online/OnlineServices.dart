@@ -36,13 +36,13 @@ class OnlineSerives {
     this.url = this.storage.getItem('URL');
     if (this.url == "" || this.url == null || this.url.isEmpty) {
       // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/";
-     // this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
-     //  this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
-     //  this.url = "http://18.136.44.90:8084/madbrepository/"; //For Pepsi
-     //   this.url = "http://54.255.17.88:8084/madbrepository/"; //For SP
+      // this.url = "http://52.255.142.115:8084/madbrepository/"; //For QC
+      //  this.url = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
+      //  this.url = "http://18.136.44.90:8084/madbrepository/"; //For Pepsi
+      //   this.url = "http://54.255.17.88:8084/madbrepository/"; //For SP
       this.url =
           "http://52.253.88.71:8084/madbrepository/"; //For Customer_Testing
-       // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
+      // this.url = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
       this.storage.setItem('URL', "http://52.253.88.71:8084/madbrepository/");
     }
   }
@@ -69,6 +69,7 @@ class OnlineSerives {
 //    } else
     if (response != null) {
       var data = json.decode(response.body);
+      print(data["orgId"]);
       if (response.statusCode == 200) {
         if (data["orgId"] != "" && data["syskey"] != "") {
           this.storage.setItem("orgId", data["orgId"]);
@@ -131,19 +132,26 @@ class OnlineSerives {
     this.url = this.url + "shop/getshopall";
     var body = json.encode(params);
     var data;
-    var response = await http
+
+    final response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
+
     if (response != null) {
       data = json.decode(response.body);
+      print(data);
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
           this.storage.setItem("storeData", data["list"]);
-          print("000-->" + data["list"].toString());
         } else {
-          ShowToast("Server fail..");
+          if (data['status'] == "SUCCESS!" ||
+              data['status'] == 'INVALID USER TYPE') {
+            ShowToast("Invalid User Type!");
+          } else {
+            ShowToast("Something went wrong!");
+          }
           this.status = false;
         }
       } else {
@@ -225,9 +233,7 @@ class OnlineSerives {
     return returndata;
   }
 
-  
-
-  Future getQuestions(params,sections) async {
+  Future getQuestions(params, sections) async {
     print("prams for get question>>" + params.toString());
     var returnData = {};
     var _array = [];
@@ -321,16 +327,16 @@ class OnlineSerives {
     returnData["status"] = this.status;
     returnData["data"] = aj;
     returnData["checkSaveorupdate"] = checkSaveorupdate;
-    print("111->" +  aj[0]["HeaderShopSyskey"].toString() + "___" + sections);
-    if(sections == "allsection"){
+    print("111->" + aj[0]["HeaderShopSyskey"].toString() + "___" + sections);
+    if (sections == "allsection") {
       var aa = "";
-      for(var i = 0; i < aj.length; i++){
+      for (var i = 0; i < aj.length; i++) {
         print("123ss-->" + aj[i]["HeaderShopSyskey"].toString());
-        if(aj[i]["HeaderShopSyskey"] != ""){
+        if (aj[i]["HeaderShopSyskey"] != "") {
           aa = aj[i]["HeaderShopSyskey"].toString();
           this.storage.setItem("allsectionHeadersyskey", aa.toString());
           break;
-        }else{
+        } else {
           aa = "";
           this.storage.setItem("allsectionHeadersyskey", aa.toString());
         }
@@ -374,6 +380,7 @@ class OnlineSerives {
 //    var returndata = {"status": this.status, "data": data["list"]};
     return this.status;
   }
+
   Future getStateandDistrict(params) async {
     this.mainData();
     this.url = this.url + "/shop/getByTownship";
@@ -405,6 +412,7 @@ class OnlineSerives {
     var param = {"status": this.status, "data": data["list"]};
     return param;
   }
+
   Future getState(params) async {
     this.mainData();
     this.url = this.url + "shop/get-state";
@@ -451,7 +459,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-          print("district=>"  + data["list"].toString());
+          print("district=>" + data["list"].toString());
 //          this.storage.setItem("District", data["list"]);
         } else {
           ShowToast("Server fail.");
@@ -479,7 +487,7 @@ class OnlineSerives {
         .post(this.url, headers: this.headersWithKey, body: body)
         .timeout(const Duration(milliseconds: 40000))
         .catchError((err) => {ShowToast(this.netWorkerr), this.status = false});
-    print("data123->"+ json.decode(response.body).toString());
+    print("data123->" + json.decode(response.body).toString());
     if (response != null) {
       data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -501,6 +509,7 @@ class OnlineSerives {
     var param = {"status": this.status, "data": data["list"]};
     return param;
   }
+
   Future getNewStore(params) async {
     this.mainData();
     this.url = this.url + "shop/get-svr-shoplist";
@@ -517,7 +526,8 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-          this.storage.setItem("regStore", data["list"]); //For showing Registration Store in Map
+          this.storage.setItem(
+              "regStore", data["list"]); //For showing Registration Store in Map
         } else {
           ShowToast("Server fail.");
           this.status = false;
@@ -601,7 +611,6 @@ class OnlineSerives {
   }
 
   Future getHeaderList(params) async {
-
     this.mainData();
     this.url = this.url + "surveyor/allSurveyorHeaderList";
     var body = json.encode(params);
@@ -615,14 +624,14 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
-         this.storage.setItem("HeaderList", data["list"]);
-        } else if (data["status"].toString() == "No Data Record"){
+          this.storage.setItem("HeaderList", data["list"]);
+        } else if (data["status"].toString() == "No Data Record") {
           ShowToast("No data.");
           this.status = false;
-        }else if (data["status"].toString() == "No Param"){
+        } else if (data["status"].toString() == "No Param") {
           ShowToast("No data.");
           this.status = false;
-        }else {
+        } else {
           ShowToast("Server fail.");
           this.status = false;
         }
@@ -634,7 +643,7 @@ class OnlineSerives {
       ShowToast(this.netWorkerr);
       this.status = false;
     }
-    var param = { 
+    var param = {
       "status": this.status,
       "data": data["list"] //testData
     };
@@ -656,7 +665,7 @@ class OnlineSerives {
         if (data["status"] == "SUCCESS") {
           this.status = true;
           this.storage.setItem("Routebyuser", data["list"]);
-        }else {
+        } else {
           ShowToast("Server fail.");
           this.status = false;
         }

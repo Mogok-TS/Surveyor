@@ -32,6 +32,10 @@ class _StoreScreenState extends State<StoreScreen> {
   bool showAssignStore = false;
   bool showRegisterStore = false;
   bool showSearch = false;
+  bool isLoad = false;
+
+  String query = '';
+  TextEditingController tc;
 
   var performType, performTypearray;
   OnlineSerives onlineSerives = new OnlineSerives();
@@ -85,7 +89,7 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget assignStoreWidget(var data) {
+  Widget assignStoreWidget(var data, var index) {
     var townshipID = data["townshipId"].toString();
     print("1234-->" + data.toString());
     return Container(
@@ -147,103 +151,116 @@ class _StoreScreenState extends State<StoreScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          if (data["existingStore"]["storeList"].length > 0)
-                            Container(
-                              color: CustomIcons.dropDownHeader,
-                              child: ListTile(
-                                title: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      data["existItem"] = !data["existItem"];
-                                    });
-                                  },
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        "Existing Store",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "0" +
-                                            "/" +
-                                            data["existingStore"]["storeList"]
-                                                .length
-                                                .toString(),
-                                        style: TextStyle(color: Colors.black),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                trailing: Wrap(
-                                  spacing: 12, // space between two icons
-                                  children: <Widget>[
-                                    // icon-1
-                                    IconButton(
-                                      color: Colors.black,
-                                      icon: data["existItem"] == true
-                                          ? Icon(Icons.keyboard_arrow_down)
-                                          : Icon(Icons.chevron_right),
-                                      onPressed: () {
-                                        setState(() {
-                                          print("sdfs-->" +
-                                              data["existingStore"]["storeList"]
-                                                  .length
-                                                  .toString());
-                                          // data["show"] = !data["show"];
-                                          data["existItem"] =
-                                              !data["existItem"];
-                                        });
-                                      },
-                                    ) // icon-2
-                                  ],
-                                ),
+                          // if (data["existingStore"]["storeList"].length > 0)
+                          Container(
+                            color: CustomIcons.dropDownHeader,
+                            child: ListTile(
+                              title: InkWell(
                                 onTap: () {
                                   setState(() {
                                     data["existItem"] = !data["existItem"];
                                   });
                                 },
-                              ),
-                            ),
-                          if (data["existItem"] == true)
-                            if (data["existingStore"]["storeList"].length ==
-                                    0 &&
-                                data["existItem"] == true)
-                              Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      height: 50,
-                                      color: Colors.grey[200],
-                                      child: Center(
-                                        child: Text(
-                                          "No Data",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "Existing Store",
+                                      style: TextStyle(color: Colors.black),
                                     ),
-                                  )
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "0" +
+                                          "/" +
+                                          data["existingStore"]["storeList"]
+                                              .length
+                                              .toString(),
+                                      style: TextStyle(color: Colors.black),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              trailing: Wrap(
+                                spacing: 12, // space between two icons
+                                children: <Widget>[
+                                  // icon-1
+                                  IconButton(
+                                    color: Colors.black,
+                                    icon: data["existItem"] == true
+                                        ? Icon(Icons.keyboard_arrow_down)
+                                        : Icon(Icons.chevron_right),
+                                    onPressed: () {
+                                      setState(() {
+                                        print("sdfs-->" +
+                                            data["existingStore"]["storeList"]
+                                                .length
+                                                .toString());
+                                        // data["show"] = !data["show"];
+                                        data["existItem"] = !data["existItem"];
+                                      });
+                                    },
+                                  ) // icon-2
                                 ],
                               ),
-                          if (data["existingStore"]["storeList"].length > 0 &&
-                              data["existItem"] == true)
-                            for (var ii = 0;
-                                ii < data["existingStore"]["storeList"].length;
-                                ii++)
-                              buildAssignItem(
-                                  data["existingStore"]["storeList"][ii],
-                                  data["existingStore"]["surDetail"],
-                                  data["userDetail"],
-                                  townshipID),
-                          if (data["existingStore"]["storeList"].length > 0)
-                            SizedBox(
-                              height: 10,
+                              onTap: () {
+                                setState(() {
+                                  data["existItem"] = !data["existItem"];
+                                });
+                              },
                             ),
+                          ),
+                          Column(
+                            children: [
+                              //Build Search Box Widget
+                              if (data["existItem"] == true)
+                                _buildSearchWidget(index),
+
+                              if (data["existItem"] == true)
+                                if (data["existingStore"]["storeList"].length ==
+                                        0 &&
+                                    data["existItem"] == true)
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Container(
+                                          height: 50,
+                                          color: Colors.grey[200],
+                                          child: Center(
+                                            child: Text(
+                                              "No Data",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+
+                              if (data["existingStore"]["storeList"].length >
+                                      0 &&
+                                  data["existItem"] == true &&
+                                  isLoad == false)
+                                for (var ii = 0;
+                                    ii <
+                                        data["existingStore"]["storeList"]
+                                            .length;
+                                    ii++)
+                                  buildAssignItem(
+                                      data["existingStore"]["storeList"][ii],
+                                      data["existingStore"]["surDetail"],
+                                      data["userDetail"],
+                                      townshipID),
+                            ],
+                          ),
+
+                          // if (data["existingStore"]["storeList"].length > 0)
+                          SizedBox(
+                            height: 10,
+                          ),
                           if (data["flagStore"]["storeList"].length > 0)
                             Container(
                               color: CustomIcons.dropDownHeader,
@@ -1384,8 +1401,9 @@ class _StoreScreenState extends State<StoreScreen> {
   //   );
   // }
 
-  List allData = [];
-  List storeallData = [];
+  var allData = [];
+  var storeallData = [];
+
   allDataFunction() {
     // showLoading();
     allData = [];
@@ -1476,20 +1494,46 @@ class _StoreScreenState extends State<StoreScreen> {
     }
   }
 
-  String query = '';
-  TextEditingController tc;
-  void setResults(query) {
-    print(allData.length);
-    print(storeallData[0]["existingStore"]["storeList"].length);
-    allData = json.decode(json.encode(storeallData));
-    allData.forEach((d) {
-      d["existingStore"]["storeList"] = d["existingStore"]["storeList"]
-          .where((element) => element["shopname"]
-              .toString()
-              .toLowerCase()
-              .contains(query.toString().toLowerCase()))
-          .toList();
-    });
+  Widget _buildSearchWidget(var index) {
+    return Container(
+      color: Colors.grey[200],
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: TextField(
+          controller: tc,
+          decoration: InputDecoration(hintText: 'Search...'),
+          textInputAction: TextInputAction.search,
+          onSubmitted: (v) {
+            setState(() {
+              isLoad = true;
+              allData[index]["existingStore"]["storeList"] = [];
+              query = v;
+              print("Query:" + query);
+              setResults(query, index);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  void setResults(query, var index) {
+    print("Index: " + index.toString());
+
+    allData[index]["existingStore"]["storeList"] = json
+        .decode(json.encode(storeallData[index]["existingStore"]["storeList"]));
+
+    allData[index]["existingStore"]["storeList"] = allData[index]
+            ["existingStore"]["storeList"]
+        .where((element) => element["shopname"]
+            .toString()
+            .toLowerCase()
+            .contains(query.toString().toLowerCase()))
+        .toList();
+
+    allData[index]["show"] = true;
+    allData[index]["existItem"] = true;
+    isLoad = false;
   }
 
   var loginData, newParam;
@@ -1510,6 +1554,7 @@ class _StoreScreenState extends State<StoreScreen> {
     shopParam["teamsyskey"] = this.loginData["teamSyskey"];
     shopParam["usertype"] = this.loginData["userType"];
     shopParam["date"] = "";
+
     Future.delayed(const Duration(milliseconds: 900), () {
       // setState(() {
       showLoading();
@@ -1527,7 +1572,7 @@ class _StoreScreenState extends State<StoreScreen> {
                   {
                     this.storeRegistration = [],
                     this.assignStores = [],
-                    // hideLoadingDialog()
+                    hideLoadingDialog(),
                   }
               })
           .catchError((onError) =>
@@ -1559,14 +1604,13 @@ class _StoreScreenState extends State<StoreScreen> {
               title: Text("Surveyor"),
               backgroundColor: CustomIcons.appbarColor,
               actions: <Widget>[
-                IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        showSearch = !showSearch;
-                        setResults("");
-                      });
-                    }),
+                // IconButton(
+                //     icon: Icon(Icons.search),
+                //     onPressed: () {
+                //       setState(() {
+                //         showSearch = !showSearch;
+                //       });
+                //     }),
                 IconButton(
                   icon: Icon(Icons.map),
                   onPressed: () {
@@ -1626,22 +1670,6 @@ class _StoreScreenState extends State<StoreScreen> {
               child: Container(
                 padding: EdgeInsets.all(5),
                 child: Column(children: <Widget>[
-                  Visibility(
-                    visible: showSearch,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextField(
-                        controller: tc,
-                        decoration: InputDecoration(hintText: 'Search...'),
-                        onChanged: (v) {
-                          setState(() {
-                            query = v;
-                            setResults(query);
-                          });
-                        },
-                      ),
-                    ),
-                  ),
                   Container(
                     child: Column(
                       children: <Widget>[
@@ -1651,7 +1679,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             children: <Widget>[
                               if (allData.length > 0)
                                 for (var i = 0; i < allData.length; i++)
-                                  assignStoreWidget(allData[i]),
+                                  assignStoreWidget(allData[i], i),
                               // RaisedButton(
                               //   onPressed: () {
                               //     allDataFunction();
