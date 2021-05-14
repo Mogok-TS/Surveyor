@@ -26,10 +26,11 @@ class _myURL extends State<URL> {
       // this.url.text = "http://52.255.142.115:8084/madbrepositorydev/"; // For Dev
       // this.url.text = "http://18.136.44.90:8084/madbrepository/"; //For Go Pepsi
       // this.url.text = "http://54.255.17.88:8084/madbrepository/"; //For SP
+
       this.url.text =
-          "http://18.136.44.90:8084/madbrepository/"; //For Customer_Testing
+          "http://52.255.142.115:8084/madbrepository/"; //For Customer_Testing
       //  this.url.text = "http://52.255.142.115:8084/mrepository_kn_svrtest/"; //For Kaung Nyan
-      this.storage.setItem('URL', "http://18.136.44.90:8084/madbrepository/");
+      this.storage.setItem('URL', "http://52.255.142.115:8084/madbrepository/");
     }
   }
 

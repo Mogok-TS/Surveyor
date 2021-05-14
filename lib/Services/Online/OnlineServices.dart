@@ -12,7 +12,7 @@ class OnlineSerives {
   String serverErr;
   String loginUserId;
   String loginUserRoles;
-  bool status;
+  bool status = false;
 
   Map<String, String> headers = {
     "Accept": "text/html,application/json",
@@ -133,6 +133,8 @@ class OnlineSerives {
     var body = json.encode(params);
     var data;
 
+    // ShowToast("Param: ${params}");
+
     final response = await http
         .post(this.url, headers: this.headersWithKey, body: body)
         .timeout(const Duration(milliseconds: 40000))
@@ -140,7 +142,6 @@ class OnlineSerives {
 
     if (response != null) {
       data = json.decode(response.body);
-      print(data);
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
@@ -836,6 +837,7 @@ class OnlineSerives {
       if (response.statusCode == 200) {
         if (data["status"] == "SUCCESS") {
           this.status = true;
+          print(data["list"]);
           this.storage.setItem("getStroetype", data["list"]);
         } else {
           ShowToast("Server fail for getStoreType.");

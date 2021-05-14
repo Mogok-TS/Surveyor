@@ -1405,7 +1405,6 @@ class _StoreScreenState extends State<StoreScreen> {
   var storeallData = [];
 
   allDataFunction() {
-    // showLoading();
     allData = [];
     storeallData = [];
     var storeDatas = this.storage.getItem("storeData");
@@ -1541,43 +1540,45 @@ class _StoreScreenState extends State<StoreScreen> {
   void initState() {
     print("aa-->");
     super.initState();
-    var shopParam = {
-      "spsyskey": "",
-      "teamsyskey": "",
-      "usertype": "",
-      "date": ""
-    };
 
-    this.loginData = this.storage.getItem("loginData");
-    newParam = {"usersyskey": this.loginData["syskey"].toString()};
-    shopParam["spsyskey"] = this.loginData["syskey"];
-    shopParam["teamsyskey"] = this.loginData["teamSyskey"];
-    shopParam["usertype"] = this.loginData["userType"];
-    shopParam["date"] = "";
+    try {
+      var shopParam = {
+        "spsyskey": "",
+        "teamsyskey": "",
+        "usertype": "",
+        "date": ""
+      };
 
-    Future.delayed(const Duration(milliseconds: 900), () {
-      // setState(() {
-      showLoading();
-      // });
-      this
-          .onlineSerives
-          .getStores(shopParam)
-          .then((result) => {
-                if (result == true)
-                  {
-                    this.assignStores = this.storage.getItem("storeData"),
-                    allDataFunction(),
-                  }
-                else
-                  {
-                    this.storeRegistration = [],
-                    this.assignStores = [],
-                    hideLoadingDialog(),
-                  }
-              })
-          .catchError((onError) =>
-              {print("onError==>" + onError.toString()), hideLoadingDialog()});
-    });
+      this.loginData = this.storage.getItem("loginData");
+      newParam = {"usersyskey": this.loginData["syskey"].toString()};
+      shopParam["spsyskey"] = this.loginData["syskey"];
+      shopParam["teamsyskey"] = this.loginData["teamSyskey"];
+      shopParam["usertype"] = this.loginData["userType"];
+      shopParam["date"] = "";
+
+      Future.delayed(const Duration(milliseconds: 900), () {
+        showLoading();
+        this
+            .onlineSerives
+            .getStores(shopParam)
+            .then((result) => {
+                  if (result == true)
+                    {
+                      this.assignStores = this.storage.getItem("storeData"),
+                      allDataFunction(),
+                    }
+                  else
+                    {
+                      this.storeRegistration = [],
+                      this.assignStores = [],
+                      hideLoadingDialog(),
+                    }
+                })
+            .catchError((onError) => {print(onError), hideLoadingDialog()});
+      });
+    } catch (e) {
+      ShowToast(e);
+    }
   }
 
   List data;

@@ -73,6 +73,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+
     isBackButtonActivated = false;
     WidgetsBinding.instance.addObserver(this);
     latitude = "";
@@ -117,7 +118,7 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
                         child: Text('URL'),
                       ),
                       const PopupMenuItem<String>(
-                        child: Text('Version 1.0.28'),
+                        child: Text('Version 1.0.30'),
                       ),
                     ],
                     child: Icon(
